@@ -75,3 +75,27 @@ def test_homepage_puts_the_verified_download_first() -> None:
     assert receipt["audit"]["positive"] == 37654
     assert "do not submit" in home
     assert not receipt["gate_passed"]
+
+
+def test_r10_receipt_is_archived_unchanged() -> None:
+    """The failed R10 arm stays on disk with its own receipt (published negative result)."""
+    import json
+    receipt = json.loads((ROOT / "registry/r10.json").read_text())
+    assert (SITE / "r10" / receipt["file"]).is_file()
+    assert json.loads((SITE / "r10" / "receipt.json").read_text())["file"] == receipt["file"]
+    assert not receipt["gate_passed"]
+    assert receipt["audit"]["positive"] == 37654
+
+
+def test_h47_receipt_is_archived_unchanged() -> None:
+    """The screened H47 arm stays on disk with its own receipt (published negative result)."""
+    import json
+    receipt = json.loads((ROOT / "registry/h47.json").read_text())
+    emission = receipt["emission"]
+    name = Path(emission["zeros"]["path"]).name
+    assert (SITE / "downloads" / "h47" / name).is_file()
+    audit = emission["zeros"]["audit"]
+    assert audit["passes"] is True
+    assert audit["positive_px"] == emission["emitted_px"] == 37654
+    assert receipt["screen"]["verdict"] == "HOLD_DO_NOT_SUBMIT"
+    assert receipt["screen"]["full"]["delta_vs_C"] < 0

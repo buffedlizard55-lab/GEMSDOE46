@@ -2,29 +2,34 @@
 
 ## Download the newly generated TIF
 
-**[Download `gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif`](docs/r10/gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif)**
+**[Download `gemsdoe47-h47-1-catalogue-supervised-lineament-37654-20261006T180000Z-h47a-zeros.tif`](docs/downloads/h47/gemsdoe47-h47-1-catalogue-supervised-lineament-37654-20261006T180000Z-h47a-zeros.tif)** · [NaN-outside twin](docs/downloads/h47/gemsdoe47-h47-1-catalogue-supervised-lineament-37654-20261006T180000Z-h47a-nan.tif)
 
-**HOLD — do not submit this candidate to a weekly slot.** It is unique among the inspected files and format-valid, but the fixed DFA-crossover detector failed the spatially blocked proxy improvement gate. No competition submission was made.
+**HOLD_DO_NOT_SUBMIT — the pre-registered screen failed, so this file is published for inspection, not as a recommended submission.** It is unique (Jaccard 0.0151 against the live-scored 0.2778 file, 0.0025 against our R10 file), format-perfect, and the first catalogue-supervised arm in this repository — but at matched mass on the only instrument that reproduces all three known live orderings it is **worse** than the incumbent: delta −0.035274, paired t −5.48 over 127 blocks, ranking AUC over the incumbent's dots 0.497 (chance). No competition slot was used.
 
 - [Executive summary / exact submission instructions](https://buffedlizard55-lab.github.io/GEMSDOE46/docs/executive-summary.html)
-- [Active site](https://buffedlizard55-lab.github.io/GEMSDOE46/) · [machine-readable receipt](docs/r10/receipt.json)
-- [Scientific review, corrected score analysis and next steps](docs/research/r10-review.md)
-- [Four hypotheses registered before implementation](docs/research/session-r10-plan.md)
+- [Active site](https://buffedlizard55-lab.github.io/GEMSDOE46/) · [machine-readable receipt](docs/h47/receipt.json)
+- [Scientific review: why the family plateaued at 0.28, and what the screen measured](docs/research/h47-review.md)
+- [Five hypotheses registered before implementation, with their outcomes](docs/research/h47-hypotheses.md)
 
 | Current measured result | Value |
 |---|---:|
-| R10 mean blocked SGMC proxy DTI | 0.06169359 |
-| Best tested comparison rule, GEMSDOE32 | 0.10328873 |
-| Paired difference | -0.04159514 |
-| Largest absolute tested field correlation | 0.05517048 |
-| Emitted pixels | 37,654 |
+| H47-1 shipped field, stratified-SGMC screen at matched mass (37,654 dots) | 0.053242 |
+| Live-scored 0.2778 file on the same instrument and mass | 0.088516 |
+| Delta / paired t (127 truth-bearing blocks) / ranking AUC | −0.035274 / −5.48 / 0.497 |
+| Out-of-fold mixture (not the shipped field) | 0.093609 (+0.005093, t 0.64) |
+| Uniform-random emission at the same mass | T = 4,140 ± 70 |
+| Algorithmic uniqueness vs the 0.2778 file | Jaccard 0.0151 |
 
-These are **not leaderboard scores**. Nine evaluable blocks, matched mass/exclusion, reused imperfect SGMC proxy. Correlation is a redundancy diagnostic, not proof of independent geology. The official board snapshot retrieved 2026-10-06 is **0.3774**, not 0.3195. Historical file-to-score attribution remains owner-reported.
+These are **not leaderboard scores**. The first catalogue-supervised arm this repository has built is screened and rejected on its own pre-registered condition; the honest answer to "can it beat 0.2778" is *not with this arm, and not with any arm that only learns the published catalogue*.
 
-**Submission name:** `GEMSDOE46-R10-DFA-CROSSOVER-95ba59eb9030`
-**Short note:** `R10 raw RTP/gravity DFA slope crossover, 0.8-12.8 km scales; 37,654 dots; research candidate, proxy-gated, no leaderboard score.`
+## The standing question: why did 0.2778 score highest, and is more reachable?
 
-Format re-read from disk: single band, float32, EPSG:32611, 3730×3292, 100 m, exact template transform, all values finite in [0,1], no nodata sentinel. SHA-256: `c966def73cfb3177af25651c92d32f1f36fc209ad13c49274c125aa06f62f322`. Portal acceptance has not been tested.
+Measured this session from the three live-scored dot files (owner-reported scores; no organizer file→score receipt exists):
+
+* They are **one** dot set. The 37,654-pixel file (0.2778) is an exact subset of the 40,199-pixel file (0.2708), which is an exact subset of the 44,090-pixel file (0.2600); all three share the **identical 37,654-pixel** core beyond 200 m of the published catalogue. The entire 0.26→0.28 progression is the deletion of near-catalogue dead mass, nothing else.
+* The published metric charges 0.2 per dot with no truth within 300 m and 0.8 per uncovered truth pixel. Fitting the two score steps gives `T ≈ 5,223` covered truth pixels and denominator `D ≈ 18,800`; each dead dot costs `0.2·T/D² ≈ 3.0e-6`, each hit dot earns `(1−DTI)/D ≈ 3.8e-5`, so the break-even hit rate is `0.2·DTI/(1−DTI) ≈ 7.7%`. The incumbent hits at ~10.5% — just above break-even. That is the plateau.
+* Beating it needs either (i) removing the ~32,000 dead dots without the hidden labels — the test is whether a model can rank the incumbent's own dots, and ours is at chance (AUC 0.497) — or (ii) placing dots on faults the catalogue lacks, where our detector's emission hit-rate is flat from 5k to 120k dots (12.1% → 9.4%). The leader's 0.3774 therefore implies an information source not obtainable in this sandbox (lidar/3DEP tiles, or hand-labelled faults under the organizer's allowance), not a better parameter choice.
+* Instrument discipline: the catalogue-in-block holdout and the un-stratified SGMC truth both **invert** the live order; only SGMC truth stratified at ≥3 px from the catalogue reproduces 0.2600 < 0.2708 < 0.2778. `registry/h47.json → ladder` prints all six rows before any delta.
 
 ## Reproduce on CPU
 
@@ -32,22 +37,19 @@ Format re-read from disk: single band, float32, EPSG:32611, 3730×3292, 100 m, e
 python -m venv .venv
 .venv/bin/pip install -r requirements.txt
 bash scripts/restore_competition_data.sh
-bash scripts/restore_r10_reference.sh
-.venv/bin/python scripts/run_r10.py
-.venv/bin/python scripts/build_r10_site.py
+.venv/bin/python scripts/run_h47.py            # ladder, cv, calib, full, compare, screen, emit
+.venv/bin/python scripts/build_h47_site.py
 .venv/bin/python -m pytest
 .venv/bin/python scripts/verify_all.py
 ```
 
-The inputs are hash-pinned public-family mirrors; hashes prove consistency, not organizer authentication. Raw data and derived arrays remain ignored. No GPU is needed. The site serves precomputed audited files, not a browser-side scientific pipeline. No authenticated organizer access or private labels are available. A leaderboard feed is not continuously verified; the site clearly dates its snapshot and links the official board.
+`lightgbm` and `scikit-learn` are pinned in `requirements.txt` (the sklearn wrapper of LightGBM needs it; both are CPU-only). The inputs are hash-pinned public-family mirrors; hashes prove consistency, not organizer authentication. Raw data and derived arrays remain ignored. No GPU is needed. The site serves precomputed audited files, not a browser-side scientific pipeline.
 
-## Corrections and priorities
+## Corrections, limitations and priorities
 
-The legacy DFA map used a half-window-shifted index; this is fixed with a regression test. New R10 uses a separate, window-local residual estimator. Historical DFA artifacts remain archived and do not silently inherit this correction. An empty-prediction boundary bug in the binary metric and the incomplete SGMC restore path were also fixed.
+The former README treated model-dependent hidden-label counts as measured facts, called low Pearson correlation proof of physical independence, and guaranteed a scoring route that had not been demonstrated; those claims are withdrawn. The exact denominator is `0.2(T+S−M)+0.8G`; replacing it with `0.2S+0.8G` requires an extra assumption. Legacy DFA maps carry a half-window index bug (fixed, regression-tested); archived artifacts do not silently inherit the correction. New H47 bugs found and fixed this session: a `KeyError` in the artifact audit and two test-side errors (a 3 px shift is outside the metric's support; the marginal-rule test used per-dot credit as its own penalty weight).
 
-The former README incorrectly treated model-dependent hidden-label counts as measured facts, called low Pearson correlation proof of physical independence, and guaranteed a scoring route that had not been demonstrated. Those claims are withdrawn. The exact denominator is `0.2(T+S−M)+0.8G`; replacing it with `0.2S+0.8G` requires an additional assumption. The [archived README](docs/research/readme-pre-r10.md) is preserved for audit, not recommendations.
-
-Next: lock an unused geographic validation region, test scale/phase robustness and localization before tuning, and obtain real organizer file-to-score receipts where possible. Read the full scientific review before another experiment. Do not tune repeatedly on the same proxy and call it new holdout evidence.
+Next session, in order: (1) an organizer file→score receipt for the three family files, or a second independent truth source — a single proxy cannot settle a 0.01-scale question; (2) one measured dead-dot rule (the field-based one is already ruled out at AUC 0.497); (3) the 1 m lidar/3DEP route on a machine with unrestricted egress, which is the only identified upside large enough to matter. Do not spend the weekly slot on an unscreened file, and do not tune repeatedly on the same nine SGMC blocks.
 
 ## Core values
 
