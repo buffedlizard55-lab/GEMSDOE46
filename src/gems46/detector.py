@@ -10,7 +10,7 @@ H46-1 (shipped, new hypothesis)
 
 H46-2 (shipped, recommended)
     the geometric-mean corroboration of edge/curvature transforms, built in
-    ``scripts/build_submission.py`` from the same official bands, with a DFA portfolio slice.
+    ``scripts/build_h46_submission.py`` from the same official bands, with a DFA portfolio slice.
 """
 
 from __future__ import annotations

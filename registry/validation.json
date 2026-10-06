@@ -1,7 +1,7 @@
 {
  "ledger_fit_attempt": {
   "n": 14,
-  "note": "A single-credit fit DTI_i = c*N_i/(0.2*N_i + 0.8*G) over the whole ledger DEGENERATES (the optimiser drives G to its lower bound and R^2 < 0): the ledger mixes files of different field quality, so emitted mass and credit per pixel are confounded and G is not identifiable this way. The identifying information is inside one family, and that calibration lives in registry/emission_model.json (built by scripts/build_submission.py from the 0.2600 and 0.2778 members). Provenance of the ledger: owner-reported scores.",
+  "note": "A single-credit fit DTI_i = c*N_i/(0.2*N_i + 0.8*G) over the whole ledger DEGENERATES (the optimiser drives G to its lower bound and R^2 < 0): the ledger mixes files of different field quality, so emitted mass and credit per pixel are confounded and G is not identifiable this way. The identifying information is inside one family, and that calibration lives in registry/emission_model.json (built by scripts/build_h46_submission.py from the 0.2600 and 0.2778 members). Provenance of the ledger: owner-reported scores.",
   "credit_per_px": 0.037195861110330915,
   "hidden_truth_px": 100.00000000000001,
   "rmse": 0.07290768936770461,

@@ -63,7 +63,7 @@ def main() -> int:
     for rel, want in PINNED.items():
         p = ROOT / rel
         if not p.exists():
-            print(f"  MISSING {rel} (run scripts/download_competition_data.sh)")
+            print(f"  MISSING {rel} (run scripts/restore_competition_data.sh)")
             ok = False
             continue
         got = sha256(p)
@@ -77,7 +77,7 @@ def main() -> int:
     print("=" * 96)
     reg = ROOT / "registry" / "submissions.json"
     if not reg.exists():
-        print("  no registry/submissions.json - run scripts/build_submission.py")
+        print("  no registry/submissions.json - run scripts/build_h46_submission.py")
         ok = False
     else:
         sub = json.loads(reg.read_text())

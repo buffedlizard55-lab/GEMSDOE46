@@ -13,7 +13,7 @@ output should be read:
     traces (Spearman +0.31 on the same 11).
 
 Outputs: registry/validation.json, data/derived/*.npy previews.
-(registry/emission_model.json is owned by scripts/build_submission.py - the live-score calibration.)
+(registry/emission_model.json is owned by scripts/build_h46_submission.py - the live-score calibration.)
 """
 from __future__ import annotations
 
@@ -172,7 +172,7 @@ def main() -> int:
                       "ledger mixes files of different field quality, so emitted mass and credit "
                       "per pixel are confounded and G is not identifiable this way. The identifying "
                       "information is inside one family, and that calibration lives in "
-                      "registry/emission_model.json (built by scripts/build_submission.py from the "
+                      "registry/emission_model.json (built by scripts/build_h46_submission.py from the "
                       "0.2600 and 0.2778 members). Provenance of the ledger: owner-reported scores.")
     if len(ledger) >= 4:
         sc = np.array([x[0] for x in ledger])
@@ -191,7 +191,7 @@ def main() -> int:
                           r2=float(1 - np.sum((pred - sc) ** 2) / np.sum((sc - sc.mean()) ** 2)),
                           observations=[dict(official=s, emitted_px=int(m), provenance=pv)
                                         for s, m, pv in ledger]))
-    # NOTE: registry/emission_model.json is owned by scripts/build_submission.py (the live-score
+    # NOTE: registry/emission_model.json is owned by scripts/build_h46_submission.py (the live-score
     # calibration). This script must not overwrite it, so the degeneracy note stays in
     # registry/validation.json only.
 

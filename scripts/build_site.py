@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generate the GitHub Pages site from registry/*.json so the pages cannot drift from the receipts.
 
-Run: python3 scripts/build_site.py   ->  docs/{index,executive-summary,hypotheses,validation,
-research,sources,irregularities}.html + docs/assets/style.css + docs/downloads/*.png
+Run: python3 scripts/build_site.py   ->  docs/h46/{index,executive-summary,hypotheses,validation,
+research,sources,irregularities}.html + docs/h46/assets/style.css + docs/h46/downloads/*.png
 """
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCS = ROOT / "docs"
+DOCS = ROOT / "docs" / "h46"
 REG = ROOT / "registry"
 ASSETS = DOCS / "assets"
 
@@ -338,7 +338,7 @@ shipped only as the new-hypothesis artifact, never as the recommended scoring fi
 <h1>Validation</h1>
 <p class="dim">Protocol: compare fields <em>at matched emitted mass and identical exclusion rules</em>.
 Every number below is produced by <code>scripts/validate_candidates.py</code> and
-<code>scripts/build_submission.py</code> and stored in <code>registry/</code>.</p>
+<code>scripts/build_h46_submission.py</code> and stored in <code>registry/</code>.</p>
 
 <h2>Instruments used, and their measured worth</h2>
 <table>
@@ -523,7 +523,7 @@ to this grid, restored from the group's public mirror</td></tr></table>
         import rasterio
 
         for tag, name in ((h1_tag, "preview_h46_1.png"), (h2_tag, "preview_h46_2.png")):
-            with rasterio.open(ROOT / "docs" / "downloads" / files[tag]["file"]) as s:
+            with rasterio.open(DOCS / "downloads" / files[tag]["file"]) as s:
                 a = np.nan_to_num(s.read(1))
             f, ax = plt.subplots(figsize=(11, 6), dpi=110)
             ax.imshow(a, cmap="inferno", interpolation="nearest")
@@ -531,7 +531,7 @@ to this grid, restored from the group's public mirror</td></tr></table>
                          f"on a {a.shape[0]}x{a.shape[1]} grid")
             ax.set_xticks([]); ax.set_yticks([])
             f.tight_layout()
-            f.savefig(ROOT / "docs" / "downloads" / name)
+            f.savefig(DOCS / "downloads" / name)
             plt.close(f)
         print("previews written")
     except Exception as exc:  # pragma: no cover - preview is cosmetic

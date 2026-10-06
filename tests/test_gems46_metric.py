@@ -37,8 +37,8 @@ def brute(pred, truth, radius=3.0):
 
 def test_published_example_arithmetic():
     """Page 967 worked example: TPw=3.00, FPw=1.89, FNw=2.00 -> 0.60."""
-    assert M.dti(3.00, 1.89, 2.00) == pytest.approx(3.00 / (3.00 + 0.2 * 1.89 + 0.8 * 2.00))
-    assert round(M.dti(3.00, 1.89, 2.00), 2) == 0.60
+    assert M.dti_from_terms(3.00, 1.89, 2.00) == pytest.approx(3.00 / (3.00 + 0.2 * 1.89 + 0.8 * 2.00))
+    assert round(M.dti_from_terms(3.00, 1.89, 2.00), 2) == 0.60
 
 
 def test_bruteforce_equivalence_random():

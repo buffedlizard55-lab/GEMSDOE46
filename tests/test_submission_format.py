@@ -17,7 +17,7 @@ TEMPLATE = ROOT / "data" / "raw" / "sample_submission.tif"
 
 def _shipped():
     if not REG.exists():
-        pytest.skip("no built submission (run scripts/build_submission.py)")
+        pytest.skip("no built submission (run scripts/build_h46_submission.py)")
     sub = json.loads(REG.read_text())
     return [(tag, ROOT / "docs" / "downloads" / rec["file"]) for tag, rec in sub["files"].items()]
 
