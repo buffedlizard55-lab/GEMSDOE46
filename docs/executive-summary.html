@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Executive summary - GEMSDOE46</title>
+<link rel="stylesheet" href="assets/style.css"></head>
+<body>
+<header><div class="wrap"><span class="brand">GEMSDOE46 &middot; DOE GEMS Prize</span><nav><a href="index.html">Overview</a><a href="executive-summary.html" class='active'>Executive summary &amp; how to submit</a><a href="hypotheses.html">Hypotheses</a><a href="validation.html">Validation</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav></div></header>
+<main class="wrap">
+<h1>Executive summary, and exactly how to make a submission</h1>
+
+<h2>1. Why the 0.2778 file was the best of the family &mdash; the arithmetic</h2>
+<p>The published metric is
+<code>DTI = TPw / (TPw + 0.2&middot;FPw + 0.8&middot;FNw)</code> with a triangular kernel
+<code>k(d) = max(1 &minus; d/300 m, 0)</code>. Two identities follow directly from the definition
+(both verified in <code>tests/test_metric.py</code> against an independent O(N&sup2;) transcription):
+<code>FNw = |G| &minus; TPw</code>, so with mass budget <code>S</code> and best-covering mass
+<code>M</code>, <code>DTI = TPw / (0.2(TPw + S &minus; M) + 0.8|G|)</code>, and adding one unit of mass
+raises DTI exactly when its realised credit exceeds <code>0.2&middot;DTI</code>.</p>
+<p>Applying that to the three files of the H19-5 family whose scores are owner-reported, using the
+two closest members to solve for the hidden truth set:</p>
+<pre>0.2600 &middot; (0.2&middot;44090 + 0.8&middot;G) = 0.2778 &middot; (0.2&middot;37654 + 0.8&middot;G)
+&rArr; G = 14,089 hidden truth pixels (1,409 km of fault trace at 100 m)
+&rArr; TPw(44,090 px file) = 5,223 px of credit, i.e. 0.1185 per emitted pixel
+&rArr; break-even bar at that score = 0.2 &middot; 0.2600 = 0.0520</pre>
+<p>So the answer to &ldquo;why did the thinned, catalogue-buffered member win?&rdquo; is not
+&ldquo;smaller is better&rdquo;. It is that every removal step deleted mass whose realised credit was
+<em>below</em> the metric's own break-even bar:</p>
+<table><tr><th>step</th><th>pixels removed</th><th>mean realised credit of the removed pixels</th><th>bar</th><th>verdict</th></tr>
+<tr><td>solid 121,131 px &rarr; dotted 60,069 px</td><td>61,062</td><td>0.0173</td><td>0.0384</td><td class="ok">remove</td></tr>
+<tr><td>dotted 60,069 px &rarr; 44,090 px</td><td>15,979</td><td>0.0341</td><td>0.0495</td><td class="ok">remove</td></tr>
+<tr><td>44,090 px &rarr; 37,654 px (200 m catalogue buffer)</td><td>6,436</td><td>0.0000</td><td>0.0520</td><td class="ok">remove</td></tr></table>
+<p>The last row is the key one and it follows from an official clarification: DrivenData staff
+confirmed (forum thread 11516) that <em>pixels corresponding to known USGS/INGENIOUS faults are
+masked out of evaluation in both rounds</em>. Mass within the kernel of a mapped fault therefore
+pays part of the false-positive tax while being structurally unable to earn credit. Removing it is
+free score. This is also why the catalogue must be treated as an <em>exclusion zone</em>, not as
+training targets.</p>
+<p class="warn">Provenance warning: the 0.2778 attribution is contested. The public board shows
+0.2778 for participant <code>extradr19</code> but links no file name; the GEMSDOE32 site labels its
+own B=2 artifact UNSCORED. See <a href="irregularities.html">Irregularities</a>.</p>
+
+<h2>2. Can this project beat 0.3345? What the same algebra requires</h2>
+<p>Solving for the credit needed at the leader's score, at the same emitted mass and the same implied
+hidden truth:</p>
+<table><tr><th>file</th><th>emitted px</th><th>implied credit</th><th>credit needed for 0.3345</th><th>required improvement</th></tr>
+<tr><td>H19-5 solid</td><td>121,131</td><td>6,823</td><td>11,874</td><td>+74.0%</td></tr>
+<tr><td>D1.5 dotted</td><td>60,069</td><td>5,768</td><td>7,789</td><td>+35.0%</td></tr>
+<tr><td>D2.8 dotted</td><td>44,090</td><td>5,223</td><td>6,720</td><td>+28.7%</td></tr>
+<tr><td>D2.8 + catalogue B=2</td><td>37,654</td><td>5,223</td><td>6,289</td><td>+20.4%</td></tr></table>
+<p><strong>Answer:</strong> yes, but only by improving the <em>field</em>. No combination of thinning,
+dotting, buffering or thresholding can bridge the remaining gap, because those only move mass along
+the same credit curve: the best prior file already sits at its own optimum, with the marginal pixel's
+credit (0.0307 in the thinning range, 0.0000 in the buffer step) below the break-even bar (0.0520).
+Reaching 0.3345 requires the top ~44,000 emitted pixels to average <strong>+29% more realised
+credit</strong> than they do today, i.e. a detector problem. That is what H46-1 and H46-2 attack.</p>
+
+<h2>3. What we shipped this session</h2>
+<table><tr><th>artifact</th><th>what it is</th><th>off-catalogue proxy DTI (matched mass)</th><th>distinctness</th></tr>
+<tr><td><strong>H46-2</strong> gems46-h46-2-dfa-corroborated-20261006T101243Z.tif</td><td>geometric-mean corroboration of nine edge/curvature
+transforms across magnetic, gravity and topographic bands, with 10% of the mass reserved for the DFA
+regime-break field</td><td class="ok">0.1016</td>
+<td>r = 0.31&ndash;0.36 vs prior submissions (an edge-based field, stated as such)</td></tr>
+<tr><td><strong>H46-1</strong> gems46-h46-1-dfa-regime-break-20261006T101243Z.tif</td><td>pure DFA scaling-exponent-break detection along
+row and column transects of the magnetic and gravity bands</td><td class="bad">0.0809</td>
+<td class="ok">r = &minus;0.012 / &minus;0.009 / &minus;0.012 vs the three prior submissions; |r| &le; 0.04 vs all
+gradient/curvature transforms &mdash; a genuinely new hypothesis by the stated criterion</td></tr>
+<tr><td>reference: best prior files, re-emitted at the same mass</td><td>the restored 0.2600 and 0.2778
+TIFs scored as fields</td><td>0.0991</td><td>&mdash;</td></tr></table>
+<p>Honest expectation: H46-2 sits at the same live operating point as the 0.2708&ndash;0.2778 family and
+is 0.0025 ahead of it on the only available proxy &mdash; that is inside the noise of the instrument, so
+the defensible expectation is <strong>~0.27&ndash;0.29, not above 0.30</strong>. We did not find a
++20&ndash;29% field improvement in this session, and we will not claim one. The upside path is set out
+in <a href="hypotheses.html">Hypotheses</a> (H46-3 is the strongest untested idea and needs exactly one
+public HTTP call from an unrestricted machine).</p>
+
+<h2>4. Exactly how to make a submission (step by step)</h2>
+<ol>
+ <li>Sign in at <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">drivendata.org/competitions/306</a>
+     and open the <em>Submissions</em> tab, then <strong>New submission</strong>.</li>
+ <li><strong>File to submit.</strong> Choose one of:
+  <ul>
+   <li><code>gems46-h46-2-dfa-corroborated-20261006T101243Z.tif</code> &mdash; recommended for the scored slot (best proxy evidence);</li>
+   <li><code>gems46-h46-1-dfa-regime-break-20261006T101243Z.tif</code> &mdash; the new-hypothesis artifact;</li>
+   <li>either <code>.zip</code> if the form prefers a zip (it contains the same single GeoTIFF);</li>
+   <li>the matching <code>-zeros.tif</code> if a file with NaN outside the footprint is rejected.</li>
+  </ul></li>
+ <li><strong>Note (optional).</strong> Paste the exact note from the <a href="index.html">overview page</a>
+     (it names the method, the emitted mass and the buffer rule) so the run is identifiable later.</li>
+ <li>Press submit and wait for the public score. Per page 967 the file you keep selected is the one
+     scored in <em>both</em> rounds, so pick the artifact you are willing to stand behind: the initial
+     round scores it against a fixed private set of expert-labelled new faults, and the final round
+     re-scores the same file against an expanded label set after experts review all submissions.</li>
+ <li>If the form returns <em>&ldquo;Predicted values must be in range [0, 1]&rdquo;</em>: that error comes
+     from values outside [0,1] or from a nodata encoding the scorer reads as out-of-range. The files here
+     are 0/1 inside the footprint (max exactly 1.0, min exactly 0.0) and NaN outside; use the
+     <code>-zeros</code> variant to replace NaN with 0.0 if needed.</li>
+</ol>
+
+<h2>5. Limitations, stated plainly</h2>
+<ul>
+ <li>No access to the private or public test labels: <strong>no score can be predicted</strong> from
+     inside this repository. The proxy instrument is a different fault population and predicts the live
+     board only weakly (group measurement: Spearman +0.31 over 11 files).</li>
+ <li>The spatially blocked catalogue holdout is <strong>worse than useless</strong> here and is not used:
+     it ranks the 0.2600 file above the 0.2778 file, the opposite of the live board, because the truth
+     it hides is the very population the organiser masks out. See
+     <a href="irregularities.html">IR-46-04</a>.</li>
+ <li>The DFA method is adapted from a temporal to a <em>spatial</em> setting, and the published
+     pre-rupture result is a lag crossover, not a spatial regime change (IR-46-05).</li>
+ <li>Sandbox egress allowed only github.com and pypi.org, so no new external dataset could be added
+     (IR-46-06). Every external file used here is a hash-pinned mirror.</li>
+</ul>
+</main>
+<footer class="wrap">Every number on this site is regenerated from <code>registry/*.json</code> by
+<code>scripts/build_site.py</code>. Scores marked <em>owner-reported</em> are not organiser receipts.
+Retrieved 2026-10-06 UTC.</footer>
+</body></html>

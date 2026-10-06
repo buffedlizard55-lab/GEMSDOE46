@@ -20,9 +20,44 @@
   <a href="docs/submission-analysis.html">Submission analysis</a>
   <a href="docs/research-overview.html">Research layer</a>
   <a href="docs/sources.html">Sources</a>
+  <a href="docs/h46/index.html">Session 2 &middot; DFA hypothesis</a>
 </div></nav>
 <main>
 <h1>Download the submission</h1>
+
+<div class="card download" id="submission-session2">
+  <p><b>Session 2 (2026-10-06) &mdash; the DFA scaling-regime-break arm.</b> These are the newest artifacts
+  and the ones the session-2 receipts recommend. Full reasoning, receipts and negative results:
+  <a href="docs/h46/index.html">docs/h46/</a>.</p>
+  <p><a class="big" href="docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z.tif" download>Download gems46-h46-2-dfa-corroborated-20261006T101807Z.tif</a>
+  <span class="alt">(single-band float32 GeoTIFF, EPSG:32611, 37,654 positive cells, every finite value
+  exactly 0 or 1, NaN outside the survey bounds)</span></p>
+  <ul class="tight small">
+    <li><b>Name:</b> <span class="mono">gems46-h46-2-dfa-corroborated</span> &middot;
+        <b>Note for the form:</b> structural corroboration with a 10&nbsp;% DFA scaling-regime-break hedge,
+        37,654 dots, min separation 3&nbsp;px, 200&nbsp;m catalogue buffer &middot;
+        <a href="docs/h46/executive-summary.html">how to submit</a></li>
+    <li><b>Alternatives, same session:</b>
+        <a href="docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z.zip">.zip</a> &middot;
+        <a href="docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z-zeros.tif">all-finite
+        (zeros) encoding</a> &middot; the pure new hypothesis
+        <a href="docs/h46/downloads/gems46-h46-1-dfa-regime-break-20261006T101807Z.tif">H46-1 DFA regime break</a>
+        (novelty artifact: correlation with all prior submissions &minus;0.012&hellip;&minus;0.009,
+        measured <i>weaker</i> on the proxy, reported as a negative result)</li>
+    <li><b>Format audit of these exact bytes:</b>
+        <a href="docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z.json">H46-2 audit</a> &middot;
+        <a href="docs/h46/downloads/gems46-h46-1-dfa-regime-break-20261006T101807Z.json">H46-1 audit</a> &middot;
+        one-command re-check: <span class="mono">python3 scripts/verify_all.py</span></li>
+    <li><b>Honest expectation:</b> ~0.27&ndash;0.29 on the live board (proxy 0.1016 vs 0.0991 for the best
+        prior files at matched mass &mdash; a 0.0025 margin, inside the instrument's noise). The
+        +20&nbsp;% field improvement that 0.3345 would need was <i>not</i> found this session.</li>
+  </ul>
+</div>
+
+<div class="card download" id="submission-session1">
+  <p><b>Session 1 &mdash; the split-conformal arm.</b> Still valid; the operating point is certified by a
+  split-conformal rule rather than an eyeballed sweep.</p>
+</div>
 
 <div class="card download" id="submission-download">
   <p><a class="big" href="SUBMISSION-GEMSDOE46-r8-conformal.tif" download>Download SUBMISSION-GEMSDOE46-r8-conformal.tif</a>
