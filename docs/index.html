@@ -1,134 +1,26 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GEMSDOE46 — executive summary and submission download</title>
-<link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-<header class="site"><div class="wrap">
-  <b>GEMSDOE46 — split-conformal &amp; DFA submissions for the DOE GEMS Prize</b>
-  <span class="sub">DrivenData #306 · deadline 3 Dec 2026 23:59 UTC · $300,000 prize</span>
-</div></header>
-<nav class="site"><div class="wrap">
-  <a href="index.html" aria-current="page">Executive summary</a>
-  <a href="how-to-submit.html">How to submit</a>
-  <a href="submission-analysis.html">Submission analysis</a>
-  <a href="submission-hypotheses.html">Hypothesis test</a>
-  <a href="research-overview.html">Research layer</a>
-  <a href="analysis.html">Score analysis (research)</a>
-  <a href="hypotheses.html">Hypotheses (research)</a>
-  <a href="guide.html">Guide (research)</a>
-  <a href="sources.html">Sources</a>
-</div></nav>
-
-<main>
-<div class="card" style="border-left:4px solid #16a34a;background:#f0fdf4;margin:0 0 18px">
-  <h3 style="margin:0 0 6px;color:#14532d;">⚡ Newest Session Deliverables: DFA Scaling-Regime Breaks (H46-2 &amp; H46-1)</h3>
-  <p style="margin:0 0 8px;font-size:14.5px;color:#374151;">
-    Synthesized from 9 magnetic and gravity bands via sliding-window DFA (Peng et al. 1994) with multiphysics structural corroboration and 200 m catalogue buffer. Completely orthogonal to prior gradient/curvature submissions (|r| &le; 0.04).
-  </p>
-  <p style="margin:0;">
-    <a href="SUBMISSION-GEMSDOE46-dfa-corroborated-zeros.tif" download style="font-weight:700;color:#0b6b53;text-decoration:underline;">⬇️ Download Primary H46-2 Zeros-Variant .tif (283 KB)</a> ·
-    <a href="SUBMISSION-GEMSDOE46-dfa-corroborated.tif" download style="font-weight:600;color:#0b5fa5;">NaN-Outside (.tif)</a> ·
-    <a href="downloads/gems46-h46-2-dfa-corroborated.zip" download style="font-weight:600;color:#0b5fa5;">Single .zip (241 KB)</a> ·
-    <a href="h46/index.html" style="font-weight:600;color:#0b5fa5;">Full H46 Technical Dossier &rarr;</a>
-  </p>
-</div>
-
-<h1>Executive summary</h1>
-
-<div class="card download" id="submission-download">
-  <h2 style="margin-top:0;border:0;padding:0">⬇️ Download the submission file</h2>
-  <p><a class="big" href="SUBMISSION-GEMSDOE46-r8-conformal.tif" download>Download SUBMISSION-GEMSDOE46-r8-conformal.tif</a>
-  <span class="alt">(single-band float32 GeoTIFF, 250 KB, EPSG:32611, 100 m, values in [0,&nbsp;1])</span></p>
-  <ul class="tight small">
-    <li><b>Name:</b> <span class="mono">gemsdoe46-h46a-r8-conformal</span></li>
-    <li><b>Note (paste into the form's Note field):</b> <a href="downloads/NOTE-gemsdoe46-h46a-r8-conformal.txt">downloads/NOTE-gemsdoe46-h46a-r8-conformal.txt</a></li>
-    <li><b>Format audit of that exact file:</b> <a href="downloads/checks-gemsdoe46-h46a-r8-conformal-allfinite.json">checks-…-allfinite.json</a> — single band, float32, shape 3730 × 3292, EPSG:32611, transform matches the template, every cell in [0, 1], positives = 39,108</li>
-    <li><b>Fallback (same dots, NaN outside the survey bounds exactly like <span class="mono">sample_submission.tif</span>):</b> <a href="gemsdoe46-h46a-r8-conformal-nan.tif">gemsdoe46-h46a-r8-conformal-nan.tif</a></li>
-    <li><b>Alternative DFA Corroborated Submission:</b> <a href="SUBMISSION-GEMSDOE46-dfa-corroborated-zeros.tif" download>SUBMISSION-GEMSDOE46-dfa-corroborated-zeros.tif</a> (37,654 dots, 100% [0, 1] guaranteed)</li>
-    <li><b>Step-by-step upload instructions:</b> <a href="how-to-submit.html">How to submit</a></li>
-  </ul>
-  <p class="small" style="margin:10px 0 0"><b>Last verified 2026-10-06</b> — the file was generated
-  that day by <span class="mono">scripts/make_submission.py</span> from the hash-verified official
-  rasters and audited by re-reading the written bytes. Both encodings contain the same 39,108 dots;
-  this page does not poll or mirror the leaderboard.</p>
-</div>
-
-<div class="hero"><p class="lede">A single, unique, slot-ready GeoTIFF produced from the official competition
-rasters, whose operating point is <b>certified by split conformal prediction</b> rather than chosen
-by eye — with the confidence level, the certified floor and the metric's own density bound printed
-next to it.</p>
-
-<h2>The submission in numbers</h2>
-<div class="grid">
-  <div class="kpi"><div class="v">r = 8 px</div><div class="k">chosen spacing (800 m minimum separation between dots)</div></div>
-  <div class="kpi"><div class="v">90.0 %</div><div class="k">conformal confidence (α = 0.1000, 9 exchangeable calibration blocks)</div></div>
-  <div class="kpi"><div class="v">0.0283</div><div class="k">certified floor on the calibration half — a worst-case bound, not the observed score</div></div>
-  <div class="kpi"><div class="v">39,108</div><div class="k">positive cells (0.76 % of the 5,167,373-px surveyed footprint)</div></div>
-  <div class="kpi"><div class="v">0.5588</div><div class="k">analytic ceiling for this density at the declared scored-truth mass |G| = 7,905 px</div></div>
-  <div class="kpi"><div class="v">≤ 86,541</div><div class="k">dots that can still reach 0.3345 with <i>perfect</i> placement — the density rule every arm is checked against</div></div>
-</div>
-
-<h2>Why this is not "we tried a few spacings and this one looked best"</h2>
-<ol>
-  <li><b>Sweep.</b> 24 spatially blocked holdouts (4 × 6 tiles, ≈ 93 × 55 km each). For every block the
-      catalogue pixels inside the block are removed from training and the model must recover exactly
-      those pixels from the 25 physical features; the exact official metric is then evaluated on the
-      block with a halo, so blocking cannot change the metric's own 300 m reach.</li>
-  <li><b>Population matching.</b> The scored truth is the <i>new-fault</i> population, which is far
-      sparser than the catalogue. Every arm is therefore scored against a density-matched subsample of
-      the held-out catalogue (declared ratio 0.1296) as the primary population, with four other ratios
-      swept as a sensitivity screen.</li>
-  <li><b>Split conformal selection.</b> Blocks are split into a selection half and a calibration half by
-      tile parity. The calibration half yields a finite-sample one-sided bound
-      <span class="mono">L(s) = mean_cal(s) − q(s)</span> with <span class="mono">q</span> the
-      <span class="mono">ceil((n+1)(1−α))</span>-th smallest residual (Lei, G'Sell, Rinaldo, Tibshirani
-      &amp; Wasserman, JASA 113(523):1094–1111, 2018). α is set to the smallest value the data can
-      support, <span class="mono">1/(n_cal+1)</span> — asking for more confidence would make the bound
-      infinite.</li>
-  <li><b>Density admissibility (rule R3).</b> The metric collapses in the sparse regime to
-      <span class="mono">DTI = T / (0.2·N + 0.8·|G|)</span>, so a submission with too many dots cannot
-      reach the target <i>even with perfect placement</i>. An arm ships only if its <i>measured</i>
-      full-grid dot count leaves room for 0.3345 at the declared |G|.</li>
-  <li><b>Choice (rule R4).</b> Among admissible arms, the largest certified floor wins. That is
-      r = 8 px. The rules were fixed before the numbers were read, and the eligibility and split rules
-      depend only on the truth mask and the tile index — never on an arm's score.</li>
-</ol>
-
-<h2>Why the previous best (0.2778) scored what it did — and what would beat it</h2>
-<p>The published index is <span class="mono">DTI = TPw / (TPw + 0.2·FPw + 0.8·FNw)</span> with a 300 m
-triangular kernel. In the sparse regime it collapses to <b>a budget</b>,
-<span class="mono">DTI = T / (0.2·N + 0.8·|G|)</span>: adding mass pays only if its kernel credit
-exceeds <span class="mono">0.2 × (current score)</span>. The 0.2778 submission is the family's own
-0.2708 field with every dot within 200 m of the catalogue deleted — 37,654 dots left — and the whole
-family sequence (0.1922 @ 121k → 0.2477 @ 60k → 0.2600 @ 44k → 0.2708 @ 40k → 0.2778 @ 38k dots) is
-monotone in <b>mass removed</b>, not in model quality.
-Full derivation and the exact reproduction of the 0.2600 row from its own reported dot count:
-<a href="submission-analysis.html">Analysis &amp; evidence</a>.</p>
-
-<h2>Limitations, stated up front</h2>
-<ul class="tight">
-  <li>The certified floor <b>0.0283 is a statement about the catalogue-proxy holdout</b>, not a promise
-      about the leaderboard: the scored truth is the new-fault population, which no public data labels.
-      What transfers exactly is the <i>density</i> side of the metric, which is where the algebra is used.</li>
-  <li>No DrivenData account exists in the build environment, so the rasters are the project's own
-      hash-verified copies and the upload itself must be done by the project owner.</li>
-  <li>Band 10 ("distance to earthquake") has an ambiguous unit in the shipped raster; no unit was
-      assumed anywhere (the hypothesis test uses rank and median-relative transforms only).</li>
-  <li>The model is a histogram gradient-boosted classifier on hand-built multi-scale features, not a
-      deep network: no GPU and 4 GB of RAM in the build environment. The deep-model direction is ranked
-      in <a href="submission-hypotheses.html">Geological hypotheses</a>.</li>
-</ul>
-<p class="small">Every flag, every defect found and fixed, and every claim that is <i>not</i> verified:
-<a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/IRREGULARITIES.md">docs/IRREGULARITIES.md</a>.
-Every external claim with its official link:
-<a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/SOURCES.md">docs/SOURCES.md</a>.</p>
-</main>
-<footer>Repository: <a href="https://github.com/buffedlizard55-lab/GEMSDOE46">buffedlizard55-lab/GEMSDOE46</a>.
-Generated by <span class="mono">scripts/run_pipeline.py</span> → <span class="mono">scripts/make_submission.py</span>.
-Scores quoted for other teams are from the public leaderboard; the mechanism analysis is from the project owner's own score history.</footer>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GEMSDOE46 — R10 DFA research submission</title><style>*{box-sizing:border-box}body{margin:0;background:#f3f5f4;color:#172b29;font:16px/1.65 system-ui,sans-serif}main{max-width:1060px;margin:auto;padding:32px 24px}header{background:#143f38;color:white;padding:18px 24px}header div{max-width:1012px;margin:auto;display:flex;justify-content:space-between;gap:20px}header a{color:#c5ecdb}h1{font-size:clamp(30px,5vw,48px);line-height:1.15;letter-spacing:-1.5px}h2{font-size:23px}a{color:#096b59}section{background:white;border:1px solid #d6dfdb;border-radius:12px;padding:24px;margin:22px 0}.label{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase}.warning{border-left:5px solid #c88115;background:#fff9ea}.button{display:inline-block;background:#126b56;color:white;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:700;margin:12px 12px 8px 0}.muted{color:#526c66}code{overflow-wrap:anywhere;background:#edf3f0;padding:3px;font-size:13px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px}.cards div{border:1px solid #d6dfdb;border-radius:8px;padding:18px}.cards strong{display:block;font-size:28px}table{border-collapse:collapse;width:100%;font-size:14px}td,th{text-align:left;border-bottom:1px solid #dde5e0;padding:12px 8px}.scroll{overflow-x:auto}footer{padding:20px 0;font-size:13px;color:#526c66}img{width:100%;height:auto;border-radius:8px}li{margin-bottom:8px}pre{overflow:auto;background:#edf3f0;padding:16px}</style></head><body><header><div><b>GEMS / DISCOVERY LAB</b><a href="executive-summary.html">Submission guide</a></div></header><main><p class="label">GEMSDOE46 / Experiment R10 / 06 October 2026</p>
+<h1>A different scaling signal.<br>An honest submission gate.</h1>
+<p class="muted">Raw magnetic and gravity transects · DFA slope crossover · independently generated GeoTIFF</p>
+<section class="warning"><b>HOLD — do not submit this candidate</b><p>The new file is unique among the inspected rasters and passes format checks, but it did not beat the best tested spatially blocked proxy comparison. No weekly slot was used. Download for research and review, not as a proven improvement.</p></section>
+<section id="submission-download"><p class="label">Submission file / ready to download</p><h2>R10 · Magnetic–gravity DFA crossover</h2>
+<a class="button" download href="r10/gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif">Download unique .TIF</a><a href="executive-summary.html">Executive summary &amp; submission instructions →</a>
+<p><code>gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif</code></p><div class="cards"><div><strong>[0, 1]</strong>Every value finite</div><div><strong>37,654</strong>Predicted pixels</div><div><strong>EPSG:32611</strong>100 m · float32 · one band</div></div>
+<p><b>Submission name:</b> GEMSDOE46-R10-DFA-CROSSOVER-95ba59eb9030</p>
+<p><b>Short comment:</b> <code>R10 raw RTP/gravity DFA slope crossover, 0.8-12.8 km scales; 37,654 dots; research candidate, proxy-gated, no leaderboard score.</code></p>
+<p><a href="r10/receipt.json">Download full validation receipt</a> · <a href="research/r10-review.md">Scientific review and limitations</a> · <a href="research/session-r10-plan.md">Four preregistered hypotheses</a></p>
+<p class="muted">SHA-256: <code>c966def73cfb3177af25651c92d32f1f36fc209ad13c49274c125aa06f62f322</code><br>3730 rows × 3292 columns; transform equals restored template; no nodata tag; zero outside footprint. Portal acceptance is not claimed.</p></section>
+<section id="validation"><h2>Validation—not a leaderboard forecast</h2><div class="cards"><div><strong>0.06169</strong>R10 mean blocked DTI</div><div><strong>0.10329</strong>Best tested comparison</div><div><strong>0.0552</strong>Maximum |field correlation|</div></div>
+<div class="scroll"><table><tr><th>Fixed emission rule / proxy comparison</th><th>Mean block DTI</th></tr><tr><td>R10</td><td>0.06169</td></tr><tr><td>GEMSDOE32-owner-reported-02778</td><td>0.10329</td></tr><tr><td>H46-structural-DFA</td><td>0.10199</td></tr><tr><td>R8-conformal</td><td>0.08432</td></tr><tr><td>R9-conformal</td><td>0.04408</td></tr><tr><td>H46-pure-DFA</td><td>0.07175</td></tr></table></div>
+<p>Paired difference: <b>-0.04160</b>. Descriptive block-bootstrap 95% interval: [-0.06143, -0.02200]. 9 evaluable blocks on a 4×4 tiling; matched mass and exclusions. Two further truth-bearing blocks have no R10 emission capacity and independently fail the coverage gate.</p>
+<p>SGMC is a reused, imperfect off-catalogue proxy, not hidden competition truth. Comparator fields are re-emitted within each block. Overlapping analysis windows weaken block independence. Low correlation does not establish geological independence.</p></section>
+<section><h2>Why this is not another edge detector</h2><p>Within 51.2 km row/column windows, DFA measures RMS detrended fluctuations at six scales from 0.8 to 12.8 km. R10 combines the difference between short- and long-scale slopes with departure from the local background exponent. It requires corroboration between raw RTP magnetics and isostatic gravity. No amplitude gradient or curvature enters its ranking.</p><p>The finite-scale anomaly might reflect buried structural texture, but also lithology, gridding or survey processing. It is not proof of a fault or geothermal vent. The broad window may explain poor 300 m localization.</p></section>
+<section><h2>What the 0.2778 result does—and does not—tell us</h2><p>The owner's GEMSDOE32 attribution is not linked to a file by the official board. GEMSDOE32's own page still labels the file unscored. Sparse thinning can reduce false-positive cost without sacrificing much coverage, but the old README's inferred hidden-label counts and guaranteed causal explanation were not justified.</p><p>The exact identity is <code>DTI = T / [0.2(T+S−M)+0.8G]</code>, not unconditionally <code>T/(0.2S+0.8G)</code>. Better localization, coverage or precision could improve performance; this DFA experiment did not.</p>
+<p><b>Leaderboard snapshot:</b> 0.3774 (xiaofanhu), retrieved 2026-10-06. This is not a live feed. <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Check the current official leaderboard →</a></p></section><section><h2>Evidence and manual review</h2><ul>
+<li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Official task, metric and GeoTIFF requirements</a> — faults indicative of geothermal resources; not direct vent labels.</li>
+<li><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">September 2026 official prize rules</a> — eligibility and submission governance.</li>
+<li><a href="https://doi.org/10.1103/PhysRevE.49.1685">Peng et al. 1994, Physical Review E 49, 1685</a> — DFA methodology; original DNA application.</li>
+<li><a href="https://doi.org/10.1063/1.3130931">Varotsos et al. 2009, Chaos 19, 023114</a> — time-lag scaling, not validated spatial gravity-fault detection.</li>
+<li><a href="https://www.usgs.gov/publications/state-geologic-map-compilation-sgmc-geodatabase-conterminous-united-states">USGS SGMC</a> — provenance of proxy; coarse source-map scales.</li>
+<li><a href="https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html">GEMSDOE32 comparator</a> — owner methodology, not official score authentication.</li>
+</ul><p>Mirror hashes establish reproducibility, not organizer authentication. See <a href="r10/receipt.json">input hashes and all measured comparisons</a>. Universal novelty across every family site is not claimed.</p></section>
+<footer><b>Maximize P(Win):</b> protect submission slots from failed ideas. <b>Own the Outcome:</b> publish negative results and fix our own bugs.<br>Generated from registry/r10.json. <a href="https://github.com/buffedlizard55-lab/GEMSDOE46">Source repository</a> · Historical pages remain archived and may contain superseded claims.</footer></main></body></html>

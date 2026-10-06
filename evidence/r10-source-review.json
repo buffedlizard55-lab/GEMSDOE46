@@ -1,0 +1,61 @@
+{
+  "retrieval_date_utc": "2026-10-06",
+  "method": "Agent web-fetch tool; observations summarized, not byte-for-byte page archives",
+  "sources": [
+    {
+      "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/",
+      "class": "official organizer",
+      "reviewed": "Both returned chunks, including complete task/metric/format sections",
+      "supports": "Fault prediction objective; expert-identified unseen faults; triangular kernel radius 300 m; alpha=0.2, beta=0.8; float32 single-band [0,1], UTM 11N and 100 m raster requirements",
+      "does_not_support": "Any claimed future score or inferred hidden fault count"
+    },
+    {
+      "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+      "class": "official organizer",
+      "reviewed": "Top leaderboard rows",
+      "supports": "Snapshot: xiaofanhu 0.3774, alexoktaba 0.3345, extradr19 0.2778",
+      "does_not_support": "Mapping a participant score to a particular filename/hash; continuously current feed"
+    },
+    {
+      "url": "https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html",
+      "class": "owner project page, not official competition evidence",
+      "reviewed": "Primary download, format, methodology and score status",
+      "supports": "Published H33-2-B2 filename, 37,654-pixel description, near-catalogue pruning and UNSCORED label",
+      "artifact_sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+      "artifact_retrieval": "Restored via public GitHub repository because direct github.io curl failed"
+    },
+    {
+      "url": "https://doi.org/10.1103/PhysRevE.49.1685",
+      "class": "primary journal publisher APS",
+      "reviewed": "Publication metadata, abstract, relevant methodological notes",
+      "supports": "Peng et al., Mosaic organization of DNA nucleotides, 1994, PRE 49, 1685; distinction of patchiness and long-range correlations",
+      "does_not_support": "Established geothermal-fault detection from spatial grids"
+    },
+    {
+      "url": "https://doi.org/10.1063/1.3130931",
+      "class": "primary journal publisher AIP",
+      "reviewed": "Metadata and complete abstract across returned chunks 0 and 1",
+      "supports": "Varotsos et al. 2009 magnetic/electric time-series DFA; short-lag randomness, longer-lag magnetic exponent around 0.9 and electric exponent around 1",
+      "does_not_support": "Static gravity transect thresholds, exact spatial rupture onset, or proven transfer to competition faults"
+    },
+    {
+      "url": "https://www.usgs.gov/publications/state-geologic-map-compilation-sgmc-geodatabase-conterminous-united-states",
+      "class": "official USGS",
+      "reviewed": "Full returned publication page",
+      "supports": "SGMC source scales 1:50,000 to 1:1,000,000; provenance and limitations of compilation",
+      "new_data_pointer": "Page points to updated 2026 release https://doi.org/10.5066/P1A3DQZK; not downloaded or proposed as a validated new detector in this experiment"
+    },
+    {
+      "url": "https://docs.nlr.gov/docs/fy26osti/96647.pdf",
+      "class": "official prize rules PDF",
+      "reviewed": "Preface, contents and beginning of executive summary (returned chunk 0 only)",
+      "supports": "Document identity: September 2026 GEMS official rules",
+      "limitation": "No claim that every legal provision was reviewed this session; eligibility and submission requirements must be checked against the complete rules before entering"
+    }
+  ],
+  "scope_limitations": [
+    "All supplied historical scores remain owner-reported; the sites were not all independently audited this session.",
+    "Code tests verify the enumerated mathematical/format properties, not every sentence of archived project material.",
+    "Input consistency is verified by pinned mirror hashes, not by an authenticated organizer download."
+  ]
+}

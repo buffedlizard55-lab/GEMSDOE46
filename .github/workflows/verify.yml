@@ -1,0 +1,24 @@
+name: Verify scientific code and downloadable artifact
+on:
+  pull_request:
+  push:
+    branches: [main, arena/9d8260a3-gemsdoe46]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Restore hash-pinned inputs required by integration tests
+        run: bash scripts/restore_competition_data.sh
+      - run: python -m pytest
+      - run: python scripts/verify_all.py
+      - run: python scripts/build_r10_site.py
+      - name: Generated active site is reproducible
+        run: git diff --exit-code -- index.html docs/index.html docs/executive-summary.html

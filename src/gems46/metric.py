@@ -324,6 +324,8 @@ def components_binary(emit, truth, valid=None, known=None, alpha: float = ALPHA,
     n = int(g.sum())
     if n == 0:
         return Components(0.0, s, 0.0, 0, s, 0.0, 0.0)
+    if s == 0:
+        return Components(0.0, 0.0, float(n), n, 0.0, 0.0, 0.0)
     # distance from each pixel to the nearest emitted pixel (0 where emitted)
     d_pred = ndimage.distance_transform_edt(~e)
     tp = float(kernel(d_pred[g]).sum())

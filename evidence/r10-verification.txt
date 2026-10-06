@@ -1,0 +1,34 @@
+================================================================================================
+1-3. unit + format tests
+================================================================================================
+...                                                                      [100%]
+
+================================================================================================
+4. pinned hashes of restored data
+================================================================================================
+  OK   data/raw/training_features.tif  4371c82e3b8339b8...
+  OK   data/raw/labels.tif  7ba308ccdc4418b3...
+  OK   data/raw/sample_submission.tif  2176d08e485aa2cd...
+  OK   data/external/sgmc_faults_100m_u8.tif  643cbe992ef4ba37...
+
+================================================================================================
+5. shipped submission artifacts: full format audit re-read from disk
+================================================================================================
+  OK   gems46-h46-1-dfa-regime-break-20261006T111347Z.tif
+       bands=1 dtype=float32 crs=EPSG:32611 3730x3292 transform_match=True
+       footprint_match=True min=0.0 max=1.0 range_ok=True positive=37654
+       sha256(values)=de25e8d0eadba8a9... proxy instrument DTI=0.0809
+  OK   gems46-h46-2-dfa-corroborated-20261006T111347Z.tif
+       bands=1 dtype=float32 crs=EPSG:32611 3730x3292 transform_match=True
+       footprint_match=True min=0.0 max=1.0 range_ok=True positive=37654
+       sha256(values)=740c37da9381b5f6... proxy instrument DTI=0.1016
+
+================================================================================================
+6. live-score calibration arithmetic (registry/emission_model.json)
+================================================================================================
+  G = 14,089 px, T(44,090 px emission) = 5,223 px, break-even = 0.0520
+  CONDITIONAL MODEL ONLY (not identified hidden truth): reproduced from 0.2600*(0.2*44090 + 0.8G) = 0.2778*(0.2*37654 + 0.8G)
+
+7. R10 independent on-disk format audit
+  gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif: sha256=c966def73cfb3177af25651c92d32f1f36fc209ad13c49274c125aa06f62f322; status=HOLD_DO_NOT_SUBMIT
+ALL COMPUTATIONAL CHECKS PASSED (not a scoring endorsement)

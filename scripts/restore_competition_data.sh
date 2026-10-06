@@ -22,7 +22,7 @@ DEST="$ROOT/data/raw"
 FEAT_SHA="4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5"
 LAB_SHA="7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093"
 SAMP_SHA="2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc"
-mkdir -p "$WORK" "$DEST"
+mkdir -p "$WORK" "$DEST" "$ROOT/data/external"
 
 echo "[1/4] sparse-cloning the mirrors (only the data/bridge blobs are fetched)"
 if [ ! -d "$WORK/GEMSDOE/.git" ]; then
@@ -51,9 +51,9 @@ check "$DEST/sample_submission.tif" "$SAMP_SHA"
 
 echo "[4/4] external proxy data (USGS SGMC fault traces, restored from the group's mirror)"
 if [ ! -f "$DEST/../external/sgmc_faults_100m_u8.tif" ]; then
-  cp "$WORK/GEMSDOE24/data/external/derived_sgmc_faults_100m_u8.tif" "$DEST/../external/sgmc_faults_100m_u8.tif" 2>/dev/null \
-    || echo "  note: run: git -C $WORK/GEMSDOE24 sparse-checkout set data/external && re-run" >&2
+  git -C "$WORK/GEMSDOE24" sparse-checkout add data/external
+  cp "$WORK/GEMSDOE24/data/external/derived_sgmc_faults_100m_u8.tif" "$DEST/../external/sgmc_faults_100m_u8.tif"
 fi
-sha256sum "$DEST/../external/sgmc_faults_100m_u8.tif" 2>/dev/null || true
+check "$DEST/../external/sgmc_faults_100m_u8.tif" "643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0"
 
 echo "done. next: python3 scripts/build_dfa_field.py && python3 scripts/build_submission.py"

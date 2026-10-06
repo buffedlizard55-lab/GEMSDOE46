@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Generate the GitHub Pages site from registry/*.json so the pages cannot drift from the receipts.
 
-Run: python3 scripts/build_site.py   ->  docs/h46/{index,executive-summary,hypotheses,validation,
+Default: delegates to build_r10_site.py for the active site.
+Historical rebuild (requires old derived stats): --legacy-h46 ->  docs/h46/{index,executive-summary,hypotheses,validation,
 research,sources,irregularities}.html + docs/h46/assets/style.css + docs/h46/downloads/*.png
 """
 from __future__ import annotations
@@ -61,7 +62,7 @@ CORE_VALUES = """
 <div class="card" style="border-left:4px solid #b45309;margin:18px 0">
 <b>How decisions are made here &mdash; the two core values.</b>
 <div><b>Maximize P(Win).</b> Every choice is made against the official metric's own algebra
-(<code>DTI = T/(0.2&middot;S + 0.8&middot;|G|)</code>, marginal rule <code>k &gt; 0.2&middot;DTI</code>), never against a proxy known
+(use the exact metric and state every emission-model assumption), never against a proxy known
 to drift. Where the proxy and the algebra disagree &mdash; they do, see IR-46-04 &mdash; the algebra decides and the
 disagreement is filed.</div>
 <div><b>Own the Outcome.</b> End to end: the shipped bytes are re-read and audited, the estimator is verified
@@ -84,6 +85,7 @@ def page(title: str, body: str, active: str) -> str:
 <title>{html.escape(title)} - GEMSDOE46</title>
 <link rel="stylesheet" href="assets/style.css"></head>
 <body>
+<aside style="padding:20px;background:#ffe3a3;color:#241800"><b>Archived H46 experiment:</b> recommendations and claims may be superseded. <a href="../index.html">Read the current R10 audit and submission gate.</a></aside>
 <header><div class="wrap"><span class="brand">GEMSDOE46 &middot; DOE GEMS Prize</span><nav>{nav}</nav></div></header>
 <main class="wrap">{body}</main>
 <footer class="wrap">Every number on this site is regenerated from <code>registry/*.json</code> by
@@ -558,4 +560,7 @@ to this grid, restored from the group's public mirror</td></tr></table>
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    if "--legacy-h46" in sys.argv:
+        raise SystemExit(main())
+    import runpy
+    runpy.run_path(str(ROOT / "scripts" / "build_r10_site.py"), run_name="__main__")
