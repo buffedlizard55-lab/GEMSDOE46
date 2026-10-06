@@ -1,5 +1,5 @@
 {
- "name": "gems46-h46-2-dfa-corroborated-20261006T101243Z",
+ "name": "gems46-h46-2-dfa-corroborated-20261006T101807Z",
  "note": "H46-2 structural corroboration emission with a 12% DFA-regime-break hedge (best validated against the off-catalogue proxy truth at matched emitted mass)",
  "method": {
   "budget": 37654,
@@ -10,6 +10,8 @@
   "field": "H46-2-dfa-corroborated",
   "calibration": {
    "hidden_truth_px": 14088.747191011276,
+   "hidden_truth_px_is_upper_bound": true,
+   "hidden_truth_px_note": "boundary value: the largest |G| consistent with both live scores, i.e. the one where the removed mass carried zero credit.  G is not point-identified; 7,905 px (the GEMSDOE32/42 declared value) is also feasible.",
    "implied_credit_px": 5223.139415730347,
    "credit_per_px": 0.11846539840622242,
    "break_even": 0.052000000000000005,
@@ -48,9 +50,9 @@
  },
  "emitted_px": 37654,
  "sha256_values": "740c37da9381b5f6b6315a1835d1ed61947193eabdb3e60a067b9418ed03b726",
- "file": "gems46-h46-2-dfa-corroborated-20261006T101243Z.tif",
+ "file": "gems46-h46-2-dfa-corroborated-20261006T101807Z.tif",
  "audit": {
-  "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-2-dfa-corroborated-20261006T101243Z.tif",
+  "path": "/home/user/GEMSDOE46/docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z.tif",
   "count": 1,
   "dtype": "float32",
   "crs": "EPSG:32611",
@@ -82,9 +84,9 @@
   "nan_outside_footprint": true,
   "ok": true
  },
- "zeros_variant": "gems46-h46-2-dfa-corroborated-20261006T101243Z-zeros.tif",
+ "zeros_variant": "gems46-h46-2-dfa-corroborated-20261006T101807Z-zeros.tif",
  "zeros_audit": {
-  "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-2-dfa-corroborated-20261006T101243Z-zeros.tif",
+  "path": "/home/user/GEMSDOE46/docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z-zeros.tif",
   "count": 1,
   "dtype": "float32",
   "crs": "EPSG:32611",
@@ -116,6 +118,6 @@
   "nan_outside_footprint": true,
   "ok": false
  },
- "zip": "gems46-h46-2-dfa-corroborated-20261006T101243Z.zip",
+ "zip": "gems46-h46-2-dfa-corroborated-20261006T101807Z.zip",
  "bytes": 330473
 }

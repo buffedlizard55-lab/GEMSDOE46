@@ -1,84 +1,102 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Hypotheses - GEMSDOE46</title>
-<link rel="stylesheet" href="assets/style.css"></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Four ranked, testable geological hypotheses for DOE GEMS fault mapping, with physical signals, novelty, official data sources, and validation gates.">
+  <title>Ranked hypotheses — GEMS46</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
 <body>
-<header><div class="wrap"><span class="brand">GEMSDOE46 &middot; DOE GEMS Prize</span><nav><a href="index.html">Overview</a><a href="executive-summary.html">Executive summary &amp; how to submit</a><a href="hypotheses.html" class='active'>Hypotheses</a><a href="validation.html">Validation</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav></div></header>
-<main class="wrap">
-<h1>Five candidate hypotheses, ranked</h1>
-<p class="dim">Ranking rule: expected DTI improvement first (evidence-weighted, using the
-off-catalogue proxy at matched emitted mass plus the live-anchored emitted-mass rule), then
-implementation cost. No candidate was given a submission slot without validation &mdash; with one
-documented exception, H46-1, which was validated <em>and found negative</em> on the proxy and is
-shipped only as the new-hypothesis artifact, never as the recommended scoring file.</p>
-<div class="panel">
-<h3>1. H46-2 &mdash; DFA-corroborated multiphysics structural emission (SHIPPED, recommended for the scoring slot)</h3>
-<p><span class="tag">layers</span></p><ul><li><code>official bands 1 mag_anom, 2 rtp, 3 tmi_hg, 6 tc, 12 det_elev, 13 iso_grav_anom, 14 tmi, 18 iso_grav_anom_hg (geometric-mean corroboration of 9 edge/curvature transforms)</code></li><li><code>10% of the emitted mass reserved for the H46-1 DFA regime-break field</code></li><li><code>labels.tif only as the organiser-masked exclusion zone (200 m buffer)</code></li></ul>
-<p><span class="tag">physical signature</span> agreement of independent edge/curvature transforms across two physics (potential fields and topography) - a corroboration filter, not a new transform</p>
-<p><span class="tag">why off-catalogue</span> the corroboration is asymmetric by construction: a location needs most transforms to agree, so a fault with a single strong signature (the catalogue&#x27;s typical mode: a topographic scarp) is down-weighted relative to one that also perturbs the magnetic and gravity fields. Buried faults under basin fill have magnetic/gravity signatures with little topographic expression.</p>
-<p><span class="tag">differs from everything already in the repository</span> built here from the official bands only, with a geometric (not arithmetic) mean and an explicit DFA portfolio slice; no prior submission bytes are used. Correlation with the prior submissions is 0.31-0.36 and with tmi_hg/tmi_grad 0.75, so it is honestly reported as *not* a new hypothesis.</p>
-<p><span class="tag">expected DTI</span> proxy 0.1016 vs 0.0991 for the two best prior files at matched mass (37,654 px) and identical buffering; live expectation is anchored to the same operating point as the 0.2708-0.2778 family, i.e. ~0.27-0.29 with no evidence for &gt;0.30</p>
-<p><span class="tag">implementation cost</span> low (CPU only, ~60 s)</p>
-<p><span class="tag">validation</span> VALIDATED on the off-catalogue proxy; hedge trade-off measured (0-20% hedge: 0.1054/0.1031/0.1016/0.1008/0.0990)</p>
-<p><span class="tag">data</span> no external data needed</p>
-</div><div class="panel">
-<h3>2. H46-1 &mdash; DFA scaling-exponent break along magnetic and gravity transects (SHIPPED as the new hypothesis)</h3>
-<p><span class="tag">layers</span></p><ul><li><code>official bands 1 mag_anom, 2 rtp, 14 tmi, 3 tmi_hg, 9 tmi_vg (magnetic group)</code></li><li><code>official bands 13 iso_grav_anom, 18 iso_grav_anom_hg, 5 iso_grav_anom_slope, 11 iso_grav_anom_vg (gravity group)</code></li><li><code>high-passed variants of tmi / rtp / mag_anom / iso_grav_anom at a 2 km scale</code></li></ul>
-<p><span class="tag">physical signature</span> local DFA exponent of the grid, measured along row and column transects in 12.8 km windows over scales 0.8-6.4 km, compared with its own background (31-window median) through a robust z-score; the transform is |z| (regime break) and |grad z| (regime boundary). Neither the field amplitude nor its gradient is used to form the ranking.</p>
-<p><span class="tag">why off-catalogue</span> a change in scaling regime is produced by a change in the *texture* of the source distribution - juxtaposed lithologies with different magnetic/gravity roughness, or hydrothermal alteration that suppresses magnetite along a fracture corridor - and it can be present where the amplitude contrast is too weak to make a sharp edge. The published catalogue was compiled from surface expression (scarp mapping); nothing in its compilation method targets a scale-invariance statistic.</p>
-<p><span class="tag">differs from everything already in the repository</span> no prior arm in any GEMSDOE repository uses a scale-invariance or DFA statistic. Verified distinctness: smoothed Pearson -0.012 vs the 0.2600 file, -0.009 vs the 0.2778 file, -0.012 vs the h32d file, and -0.011/-0.007/-0.001/-0.011 vs the tmi/gravity/detrended-elevation gradient and Laplacian transforms; Jaccard overlap with the incumbent emission 0.0037 (276 shared pixels out of 37,654).</p>
-<p><span class="tag">expected DTI</span> proxy 0.0809 vs 0.0991 for the prior files at matched mass: measured to be WORSE on the only available off-catalogue proxy. Reported as a falsifiable negative result at the leaderboard operating point, and shipped as a separate artifact for the Final Prize Round and for expert review, not as the recommended scoring slot.</p>
-<p><span class="tag">implementation cost</span> low (CPU only, ~4 min for all 13 band-variant fields)</p>
-<p><span class="tag">validation</span> VALIDATED (as distinct) and NEGATIVE (as a score improvement) on the proxy instrument</p>
-<p><span class="tag">data</span> no external data needed</p>
-</div><div class="panel">
-<h3>3. H46-3 &mdash; Hypocentre-lineament detector from the raw USGS earthquake catalogue (BLOCKED: needs one HTTP call from an unrestricted machine)</h3>
-<p><span class="tag">layers</span></p><ul><li><code>external: USGS FDSN event web service, CSV export, region 37.5-41.5 N / 121.0-116.5 W, M &gt;= 1.5, 1900-present</code></li><li><code>official bands 16 ieq_n100a15 and 10 deq_n100a15 used only as a cross-check (they are 100 km-radius smoothers and carry no 300 m-scale information)</code></li></ul>
-<p><span class="tag">physical signature</span> spatial alignment of precisely located hypocentres into strike-parallel lineaments, projected to the surface, plus focal-mechanism nodal-plane consistency - a *fault-activity* signature rather than a rock-property signature</p>
-<p><span class="tag">why off-catalogue</span> the published label set is a Quaternary fault compilation; an active fault with no Quaternary surface trace (common where basin fill buries the range front, or where slip rates are low) can still generate microseismicity lineaments. The competition&#x27;s own seismic bands are smoothed at 100 km and cannot express this.</p>
-<p><span class="tag">differs from everything already in the repository</span> the group&#x27;s GEMSDOE32 wrote an equivalent fetch script but never obtained the catalogue; no shipped arm used raw hypocentres. The competition bands are used here only as a control.</p>
-<p><span class="tag">expected DTI</span> unknown - cannot be estimated without the catalogue; ranked third because the physical argument is strong and the data are free</p>
-<p><span class="tag">implementation cost</span> medium (lineament fitting plus holdout validation)</p>
-<p><span class="tag">validation</span> BLOCKED - not validated, so per the session rule it must not be given a submission slot yet</p>
-<p><span class="tag">data</span> VERIFIED OBTAINABLE IN PRINCIPLE: https://earthquake.usgs.gov/fdsnws/event/1/query (free, official, no key). VERIFIED NOT OBTAINABLE HERE: the sandbox returns HTTP 000 for earthquake.usgs.gov (re-measured 2026-10-06). Run scripts/fetch_earthquake_catalog.sh on an unrestricted machine.</p>
-</div><div class="panel">
-<h3>4. H46-4 &mdash; Windowed Euler deconvolution (structural index 1) of the isostatic residual gravity and RTP magnetics: depth-discontinuity alignment</h3>
-<p><span class="tag">layers</span></p><ul><li><code>official band 13 iso_grav_anom, 2 rtp, 15 depth_to_base_surf, 18/5/11 gravity derivatives</code></li><li><code>no external data required</code></li></ul>
-<p><span class="tag">physical signature</span> per-window Euler solutions (source depth and horizontal position) for a contact/step source (SI = 1); a fault produces a *lineament of consistent depth solutions*, which is a different statistic from an edge or curvature maximum</p>
-<p><span class="tag">why off-catalogue</span> Euler depth estimates respond to the depth extent of the source, so they flag basement-involved structures under cover, which the surface-mapped catalogue systematically under-records</p>
-<p><span class="tag">differs from everything already in the repository</span> prior arms applied Euler/tilt-depth ideas to magnetics as a scalar ridge (h32-1 &#x27;prethin-tip-euler&#x27;, owner-reported 0.2649); this candidate requires *depth consistency along strike* across two independent potential fields, which no shipped arm tested</p>
-<p><span class="tag">expected DTI</span> moderate, unproven: the physics is standard but the group&#x27;s related single-field variant did not beat its own incumbent</p>
-<p><span class="tag">implementation cost</span> medium (moving-window linear solve; CPU only)</p>
-<p><span class="tag">validation</span> NOT YET VALIDATED - implementation is feasible here, and it is the best next candidate that needs no new data</p>
-<p><span class="tag">data</span> no external data needed</p>
-</div><div class="panel">
-<h3>5. H46-5 &mdash; Measured-geochemistry and hydrothermal-alteration signatures used as a REMOVAL (pruning) prior</h3>
-<p><span class="tag">layers</span></p><ul><li><code>external: GDR wellspring chemistry (gdr.openei.org/submissions/1391, CC BY 4.0, DOI 10.15121/1881483), volcanic vents, Quaternary fault traces - all already restored in the group&#x27;s mirrors</code></li><li><code>official bands 1 mag_anom (magnetic low from magnetite destruction) and 17 cond_surf</code></li></ul>
-<p><span class="tag">physical signature</span> paired magnetic low plus elevated surface conductivity along a conduit, anchored on measured spring temperatures and geothermometer values - a *fluid-pathway* signature</p>
-<p><span class="tag">why off-catalogue</span> a conduit can be hydrologically active while its surface trace is absent or obscured; springs are direct evidence of a connected fracture network, and 15 of the 53 sites above 150 C measured by the group lie more than 3 km from any mapped trace</p>
-<p><span class="tag">differs from everything already in the repository</span> the group tested geothermometry as an *addition* arm (H33-1) and reported it falsified (credit per added dot 0.0022-0.0054 against a break-even bar of 0.054). This candidate uses the same data with the opposite sign - to *delete* mass - which is untested.</p>
-<p><span class="tag">expected DTI</span> small but positive if the removal rule is right: deleting k pure false-positive pixels at DTI 0.28 raises the score by roughly 0.2k/(0.2S + 0.8G) fractions of the current score</p>
-<p><span class="tag">implementation cost</span> low</p>
-<p><span class="tag">validation</span> NOT YET VALIDATED (pruning direction untested); the addition direction is falsified by the group&#x27;s own measurement</p>
-<p><span class="tag">data</span> available in-repo mirror: data/external/gdr_wellspring_in_footprint.csv (restored); original free and official at gdr.openei.org/submissions/1391</p>
-</div>
-<h2>What is next, in order</h2>
-<ol>
- <li><strong>H46-3 first</strong> (needs one HTTP call from an unrestricted machine):
-     <code>bash scripts/fetch_earthquake_catalog.sh</code>, then build hypocentre lineaments and run the
-     same matched-mass protocol. Strongest untested physical argument; free official source verified
-     to exist and verified unreachable from this sandbox.</li>
- <li><strong>H46-4 next</strong> (no new data needed): windowed Euler deconvolution with structural
-     index 1 on the gravity plus RTP magnetics, requiring along-strike depth consistency across two
-     independent potential fields.</li>
- <li><strong>H46-5</strong>: reverse the sign of the measured-geochemistry arm and use it as a
-     pruning (removal) prior, which is the direction the group never tested.</li>
- <li>Re-run <code>scripts/validate_candidates.py</code> and only then touch a submission slot for the
-     scored file.</li>
-</ol>
-</main>
-<footer class="wrap">Every number on this site is regenerated from <code>registry/*.json</code> by
-<code>scripts/build_site.py</code>. Scores marked <em>owner-reported</em> are not organiser receipts.
-Retrieved 2026-10-06 UTC.</footer>
-</body></html>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="GEMS46 home"><span class="brand-mark" aria-hidden="true">46</span><span class="brand-copy"><strong>GEMS · DOE</strong><span>Fault-mapping research</span></span></a>
+      <nav class="site-nav" aria-label="Main navigation"><a href="index.html">Overview</a><a href="hypotheses.html" aria-current="page">Hypotheses</a><a href="analysis.html">Score analysis</a><a href="sources.html">Sources</a><a class="nav-cta" href="guide.html">Submission guide</a></nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Preregistered before candidate implementation · 06 Oct 2026</p>
+        <h1>Four fault hypotheses.<br>None scored yet.</h1>
+        <p class="lead">Ranked by qualitative, novelty-adjusted DTI upside and implementation cost. These are research priorities—not numeric score predictions. No challenge labels, feature raster, sample grid, holdout-best artifact, or model is present.</p>
+      </div>
+    </section>
+
+    <section class="section-sm">
+      <div class="container">
+        <div class="callout warn">
+          <h3>Important ranking caveat</h3>
+          <p>The first-ranked experiment is OPERA DISP-S1 because it offers a distinct, fault-specific deformation signal with official catalogue evidence in the broad study area. That does not mean the expected gain is high or guaranteed. The ASTER idea may have similar raw scientific potential, but is discounted until the prior `conj_alteration_mag` experiment is audited; it cannot yet be certified as untried.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="register-title">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">Shortlist</p><h2 id="register-title">Ranked research register</h2><p>Every candidate must be converted into a frozen signal and compared against the current holdout best before any weekly upload.</p></div>
+          <span class="pill warn">No candidate implementation</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Rank</th><th>Hypothesis & layers</th><th>Physical signal / why uncatalogued faults may show it</th><th>Novelty and data availability</th><th>DTI upside / cost</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="rank-cell">01</td>
+                <td><strong>H46-1 · OPERA DISP-S1</strong><br><span class="small">30 m LOS displacement/time series, documented quality/uncertainty layers, companion radar geometry; local gradient and temporal residual features.</span></td>
+                <td>Persistent, coherent linear LOS-rate/displacement step across repeated observations. A buried fault may compartmentalize groundwater or localize deformation beneath basin fill without a visible scarp. Mask pumping, mining, landslides, atmosphere, layover, and seasonal loads.</td>
+                <td>No InSAR gradient candidate appears in the inspected prior register or current checkout; prior repositories are not exhaustively audited. NASA CMR returned overlapping OPERA granules for part of the broad rectangle, including a central-area 2025 product. The separate Copernicus OData query returned S1A-only products and did not establish a repeat-pass pair or raw-SLC feasibility. No imagery payload or full-grid quality check.</td>
+                <td><span class="pill">Medium, conditional</span><br><span class="small">Medium–high effort: ~4–8 engineering days using preprocessed DISP-S1; longer if raw-SLC processing is needed.</span></td>
+              </tr>
+              <tr>
+                <td class="rank-cell">02</td>
+                <td><strong>H46-2 · Groundwater-head boundaries</strong><br><span class="small">USGS field water-level measurements, well/aquifer/depth/datum metadata, repeat-date residuals.</span></td>
+                <td>Persistent head discontinuity or compartment boundary supported by several comparable wells. Fault cores may impede groundwater while damage zones transmit it; hidden faults can affect hydraulic communication under alluvium.</td>
+                <td>Inspected prior work mentions thermal/geochemical observations, not datum-aware head discontinuities; novelty remains provisional. Modern USGS field-measurement API returned groundwater records in the broad rectangle. Dates, datums, aquifers, and density are uneven; one sample query does not prove a continuous field.</td>
+                <td><span class="pill muted">Low–medium</span><br><span class="small">High effort: ~3–6 days for datum/aquifer/seasonal controls; more if coverage is sparse.</span></td>
+              </tr>
+              <tr>
+                <td class="rank-cell">03</td>
+                <td><strong>H46-3 · ASTER alteration corridors</strong><br><span class="small">USGS hydrothermal alteration classes: silica-rich, propylitic, argillic, phyllic; test corridor continuity and class transitions.</span></td>
+                <td>Long-lived fault-fed fluids can alter exposed rock. Connected alteration may outline a fluid pathway where no mapped scarp exists; map edges may instead follow lithology, exposure, vegetation, mining, or registration errors.</td>
+                <td>Official USGS CC0 western-U.S. map exists, plus a central/southern Basin-and-Range map. Coverage overlap and observation dates still need checking. **Possible duplicate:** prior notes include `tso1-conj_alteration_mag`, so this is conditional until that code/layer is audited. ASTER SWIR acquired after April 2008 is unusable.</td>
+                <td><span class="pill muted">Low–medium now; medium only if distinct</span><br><span class="small">Low–medium effort: ~1–3 days to ingest, rasterize, inspect dates/quality, and audit overlap.</span></td>
+              </tr>
+              <tr>
+                <td class="rank-cell">04</td>
+                <td><strong>H46-4 · Landsat surface-temperature residuals</strong><br><span class="small">Collection 2 ST_B10 plus QA, reflectance-derived vegetation/land cover, and topographic controls.</span></td>
+                <td>Seasonally repeated, corrected surface-temperature corridors may indicate fault-controlled upflow/discharge. Remove weather, slope/aspect, elevation, vegetation, emissivity, mining, irrigation, and cloud effects; do not use a raw temperature threshold as a fault trace.</td>
+                <td>USGS products are public/free; exact clear-scene density over the competition grid was not checked. Prior `thermal-pop`/GDR work creates a conceptual-overlap check. Thermal sampling is coarser than the 30 m delivered grid, so regridding is not added physical resolution.</td>
+                <td><span class="pill muted">Low</span><br><span class="small">Medium effort: ~3–6 days for scene/QA selection and robust temporal controls.</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small" style="margin-top:14px">No numerical ΔDTI is claimed. These estimates are ordinal and unmeasured; full method definitions, sources, and caveats are recorded in <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/arena/61460a10-gemsdoe46/docs/research/hypotheses.md" target="_blank" rel="noopener noreferrer">the detailed research register ↗</a>.</p>
+      </div>
+    </section>
+
+    <section class="section" style="background:#eaf1ed" aria-labelledby="gate-title">
+      <div class="container split">
+        <div>
+          <p class="eyebrow">Validation gate</p>
+          <h2 id="gate-title">Catalogue records are not a holdout win.</h2>
+          <p>H46-1 is first to test, not first to upload. The NASA metadata check establishes that OPERA scenes exist in overlapping portions of the area. It does not establish complete grid coverage, sufficient coherent pixels, absence of pumping artifacts, or a positive DTI delta.</p>
+          <p>Each run must compare against the current project holdout best on four contiguous spatial blocks with a 300 m label embargo. The candidate must improve overall and in at least three blocks, using comparable prediction mass.</p>
+        </div>
+        <aside class="card card-dark">
+          <p class="card-label">Current gate</p>
+          <h3>Blocked before data/model.</h3>
+          <p class="small">The official competition data page redirects unauthenticated visitors to login. No labels, sample grid, current holdout best, or candidate rasters exist here.</p>
+          <a href="guide.html">See the authorized data and upload steps →</a>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-wrap"><div><div class="footer-brand">GEMSDOE46 · Hypothesis register</div><p>Scientific candidates are hypotheses until they beat a spatially blocked baseline.</p></div><nav class="footer-links" aria-label="Footer navigation"><a href="index.html">Overview</a><a href="analysis.html">Score analysis</a><a href="sources.html">Sources</a><a href="guide.html">Submission guide</a></nav></div></footer>
+</body>
+</html>

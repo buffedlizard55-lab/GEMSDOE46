@@ -1,76 +1,121 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Overview - GEMSDOE46</title>
-<link rel="stylesheet" href="assets/style.css"></head>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GEMSDOE46 — executive summary and submission download</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
 <body>
-<header><div class="wrap"><span class="brand">GEMSDOE46 &middot; DOE GEMS Prize</span><nav><a href="index.html" class='active'>Overview</a><a href="executive-summary.html">Executive summary &amp; how to submit</a><a href="hypotheses.html">Hypotheses</a><a href="validation.html">Validation</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav></div></header>
-<main class="wrap">
-<h1>A unique submission for the DOE GEMS Prize Challenge &mdash; and an honest account of what it can and cannot do</h1>
-<p class="dim">Competition 306, GeoDAWN region, northwestern Great Basin, Nevada.
-Task: predict geological faults, scored by a distance-weighted Tversky index on faults that are
-<em>not</em> in the published USGS/INGENIOUS catalogue. Target on 2026-10-06:
-<strong>0.3345</strong> (public #1). Our best prior family: <strong>0.2778</strong> (owner-reported).</p>
+<header class="site"><div class="wrap">
+  <b>GEMSDOE46 — split-conformal submission for the DOE GEMS Prize</b>
+  <span class="sub">DrivenData #306 · deadline 3 Dec 2026 23:59 UTC · $300,000 prize</span>
+</div></header>
+<nav class="site"><div class="wrap">
+  <a href="index.html" aria-current="page">Executive summary</a>
+  <a href="how-to-submit.html">How to submit</a>
+  <a href="submission-analysis.html">Submission analysis</a>
+  <a href="submission-hypotheses.html">Hypothesis test</a>
+  <a href="research-overview.html">Research layer</a>
+  <a href="analysis.html">Score analysis (research)</a>
+  <a href="hypotheses.html">Hypotheses (research)</a>
+  <a href="guide.html">Guide (research)</a>
+  <a href="sources.html">Sources</a>
+</div></nav>
 
-<div class="download">
- <h2>1 &middot; Download the submission file</h2>
- <p class="dim">Both files below pass every format check re-read from disk (single band, float32,
- EPSG:32611, 3292&times;3730, identical geotransform and finite-mask to the official template,
- every finite value in [0,1]). Pick one.</p>
- <p><a class="btn" href="downloads/gems46-h46-2-dfa-corroborated-20261006T101243Z.tif">Download gems46-h46-2-dfa-corroborated-20261006T101243Z.tif</a>
-    <a class="btn alt" href="downloads/gems46-h46-2-dfa-corroborated-20261006T101243Z.zip">Download as .zip</a>
-    <span class="dim">37,654 emitted pixels &middot; proxy-validated best</span></p>
- <p class="dim"><strong>H46-2</strong> &mdash; structural corroboration with a 10&nbsp;% DFA regime-break hedge.
- Off-catalogue proxy score <strong>0.1016</strong> versus
- <strong>0.0991</strong> for the best prior files at identical emitted mass and buffering.</p>
- <p style="margin-top:22px"><a class="btn alt" href="downloads/gems46-h46-1-dfa-regime-break-20261006T101243Z.tif">Download gems46-h46-1-dfa-regime-break-20261006T101243Z.tif</a>
-    <span class="dim">37,654 emitted pixels</span></p>
- <p class="dim"><strong>H46-1</strong> &mdash; the pure new hypothesis: DFA scaling-exponent breaks along
- magnetic and gravity transects. Correlation with every prior submission and every plain
- gradient/curvature transform is <strong>|r| &le; 0.04</strong>. Proxy score
- <strong>0.0809</strong>, i.e. measured <em>weaker</em> than the prior
- files on the only proxy available; ship it if you want the file that tests the new idea, or for the
- final round where an expert panel reviews submitted predictions.</p>
- <p class="dim">A <code>-zeros.tif</code> fallback variant accompanies each file (0.0 outside the
- footprint instead of NaN) for submission systems that reject NaN.</p>
+<main>
+<div class="card" style="border-left:4px solid #b45309;margin:0 0 18px"><b>Session 2 (2026-10-06): the DFA scaling-regime-break arm.</b> The newest artifacts, the metric-algebra answer to the standing question with its |G| bound, the distinctness tests and the negative results are on <a href="h46/index.html">docs/h46/</a> &mdash; recommended file: <span class="mono">gems46-h46-2-dfa-corroborated</span> (<a href="h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z.tif">.tif</a>).</div>
+<h1>Executive summary</h1>
+
+<div class="card download" id="submission-download">
+  <h2 style="margin-top:0;border:0;padding:0">⬇️ Download the submission file</h2>
+  <p><a class="big" href="SUBMISSION-GEMSDOE46-r8-conformal.tif" download>Download SUBMISSION-GEMSDOE46-r8-conformal.tif</a>
+  <span class="alt">(single-band float32 GeoTIFF, 250 KB, EPSG:32611, 100 m, values in [0,&nbsp;1])</span></p>
+  <ul class="tight small">
+    <li><b>Name:</b> <span class="mono">gemsdoe46-h46a-r8-conformal</span></li>
+    <li><b>Note (paste into the form's Note field):</b> <a href="downloads/NOTE-gemsdoe46-h46a-r8-conformal.txt">downloads/NOTE-gemsdoe46-h46a-r8-conformal.txt</a></li>
+    <li><b>Format audit of that exact file:</b> <a href="downloads/checks-gemsdoe46-h46a-r8-conformal-allfinite.json">checks-…-allfinite.json</a> — single band, float32, shape 3730 × 3292, EPSG:32611, transform matches the template, every cell in [0, 1], positives = 39,108</li>
+    <li><b>Fallback (same dots, NaN outside the survey bounds exactly like <span class="mono">sample_submission.tif</span>):</b> <a href="gemsdoe46-h46a-r8-conformal-nan.tif">gemsdoe46-h46a-r8-conformal-nan.tif</a></li>
+    <li><b>Step-by-step upload instructions:</b> <a href="how-to-submit.html">How to submit</a></li>
+  </ul>
+  <p class="small" style="margin:10px 0 0"><b>Last verified 2026-10-06</b> — the file was generated
+  that day by <span class="mono">scripts/make_submission.py</span> from the hash-verified official
+  rasters and audited by re-reading the written bytes. Both encodings contain the same 39,108 dots;
+  this page does not poll or mirror the leaderboard.</p>
+</div>
+<div class="hero"><p class="lede">A single, unique, slot-ready GeoTIFF produced from the official competition
+rasters, whose operating point is <b>certified by split conformal prediction</b> rather than chosen
+by eye — with the confidence level, the certified floor and the metric's own density bound printed
+next to it.</p>
+
+
+<h2>The submission in numbers</h2>
+<div class="grid">
+  <div class="kpi"><div class="v">r = 8 px</div><div class="k">chosen spacing (800 m minimum separation between dots)</div></div>
+  <div class="kpi"><div class="v">90.0 %</div><div class="k">conformal confidence (α = 0.1000, 9 exchangeable calibration blocks)</div></div>
+  <div class="kpi"><div class="v">0.0283</div><div class="k">certified floor on the calibration half — a worst-case bound, not the observed score</div></div>
+  <div class="kpi"><div class="v">39,108</div><div class="k">positive cells (0.76 % of the 5,167,373-px surveyed footprint)</div></div>
+  <div class="kpi"><div class="v">0.5588</div><div class="k">analytic ceiling for this density at the declared scored-truth mass |G| = 7,905 px</div></div>
+  <div class="kpi"><div class="v">≤ 86,541</div><div class="k">dots that can still reach 0.3345 with <i>perfect</i> placement — the density rule every arm is checked against</div></div>
 </div>
 
-<div class="download">
- <h2>2 &middot; Submit it (three steps)</h2>
- <ol>
-  <li>Sign in and open <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">New submission</a>.</li>
-  <li><strong>File to submit:</strong> choose <code>gems46-h46-2-dfa-corroborated-20261006T101243Z.tif</code> (or its <code>.zip</code>).</li>
-  <li><strong>Note (optional):</strong> paste exactly this, so the run is identifiable later:
-      <pre>H46-2 structural corroboration emission with a 12% DFA-regime-break hedge (best validated against the off-catalogue proxy truth at matched emitted mass)</pre></li>
- </ol>
- <p class="dim">Full walkthrough, including how the rounds work and what to do if a file is rejected,
- is on the <a href="executive-summary.html">executive summary page</a>.</p>
-</div>
+<h2>Why this is not "we tried a few spacings and this one looked best"</h2>
+<ol>
+  <li><b>Sweep.</b> 24 spatially blocked holdouts (4 × 6 tiles, ≈ 93 × 55 km each). For every block the
+      catalogue pixels inside the block are removed from training and the model must recover exactly
+      those pixels from the 25 physical features; the exact official metric is then evaluated on the
+      block with a halo, so blocking cannot change the metric's own 300 m reach.</li>
+  <li><b>Population matching.</b> The scored truth is the <i>new-fault</i> population, which is far
+      sparser than the catalogue. Every arm is therefore scored against a density-matched subsample of
+      the held-out catalogue (declared ratio 0.1296) as the primary population, with four other ratios
+      swept as a sensitivity screen.</li>
+  <li><b>Split conformal selection.</b> Blocks are split into a selection half and a calibration half by
+      tile parity. The calibration half yields a finite-sample one-sided bound
+      <span class="mono">L(s) = mean_cal(s) − q(s)</span> with <span class="mono">q</span> the
+      <span class="mono">ceil((n+1)(1−α))</span>-th smallest residual (Lei, G'Sell, Rinaldo, Tibshirani
+      &amp; Wasserman, JASA 113(523):1094–1111, 2018). α is set to the smallest value the data can
+      support, <span class="mono">1/(n_cal+1)</span> — asking for more confidence would make the bound
+      infinite.</li>
+  <li><b>Density admissibility (rule R3).</b> The metric collapses in the sparse regime to
+      <span class="mono">DTI = T / (0.2·N + 0.8·|G|)</span>, so a submission with too many dots cannot
+      reach the target <i>even with perfect placement</i>. An arm ships only if its <i>measured</i>
+      full-grid dot count leaves room for 0.3345 at the declared |G|.</li>
+  <li><b>Choice (rule R4).</b> Among admissible arms, the largest certified floor wins. That is
+      r = 8 px. The rules were fixed before the numbers were read, and the eligibility and split rules
+      depend only on the truth mask and the tile index — never on an arm's score.</li>
+</ol>
 
-<h2>What this repository found</h2>
-<div class="kv">
- <div><b>14,089 px</b><span class="dim">hidden truth size implied by the two closest live scores (0.2600 and 0.2778); 1,409 km of trace at 100 m</span></div>
- <div><b>6.65%</b><span class="dim">implied credit per emitted pixel of the best prior file (0.1185) against the metric's own break-even bar (0.0520)</span></div>
- <div><b>+20.4%</b><span class="dim">credit the best prior file would need, at the same 37,654 px, to reach 0.3345</span></div>
- <div><b>|r| &le; 0.04</b><span class="dim">correlation of the DFA candidate with all prior submissions and all gradient/curvature transforms of the same bands</span></div>
-</div>
+<h2>Why the previous best (0.2778) scored what it did — and what would beat it</h2>
+<p>The published index is <span class="mono">DTI = TPw / (TPw + 0.2·FPw + 0.8·FNw)</span> with a 300 m
+triangular kernel. In the sparse regime it collapses to <b>a budget</b>,
+<span class="mono">DTI = T / (0.2·N + 0.8·|G|)</span>: adding mass pays only if its kernel credit
+exceeds <span class="mono">0.2 × (current score)</span>. The 0.2778 submission is the family's own
+0.2708 field with every dot within 200 m of the catalogue deleted — 37,654 dots left — and the whole
+family sequence (0.1922 @ 121k → 0.2477 @ 60k → 0.2600 @ 44k → 0.2708 @ 40k → 0.2778 @ 38k dots) is
+monotone in <b>mass removed</b>, not in model quality.
+Full derivation and the exact reproduction of the 0.2600 row from its own reported dot count:
+<a href="submission-analysis.html">Analysis &amp; evidence</a>.</p>
 
-<h2>The five hypotheses ranked, and what happened to each</h2>
-<table><tr><th>#</th><th>Hypothesis</th><th>Expected DTI</th><th>Cost</th><th>Status</th></tr>
-<tr><td>1</td><td><strong>H46-2</strong> &mdash; DFA-corroborated multiphysics structural emission (SHIPPED, recommended for the scoring slot)</td><td>proxy 0.1016 vs 0.0991 for the two best prior files at matched mass (37,654 px) and identical buffering; live expectation is anchored to the same operating point as the 0.2708-0.2778 family, i.e. ~0.27-0.29 with no evidence for &gt;0.30</td><td>low (CPU only, ~60 s)</td><td>VALIDATED on the off-catalogue proxy; hedge trade-off measured (0-20% hedge: 0.1054/0.1031/0.1016/0.1008/0.0990)</td></tr><tr><td>2</td><td><strong>H46-1</strong> &mdash; DFA scaling-exponent break along magnetic and gravity transects (SHIPPED as the new hypothesis)</td><td>proxy 0.0809 vs 0.0991 for the prior files at matched mass: measured to be WORSE on the only available off-catalogue proxy. Reported as a falsifiable negative result at the leaderboard operating point, and shipped as a separate artifact for the Final Prize Round and for expert review, not as the recommended scoring slot.</td><td>low (CPU only, ~4 min for all 13 band-variant fields)</td><td>VALIDATED (as distinct) and NEGATIVE (as a score improvement) on the proxy instrument</td></tr><tr><td>3</td><td><strong>H46-3</strong> &mdash; Hypocentre-lineament detector from the raw USGS earthquake catalogue (BLOCKED: needs one HTTP call from an unrestricted machine)</td><td>unknown - cannot be estimated without the catalogue; ranked third because the physical argument is strong and the data are free</td><td>medium (lineament fitting plus holdout validation)</td><td>BLOCKED - not validated, so per the session rule it must not be given a submission slot yet</td></tr><tr><td>4</td><td><strong>H46-4</strong> &mdash; Windowed Euler deconvolution (structural index 1) of the isostatic residual gravity and RTP magnetics: depth-discontinuity alignment</td><td>moderate, unproven: the physics is standard but the group&#x27;s related single-field variant did not beat its own incumbent</td><td>medium (moving-window linear solve; CPU only)</td><td>NOT YET VALIDATED - implementation is feasible here, and it is the best next candidate that needs no new data</td></tr><tr><td>5</td><td><strong>H46-5</strong> &mdash; Measured-geochemistry and hydrothermal-alteration signatures used as a REMOVAL (pruning) prior</td><td>small but positive if the removal rule is right: deleting k pure false-positive pixels at DTI 0.28 raises the score by roughly 0.2k/(0.2S + 0.8G) fractions of the current score</td><td>low</td><td>NOT YET VALIDATED (pruning direction untested); the addition direction is falsified by the group&#x27;s own measurement</td></tr>
-</table>
-<p class="dim"><a href="hypotheses.html">Full table with layers, physical signature, why it should be
-off-catalogue, and how each differs from everything already in this repository &rarr;</a></p>
-
-<h2>Measured scaling regimes of the official magnetic and gravity bands</h2>
-<p class="dim">Median local DFA exponent &alpha; along row transects (12.8 km windows, scales
-0.8&ndash;6.4 km). Note that the background regime of this dataset is <em>not</em> the 0.5 of the
-pre-rupture literature: the detector therefore looks for breaks relative to the local background,
-never for an absolute threshold. Full discussion in <a href="research.html">Research</a>.</p>
-<table><tr><th>band</th><th>median &alpha;</th><th>IQR</th><th>p99 of |z|</th></tr><tr><td><code>mag_anom_raw</code></td><td>1.861</td><td>0.229</td><td>2.59</td></tr><tr><td><code>rtp_raw</code></td><td>1.462</td><td>0.358</td><td>3.07</td></tr><tr><td><code>tmi_raw</code></td><td>1.485</td><td>0.354</td><td>3.09</td></tr><tr><td><code>tmi_hg_raw</code></td><td>1.096</td><td>0.290</td><td>4.85</td></tr><tr><td><code>tmi_vg_raw</code></td><td>1.004</td><td>0.385</td><td>12.26</td></tr><tr><td><code>iso_grav_anom_raw</code></td><td>1.948</td><td>0.172</td><td>3.43</td></tr><tr><td><code>iso_grav_anom_hg_raw</code></td><td>1.785</td><td>0.249</td><td>2.67</td></tr><tr><td><code>iso_grav_anom_slope_raw</code></td><td>1.773</td><td>0.229</td><td>3.38</td></tr><tr><td><code>iso_grav_anom_vg_raw</code></td><td>1.840</td><td>0.232</td><td>3.13</td></tr></table>
-<p><img src="downloads/preview_h46_2.png" alt="Emission preview"></p>
+<h2>Limitations, stated up front</h2>
+<ul class="tight">
+  <li>The certified floor <b>0.0283 is a statement about the catalogue-proxy holdout</b>, not a promise
+      about the leaderboard: the scored truth is the new-fault population, which no public data labels.
+      What transfers exactly is the <i>density</i> side of the metric, which is where the algebra is used.</li>
+  <li>No DrivenData account exists in the build environment, so the rasters are the project's own
+      hash-verified copies and the upload itself must be done by the project owner.</li>
+  <li>Band 10 ("distance to earthquake") has an ambiguous unit in the shipped raster; no unit was
+      assumed anywhere (the hypothesis test uses rank and median-relative transforms only).</li>
+  <li>The model is a histogram gradient-boosted classifier on hand-built multi-scale features, not a
+      deep network: no GPU and 4 GB of RAM in the build environment. The deep-model direction is ranked
+      in <a href="submission-hypotheses.html">Geological hypotheses</a>.</li>
+</ul>
+<p class="small">Every flag, every defect found and fixed, and every claim that is <i>not</i> verified:
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/IRREGULARITIES.md">docs/IRREGULARITIES.md</a>.
+Every external claim with its official link:
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/SOURCES.md">docs/SOURCES.md</a>.</p>
 </main>
-<footer class="wrap">Every number on this site is regenerated from <code>registry/*.json</code> by
-<code>scripts/build_site.py</code>. Scores marked <em>owner-reported</em> are not organiser receipts.
-Retrieved 2026-10-06 UTC.</footer>
-</body></html>
+<footer>Repository: <a href="https://github.com/buffedlizard55-lab/GEMSDOE46">buffedlizard55-lab/GEMSDOE46</a>.
+Generated by <span class="mono">scripts/run_pipeline.py</span> → <span class="mono">scripts/make_submission.py</span>.
+Scores quoted for other teams are from the public leaderboard; the mechanism analysis is from the project owner's own score history.</footer>
+</body>
+</html>

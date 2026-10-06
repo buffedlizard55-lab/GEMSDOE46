@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Research - GEMSDOE46</title>
+<link rel="stylesheet" href="assets/style.css"></head>
+<body>
+<header><div class="wrap"><span class="brand">GEMSDOE46 &middot; DOE GEMS Prize</span><nav><a href="index.html">Overview</a><a href="executive-summary.html">Executive summary &amp; how to submit</a><a href="hypotheses.html">Hypotheses</a><a href="validation.html">Validation</a><a href="research.html" class='active'>Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav></div></header>
+<main class="wrap">
+<h1>Research notes and the knowledge base</h1>
+
+<h2>1. The metric, and every consequence used in this repository</h2>
+<p>Officially published (page 967): <code>k(d) = (1 &minus; d/300 m)<sub>+</sub></code>,
+<code>TPw = &Sigma;<sub>g</sub> max<sub>x</sub> p(x)k(d(x,g))</code>,
+<code>FPw = &Sigma;<sub>x:p&gt;0</sub> p(x)[1 &minus; max<sub>g</sub> k(d(x,g))]</code>,
+<code>FNw = &Sigma;<sub>g</sub>[1 &minus; max<sub>x</sub> p(x)k(d(x,g))]</code>,
+<code>DTI = TPw/(TPw + 0.2FPw + 0.8FNw + &epsilon;)</code>, with the worked example
+<code>TPw=3.00, FPw=1.89, FNw=2.00 &rarr; 0.6026 &asymp; 0.60</code>.</p>
+<p>Derived here and confirmed numerically (<code>tests/test_metric.py</code>):</p>
+<ul>
+<li><code>FNw = |G| &minus; TPw</code> exactly.</li>
+<li><code>FPw = S &minus; M</code> with <code>S = &Sigma;p</code>, <code>M = &Sigma;p&middot;max<sub>g</sub>k</code>,
+so <code>DTI = TPw/(0.2(TPw + S &minus; M) + 0.8|G|)</code>.</li>
+<li>Adding unit mass at a pixel with realised credit <code>k</code> raises DTI iff
+<code>k(0.2FP + 0.8|G|) &gt; 0.2&middot;DTI&middot;D&middot;(1&minus;C)</code>; when the truth set is much
+larger than the covered part, this is <code>k &gt; 0.2&middot;DTI</code>, which is why the break-even bar
+at 0.26&ndash;0.33 is 0.052&ndash;0.067.</li>
+<li><code>p &rarr; &lambda;p</code> is increasing, so binary 0/1 emission is optimal on a fixed support.</li>
+<li>For a collinear dotted trace with spacing <code>s</code> px the average kernel weight is
+<code>1 &minus; s/12</code>, which is what makes ~2&ndash;3 px spacing the empirical sweet spot in this
+competition rather than a solid line.</li>
+</ul>
+
+<h2>2. The organiser's masking rule, and why it dominates the catalogue strategy</h2>
+<p>Forum thread 11516, DrivenData staff: known USGS/INGENIOUS fault pixels are excluded from evaluation
+in both rounds. Consequence: mass on a mapped fault is neutral, mass <em>near</em> a mapped fault pays a
+partial false-positive tax with no possibility of credit, and mass on a genuinely new fault is the only
+mass that earns anything. This single rule explains the +0.0070 jump from 0.2708 to 0.2778 for a pure
+200 m buffer deletion.</p>
+
+<h2>3. DFA, adapted to a spatial grid</h2>
+<p>DFA (Peng et al. 1994, Phys. Rev. E 49, 1685) integrates a series, splits it into boxes of length
+<code>n</code>, removes the local least-squares trend in each box, evaluates the RMS fluctuation
+<code>F(n)</code>, and takes the slope of <code>log F(n)</code> vs <code>log n</code> as the exponent
+&alpha;. The estimator here is verified against its textbook calibration: white noise &rarr; 0.50,
+fractional Gaussian noise &rarr; H (0.24 measured at H = 0.2, 0.91 at H = 0.9), random walk &rarr; 1.5
+(<code>tests/test_dfa.py</code>).</p>
+<p>The pre-rupture application (Varotsos, Sarlis &amp; Skordas 2009, Chaos 19, 023114) reports that
+magnetic field variations preceding rupture look random at short lags and become long-range correlated
+at longer lags with &alpha; &asymp; 0.9, while long pre-seismic electric field series show
+&alpha; &asymp; 1 over five orders of magnitude. <strong>Nuance that matters:</strong> that is a
+crossover in <em>time lag</em>, not a demonstration of a spatial exponent change across a fault. This
+repository's H46-1 is an adaptation, and it is labelled as a hypothesis, not a replication.</p>
+<p>Adaptation used here: 12.8 km windows (128 px), 800 m stride, box sizes 0.8/1.6/3.2/6.4 km, computed
+along every row and column transect strictly inside the survey footprint (no interpolation across gaps),
+then differenced against a 24.8 km median background and scaled by a local MAD estimate to give a robust
+z-score. Reported as |z| (regime break) and |&nabla;z| (regime boundary).</p>
+
+<h2>4. Measured scaling regimes of the official bands</h2>
+<table><tr><th>band (raw / high-passed at 2 km)</th><th>median &alpha;</th><th>IQR of &alpha;</th><th>valid px</th></tr><tr><td><code>mag_anom_raw</code></td><td>1.861</td><td>0.229</td><td>5,164,312</td></tr><tr><td><code>rtp_raw</code></td><td>1.462</td><td>0.358</td><td>5,164,312</td></tr><tr><td><code>tmi_raw</code></td><td>1.485</td><td>0.354</td><td>5,164,312</td></tr><tr><td><code>tmi_hg_raw</code></td><td>1.096</td><td>0.290</td><td>5,164,312</td></tr><tr><td><code>tmi_vg_raw</code></td><td>1.004</td><td>0.385</td><td>5,164,312</td></tr><tr><td><code>iso_grav_anom_raw</code></td><td>1.948</td><td>0.172</td><td>5,164,312</td></tr><tr><td><code>iso_grav_anom_hg_raw</code></td><td>1.785</td><td>0.249</td><td>5,164,312</td></tr><tr><td><code>iso_grav_anom_slope_raw</code></td><td>1.773</td><td>0.229</td><td>5,164,312</td></tr><tr><td><code>iso_grav_anom_vg_raw</code></td><td>1.840</td><td>0.232</td><td>5,164,312</td></tr><tr><td><code>tmi_resid</code></td><td>1.397</td><td>0.326</td><td>5,164,312</td></tr><tr><td><code>rtp_resid</code></td><td>1.375</td><td>0.326</td><td>5,164,312</td></tr><tr><td><code>iso_grav_anom_resid</code></td><td>1.812</td><td>0.227</td><td>5,164,312</td></tr><tr><td><code>mag_anom_resid</code></td><td>1.767</td><td>0.195</td><td>5,164,312</td></tr></table>
+<p>The background exponents are 1.0&ndash;1.95, i.e. the potential fields of this region are dominated by
+long-wavelength power, and derivatives have lower exponents (total-magnetic-intensity vertical gradient
+1.00) exactly as differencing theory predicts. The detector therefore never uses an absolute 0.5-style
+threshold; it flags <em>breaks relative to the local background</em>, which is also what makes it
+insensitive to the amplitude of the field.</p>
+
+<h2>5. Data provenance</h2>
+<table><tr><th>file</th><th>sha256</th><th>provenance</th></tr>
+<tr><td>training_features.tif</td><td><code>4371c82e&hellip;</code></td><td>5 parts reassembled; matches the
+pinned hash; 19 float32 bands, EPSG:32611, 100 m, nodata &minus;3.4028235e38</td></tr>
+<tr><td>labels.tif</td><td><code>7ba308cc&hellip;</code></td><td>byte-identical to the group's
+existing_faults.tif; 60,988 labelled pixels inside the footprint</td></tr>
+<tr><td>sample_submission.tif</td><td><code>2176d08e&hellip;</code></td><td>the grid/footprint template
+(5,167,373 finite pixels); also contains 1s on the catalogue, contrary to the page's wording</td></tr>
+<tr><td>sgmc_faults_100m_u8.tif</td><td><code>643cbe99&hellip;</code></td><td>USGS SGMC traces rasterised
+to this grid, restored from the group's public mirror</td></tr></table>
+
+<h2>6. Band index map (verified from the GeoTIFF band descriptions)</h2>
+<pre>1 mag_anom            6 tc (tilt/curvature)     11 iso_grav_anom_vg   16 ieq_n100a15
+2 rtp                 7 geod_shearrate           12 det_elev            17 cond_surf
+3 tmi_hg              8 geod_dilaterate          13 iso_grav_anom       18 iso_grav_anom_hg
+4 geod_2ndinv         9 tmi_vg                   14 tmi                 19 det_elev_slope
+5 iso_grav_anom_slope 10 deq_n100a15             15 depth_to_base_surf</pre>
+</main>
+<footer class="wrap">Every number on this site is regenerated from <code>registry/*.json</code> by
+<code>scripts/build_site.py</code>. Scores marked <em>owner-reported</em> are not organiser receipts.
+Retrieved 2026-10-06 UTC.</footer>
+
+<div class="card" style="border-left:4px solid #b45309;margin:18px 0">
+<b>How decisions are made here &mdash; the two core values.</b>
+<div><b>Maximize P(Win).</b> Every choice is made against the official metric's own algebra
+(<code>DTI = T/(0.2&middot;S + 0.8&middot;|G|)</code>, marginal rule <code>k &gt; 0.2&middot;DTI</code>), never against a proxy known
+to drift. Where the proxy and the algebra disagree &mdash; they do, see IR-46-04 &mdash; the algebra decides and the
+disagreement is filed.</div>
+<div><b>Own the Outcome.</b> End to end: the shipped bytes are re-read and audited, the estimator is verified
+against exact-spectral fGn and textbook DFA values, negative results are published as negative results
+(H46-1 measured weaker than the structural field), and the instrument that would falsify the next idea is
+shipped with it.</div>
+</div>
+
+</body></html>

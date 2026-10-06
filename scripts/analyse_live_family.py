@@ -20,8 +20,17 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 
-def solve_G(dti_a, s_a, dti_b, s_b) -> float:
-    """DTI = T/(0.2*S + 0.8*G) with T equal for both files -> solve for G."""
+def boundary_G(dti_a, s_a, dti_b, s_b) -> float:
+    """Largest hidden-truth size consistent with removing mass raising the score.
+
+    With DTI = T/(0.2*S + 0.8*G) for both files, the credit destroyed by the removal is
+        dT = 0.2*(dti_a*s_a - dti_b*s_b) + 0.8*G*(dti_a - dti_b).
+    Removing mass can never create credit (TPw is monotone in the emitted set), so dT >= 0 gives
+        G <= 0.2*(dti_b*s_b - dti_a*s_a) / (0.8*(dti_a - dti_b)),
+    and the boundary value dT = 0 is what ``solve`` returns: every emitted pixel removed then had
+    exactly zero realised credit.  Any G below the boundary implies the removed pixels had positive
+    mean credit, so the boundary is the most conservative (worst-case-for-the-story) reading.
+    """
     return (dti_b * 0.2 * s_b - dti_a * 0.2 * s_a) / (0.8 * (dti_a - dti_b))
 
 
@@ -32,14 +41,18 @@ def main() -> int:
     fam = [("H19-5 solid", 121131, 0.1922), ("D1.5 dotted", 60069, 0.2477),
            ("D2.8 dotted", 44090, 0.2600), ("D2.8 + catalogue B=2", 37654, 0.2778)]
     print("=" * 100)
-    print("STEP 1 - implied hidden truth size G from the two closest family members")
+    print("STEP 1 - how large the hidden truth set can be (an upper bound, not a measurement)")
     print("=" * 100)
-    G = solve_G(0.2600, 44090, 0.2778, 37654)
+    G = boundary_G(0.2600, 44090, 0.2778, 37654)
     print("  0.2600*(0.2*44090 + 0.8*G) = 0.2778*(0.2*37654 + 0.8*G)")
-    print(f"  -> G = {G:,.0f} px   ({(G * 100 / 1000):,.0f} km of fault trace at 100 m pixels)")
-    print("  assumption: the B=2 file removes only pure false-positive mass, so T is unchanged;")
-    print("  the removed pixels sit within 200 m of the published catalogue, which the organiser")
-    print("  masks out of scoring (forum thread 11516), so they can never earn credit.")
+    print(f"  -> G <= {G:,.0f} px   ({(G * 100 / 1000):,.0f} km of fault trace at 100 m pixels)")
+    print("  This is the LARGEST |G| compatible with the two live scores: it is the G at which the")
+    print("  6,436 removed pixels carried exactly zero credit.  Two scores give two equations in")
+    print("  three unknowns (G, T_a, T_b), so G is NOT point-identified; the bound uses only")
+    print("  dT >= 0 (removing emitted mass can never create credit, TPw is monotone).")
+    print("  The group's own GEMSDOE32/42 receipts instead DECLARE G = 7,905 px (H28 inference,")
+    print("  owner-reported); 7,905 <= {:,.0f} is inside this bound, and STEP 3 shows the three".format(G))
+    print("  removal verdicts below are identical at either value.")
 
     print()
     print("=" * 100)
@@ -57,7 +70,19 @@ def main() -> int:
     print("STEP 3 - the marginal credit of every removal, against the metric's own break-even bar")
     print("=" * 100)
     print("  rule (exact, from the published formula): removing unit mass raises DTI iff its")
-    print("  realised credit k < 0.2*DTI_before.")
+    print("  realised credit k < 0.2*DTI_before.  The bar is G-independent (it is 0.2*DTI).")
+    print()
+    for Gtry in (3950.0, 7905.0, G):
+        Tt = {n: d * (0.2 * s + 0.8 * Gtry) for n, s, d in fam}
+        row = []
+        for label, a, b in (("solid->D1.5", "H19-5 solid", "D1.5 dotted"),
+                            ("D1.5->D2.8", "D1.5 dotted", "D2.8 dotted"),
+                            ("D2.8->B2", "D2.8 dotted", "D2.8 + catalogue B=2")):
+            sa = dict((n, s) for n, s, _ in fam)[a]
+            sb = dict((n, s) for n, s, _ in fam)[b]
+            da = dict((n, d) for n, _, d in fam)[a]
+            row.append(f"{label}: k={(Tt[a] - Tt[b]) / (sa - sb):.4f} < bar {0.2 * da:.4f}")
+        print(f"  at G = {Gtry:8,.0f} px   " + " | ".join(row))
     steps = [("solid -> D1.5", "H19-5 solid", "D1.5 dotted"),
              ("D1.5 -> D2.8", "D1.5 dotted", "D2.8 dotted"),
              ("D2.8 -> D2.8+B2", "D2.8 dotted", "D2.8 + catalogue B=2")]

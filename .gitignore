@@ -1,13 +1,17 @@
-# Restored competition data (419 MB) and derived arrays: never committed.
+# Restored competition data and derived arrays (419 MB, regenerable): never committed.
 data/raw/
 data/derived/
 data/external/*.tif
 .mirror/
+# Local archives / loose files a user drops in for the offline importer
+*.zip
+!docs/**/*.zip
 # Python
 __pycache__/
 *.pyc
 .pytest_cache/
 .venv/
+.venv*/
 # OS / editors
 .DS_Store
 *.swp

@@ -19,7 +19,7 @@ def _shipped():
     if not REG.exists():
         pytest.skip("no built submission (run scripts/build_h46_submission.py)")
     sub = json.loads(REG.read_text())
-    return [(tag, ROOT / "docs" / "downloads" / rec["file"]) for tag, rec in sub["files"].items()]
+    return [(tag, ROOT / "docs" / "h46" / "downloads" / rec["file"]) for tag, rec in sub["files"].items()]
 
 
 def test_shipped_files_match_the_official_format():

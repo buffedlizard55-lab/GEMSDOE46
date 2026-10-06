@@ -33,7 +33,7 @@ from gems46 import submission as S  # noqa: E402
 DATA = ROOT / "data"
 DERIVED = DATA / "derived"
 REG = ROOT / "registry"
-DOCS = ROOT / "docs" / "downloads"
+DOCS = ROOT / "docs" / "h46" / "downloads"
 BUDGET = 37654          # = the emitted mass of the highest-scoring prior file (matched mass)
 MIN_DIST = 3
 SMOOTH_PX = 1.85
@@ -54,11 +54,17 @@ def calibrate_from_live_scores() -> dict:
         DTI = T / (0.2*S + 0.8*G)          [S = emitted mass, G = |hidden truth|]
     Three prior files of the same family (the H19-5 lineage) have known live scores and known
     emitted masses.  Using the two closest members (d2.8 at 44,090 px -> 0.2600 and the catalogue-
-    buffered B=2 derivative at 37,654 px -> 0.2778) and assuming the buffered file differs only by
-    removed pure-false-positive mass (T unchanged; the removal rule deletes pixels within 200 m of
-    the published catalogue, which the organiser masks out of scoring):
+    buffered B=2 derivative at 37,654 px -> 0.2778).  Two scores give two equations in three
+    unknowns (G, T_a, T_b), so G is NOT point-identified.  Setting the removed pixels' credit to the
+    largest value consistent with the two scores (exactly zero: removing mass can never create
+    credit) gives the boundary value
         0.2600 * (0.2*44090 + 0.8*G) = 0.2778 * (0.2*37654 + 0.8*G)
-    ->  G = 14,087 px.  The implied credit is T = 0.2600 * (0.2*44090 + 0.8*14087) = 5,223 px.
+    ->  G_boundary = 14,087 px, and the implied credit is T = 0.2600*(0.2*44090 + 0.8*14087) =
+    5,223 px, i.e. 0.1185 credit per emitted pixel.  Any smaller G (the group's own GEMSDOE32/42
+    receipts declare 7,905 px) is also feasible and implies less credit per pixel (0.0893 at
+    7,905 px).  What does not change with G: the break-even bar 0.2*DTI = 0.0520, the verdict that
+    each thinning step removed sub-bar mass, and the +20.4% credit ratio needed for 0.3345 at the
+    same emitted mass (script/analyse_live_family.py, STEP 3-4).
     """
     dti_a, s_a = 0.2600, 44090
     dti_b, s_b = 0.2778, 37654
@@ -74,7 +80,13 @@ def calibrate_from_live_scores() -> dict:
                             implied_credit_per_px=T_i / s,
                             break_even_at_that_score=0.2 * score,
                             marginal_credit_vs_d28=(T - T_i) / max(44090 - s, 1))
-    return dict(hidden_truth_px=float(G), implied_credit_px=float(T),
+    return dict(hidden_truth_px=float(G),
+                hidden_truth_px_is_upper_bound=True,
+                hidden_truth_px_note=("boundary value: the largest |G| consistent with both live "
+                                      "scores, i.e. the one where the removed mass carried zero "
+                                      "credit.  G is not point-identified; 7,905 px (the "
+                                      "GEMSDOE32/42 declared value) is also feasible."),
+                implied_credit_px=float(T),
                 credit_per_px=float(T / s_a),
                 break_even=float(0.2 * dti_a),
                 inputs=[dict(name="dotted-h19-5-d2-8", emitted_px=s_a, official=dti_a),
@@ -194,7 +206,8 @@ def main() -> int:
          "H46-1 pure DFA scaling-exponent-break detection on magnetic+gravity transects "
          "(new hypothesis; near-zero correlation with all prior submissions)"),
         ("H46-2-dfa-corroborated", cand_h2,
-         "H46-2 structural corroboration emission with a 12% DFA-regime-break hedge "
+         "H46-2 structural corroboration emission with a %d%% DFA-regime-break hedge "
+         % int(round(100 * DFA_HEDGE_FRAC)) +
          "(best validated against the off-catalogue proxy truth at matched emitted mass)"),
     ]
     for tag, mask, note in specs:
@@ -244,7 +257,9 @@ def main() -> int:
         extra["hedge_sweep_proxy_dti"] = json.loads(sweep.read_text())
     out = dict(hedge_sweep=extra, generated_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                calibration=calib,
+               calibration_note=calib.get("hidden_truth_px_note"),
                fields=dict(hidden_truth_px=calib["hidden_truth_px"],
+                           hidden_truth_px_is_upper_bound=calib.get("hidden_truth_px_is_upper_bound", True),
                            budget=BUDGET, min_dist=MIN_DIST, catalogue_buffer_px=CAT_BUFFER),
                instrument_results=results,
                distinctness=corr,

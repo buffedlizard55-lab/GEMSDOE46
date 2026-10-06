@@ -82,7 +82,7 @@ def main() -> int:
     else:
         sub = json.loads(reg.read_text())
         for tag, rec in sub["files"].items():
-            path = ROOT / "docs" / "downloads" / rec["file"]
+            path = ROOT / "docs" / "h46" / "downloads" / rec["file"]
             rep = G.audit(path, ROOT / "data" / "raw" / "sample_submission.tif")
             good = rep["ok"] and rep["positive_px"] == rec["audit"]["positive_px"]
             ok &= good

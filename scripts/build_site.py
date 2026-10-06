@@ -57,6 +57,21 @@ NAV = [("index.html", "Overview"), ("executive-summary.html", "Executive summary
        ("irregularities.html", "Irregularities")]
 
 
+CORE_VALUES = """
+<div class="card" style="border-left:4px solid #b45309;margin:18px 0">
+<b>How decisions are made here &mdash; the two core values.</b>
+<div><b>Maximize P(Win).</b> Every choice is made against the official metric's own algebra
+(<code>DTI = T/(0.2&middot;S + 0.8&middot;|G|)</code>, marginal rule <code>k &gt; 0.2&middot;DTI</code>), never against a proxy known
+to drift. Where the proxy and the algebra disagree &mdash; they do, see IR-46-04 &mdash; the algebra decides and the
+disagreement is filed.</div>
+<div><b>Own the Outcome.</b> End to end: the shipped bytes are re-read and audited, the estimator is verified
+against exact-spectral fGn and textbook DFA values, negative results are published as negative results
+(H46-1 measured weaker than the structural field), and the instrument that would falsify the next idea is
+shipped with it.</div>
+</div>
+"""
+
+
 def page(title: str, body: str, active: str) -> str:
     parts = []
     for h, t in NAV:
@@ -74,6 +89,7 @@ def page(title: str, body: str, active: str) -> str:
 <footer class="wrap">Every number on this site is regenerated from <code>registry/*.json</code> by
 <code>scripts/build_site.py</code>. Scores marked <em>owner-reported</em> are not organiser receipts.
 Retrieved 2026-10-06 UTC.</footer>
+{CORE_VALUES}
 </body></html>
 """
 
@@ -108,7 +124,7 @@ def main() -> int:
         f"<tr><td><code>{k}</code></td><td>{v['alpha_median_row']:.3f}</td>"
         f"<td>{v['alpha_iqr_row']:.3f}</td><td>{v['absz_p99']:.2f}</td></tr>"
         for k, v in stats["bands"].items() if k.endswith("_raw"))
-    ov = f"""
+    ov = CORE_VALUES + f"""
 <h1>A unique submission for the DOE GEMS Prize Challenge &mdash; and an honest account of what it can and cannot do</h1>
 <p class="dim">Competition 306, GeoDAWN region, northwestern Great Basin, Nevada.
 Task: predict geological faults, scored by a distance-weighted Tversky index on faults that are
@@ -152,7 +168,7 @@ Task: predict geological faults, scored by a distance-weighted Tversky index on 
 
 <h2>What this repository found</h2>
 <div class="kv">
- <div><b>{cal['hidden_truth_px']:,.0f} px</b><span class="dim">hidden truth size implied by the two closest live scores (0.2600 and 0.2778); 1,409 km of trace at 100 m</span></div>
+ <div><b>&le; {cal['hidden_truth_px']:,.0f} px</b><span class="dim">upper bound on the hidden truth size set by the two closest live scores (0.2600 and 0.2778): the boundary value at which the removed mass carried zero credit, since two scores give two equations in three unknowns and |G| is not point-identified (the group's own receipts declare 7,905 px, also feasible)</span></div>
  <div><b>{100*(cal['credit_per_px'] - 0.2*0.2600):.2f}%</b><span class="dim">implied credit per emitted pixel of the best prior file (0.1185) against the metric's own break-even bar (0.0520)</span></div>
  <div><b>+20.4%</b><span class="dim">credit the best prior file would need, at the same 37,654 px, to reach 0.3345</span></div>
  <div><b>|r| &le; 0.04</b><span class="dim">correlation of the DFA candidate with all prior submissions and all gradient/curvature transforms of the same bands</span></div>
@@ -193,7 +209,7 @@ raises DTI exactly when its realised credit exceeds <code>0.2&middot;DTI</code>.
 <p>Applying that to the three files of the H19-5 family whose scores are owner-reported, using the
 two closest members to solve for the hidden truth set:</p>
 <pre>0.2600 &middot; (0.2&middot;44090 + 0.8&middot;G) = 0.2778 &middot; (0.2&middot;37654 + 0.8&middot;G)
-&rArr; G = {cal['hidden_truth_px']:,.0f} hidden truth pixels (1,409 km of fault trace at 100 m)
+&rArr; G &le; {cal['hidden_truth_px']:,.0f} hidden truth pixels (1,409 km of fault trace at 100 m)
 &rArr; TPw(44,090 px file) = {cal['implied_credit_px']:,.0f} px of credit, i.e. 0.1185 per emitted pixel
 &rArr; break-even bar at that score = 0.2 &middot; 0.2600 = 0.0520</pre>
 <p>So the answer to &ldquo;why did the thinned, catalogue-buffered member win?&rdquo; is not

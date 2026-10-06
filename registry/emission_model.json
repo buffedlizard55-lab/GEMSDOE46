@@ -1,5 +1,7 @@
 {
  "hidden_truth_px": 14088.747191011276,
+ "hidden_truth_px_is_upper_bound": true,
+ "hidden_truth_px_note": "boundary value: the largest |G| consistent with both live scores, i.e. the one where the removed mass carried zero credit.  G is not point-identified; 7,905 px (the GEMSDOE32/42 declared value) is also feasible.",
  "implied_credit_px": 5223.139415730347,
  "credit_per_px": 0.11846539840622242,
  "break_even": 0.052000000000000005,

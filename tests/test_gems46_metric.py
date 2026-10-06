@@ -61,7 +61,7 @@ def test_algebra_identities():
         c = M.components(pred, truth)
         assert c.fn == pytest.approx(c.n_truth - c.tp, abs=1e-9)
         assert c.fp == pytest.approx(c.s - c.m, abs=1e-9)
-        assert c.dti == pytest.approx(c.tp / (c.tp + 0.2 * c.fp + 0.8 * c.fn + 1e-12), abs=1e-15)
+        assert c.dti == pytest.approx(c.tp / (c.tp + 0.2 * c.fp + 0.8 * c.fn + M.EPS), abs=1e-15)
 
 
 def test_scaling_invariance_binary_is_optimal():

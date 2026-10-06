@@ -1,12 +1,12 @@
 [project]
 name = "gems46"
 version = "46.0.0"
-description = "DFA scaling-regime-break detection on the magnetic and gravity grids for the DOE GEMS Prize Challenge"
+description = "Unique, audited submissions for the DOE GEMS Prize Challenge (DrivenData #306): split-conformal spacing selection and DFA scaling-regime-break detection on the magnetic and gravity grids"
 requires-python = ">=3.10"
 dependencies = ["numpy>=1.26", "scipy>=1.11", "rasterio>=1.3"]
 
 [project.optional-dependencies]
-site = ["matplotlib>=3.8"]
+site = ["matplotlib>=3.8", "pandas>=2.0"]
 dev = ["pytest>=8.0"]
 
 [tool.pytest.ini_options]

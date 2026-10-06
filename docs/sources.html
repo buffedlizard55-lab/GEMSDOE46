@@ -1,12 +1,122 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sources - GEMSDOE46</title>
-<link rel="stylesheet" href="assets/style.css"></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Official DOE GEMS sources, data-availability prechecks, licensing, terms, and research limitations.">
+  <title>Sources & limits — GEMS46</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
 <body>
-<header><div class="wrap"><span class="brand">GEMSDOE46 &middot; DOE GEMS Prize</span><nav><a href="index.html">Overview</a><a href="executive-summary.html">Executive summary &amp; how to submit</a><a href="hypotheses.html">Hypotheses</a><a href="validation.html">Validation</a><a href="research.html">Research</a><a href="sources.html" class='active'>Sources</a><a href="irregularities.html">Irregularities</a></nav></div></header>
-<main class="wrap"><h1>Sources</h1><p class='dim'>What each source supports, and whether it could be reached from this environment.</p><div class='panel'><h3>S1 &middot; DrivenData competition 306 - GEMS Prize Challenge, problem description (metric, submission format, task definition)</h3><p><a href='https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/'>https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/</a> &middot; <span class='ok'>reached</span></p><ul><li>DTI(alpha=0.2, beta=0.8) with triangular kernel k(d)=max(1-d/R,0), R=300 m</li><li>the three distance-weighted terms TPw / FPw / FNw as transcribed in src/gems46/metric.py</li><li>the worked example TPw=3.00, FPw=1.89, FNw=2.00 -&gt; 0.60 (arithmetic reproduced in tests/test_metric.py)</li><li>submission format: single-band float32 GeoTIFF, EPSG:32611, 100 m, same bounds, values in [0,1], null/NaN outside</li><li>two-round structure: initial round scored on a private set of expert-labelled *new* faults; final round rescored on an expanded label set after expert review of submitted predictions</li></ul></div><div class='panel'><h3>S2 &middot; DrivenData GEMS leaderboard (public, retrieved 2026-10-06)</h3><p><a href='https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/'>https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/</a> &middot; <span class='ok'>reached</span></p><ul><li>#1 alexoktaba 0.3345, #2 nchuzhoy 0.3262, #3 kinghorton42 0.3222, #4 Batik Shirt Brothers 0.3218, #5 DARD 0.3195, #6 joeyfezster 0.3163 ... #13 extradr19 0.2778, #16 smrtdoog5 0.2708, #20 SDCF9 0.2600</li><li>the 0.3195 quoted in the session prompt is no longer the leader: on 2026-10-06 the top public score is 0.3345</li></ul></div><div class='panel'><h3>S3 &middot; DrivenData forum thread 11516 - &#x27;Scoring clarification: are known USGS/INGENIOUS faults masked when scoring, and are they in the Final Round label set?&#x27;</h3><p><a href='https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516'>https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516</a> &middot; <span class='ok'>reached</span></p><ul><li>DrivenData staff (chrisk-dd, 2026-09-16): &#x27;Pixels corresponding to known USGS/INGENIOUS faults are masked / excluded from evaluation, so they do not count towards penalty terms&#x27;</li><li>same reply: &#x27;Re-evaluation will also mask/exclude the existing USGS/INGENIOUS faults&#x27;</li><li>consequence implemented in src/gems46/metric.py: predictions on/near masked pixels earn no credit but predicting *on* them is neutral; predicting within the 300 m kernel of them still pays the partial FP tax</li></ul></div><div class='panel'><h3>S4 &middot; Peng, C.-K., Buldyrev, S. V., Havlin, S., Simons, M., Stanley, H. E., Goldberger, A. L. (1994). Mosaic organization of DNA nucleotides. Physical Review E 49(5), 1685-1689</h3><p><a href='https://doi.org/10.1103/PhysRevE.49.1685'>https://doi.org/10.1103/PhysRevE.49.1685</a> &middot; <span class='warn'>NOT reachable from the sandbox; checked via https://archive.physionet.org/physiotools/dfa/, https://cran.r-project.org/package=fractal</span></p><ul><li>origin of detrended fluctuation analysis (DFA): integrate the series, split into boxes of length n, remove the local least-squares line in each box, take the RMS fluctuation F(n), and take the slope of log F(n) vs log n as the scaling exponent alpha</li><li>the estimator implemented in src/gems46/dfa.py follows this definition exactly (verified against an independent O(N) transcription in tests/test_dfa.py)</li></ul></div><div class='panel'><h3>S5 &middot; Varotsos, P. A., Sarlis, N. V., Skordas, E. S. (2009). Detrended fluctuation analysis of the magnetic and electric field variations that precede rupture. Chaos 19(2), 023114</h3><p><a href='https://doi.org/10.1063/1.3130931'>https://doi.org/10.1063/1.3130931</a> &middot; <span class='warn'>NOT reachable from the sandbox; checked via https://pubmed.ncbi.nlm.nih.gov/19566249/, https://arxiv.org/abs/0904.2465, https://pubs.aip.org/aip/cha/article/19/2/023114/909537/</span></p><ul><li>pre-rupture magnetic field variations appear random at short time lags and become long-range correlated at lags above the mean inter-spike interval, with scaling exponent alpha around 0.9</li><li>pre-seismic electric field variations of several hours to days show scale invariance with alpha approximately 1 over about five orders of magnitude</li><li>IMPORTANT NUANCE (recorded so the hypothesis is not overstated): the paper&#x27;s shift is a *crossover in time lag* within a time series - not a demonstration that a spatial scaling exponent changes across a geological fault. GEMSDOE46 adapts DFA to transects of a spatial grid; that adaptation is this project&#x27;s hypothesis (H46-1), not a published result.</li></ul></div><div class='panel'><h3>S6 &middot; USGS GeoDAWN airborne magnetic and radiometric surveys, northwestern Great Basin (data behind the competition features)</h3><p><a href='https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and'>https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and</a> &middot; <span class='warn'>NOT reachable from the sandbox; checked via DrivenData page 967 (S1) which links it</span></p><ul><li>provenance and survey design of the magnetic/radiometric grids whose derivatives appear as the official bands used here</li><li>the GeoDAWN study area map the competition uses to define the inference region</li></ul></div><div class='panel'><h3>S7 &middot; USGS State Geologic Map Compilation (SGMC) fault traces, rasterised to the competition grid</h3><p><a href='https://www.usgs.gov/publications/state-geologic-map-compilation-sgmc'>https://www.usgs.gov/publications/state-geologic-map-compilation-sgmc</a> &middot; <span class='warn'>NOT reachable from the sandbox; checked via restored from the group&#x27;s public mirror GEMSDOE24 data/external/derived_sgmc_faults_100m_u8.tif, sha256 643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0</span></p><ul><li>the off-catalogue proxy truth used as the main validation instrument (83,593 rasterised fault pixels inside the competition footprint; 66,277 after excluding pixels that coincide with the published catalogue)</li><li>CAVEAT: the mirror is integrity-pinned locally but was NOT re-downloaded from USGS in this sandbox, and SGMC is a *different* fault population from the private test set (expert-identified new faults). It is a proxy, not ground truth.</li></ul></div><div class='panel'><h3>S8 &middot; Group mirrors of the competition files (login-walled at the official data page)</h3><p><a href='https://www.drivendata.org/competitions/306/competition-doe-gems/data/'>https://www.drivendata.org/competitions/306/competition-doe-gems/data/</a> &middot; <span class='ok'>reached</span> &middot; <span class=warn>third-party mirror</span></p><ul><li>training_features.tif sha256 4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5 (419 MB, 19 float32 bands) - recomputed here after reassembling the five parts, byte-identical to the pinned hash</li><li>labels.tif / existing_faults.tif sha256 7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093 (byte-identical to each other; 60,988 labelled pixels inside the footprint)</li><li>sample_submission.tif sha256 2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc (5,167,373 finite pixels = the official scored footprint; values are 1 on the labelled faults, 0 elsewhere, so it is also a copy of the catalogue raster rather than an all-zero &#x27;total fault absence&#x27; file as page 967 describes)</li></ul></div><div class='panel'><h3>S9 &middot; GEMSDOE32 (group) - forensic autopsy and emission analysis of the dotted H19-5 family</h3><p><a href='https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html'>https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html</a> &middot; <span class='ok'>reached</span> &middot; <span class=warn>third-party mirror</span></p><ul><li>owner-reported leaderboard scores and emitted pixel counts for the H19-5 lineage (0.1922 solid 121,131 px; 0.2477 d1.5 60,069 px; 0.2600 d2.8 44,090 px)</li><li>the B=2 catalogue-buffer removal rule on the d2.8 base reported as 0.2778 with 37,654 emitted pixels</li><li>the claim (not verified here) that the d1.5/d2.8 files are strict pixel subsets of their H19-5 field</li></ul></div></main>
-<footer class="wrap">Every number on this site is regenerated from <code>registry/*.json</code> by
-<code>scripts/build_site.py</code>. Scores marked <em>owner-reported</em> are not organiser receipts.
-Retrieved 2026-10-06 UTC.</footer>
-</body></html>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="GEMS46 home"><span class="brand-mark" aria-hidden="true">46</span><span class="brand-copy"><strong>GEMS · DOE</strong><span>Fault-mapping research</span></span></a>
+      <nav class="site-nav" aria-label="Main navigation"><a href="index.html">Overview</a><a href="hypotheses.html">Hypotheses</a><a href="analysis.html">Score analysis</a><a href="sources.html" aria-current="page">Sources</a><a class="nav-cta" href="guide.html">Submission guide</a></nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Provenance · status · limitations</p>
+        <h1>Sources that support the claim.<br>Limits that bound it.</h1>
+        <p class="lead">Official sources were reviewed for the task, metric, upload format, data access, external-data licensing, and candidate availability. Catalogue metadata checks confirm that records exist—not that every input has been downloaded, spatially validated, or proven useful.</p>
+      </div>
+    </section>
+
+    <section class="section-sm">
+      <div class="container">
+        <div class="callout warn" id="leaderboard-terms">
+          <h3>Leaderboard terms: no automated or manual monitoring feed</h3>
+          <p>DrivenData's <a href="https://www.drivendata.org/termsofuse/" target="_blank" rel="noopener noreferrer">Terms of Use</a> prohibit robots/spiders/automatic access for monitoring or copying, and manual monitoring/copying without prior written consent. This site keeps a dated research note and links to the official live board. It does not scrape, poll, embed, mirror, or claim to auto-refresh. Seek written permission or an authorized API before changing that policy.</p>
+          <p class="small">Current link: <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener noreferrer">official DOE GEMS leaderboard ↗</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="competition-sources-title">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Competition authority</p><h2 id="competition-sources-title">Rules, metric, and data access</h2><p>Always use the live competition pages as final authority before modeling or upload.</p></div></div>
+        <div class="source-list">
+          <article class="source-item"><h3><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank" rel="noopener noreferrer">Official competition homepage ↗</a></h3><p>Competition scope, enrollment, external-data guidance, and deadline. As reviewed 2026-10-06, the homepage listed Dec. 3, 2026 at 11:59 p.m. UTC.</p></article>
+          <article class="source-item"><h3><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener noreferrer">Official problem, metric, and format page ↗</a></h3><p>Fault-mapping task; distance-weighted Tversky metric with 300 m triangular support, α=0.2 and β=0.8; one float32 prediction layer on EPSG:32611 at 100 m, matching the official grid and valid footprint.</p></article>
+          <article class="source-item"><h3><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf" target="_blank" rel="noopener noreferrer">Official rules PDF ↗</a></h3><p>Rules describe up to three feedback submissions per week, one selected final submission for both rounds, reproducibility duties, and generative-AI disclosure. Its deadline wording (5 p.m. ET) differs from the homepage; use the earlier time unless organizers clarify.</p></article>
+          <article class="source-item"><h3><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/" target="_blank" rel="noopener noreferrer">Official Data page ↗</a></h3><p>Unauthenticated access redirected to login on 2026-10-06. No challenge rasters or labels were obtained; no authentication bypass was attempted.</p></article>
+          <article class="source-item"><h3><a href="https://github.com/drivendataorg/gems-prize-reference-solution" target="_blank" rel="noopener noreferrer">Official reference solution ↗</a></h3><p>Organizer-provided code reference. No local metric/baseline comparison could be run without authorized challenge data.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background:#eaf1ed" aria-labelledby="availability-title">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Candidate-data prechecks · 2026-10-06</p><h2 id="availability-title">Official catalogues returned useful records.</h2><p>All queries below used an approximate broad rectangle associated with the GeoDAWN/competition area. It is not the official training-label footprint.</p></div></div>
+        <div class="card-grid two">
+          <article class="card">
+            <p class="card-label">H46-1 · InSAR availability</p>
+            <h3>NASA OPERA DISP-S1</h3>
+            <p>NASA/JPL's Level-3 OPERA DISP-S1 is a time-series LOS displacement product with 30 m posting. NASA CMR returned online-accessible granules overlapping parts of the broad area, including a central-strip granule spanning 2025-09-17 to 2025-09-23. The sample records demonstrate partial-area availability only; full grid tiling, valid observation count, data quality, and the file payload have not been checked.</p>
+            <p><a href="https://doi.org/10.5067/SNWG/OPL3DISPS1-V1" target="_blank" rel="noopener noreferrer">Dataset DOI ↗</a> · <a href="https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C3294057315-ASF&amp;bounding_box=-118.9,39.0,-118.2,39.8&amp;page_size=5&amp;sort_key=-start_date" target="_blank" rel="noopener noreferrer">CMR query: central-area records ↗</a> · <a href="https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C3294057315-ASF&amp;bounding_box=-120.0024,37.3641,-116.1415,40.7247&amp;page_size=5&amp;sort_key=-start_date" target="_blank" rel="noopener noreferrer">CMR query: broad rectangle ↗</a></p>
+            <p class="small">No OPERA payload was downloaded. NASA's catalogue says products are openly shared; preserve citation and product metadata. Earthdata account/access requirements must be followed.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">H46-1 · raw-SLC availability check</p>
+            <h3>Copernicus Sentinel-1C SLC</h3>
+            <p>The documented broad-area OData query returned S1A-only catalog products. It did not establish a repeat-pass pair, S1C/S1D coverage, payload access, complete AOI coverage, or raw-SLC/InSAR feasibility. Sentinel-1A operations ended 2026-06-29; the mission transition alone is not evidence that a suitable current repeat pair covers this grid. No SLC files, baselines, coherence, or interferograms were inspected.</p>
+            <p><a href="https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-missions/sentinel-1" target="_blank" rel="noopener noreferrer">Official Sentinel-1 collection ↗</a> · <a href="https://documentation.dataspace.copernicus.eu/APIs/OData.html" target="_blank" rel="noopener noreferrer">OData docs ↗</a> · <a href="https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/Time_to_say_goodbye_to_Sentinel-1A" target="_blank" rel="noopener noreferrer">ESA mission transition ↗</a></p>
+            <p class="small">Sentinel data are free/open with required source and modified-data attribution. Copernicus Data Space registration is required for data access. Data licensing does not waive the competition's independent-verification/sharing requirements.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">H46-2 · hydrology availability</p>
+            <h3>USGS Water Data APIs</h3>
+            <p>The modern `field-measurements` API returned example groundwater-level records with locations inside the broad rectangle. The `monitoring-locations` API returned groundwater wells there. This demonstrates some data presence, not dense coverage; returned readings span different dates/vertical datums and include multiple agencies.</p>
+            <p><a href="https://api.waterdata.usgs.gov/ogcapi/v0/collections/field-measurements/items?bbox=-120.0024,37.3641,-116.1415,40.7247&amp;f=json&amp;limit=5" target="_blank" rel="noopener noreferrer">Field-measurement sample query ↗</a> · <a href="https://api.waterdata.usgs.gov/ogcapi/v0/collections/monitoring-locations/items?bbox=-120.0024,37.3641,-116.1415,40.7247&amp;f=json&amp;limit=100&amp;filter=site_type_code%20eq%20%27GW%27" target="_blank" rel="noopener noreferrer">Groundwater-site query ↗</a> · <a href="https://api.waterdata.usgs.gov/docs/ogcapi/migration/" target="_blank" rel="noopener noreferrer">USGS migration guide ↗</a></p>
+            <p class="small">The legacy `/gwlevels` API was decommissioned; use modern `/field-measurements`. Check agency, aquifer, datum, time, well depth, pumping, and spatial support before inference.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">H46-3 · alteration availability</p>
+            <h3>USGS ASTER-derived maps</h3>
+            <p>A USGS CC0 release maps hydrothermal alteration types/mineral groups across the northwestern conterminous United States. A second USGS release covers central/southern Basin-and-Range plates. Neither was overlaid with the official grid in this session, and a prior owner-reported `conj_alteration_mag` test may overlap.</p>
+            <p><a href="https://doi.org/10.5066/F7CR5RK7" target="_blank" rel="noopener noreferrer">2017 western-U.S. data release ↗</a> · <a href="https://doi.org/10.3133/ofr20131139" target="_blank" rel="noopener noreferrer">Basin-and-Range report ↗</a> · <a href="https://www.earthdata.nasa.gov/data/alerts-outages/aster-swir-anomaly" target="_blank" rel="noopener noreferrer">ASTER SWIR limitation ↗</a></p>
+            <p class="small">ASTER SWIR observations acquired since April 2008 are unusable. Verify per-pixel acquisition dates, valid bands, registration, and exact coverage; do not equate alteration polygons with fault traces.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">H46-4 · temperature availability</p>
+            <h3>USGS Landsat Collection 2 ST</h3>
+            <p>USGS publishes Level-2 surface-temperature products and scaling/QA documentation. Exact cloud-free, usable scene count for this study footprint was not queried or downloaded.</p>
+            <p><a href="https://www.usgs.gov/landsat-missions/landsat-collection-2-surface-temperature" target="_blank" rel="noopener noreferrer">Collection 2 ST documentation ↗</a> · <a href="https://data.usgs.gov/datacatalog/data/USGS:EROS5e83d14f2fc39685" target="_blank" rel="noopener noreferrer">Landsat 8–9 Level-2 catalog ↗</a></p>
+            <p class="small">Thermal native sampling is coarser than the distributed grid, and weather, vegetation, topography, emissivity, and human activity confound the geothermal signal.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">Competition-area baselines</p>
+            <h3>GeoDAWN · INGENIOUS · 3DEP</h3>
+            <p>Official USGS/DOE sources provide GeoDAWN and public INGENIOUS materials; USGS 3DEP products are free/unrestricted. Exact competition grid coverage, versions, permissions for each component, and data lineage still require review.</p>
+            <p><a href="https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7" target="_blank" rel="noopener noreferrer">GeoDAWN ScienceBase item ↗</a> · <a href="https://gdr.openei.org/submissions/1391" target="_blank" rel="noopener noreferrer">GDR 1391 / INGENIOUS ↗</a> · <a href="https://www.usgs.gov/3d-elevation-program" target="_blank" rel="noopener noreferrer">USGS 3DEP ↗</a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="scientific-context-title">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Scientific context</p><h2 id="scientific-context-title">Mechanisms are supported; score gains are not.</h2><p>Primary/official work motivates the hypotheses, but none establishes performance on the hidden challenge labels.</p></div></div>
+        <div class="source-list">
+          <article class="source-item"><h3><a href="https://pubs.usgs.gov/fs/fs06903/" target="_blank" rel="noopener noreferrer">USGS InSAR fact sheet: concealed fault and groundwater barrier ↗</a></h3><p>USGS describes linear groundwater barriers in interferograms and a previously unrecognized Santa Clara Valley fault later confirmed by seismic imaging. It also warns pumping deformation may mimic or obscure tectonic signals.</p></article>
+          <article class="source-item"><h3><a href="https://pubs.usgs.gov/publication/70021516" target="_blank" rel="noopener noreferrer">Amelung et al. (1999): fault control of Las Vegas subsidence ↗</a></h3><p>InSAR-derived subsidence was spatially controlled by geologic structures and sediment composition. This is a regional analogue, not proof of new-fault detection in GEMS.</p></article>
+          <article class="source-item"><h3><a href="https://pubs.usgs.gov/publication/ofr74271" target="_blank" rel="noopener noreferrer">Hose & Taylor (1974): northern Nevada geothermal systems ↗</a></h3><p>USGS discusses hot springs along Basin-and-Range faults and meteoric-fluid circulation. This supports geological rationale, not a model score.</p></article>
+          <article class="source-item"><h3><a href="https://pubs.usgs.gov/publication/70271419" target="_blank" rel="noopener noreferrer">Faulds et al. (2025): Reese River Valley / INGENIOUS ↗</a></h3><p>Recent USGS work discusses fault intersections, concealed geothermal potential, and subtle anomalies in north-central Nevada. Review labels, provenance, and leakage before using related material as an independent test.</p></article>
+          <article class="source-item"><h3><a href="https://www.usgs.gov/publications/detecting-geothermal-anomalies-and-evaluating-lst-geothermal-component-combining" target="_blank" rel="noopener noreferrer">Romaguera et al. (2018): geothermal LST component ↗</a></h3><p>USGS Publications Warehouse record describes topographic false positives and uncertainty in thermal remote-sensing estimates; terrain correction is essential.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-sm" style="background:#f7f8f4">
+      <div class="container">
+        <p class="small">Full source register, exact query dates, and provenance caveats: <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/arena/61460a10-gemsdoe46/docs/research/source-register.md" target="_blank" rel="noopener noreferrer">detailed source register on GitHub ↗</a>. Competition inputs remain unavailable; external-data prechecks do not substitute for holdout validation.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-wrap"><div><div class="footer-brand">GEMSDOE46 · Sources and limits</div><p>Links are attributed to their issuing organizations. No underlying challenge or satellite payload has been redistributed here.</p></div><nav class="footer-links" aria-label="Footer navigation"><a href="index.html">Overview</a><a href="hypotheses.html">Hypotheses</a><a href="analysis.html">Score analysis</a><a href="guide.html">Submission guide</a></nav></div></footer>
+</body>
+</html>
