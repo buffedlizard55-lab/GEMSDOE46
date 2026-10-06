@@ -115,6 +115,13 @@
    "title": "The family's three live-scored files are one dot set with different near-catalogue extras",
    "detail": "Measured: C (37,654 px, 0.2778) is an exact subset of B (40,199 px, 0.2708), which is an exact subset of A (44,090 px, 0.2600); all three share the identical 37,654-pixel d_cat>2 px core. The entire 0.2600->0.2778 progression is the removal of dots within 200 m of the published catalogue. Any new arm must therefore win on placement of new dots, not on re-thinning this set.",
    "status": "documented in docs/research/h47-review.md"
+  },
+  {
+   "id": "IR-46-13",
+   "severity": "medium",
+   "title": "R11 session: all three arms negative; R11-D TIF held on both gates",
+   "detail": "R11-A windowed-DFA boundaries stopped for futility at synthetics (4.4 km mislocalization on locked step). R11-C tilt zero-crossings suspended at synthetics (not robust to grid noise, 6 iterations). R11-D matched-filter contacts ran locked: mean block DTI 0.06098743 vs 0.10067412 best comparator; max |correlation| 0.5431 vs smoothed RTP curvature. Unique TIF published for research; no competition slot used.",
+   "status": "HOLD_DO_NOT_SUBMIT"
   }
  ]
 }
