@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""R11 layer screen: which *unused* official/USGS layers carry off-catalogue fault signal?
+"""R12 layer screen: which *unused* official/USGS layers carry off-catalogue fault signal?
 
 Everything here is measured, not assumed.  The instrument is the same one used by
 the earlier sessions (off-catalogue SGMC proxy truth, catalogue exclusion, matched
@@ -148,7 +148,7 @@ def main() -> None:
               f"  mean_k {rows[-1]['mean_k']:.4f}", flush=True)
 
     rows.sort(key=lambda r: -r["dti"])
-    out = ROOT / "evidence/r11_layer_screen.json"
+    out = ROOT / "evidence/r12_layer_screen.json"
     out.write_text(json.dumps(dict(instrument="off-catalogue SGMC proxy, matched mass 37,654, "
                                   "min_dist 3, smooth 1.85, catalogue exclusion 2 iterations",
                                    budget=BUDGET, rows=rows), indent=2) + "\n")

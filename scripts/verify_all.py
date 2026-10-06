@@ -96,6 +96,38 @@ def main() -> int:
 
     print()
     print("=" * 96)
+    print("5b. H47 artifact independent on-disk audit (registry/h47.json -> emission)")
+    print("=" * 96)
+    h47 = ROOT / "registry" / "h47.json"
+    if not h47.exists():
+        print("  missing registry/h47.json - run scripts/run_h47.py")
+        ok = False
+    else:
+        rec47 = json.loads(h47.read_text())
+        rec = rec47["emission"]
+        # The portal-proof format is the one every live-scored family file uses: all values finite
+        # in [0,1], zeros outside the footprint.  The NaN-outside twin matches the template's
+        # footprint and is kept as the alternative allowed by the problem statement.
+        for twin in ("zeros", "nan"):
+            path = ROOT / rec[twin]["path"]
+            rep = G.audit(path, ROOT / "data" / "raw" / "sample_submission.tif")
+            file_sha = hashlib.sha256(path.read_bytes()).hexdigest()
+            format_ok = (rep["finite_px"] == rep["width"] * rep["height"]) if twin == "zeros" \
+                else bool(rep["footprint_match"] and rep["nan_outside_footprint"])
+            good = bool(rep["range_ok"] and rep["positive_px"] == rec["emitted_px"]
+                        and file_sha == rec[twin]["sha256"] and rec[twin]["audit"]["passes"]
+                        and format_ok)
+            ok &= good
+            print(f"  {'OK  ' if good else 'FAIL'} {path.name}")
+            print(f"       bands={rep['count']} dtype={rep['dtype']} crs={rep['crs']} "
+                  f"{rep['height']}x{rep['width']} transform_match={rep['transform_match']} "
+                  f"finite_px={rep['finite_px']:,}")
+            print(f"       footprint_match={rep['footprint_match']} min={rep['min']} "
+                  f"max={rep['max']} range_ok={rep['range_ok']} positive={rep['positive_px']}")
+            print(f"       sha256={file_sha[:16]}... verdict="
+                  f"{rec47.get('screen', {}).get('verdict', 'unscreened')}")
+
+    print("=" * 96)
     print("6. live-score calibration arithmetic (registry/emission_model.json)")
     print("=" * 96)
     em = ROOT / "registry" / "emission_model.json"
@@ -121,39 +153,68 @@ def main() -> int:
 
     print()
     print("=" * 96)
-    print("8. R11 independent on-disk format audit + pinned USGS layers + locked-gate consistency")
+    print("8. R12 independent on-disk audit + pinned USGS layers + two-instrument gate consistency")
     print("=" * 96)
-    from run_r11 import audit as audit11
-    r11 = json.loads((ROOT / "registry/r11.json").read_text())
-    cur11 = audit11(ROOT / "docs/r11" / r11["file"], ROOT / "data/raw/sample_submission.tif")
-    same = cur11 == r11["audit"]
+    from run_r12 import audit as audit12
+    r12 = json.loads((ROOT / "registry/r12.json").read_text())
+    cur12 = audit12(ROOT / "docs/r12" / r12["file"], ROOT / "data/raw/sample_submission.tif")
+    same = cur12 == r12["audit"]
     ok &= same
-    print(f"  {'OK  ' if same else 'FAIL'} {r11['file']}")
-    print(f"       sha256={cur11['sha256']}")
-    print(f"       positive={cur11['positive']} min={cur11['min']} max={cur11['max']} "
-          f"crs={cur11['crs']} shape={cur11['shape']}")
+    print(f"  {'OK  ' if same else 'FAIL'} {r12['file']}")
+    print(f"       sha256={cur12['sha256']}")
+    print(f"       positive={cur12['positive']} min={cur12['min']} max={cur12['max']} "
+          f"crs={cur12['crs']} shape={cur12['shape']}")
     for item in json.loads((ROOT / "registry/data_manifest.json").read_text())["files"]:
-        if not item["id"].startswith("r11_layer_"):
+        if not item["id"].startswith("r12_layer_"):
             continue
-        p = ROOT / item["dest"]
-        got = sha256(p) if p.exists() else None
+        pp = ROOT / item["dest"]
+        got = sha256(pp) if pp.exists() else None
         good = got == item["sha256"]
         ok &= good
         print(f"  {'OK  ' if good else 'FAIL'} {item['dest']}  {(got or 'MISSING')[:16]}...")
     # gate arithmetic re-derived from the receipt, not trusted
-    folds = r11["locked_folds"]
-    best = r11["best_comparator"]
-    delta = [f["scores"]["R11"]["dti"] - f["scores"][best]["dti"] for f in folds]
+    folds = r12["locked_folds"]
+    best = r12["best_comparator"]
+    delta = [f["scores"]["R12"]["dti"] - f["scores"][best]["dti"] for f in folds]
     mean_delta = sum(delta) / len(delta)
-    ci = r11["paired_bootstrap_95"]
-    consistent = (abs(mean_delta - r11["paired_delta_vs_best"]) < 1e-12
-                  and bool(ci[0] > 0) == bool(r11["gate_passed"])
-                  and len(folds) >= 8
-                  and r11["mean_locked_dti"]["R11"] > r11["mean_locked_dti"][best])
+    ci = r12["paired_bootstrap_95"]
+    strat = r12["stratified_instrument"]
+    inc = "GEMSDOE32-owner-reported-02778"
+    blocks_gate = bool(len(folds) >= 8 and ci[0] > 0.0
+                       and abs(mean_delta - r12["paired_delta_vs_best"]) < 1e-12
+                       and r12["mean_locked_dti"]["R12"] > r12["mean_locked_dti"][best])
+    strat_gate = bool(strat["scores"]["R12"]["dti"] - strat["scores"][inc]["dti"] > 0.0)
+    consistent = (blocks_gate == bool(r12["gate_locked_blocks_200m"])
+                  and strat_gate == bool(r12["gate_stratified_whole_domain"])
+                  and (blocks_gate and strat_gate) == bool(r12["gate_passed"])
+                  and (("PROXY_GATE_PASSED" in r12["status"]) == bool(r12["gate_passed"])))
     ok &= consistent
-    print(f"  {'OK  ' if consistent else 'FAIL'} gate re-derived: mean paired delta {mean_delta:+.6f}, "
-          f"bootstrap 95% [{ci[0]:+.6f}, {ci[1]:+.6f}], blocks {len(folds)}, "
-          f"status {r11['status']}, strict-R10 rule {'pass' if r11['gate_strict_r10_style'] else 'fail'}")
+    print(f"  {'OK  ' if blocks_gate else 'FAIL'} 200 m-exclusion locked blocks: mean paired delta "
+          f"{mean_delta:+.6f}, bootstrap 95% [{ci[0]:+.6f}, {ci[1]:+.6f}], blocks {len(folds)}")
+    print(f"  {'OK  ' if strat_gate else 'FAIL'} stratified instrument ({strat['instrument']}): "
+          f"R12 {strat['scores']['R12']['dti']:.5f} vs incumbent {strat['scores'][inc]['dti']:.5f}, "
+          f"delta {strat['delta_vs_incumbent']:+.5f}, hit fraction "
+          f"{strat['hit_fraction']['R12']:.4f} vs {strat['hit_fraction'][inc]:.4f}, "
+          f"random-at-matched-mass T={strat['uniform_random_at_matched_mass']['tp']}")
+    print(f"  {'OK  ' if consistent else 'FAIL'} combined status {r12['status']}; "
+          f"strict-R10 rule {'pass' if r12['gate_strict_r10_style'] else 'fail'}")
+
+    print()
+    print("=" * 96)
+    print("9. Held candidates (R11, H47) stay on disk with the status their receipts record")
+    print("=" * 96)
+    for tag, key in (("r11", None), ("h47", "emission")):
+        rec = json.loads((ROOT / f"registry/{tag}.json").read_text())
+        if tag == "r11":
+            f = ROOT / "docs/r11" / rec["file"]
+            status, positive = rec["status"], rec["audit"]["positive"]
+        else:
+            f = ROOT / rec["emission"]["zeros"]["path"].replace(str(ROOT) + "/", "")
+            status = rec["screen"]["verdict"]
+            positive = rec["emission"]["zeros"]["audit"]["positive_px"]
+        good = f.is_file() and status == "HOLD_DO_NOT_SUBMIT" and positive == 37654
+        ok &= good
+        print(f"  {'OK  ' if good else 'FAIL'} {tag}: {f.name}  {status}  {positive} dots")
     print("ALL COMPUTATIONAL CHECKS PASSED (not a scoring endorsement)" if ok else "SOME CHECKS FAILED")
     return 0 if ok else 1
 

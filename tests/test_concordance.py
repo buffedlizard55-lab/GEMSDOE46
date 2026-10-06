@@ -1,4 +1,4 @@
-"""Unit tests for the R11 concordance module (src/gems46/concordance.py).
+"""Unit tests for the R12 concordance module (src/gems46/concordance.py).
 
 These are deterministic, dependency-free checks of the numerical operators; they do
 not touch the 419 MB competition rasters.

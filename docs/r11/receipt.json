@@ -1,40 +1,43 @@
 {
-  "experiment": "H46-R11",
-  "generated_utc": "2026-10-06T16:48:17.479046+00:00",
-  "file": "gems46-r11-scarp-rad-concordance-23e807e2de9f-zeros.tif",
-  "hypothesis": "H46-R11-A: 2 m LiDAR scarp morphology primary with mild airborne gamma-ray spectrometric reweighting and a quantile-capped radiometric fallback where LiDAR is absent. H46-R11-B (ridge-axis thinning) and a strong concordance gate (w>=0.5) were both falsified on the selection blocks and are not in the shipped field.",
-  "note": "R11 scarp-morphology x gamma-ray concordance on the GeoDAWN/3DEP USGS products; 37,654 dots; 0.25 concordance weight; fallback q=0.90; thin=0",
-  "frozen_configuration": {
-    "w": 0.25,
-    "fallback_quantile": 0.9,
-    "thin": false
-  },
+  "experiment": "H46-R11D",
+  "generated_utc": "2026-10-06T16:38:44.262627+00:00",
+  "file": "gems46-r11d-matchedfilter-5caba5cc4ffc-zeros.tif",
+  "note": "R11-D step-template matched filter (Pearson r, 4 angles, dual-physics coincidence), RTP + isostatic gravity; 37,654 dots; research candidate, proxy-gated, no leaderboard score.",
   "parameters": {
+    "template_half_width_px": 12,
+    "template_taps": 25,
+    "angles": [
+      0,
+      45,
+      90,
+      135
+    ],
+    "r_floor": 0.8,
+    "min_valid_frac": 0.8,
+    "bands": [
+      2,
+      13
+    ],
     "budget": 37654,
-    "min_dist": 3,
+    "min_dist_argument": 3,
     "smooth_px": 1.85,
+    "catalogue_cross_dilation_iterations": 2,
     "block_grid": [
-      6,
-      6
+      4,
+      4
     ],
     "guard_pixels": 3,
-    "catalogue_dilation_iterations": 2,
-    "bootstrap_seed": 4611,
-    "morph_bands": [
-      "downface_max",
-      "upface_max",
-      "step_max",
-      "lappos_max"
-    ],
-    "rad_bands": [
-      "ThK",
-      "TC",
-      "Th"
-    ]
+    "bootstrap_seed": 4613,
+    "correlation_sampling": "every eighth pixel of fixed common-valid mask"
+  },
+  "session_arms": {
+    "R11A": "STOPPED FOR FUTILITY at synthetic stage (Amendment 2): windowed-DFA boundary mislocalized 4.4 km on locked step; no TIF.",
+    "R11C": "SUSPENDED at synthetic stage (Addendum 4): tilt zero-crossing not robust to grid noise after 6 iterations; no TIF.",
+    "R11D": "This experiment: matched-filter contacts; D-S1/D-S2/D-S3 all passed (1.0/0.0/0.0)."
   },
   "source_hashes": {
-    "scripts/run_r11.py": "54f17f21ecaccf1538c97d159357aabf97bfa192cf7f4992c9d47e5ad87308b4",
-    "src/gems46/concordance.py": "5a252e373d9853fccb0ca3d54357cdcbaf123eb307bcffd3947b0a700fb74acd",
+    "scripts/run_r11d.py": "19e38565618a1d780fe17af906474a2ddf4233a91db1a8932c9ec8d3fbfd948c",
+    "src/gems46/matchedfilter.py": "3fb23377ca270fa39e0a2d16c5399dc231c8b656b438489e20b476b2ffc78c13",
     "src/gems46/emission.py": "181c91ae7c55320d75359da04e35921a0248d2267e765767d35e98a41effdae2",
     "src/gems46/metric.py": "48303433eb302ccdc3a07e87ed67c6c244d4495db3b967d26ce4c00c3a71b584"
   },
@@ -42,10 +45,7 @@
     "data/raw/training_features.tif": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
     "data/raw/labels.tif": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
     "data/raw/sample_submission.tif": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
-    "data/external/sgmc_faults_100m_u8.tif": "643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0",
-    "data/external/geodawn_rad_u8.tif": "c22420f75999030d7cc65c9e31e50d232ea6158423bca051613a18a8b20ba682",
-    "data/external/geodawn_extensions_u8.tif": "a35a9c6d2a14786f4dab85481ee59769213072f5dab5b2535ea82ae4d9bb7d9b",
-    "data/external/lidar_scarp_features_u8.tif": "d580bb8bdcdb941e32fefb8b38044bc5bf04e199bf2e83498c3576e6fc465568"
+    "data/external/sgmc_faults_100m_u8.tif": "643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0"
   },
   "audit": {
     "checks": {
@@ -61,9 +61,9 @@
     "min": 0.0,
     "max": 1.0,
     "positive": 37654,
-    "sha256": "73fd1d8340e32d0175ca7ddb084c50f561a04a2b6bd58f80426d7934cef157c7",
-    "pixel_sha256": "23e807e2de9f7b9d3adde4bf81c41e2f424f55ab40c7376351e964428f3968c9",
-    "bytes": 353854,
+    "sha256": "ac7c6ac1d0cb136086f90fbee2901faccb893b938d27434998ad73f636a08186",
+    "pixel_sha256": "5caba5cc4ffc59687289f7a174aaaccf7886e5776c512a70a059d18ebd510dac",
+    "bytes": 361195,
     "shape": [
       3730,
       3292
@@ -81,1638 +81,182 @@
       1.0
     ]
   },
-  "coverage": {
-    "footprint_px": 5167373,
-    "domain_px": 4862825,
-    "lidar_domain_px": 3653329,
-    "lidar_share_of_domain": 0.751277086878512,
-    "lidar_share_of_footprint": 0.7536634185300732,
-    "off_catalogue_truth_px": 66277,
-    "catalogue_px": 60988
+  "support_pixels": 4845557,
+  "scorer_diagnostics": {
+    "tmi_cov": 0.4193582460037983,
+    "grav_cov": 0.4193582460037983,
+    "field_max": 0.9760972261428833,
+    "field_mean": 0.6313676834106445
   },
-  "selection_sweep": [
-    {
-      "config": {
-        "w": 0.25,
-        "fallback_quantile": 0.9,
-        "thin": false,
-        "key": "w0.25-fb0.90-thin0"
-      },
-      "mean_select_dti": 0.15291686631666834,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.25,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.9,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.3960025906562805,
-        "fallback_scale": 0.716048368701047,
-        "fallback_cap": 0.7160482406616211,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.7163330316543579,
-        "morph_p99": 0.8826993703842163
-      }
+  "survey_block_audit": {
+    "block_1": {
+      "cells": 2166563,
+      "emitted": 18834,
+      "truth": 31515,
+      "field_mean": 0.65416419506073
     },
-    {
-      "config": {
-        "w": 0.25,
-        "fallback_quantile": 0.99,
-        "thin": false,
-        "key": "w0.25-fb0.99-thin0"
-      },
-      "mean_select_dti": 0.1501673896599871,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.25,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.99,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.3960025906562805,
-        "fallback_scale": 0.8823075084044054,
-        "fallback_cap": 0.8823073506355286,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.8826583623886108,
-        "morph_p99": 0.8826993703842163
-      }
+    "block_2": {
+      "cells": 1464183,
+      "emitted": 9788,
+      "truth": 18005,
+      "field_mean": 0.6040636897087097
     },
-    {
-      "config": {
-        "w": 0.5,
-        "fallback_quantile": 0.9,
-        "thin": false,
-        "key": "w0.50-fb0.90-thin0"
-      },
-      "mean_select_dti": 0.14730826179876308,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.5,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.9,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.2854982316493988,
-        "fallback_scale": 0.5871195650910553,
-        "fallback_cap": 0.587119460105896,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.587352991104126,
-        "morph_p99": 0.8413678407669067
-      }
+    "block_3": {
+      "cells": 706893,
+      "emitted": 5258,
+      "truth": 4439,
+      "field_mean": 0.6200491786003113
     },
-    {
-      "config": {
-        "w": 0.25,
-        "fallback_quantile": 0.0,
-        "thin": false,
-        "key": "w0.25-fb0.00-thin0"
-      },
-      "mean_select_dti": 0.14624285972988063,
-      "blocks": 12,
-      "emitted": 16825,
-      "requested": 19780,
-      "short_blocks": 2,
-      "diagnostics": {
-        "w": 0.25,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.0,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.3960025906562805,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.0,
-        "morph_p99": 0.8826993703842163
-      }
-    },
-    {
-      "config": {
-        "w": 0.0,
-        "fallback_quantile": 0.9,
-        "thin": false,
-        "key": "w0.00-fb0.90-thin0"
-      },
-      "mean_select_dti": 0.1439009610698692,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.9,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.49927201867103577,
-        "fallback_scale": 0.876485206452347,
-        "fallback_cap": 0.8764850497245789,
-        "prescore_max": 0.999952495098114,
-        "max": 1.0,
-        "fallback_max": 0.8764860033988953,
-        "morph_p99": 0.9741857051849365
-      }
-    },
-    {
-      "config": {
-        "w": 0.5,
-        "fallback_quantile": 0.99,
-        "thin": false,
-        "key": "w0.50-fb0.99-thin0"
-      },
-      "mean_select_dti": 0.14228486818722555,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.5,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.99,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.2854982316493988,
-        "fallback_scale": 0.8409943296303146,
-        "fallback_cap": 0.8409941792488098,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.8413287997245789,
-        "morph_p99": 0.8413678407669067
-      }
-    },
-    {
-      "config": {
-        "w": 0.5,
-        "fallback_quantile": 0.0,
-        "thin": false,
-        "key": "w0.50-fb0.00-thin0"
-      },
-      "mean_select_dti": 0.1417300651556061,
-      "blocks": 12,
-      "emitted": 16827,
-      "requested": 19780,
-      "short_blocks": 2,
-      "diagnostics": {
-        "w": 0.5,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.0,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.2854982316493988,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.0,
-        "morph_p99": 0.8413678407669067
-      }
-    },
-    {
-      "config": {
-        "w": 0.0,
-        "fallback_quantile": 0.99,
-        "thin": false,
-        "key": "w0.00-fb0.99-thin0"
-      },
-      "mean_select_dti": 0.14158078074606442,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.99,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.49927201867103577,
-        "fallback_scale": 0.97413962617033,
-        "fallback_cap": 0.9741394519805908,
-        "prescore_max": 0.999952495098114,
-        "max": 1.0,
-        "fallback_max": 0.9741404056549072,
-        "morph_p99": 0.9741857051849365
-      }
-    },
-    {
-      "config": {
-        "w": 0.0,
-        "fallback_quantile": 0.0,
-        "thin": false,
-        "key": "w0.00-fb0.00-thin0"
-      },
-      "mean_select_dti": 0.13790253731230087,
-      "blocks": 12,
-      "emitted": 16811,
-      "requested": 19780,
-      "short_blocks": 2,
-      "diagnostics": {
-        "w": 0.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.0,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.49927201867103577,
-        "prescore_max": 0.999952495098114,
-        "max": 1.0,
-        "fallback_max": 0.0,
-        "morph_p99": 0.9741857051849365
-      }
-    },
-    {
-      "config": {
-        "w": 0.75,
-        "fallback_quantile": 0.9,
-        "thin": false,
-        "key": "w0.75-fb0.90-thin0"
-      },
-      "mean_select_dti": 0.137163866537965,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.75,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.9,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.1635594218969345,
-        "fallback_scale": 0.48746970071846857,
-        "fallback_cap": 0.4874696135520935,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.48766353726387024,
-        "morph_p99": 0.8122496604919434
-      }
-    },
-    {
-      "config": {
-        "w": 0.75,
-        "fallback_quantile": 0.99,
-        "thin": false,
-        "key": "w0.75-fb0.99-thin0"
-      },
-      "mean_select_dti": 0.13634763271110592,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.75,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.99,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.1635594218969345,
-        "fallback_scale": 0.811889078358843,
-        "fallback_cap": 0.8118889331817627,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.8122118711471558,
-        "morph_p99": 0.8122496604919434
-      }
-    },
-    {
-      "config": {
-        "w": 0.75,
-        "fallback_quantile": 0.0,
-        "thin": false,
-        "key": "w0.75-fb0.00-thin0"
-      },
-      "mean_select_dti": 0.13407379299033859,
-      "blocks": 12,
-      "emitted": 16837,
-      "requested": 19780,
-      "short_blocks": 2,
-      "diagnostics": {
-        "w": 0.75,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.0,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.1635594218969345,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.0,
-        "morph_p99": 0.8122496604919434
-      }
-    },
-    {
-      "config": {
-        "w": 0.25,
-        "fallback_quantile": 0.9,
-        "thin": true,
-        "key": "w0.25-fb0.90-thin1"
-      },
-      "mean_select_dti": 0.12988925664655013,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.25,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.9,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.3960025906562805,
-        "thinned_px": 957850,
-        "fallback_scale": 0.5852904770297666,
-        "fallback_cap": 0.5852903723716736,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.585523247718811,
-        "morph_p99": 0.8493646383285522
-      }
-    },
-    {
-      "config": {
-        "w": 1.0,
-        "fallback_quantile": 0.9,
-        "thin": false,
-        "key": "w1.00-fb0.90-thin0"
-      },
-      "mean_select_dti": 0.1297942690639912,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 1.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.9,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.0019176907371729612,
-        "fallback_scale": 0.40043191321466803,
-        "fallback_cap": 0.4004318416118622,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.4005911350250244,
-        "morph_p99": 0.7890458703041077
-      }
-    },
-    {
-      "config": {
-        "w": 0.0,
-        "fallback_quantile": 0.9,
-        "thin": true,
-        "key": "w0.00-fb0.90-thin1"
-      },
-      "mean_select_dti": 0.12972940346637846,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.9,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.49927201867103577,
-        "thinned_px": 989562,
-        "fallback_scale": 0.7525234971982534,
-        "fallback_cap": 0.7525233626365662,
-        "prescore_max": 0.999952495098114,
-        "max": 1.0,
-        "fallback_max": 0.7525241374969482,
-        "morph_p99": 0.9673649072647095
-      }
-    },
-    {
-      "config": {
-        "w": 1.0,
-        "fallback_quantile": 0.0,
-        "thin": false,
-        "key": "w1.00-fb0.00-thin0"
-      },
-      "mean_select_dti": 0.12787765524097375,
-      "blocks": 12,
-      "emitted": 16771,
-      "requested": 19780,
-      "short_blocks": 2,
-      "diagnostics": {
-        "w": 1.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.0,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.0019176907371729612,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.0,
-        "morph_p99": 0.7890458703041077
-      }
-    },
-    {
-      "config": {
-        "w": 1.0,
-        "fallback_quantile": 0.99,
-        "thin": false,
-        "key": "w1.00-fb0.99-thin0"
-      },
-      "mean_select_dti": 0.12769451923600214,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 1.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": false,
-        "fallback_quantile": 0.99,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.0019176907371729612,
-        "fallback_scale": 0.7886955956272356,
-        "fallback_cap": 0.7886954545974731,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.789009153842926,
-        "morph_p99": 0.7890458703041077
-      }
-    },
-    {
-      "config": {
-        "w": 0.0,
-        "fallback_quantile": 0.99,
-        "thin": true,
-        "key": "w0.00-fb0.99-thin1"
-      },
-      "mean_select_dti": 0.12731857101461763,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.99,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.49927201867103577,
-        "thinned_px": 989562,
-        "fallback_scale": 0.9673191250537262,
-        "fallback_cap": 0.9673189520835876,
-        "prescore_max": 0.999952495098114,
-        "max": 1.0,
-        "fallback_max": 0.9673199653625488,
-        "morph_p99": 0.9673649072647095
-      }
-    },
-    {
-      "config": {
-        "w": 0.0,
-        "fallback_quantile": 0.0,
-        "thin": true,
-        "key": "w0.00-fb0.00-thin1"
-      },
-      "mean_select_dti": 0.12726669851078287,
-      "blocks": 12,
-      "emitted": 16712,
-      "requested": 19780,
-      "short_blocks": 2,
-      "diagnostics": {
-        "w": 0.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.0,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.49927201867103577,
-        "thinned_px": 989562,
-        "prescore_max": 0.999952495098114,
-        "max": 1.0,
-        "fallback_max": 0.0,
-        "morph_p99": 0.9673649072647095
-      }
-    },
-    {
-      "config": {
-        "w": 0.75,
-        "fallback_quantile": 0.9,
-        "thin": true,
-        "key": "w0.75-fb0.90-thin1"
-      },
-      "mean_select_dti": 0.12712393580649362,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.75,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.9,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.1635594218969345,
-        "thinned_px": 812822,
-        "fallback_scale": 0.20599728035878187,
-        "fallback_cap": 0.20599724352359772,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.20607918500900269,
-        "morph_p99": 0.7229971289634705
-      }
-    },
-    {
-      "config": {
-        "w": 0.25,
-        "fallback_quantile": 0.99,
-        "thin": true,
-        "key": "w0.25-fb0.99-thin1"
-      },
-      "mean_select_dti": 0.12684463512771957,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.25,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.99,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.3960025906562805,
-        "thinned_px": 957850,
-        "fallback_scale": 0.8489875523425733,
-        "fallback_cap": 0.8489874005317688,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.8493251204490662,
-        "morph_p99": 0.8493646383285522
-      }
-    },
-    {
-      "config": {
-        "w": 0.25,
-        "fallback_quantile": 0.0,
-        "thin": true,
-        "key": "w0.25-fb0.00-thin1"
-      },
-      "mean_select_dti": 0.12573493361996416,
-      "blocks": 12,
-      "emitted": 16715,
-      "requested": 19780,
-      "short_blocks": 2,
-      "diagnostics": {
-        "w": 0.25,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.0,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.3960025906562805,
-        "thinned_px": 957850,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.0,
-        "morph_p99": 0.8493646383285522
-      }
-    },
-    {
-      "config": {
-        "w": 0.5,
-        "fallback_quantile": 0.9,
-        "thin": true,
-        "key": "w0.50-fb0.90-thin1"
-      },
-      "mean_select_dti": 0.1237164361447576,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.5,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.9,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.2854982316493988,
-        "thinned_px": 895943,
-        "fallback_scale": 0.3980683800104344,
-        "fallback_cap": 0.39806830883026123,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.39822664856910706,
-        "morph_p99": 0.7802209854125977
-      }
-    },
-    {
-      "config": {
-        "w": 0.5,
-        "fallback_quantile": 0.0,
-        "thin": true,
-        "key": "w0.50-fb0.00-thin1"
-      },
-      "mean_select_dti": 0.12115130542622453,
-      "blocks": 12,
-      "emitted": 16725,
-      "requested": 19780,
-      "short_blocks": 2,
-      "diagnostics": {
-        "w": 0.5,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.0,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.2854982316493988,
-        "thinned_px": 895943,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.0,
-        "morph_p99": 0.7802209854125977
-      }
-    },
-    {
-      "config": {
-        "w": 0.75,
-        "fallback_quantile": 0.0,
-        "thin": true,
-        "key": "w0.75-fb0.00-thin1"
-      },
-      "mean_select_dti": 0.12012425672112181,
-      "blocks": 12,
-      "emitted": 16726,
-      "requested": 19780,
-      "short_blocks": 2,
-      "diagnostics": {
-        "w": 0.75,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.0,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.1635594218969345,
-        "thinned_px": 812822,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.0,
-        "morph_p99": 0.7229971289634705
-      }
-    },
-    {
-      "config": {
-        "w": 0.75,
-        "fallback_quantile": 0.99,
-        "thin": true,
-        "key": "w0.75-fb0.99-thin1"
-      },
-      "mean_select_dti": 0.11855613306171846,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.75,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.99,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.1635594218969345,
-        "thinned_px": 812822,
-        "fallback_scale": 0.7226761679666343,
-        "fallback_cap": 0.7226760387420654,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.7229635119438171,
-        "morph_p99": 0.7229971289634705
-      }
-    },
-    {
-      "config": {
-        "w": 0.5,
-        "fallback_quantile": 0.99,
-        "thin": true,
-        "key": "w0.50-fb0.99-thin1"
-      },
-      "mean_select_dti": 0.11752974573836517,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 0.5,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.99,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.2854982316493988,
-        "thinned_px": 895943,
-        "fallback_scale": 0.7798746430649716,
-        "fallback_cap": 0.7798745036125183,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.7801846861839294,
-        "morph_p99": 0.7802209854125977
-      }
-    },
-    {
-      "config": {
-        "w": 1.0,
-        "fallback_quantile": 0.0,
-        "thin": true,
-        "key": "w1.00-fb0.00-thin1"
-      },
-      "mean_select_dti": 0.1157518318310225,
-      "blocks": 12,
-      "emitted": 16660,
-      "requested": 19780,
-      "short_blocks": 2,
-      "diagnostics": {
-        "w": 1.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.0,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.0019176907371729612,
-        "thinned_px": 316551,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.0,
-        "morph_p99": 0.6730645298957825
-      }
-    },
-    {
-      "config": {
-        "w": 1.0,
-        "fallback_quantile": 0.9,
-        "thin": true,
-        "key": "w1.00-fb0.90-thin1"
-      },
-      "mean_select_dti": 0.1157518318310225,
-      "blocks": 12,
-      "emitted": 16660,
-      "requested": 19780,
-      "short_blocks": 2,
-      "diagnostics": {
-        "w": 1.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.9,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.0019176907371729612,
-        "thinned_px": 316551,
-        "fallback_scale": 0.0,
-        "fallback_cap": 0.0,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.0,
-        "morph_p99": 0.6730645298957825
-      }
-    },
-    {
-      "config": {
-        "w": 1.0,
-        "fallback_quantile": 0.99,
-        "thin": true,
-        "key": "w1.00-fb0.99-thin1"
-      },
-      "mean_select_dti": 0.11387175453975201,
-      "blocks": 12,
-      "emitted": 19780,
-      "requested": 19780,
-      "short_blocks": 0,
-      "diagnostics": {
-        "w": 1.0,
-        "corr_sigma": 2.0,
-        "rad_sigma": 2.0,
-        "thin": true,
-        "fallback_quantile": 0.99,
-        "lidar_domain_px": 3653329,
-        "median_lidar_score": 0.0019176907371729612,
-        "thinned_px": 316551,
-        "fallback_scale": 0.6727657329021215,
-        "fallback_cap": 0.6727656126022339,
-        "prescore_max": 0.9995558857917786,
-        "max": 1.0,
-        "fallback_max": 0.6730332374572754,
-        "morph_p99": 0.6730645298957825
-      }
-    }
-  ],
-  "locked_folds": [
-    {
-      "block": [
-        0,
-        0
-      ],
-      "emitted_each": 635,
-      "truth": 2430,
-      "scores": {
-        "R11": {
-          "tp": 155.11096251209895,
-          "fp": 579.1917084676003,
-          "fn": 2274.889037487901,
-          "n_truth": 2430,
-          "s": 635.0,
-          "m": 55.80829153239975,
-          "dti": 0.0741852265969878
-        },
-        "REF_rtp_gradient": {
-          "tp": 124.63965808465612,
-          "fp": 591.4219317702699,
-          "fn": 2305.3603419153437,
-          "n_truth": 2430,
-          "s": 635.0,
-          "m": 43.57806822973006,
-          "dti": 0.05971585018516983
-        },
-        "PART_radiometric_only": {
-          "tp": 125.79557386790556,
-          "fp": 588.1865952269787,
-          "fn": 2304.2044261320943,
-          "n_truth": 2430,
-          "s": 635.0,
-          "m": 46.813404773021304,
-          "dti": 0.060281669945942445
-        },
-        "PART_lidar_only": {
-          "tp": 130.24881642276512,
-          "fp": 587.615003012939,
-          "fn": 2299.7511835772348,
-          "n_truth": 2430,
-          "s": 635.0,
-          "m": 47.38499698706092,
-          "dti": 0.06239246778645187
-        },
-        "GEMSDOE32-owner-reported-02778": {
-          "tp": 128.13141547458514,
-          "fp": 587.1152100449735,
-          "fn": 2301.868584525415,
-          "n_truth": 2430,
-          "s": 635.0,
-          "m": 47.88478995502652,
-          "dti": 0.06139357318167084
-        },
-        "R10-DFA-crossover": {
-          "tp": 72.97903288009681,
-          "fp": 608.7049642249445,
-          "fn": 2357.020967119903,
-          "n_truth": 2430,
-          "s": 635.0,
-          "m": 26.29503577505542,
-          "dti": 0.03508039318459058
-        }
-      }
-    },
-    {
-      "block": [
-        0,
-        2
-      ],
-      "emitted_each": 2496,
-      "truth": 3464,
-      "scores": {
-        "R11": {
-          "tp": 600.3962508309414,
-          "fp": 2286.827578507094,
-          "fn": 2863.6037491690586,
-          "n_truth": 3464,
-          "s": 2496.0,
-          "m": 209.1724214929057,
-          "dti": 0.1792952949057301
-        },
-        "REF_rtp_gradient": {
-          "tp": 287.7634452464352,
-          "fp": 2391.027853800243,
-          "fn": 3176.2365547535646,
-          "n_truth": 3464,
-          "s": 2496.0,
-          "m": 104.97214619975671,
-          "dti": 0.08701756195221506
-        },
-        "PART_radiometric_only": {
-          "tp": 518.9021785555243,
-          "fp": 2307.8031578022637,
-          "fn": 2945.097821444476,
-          "n_truth": 3464,
-          "s": 2496.0,
-          "m": 188.1968421977361,
-          "dti": 0.15552099257681215
-        },
-        "PART_lidar_only": {
-          "tp": 444.99945750903447,
-          "fp": 2340.2501416182245,
-          "fn": 3019.0005424909655,
-          "n_truth": 3464,
-          "s": 2496.0,
-          "m": 155.74985838177543,
-          "dti": 0.13370373867003307
-        },
-        "GEMSDOE32-owner-reported-02778": {
-          "tp": 188.90505982091145,
-          "fp": 2418.4504169113734,
-          "fn": 3275.0949401790886,
-          "n_truth": 3464,
-          "s": 2496.0,
-          "m": 77.54958308862643,
-          "dti": 0.057371372466516385
-        },
-        "R10-DFA-crossover": {
-          "tp": 351.43200933510207,
-          "fp": 2368.022423189482,
-          "fn": 3112.567990664898,
-          "n_truth": 3464,
-          "s": 2496.0,
-          "m": 127.977576810518,
-          "dti": 0.10600976605667334
-        }
-      }
-    },
-    {
-      "block": [
-        0,
-        4
-      ],
-      "emitted_each": 2452,
-      "truth": 7653,
-      "scores": {
-        "R11": {
-          "tp": 954.3996351032916,
-          "fp": 2132.572299759315,
-          "fn": 6698.600364896708,
-          "n_truth": 7653,
-          "s": 2452.0,
-          "m": 319.4277002406853,
-          "dti": 0.14160663965475379
-        },
-        "REF_rtp_gradient": {
-          "tp": 344.0014140453543,
-          "fp": 2332.0420480238304,
-          "fn": 7308.998585954646,
-          "n_truth": 7653,
-          "s": 2452.0,
-          "m": 119.95795197616944,
-          "dti": 0.0516704165021418
-        },
-        "PART_radiometric_only": {
-          "tp": 618.2287423919609,
-          "fp": 2244.32120943009,
-          "fn": 7034.771257608039,
-          "n_truth": 7653,
-          "s": 2452.0,
-          "m": 207.67879056990995,
-          "dti": 0.09234309994931203
-        },
-        "PART_lidar_only": {
-          "tp": 850.4056799648181,
-          "fp": 2167.2414746993277,
-          "fn": 6802.594320035182,
-          "n_truth": 7653,
-          "s": 2452.0,
-          "m": 284.7585253006724,
-          "dti": 0.12643690194750493
-        },
-        "GEMSDOE32-owner-reported-02778": {
-          "tp": 787.8283260792015,
-          "fp": 2176.3966624477875,
-          "fn": 6865.171673920799,
-          "n_truth": 7653,
-          "s": 2452.0,
-          "m": 275.60333755221234,
-          "dti": 0.11731937201818926
-        },
-        "R10-DFA-crossover": {
-          "tp": 609.5911057115866,
-          "fp": 2259.003529789342,
-          "fn": 7043.408894288414,
-          "n_truth": 7653,
-          "s": 2452.0,
-          "m": 192.99647021065803,
-          "dti": 0.09103648133314807
-        }
-      }
-    },
-    {
-      "block": [
-        1,
-        1
-      ],
-      "emitted_each": 2410,
-      "truth": 1963,
-      "scores": {
-        "R11": {
-          "tp": 246.93115387211216,
-          "fp": 2320.2788440361196,
-          "fn": 1716.0688461278878,
-          "n_truth": 1963,
-          "s": 2410.0,
-          "m": 89.72115596388025,
-          "dti": 0.11849802140544614
-        },
-        "REF_rtp_gradient": {
-          "tp": 143.06838324075625,
-          "fp": 2356.3170449004688,
-          "fn": 1819.9316167592438,
-          "n_truth": 1963,
-          "s": 2410.0,
-          "m": 53.682955099531384,
-          "dti": 0.06910591062126918
-        },
-        "PART_radiometric_only": {
-          "tp": 200.50754535605273,
-          "fp": 2334.5462227982093,
-          "fn": 1762.4924546439472,
-          "n_truth": 1963,
-          "s": 2410.0,
-          "m": 75.45377720179084,
-          "dti": 0.09651800685324921
-        },
-        "PART_lidar_only": {
-          "tp": 185.21479717813284,
-          "fp": 2343.0460157661746,
-          "fn": 1777.7852028218672,
-          "n_truth": 1963,
-          "s": 2410.0,
-          "m": 66.95398423382525,
-          "dti": 0.08921490534567234
-        },
-        "GEMSDOE32-owner-reported-02778": {
-          "tp": 217.1606525394116,
-          "fp": 2327.9939380483784,
-          "fn": 1745.8393474605884,
-          "n_truth": 1963,
-          "s": 2410.0,
-          "m": 82.00606195162163,
-          "dti": 0.10443273236309081
-        },
-        "R10-DFA-crossover": {
-          "tp": 140.00899797971266,
-          "fp": 2357.4099284498893,
-          "fn": 1822.9910020202874,
-          "n_truth": 1963,
-          "s": 2410.0,
-          "m": 52.59007155011085,
-          "dti": 0.06764099461763022
-        }
-      }
-    },
-    {
-      "block": [
-        1,
-        3
-      ],
-      "emitted_each": 277,
-      "truth": 2887,
-      "scores": {
-        "R11": {
-          "tp": 157.69455804651938,
-          "fp": 220.23178286501584,
-          "fn": 2729.3054419534806,
-          "n_truth": 2887,
-          "s": 277.0,
-          "m": 56.76821713498415,
-          "dti": 0.06611417576238365
-        },
-        "REF_rtp_gradient": {
-          "tp": 76.2252272454915,
-          "fp": 251.50751117586245,
-          "fn": 2810.7747727545084,
-          "n_truth": 2887,
-          "s": 277.0,
-          "m": 25.492488824137556,
-          "dti": 0.03209285225780184
-        },
-        "PART_radiometric_only": {
-          "tp": 140.20321472065916,
-          "fp": 229.24524565439458,
-          "fn": 2746.796785279341,
-          "n_truth": 2887,
-          "s": 277.0,
-          "m": 47.75475434560541,
-          "dti": 0.05882266459417439
-        },
-        "PART_lidar_only": {
-          "tp": 155.95723763205604,
-          "fp": 225.30535895022757,
-          "fn": 2731.042762367944,
-          "n_truth": 2887,
-          "s": 277.0,
-          "m": 51.694641049772436,
-          "dti": 0.06536750967183512
-        },
-        "GEMSDOE32-owner-reported-02778": {
-          "tp": 69.55093906485703,
-          "fp": 251.04121989569296,
-          "fn": 2817.449060935143,
-          "n_truth": 2887,
-          "s": 277.0,
-          "m": 25.95878010430704,
-          "dti": 0.02930041665148893
-        },
-        "R10-DFA-crossover": {
-          "tp": 0.0,
-          "fp": 277.0,
-          "fn": 2887.0,
-          "n_truth": 2887,
-          "s": 277.0,
-          "m": 0.0,
-          "dti": 0.0
-        }
-      }
-    },
-    {
-      "block": [
-        2,
-        0
-      ],
-      "emitted_each": 91,
-      "truth": 1520,
-      "scores": {
-        "R11": {
-          "tp": 19.958780104307042,
-          "fp": 83.69035593728849,
-          "fn": 1500.0412198956928,
-          "n_truth": 1520,
-          "s": 91.0,
-          "m": 7.3096440627115085,
-          "dti": 0.016138351049027444
-        },
-        "REF_rtp_gradient": {
-          "tp": 11.865165120677949,
-          "fp": 86.57159221403963,
-          "fn": 1508.134834879322,
-          "n_truth": 1520,
-          "s": 91.0,
-          "m": 4.4284077859603785,
-          "dti": 0.009602077019387341
-        },
-        "PART_radiometric_only": {
-          "tp": 8.809437030677106,
-          "fp": 87.16176045807953,
-          "fn": 1511.1905629693229,
-          "n_truth": 1520,
-          "s": 91.0,
-          "m": 3.8382395419204762,
-          "dti": 0.007132025675777135
-        },
-        "PART_lidar_only": {
-          "tp": 18.693909615563886,
-          "fp": 84.34282838036788,
-          "fn": 1501.3060903844362,
-          "n_truth": 1520,
-          "s": 91.0,
-          "m": 6.657171619632124,
-          "dti": 0.01511709408151431
-        },
-        "GEMSDOE32-owner-reported-02778": {
-          "tp": 21.58464093934955,
-          "fp": 82.70966340149732,
-          "fn": 1498.4153590606504,
-          "n_truth": 1520,
-          "s": 91.0,
-          "m": 8.29033659850268,
-          "dti": 0.017451175410734838
-        },
-        "R10-DFA-crossover": {
-          "tp": 27.03673799593176,
-          "fp": 81.49290288820636,
-          "fn": 1492.9632620040682,
-          "n_truth": 1520,
-          "s": 91.0,
-          "m": 9.507097111793641,
-          "dti": 0.021844234062719344
-        }
-      }
-    },
-    {
-      "block": [
-        2,
-        2
-      ],
-      "emitted_each": 2279,
-      "truth": 3594,
-      "scores": {
-        "R11": {
-          "tp": 574.8659820053622,
-          "fp": 2075.428287203098,
-          "fn": 3019.134017994638,
-          "n_truth": 3594,
-          "s": 2279.0,
-          "m": 203.5717127969021,
-          "dti": 0.168817116900423
-        },
-        "REF_rtp_gradient": {
-          "tp": 290.548368277772,
-          "fp": 2175.574293875244,
-          "fn": 3303.451631722228,
-          "n_truth": 3594,
-          "s": 2279.0,
-          "m": 103.42570612475602,
-          "dti": 0.08625645772388153
-        },
-        "PART_radiometric_only": {
-          "tp": 250.96455546656006,
-          "fp": 2186.670831196288,
-          "fn": 3343.03544453344,
-          "n_truth": 3594,
-          "s": 2279.0,
-          "m": 92.32916880371188,
-          "dti": 0.07463125900349876
-        },
-        "PART_lidar_only": {
-          "tp": 591.9180529243202,
-          "fp": 2070.7073519154283,
-          "fn": 3002.0819470756796,
-          "n_truth": 3594,
-          "s": 2279.0,
-          "m": 208.29264808457168,
-          "dti": 0.17369888675292278
-        },
-        "GEMSDOE32-owner-reported-02778": {
-          "tp": 357.4466210221773,
-          "fp": 2147.090157999283,
-          "fn": 3236.553378977823,
-          "n_truth": 3594,
-          "s": 2279.0,
-          "m": 131.90984200071725,
-          "dti": 0.10587537164881317
-        },
-        "R10-DFA-crossover": {
-          "tp": 299.9497503916267,
-          "fp": 2173.0012421922065,
-          "fn": 3294.050249608373,
-          "n_truth": 3594,
-          "s": 2279.0,
-          "m": 105.9987578077936,
-          "dti": 0.08901140211149121
-        }
-      }
-    },
-    {
-      "block": [
-        3,
-        1
-      ],
-      "emitted_each": 15,
-      "truth": 114,
-      "scores": {
-        "R11": {
-          "tp": 0.0,
-          "fp": 15.0,
-          "fn": 114.0,
-          "n_truth": 114,
-          "s": 15.0,
-          "m": 0.0,
-          "dti": 0.0
-        },
-        "REF_rtp_gradient": {
-          "tp": 0.0,
-          "fp": 15.0,
-          "fn": 114.0,
-          "n_truth": 114,
-          "s": 15.0,
-          "m": 0.0,
-          "dti": 0.0
-        },
-        "PART_radiometric_only": {
-          "tp": 0.0,
-          "fp": 15.0,
-          "fn": 114.0,
-          "n_truth": 114,
-          "s": 15.0,
-          "m": 0.0,
-          "dti": 0.0
-        },
-        "PART_lidar_only": {
-          "tp": 0.0,
-          "fp": 15.0,
-          "fn": 114.0,
-          "n_truth": 114,
-          "s": 15.0,
-          "m": 0.0,
-          "dti": 0.0
-        },
-        "GEMSDOE32-owner-reported-02778": {
-          "tp": 2.487789647584814,
-          "fp": 14.0,
-          "fn": 111.51221035241518,
-          "n_truth": 114,
-          "s": 15.0,
-          "m": 1.0,
-          "dti": 0.02632649670602132
-        },
-        "R10-DFA-crossover": {
-          "tp": 0.0,
-          "fp": 15.0,
-          "fn": 114.0,
-          "n_truth": 114,
-          "s": 15.0,
-          "m": 0.0,
-          "dti": 0.0
-        }
-      }
-    },
-    {
-      "block": [
-        3,
-        3
-      ],
-      "emitted_each": 561,
-      "truth": 1284,
-      "scores": {
-        "R11": {
-          "tp": 114.52349932868256,
-          "fp": 519.3723623258198,
-          "fn": 1169.4765006713174,
-          "n_truth": 1284,
-          "s": 561.0,
-          "m": 41.62763767418021,
-          "dti": 0.09924225850390307
-        },
-        "REF_rtp_gradient": {
-          "tp": 32.12628514386846,
-          "fp": 547.9672297464124,
-          "fn": 1251.8737148561315,
-          "n_truth": 1284,
-          "s": 561.0,
-          "m": 13.032770253587564,
-          "dti": 0.02810160913231404
-        },
-        "PART_radiometric_only": {
-          "tp": 70.91412371378203,
-          "fp": 535.0262942378971,
-          "fn": 1213.085876286218,
-          "n_truth": 1284,
-          "s": 561.0,
-          "m": 25.973705762102874,
-          "dti": 0.06175100972139436
-        },
-        "PART_lidar_only": {
-          "tp": 125.24840235869631,
-          "fp": 519.6335790429393,
-          "fn": 1158.7515976413038,
-          "n_truth": 1284,
-          "s": 561.0,
-          "m": 41.36642095706064,
-          "dti": 0.10832983856229857
-        },
-        "GEMSDOE32-owner-reported-02778": {
-          "tp": 57.56085157537953,
-          "fp": 538.1763687457357,
-          "fn": 1226.4391484246205,
-          "n_truth": 1284,
-          "s": 561.0,
-          "m": 22.823631254264388,
-          "dti": 0.05021239579097847
-        },
-        "R10-DFA-crossover": {
-          "tp": 14.391569696680419,
-          "fp": 555.433521026582,
-          "fn": 1269.6084303033197,
-          "n_truth": 1284,
-          "s": 561.0,
-          "m": 5.566478973418077,
-          "dti": 0.012611295884328931
-        }
-      }
-    },
-    {
-      "block": [
-        5,
-        3
-      ],
-      "emitted_each": 2045,
-      "truth": 9237,
-      "scores": {
-        "R11": {
-          "tp": 1423.5752372824318,
-          "fp": 1595.2522119385685,
-          "fn": 7813.424762717568,
-          "n_truth": 9237,
-          "s": 2045.0,
-          "m": 449.7477880614314,
-          "dti": 0.17809460096513124
-        },
-        "REF_rtp_gradient": {
-          "tp": 784.0358953179209,
-          "fp": 1772.5719857885942,
-          "fn": 8452.96410468208,
-          "n_truth": 9237,
-          "s": 2045.0,
-          "m": 272.42801421140587,
-          "dti": 0.09923347393770673
-        },
-        "PART_radiometric_only": {
-          "tp": 982.6125416582627,
-          "fp": 1722.5585195997962,
-          "fn": 8254.387458341738,
-          "n_truth": 9237,
-          "s": 2045.0,
-          "m": 322.4414804002038,
-          "dti": 0.12390087795754759
-        },
-        "PART_lidar_only": {
-          "tp": 1296.5369465229924,
-          "fp": 1635.2187102507723,
-          "fn": 7940.463053477008,
-          "n_truth": 9237,
-          "s": 2045.0,
-          "m": 409.78128974922754,
-          "dti": 0.16255577863634763
-        },
-        "GEMSDOE32-owner-reported-02778": {
-          "tp": 858.0044184338259,
-          "fp": 1749.30127402444,
-          "fn": 8378.995581566174,
-          "n_truth": 9237,
-          "s": 2045.0,
-          "m": 295.69872597555997,
-          "dti": 0.1084562997824723
-        },
-        "R10-DFA-crossover": {
-          "tp": 839.6370487657651,
-          "fp": 1770.59379812673,
-          "fn": 8397.362951234234,
-          "n_truth": 9237,
-          "s": 2045.0,
-          "m": 274.40620187326994,
-          "dti": 0.1061267188635683
-        }
-      }
-    }
-  ],
-  "locked_skipped": [
-    {
-      "block": [
-        1,
-        5
-      ],
-      "reason": "zero shared emission capacity"
-    },
-    {
-      "block": [
-        4,
-        2
-      ],
-      "reason": "zero shared emission capacity"
-    },
-    {
-      "block": [
-        4,
-        4
-      ],
-      "reason": "zero shared emission capacity"
-    }
-  ],
-  "mean_locked_dti": {
-    "R11": 0.10419916857437864,
-    "REF_rtp_gradient": 0.052279620933188733,
-    "PART_radiometric_only": 0.07309016062777081,
-    "PART_lidar_only": 0.09368171214545806,
-    "GEMSDOE32-owner-reported-02778": 0.06781392060199763,
-    "R10-DFA-crossover": 0.052936128611415
-  },
-  "pooled_locked_dti": {
-    "R11": 0.13911553431810844,
-    "REF_rtp_gradient": 0.06925587732764062,
-    "PART_radiometric_only": 0.0961090574030196,
-    "PART_lidar_only": 0.12466967942062374,
-    "GEMSDOE32-owner-reported-02778": 0.08869666006488595,
-    "R10-DFA-crossover": 0.07777256685753259
-  },
-  "best_comparator": "PART_lidar_only",
-  "paired_delta_vs_best": 0.010517456428920564,
-  "paired_bootstrap_95": [
-    0.0014042956703053877,
-    0.02120908121389796
-  ],
-  "paired_delta_vs_all": {
-    "REF_rtp_gradient": 0.05191954764118989,
-    "PART_radiometric_only": 0.031109007946607814,
-    "PART_lidar_only": 0.010517456428920564,
-    "GEMSDOE32-owner-reported-02778": 0.036385247972381,
-    "R10-DFA-crossover": 0.05126303996296362
-  },
-  "sensitivity": {
-    "0.40x": {
-      "budget_total": 15062,
-      "mean_select_dti": 0.08404467765179031
-    },
-    "0.67x": {
-      "budget_total": 25228,
-      "mean_select_dti": 0.1215498475182824
-    },
-    "1.00x": {
-      "budget_total": 37654,
-      "mean_select_dti": 0.15291686631666834
-    },
-    "1.50x": {
-      "budget_total": 56481,
-      "mean_select_dti": 0.17841337609558697
-    },
-    "truth_mass_matched": {
-      "target": 14089,
-      "kept_px": 14034,
-      "components_kept": 625,
-      "mean_select_dti_by_budget": {
-        "0.40x": 0.0578710774128951,
-        "0.67x": 0.07997252230264018,
-        "1.00x": 0.09847332393334479,
-        "1.50x": 0.10898184285599914
-      }
+    "block_4": {
+      "cells": 507918,
+      "emitted": 3774,
+      "truth": 12161,
+      "field_mean": 0.6225770115852356
     }
   },
   "comparisons": {
     "GEMSDOE32-owner-reported-02778": {
+      "file": "data/derived/incumbent_02778.tif",
+      "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
       "pixel_identical": false,
       "candidate_pearson": {
         "n": 607854,
-        "pearson": 0.005395043550561501,
-        "spearman": 0.005395043550561573
+        "pearson": -0.0013989351116328204,
+        "spearman": -0.0013989351116328393
       },
       "field_vs_smoothed_submission": {
-        "n": 607854,
-        "pearson": 0.35459520888788487,
-        "spearman": 0.5324951983587872
+        "n": 605695,
+        "pearson": -0.21672743657084925,
+        "spearman": -0.30378544958949805
       },
-      "jaccard": 0.005138608971877795
+      "jaccard": 0.002943252493773889
+    },
+    "H46-structural-DFA": {
+      "file": "docs/downloads/gems46-h46-2-dfa-corroborated-zeros.tif",
+      "sha256": "70ebfc9d2e0cabe2543497c6c3536a4ab1b83f9b7f3742e8ac12c4f86f395b97",
+      "pixel_identical": false,
+      "candidate_pearson": {
+        "n": 607854,
+        "pearson": -0.0015708797344648315,
+        "spearman": -0.001570879734464908
+      },
+      "field_vs_smoothed_submission": {
+        "n": 605695,
+        "pearson": -0.21538447589431078,
+        "spearman": -0.27846065120301267
+      },
+      "jaccard": 0.0038657388893332265
+    },
+    "R8-conformal": {
+      "file": "SUBMISSION-GEMSDOE46-r8-conformal.tif",
+      "sha256": "68063ac544a2132ffc20419f8dd814bb92b1d0d90877c14e2383c5d3859f5f42",
+      "pixel_identical": false,
+      "candidate_pearson": {
+        "n": 607854,
+        "pearson": -0.0003161404864335174,
+        "spearman": -0.0003161404864335659
+      },
+      "field_vs_smoothed_submission": {
+        "n": 605695,
+        "pearson": -0.1953829009527736,
+        "spearman": -0.18590258143167293
+      },
+      "jaccard": 0.002808731890211243
+    },
+    "R9-conformal": {
+      "file": "docs/r9/downloads/gems46-r9-conformal-s5-20261006T110804Z.tif",
+      "sha256": "2cd0e75b75d1adc8528ace9c0ec0d3d06d9b2dc94c50927f9cbdcc8f9921312e",
+      "pixel_identical": false,
+      "candidate_pearson": {
+        "n": 607854,
+        "pearson": 0.0027392863479947355,
+        "spearman": 0.0027392863479947334
+      },
+      "field_vs_smoothed_submission": {
+        "n": 605695,
+        "pearson": 0.24598961082301926,
+        "spearman": 0.2715894084213965
+      },
+      "jaccard": 0.004789923814860772
+    },
+    "H46-pure-DFA": {
+      "file": "docs/downloads/gems46-h46-1-dfa-regime-break-zeros.tif",
+      "sha256": "e691ce310a503e9b1eddf177f2a984f19e344a652f4547aa1d9499f25d47b772",
+      "pixel_identical": false,
+      "candidate_pearson": {
+        "n": 607854,
+        "pearson": 1.1431522340410013e-05,
+        "spearman": 1.1431522340457842e-05
+      },
+      "field_vs_smoothed_submission": {
+        "n": 605695,
+        "pearson": 0.025892790532618733,
+        "spearman": 0.0210832584792977
+      },
+      "jaccard": 0.004133443558494893
     },
     "R10-DFA-crossover": {
+      "file": "docs/r10/gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif",
+      "sha256": "c966def73cfb3177af25651c92d32f1f36fc209ad13c49274c125aa06f62f322",
       "pixel_identical": false,
       "candidate_pearson": {
         "n": 607854,
-        "pearson": 0.0004041853900326245,
-        "spearman": 0.0004041853900326967
+        "pearson": 0.0023323281839988694,
+        "spearman": 0.002332328183998865
       },
       "field_vs_smoothed_submission": {
-        "n": 607854,
-        "pearson": -0.09144965072084202,
-        "spearman": -0.10184298472552918
+        "n": 605695,
+        "pearson": 0.02702025681415358,
+        "spearman": 0.020260403648652486
       },
-      "jaccard": 0.0036784305363045102
+      "jaccard": 0.0038389762729938684
     },
-    "REF_rtp_gradient": {
-      "field_raw": {
-        "n": 607854,
-        "pearson": 0.11502992143216953,
-        "spearman": 0.1819791564934679
+    "rtp_gradient": {
+      "raw": {
+        "n": 605695,
+        "pearson": 0.09877316101377334,
+        "spearman": 0.20141672645687367
       },
-      "field_smoothed": {
-        "n": 607854,
-        "pearson": 0.14840354123665114,
-        "spearman": 0.24482346722526777
+      "smoothed": {
+        "n": 605695,
+        "pearson": -0.2092438051509554,
+        "spearman": -0.3258481480364242
       }
     },
-    "PART_radiometric_only": {
-      "field_raw": {
-        "n": 607854,
-        "pearson": 0.45865841061907753,
-        "spearman": 0.4502010929818923
+    "rtp_curvature": {
+      "raw": {
+        "n": 605695,
+        "pearson": -0.2159829580613687,
+        "spearman": -0.2564637688333791
       },
-      "field_smoothed": {
-        "n": 607854,
-        "pearson": 0.5628411161745731,
-        "spearman": 0.5495560709427671
+      "smoothed": {
+        "n": 605695,
+        "pearson": -0.37877657558557365,
+        "spearman": -0.5431496684595876
       }
     },
-    "PART_lidar_only": {
-      "field_raw": {
-        "n": 607854,
-        "pearson": 0.7349913820526186,
-        "spearman": 0.6558135453529575
+    "gravity_gradient": {
+      "raw": {
+        "n": 605695,
+        "pearson": 0.05667769405113112,
+        "spearman": 0.14116814581995196
       },
-      "field_smoothed": {
-        "n": 607854,
-        "pearson": 0.7636887191440391,
-        "spearman": 0.7130470197137784
+      "smoothed": {
+        "n": 605695,
+        "pearson": 0.08993107588842321,
+        "spearman": 0.15210815515079062
+      }
+    },
+    "gravity_curvature": {
+      "raw": {
+        "n": 605695,
+        "pearson": -0.07868549789212445,
+        "spearman": -0.06602717453418264
+      },
+      "smoothed": {
+        "n": 605695,
+        "pearson": -0.20790076134997548,
+        "spearman": -0.08727452834522592
       }
     }
   },
@@ -1822,954 +366,710 @@
       "equal": false
     }
   ],
-  "max_absolute_correlation": 0.7636887191440391,
-  "max_abs_correlation_with_shipped_submissions": 0.5324951983587872,
-  "robustness_all_locked_blocks": {
-    "means": {
-      "R11": 0.15585879565625246,
-      "REF_rtp_gradient": 0.08732016360862288,
-      "PART_radiometric_only": 0.10774663843610988,
-      "PART_lidar_only": 0.12413035578826723,
-      "GEMSDOE32-owner-reported-02778": 0.09966878305930717,
-      "R10-DFA-crossover": 0.04072009893185769
-    },
-    "pooled": {
-      "R11": 0.15466305729867363,
-      "REF_rtp_gradient": 0.08241754758770131,
-      "PART_radiometric_only": 0.10938350807080921,
-      "PART_lidar_only": 0.13159437985165942,
-      "GEMSDOE32-owner-reported-02778": 0.10230730141379697,
-      "R10-DFA-crossover": 0.07251558894110423
-    },
-    "folds": [
-      {
-        "block": [
-          0,
-          0
-        ],
-        "budget": 1069,
-        "truth": 2430,
-        "scores": {
-          "R11": {
-            "tp": 243.9475389989059,
-            "fp": 979.7400254750869,
-            "fn": 2186.052461001094,
-            "n_truth": 2430,
-            "s": 1069.0,
-            "m": 89.25997452491316,
-            "dti": 0.1114558221630479,
-            "achieved": 1069
-          },
-          "REF_rtp_gradient": {
-            "tp": 213.34359399476668,
-            "fp": 992.4744235521351,
-            "fn": 2216.6564060052333,
-            "n_truth": 2430,
-            "s": 1069.0,
-            "m": 76.52557644786486,
-            "dti": 0.09763277845742921,
-            "achieved": 1069
-          },
-          "PART_radiometric_only": {
-            "tp": 216.2517558502753,
-            "fp": 989.0919348384205,
-            "fn": 2213.7482441497245,
-            "n_truth": 2430,
-            "s": 1069.0,
-            "m": 79.90806516157954,
-            "dti": 0.09896794186643319,
-            "achieved": 1069
-          },
-          "PART_lidar_only": {
-            "tp": 157.14780060137892,
-            "fp": 1010.7388799768095,
-            "fn": 2272.852199398621,
-            "n_truth": 2430,
-            "s": 1069.0,
-            "m": 58.26112002319051,
-            "dti": 0.07216634651498852,
-            "achieved": 1069
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 214.59490160078292,
-            "fp": 989.4824591301717,
-            "fn": 2215.405098399217,
-            "n_truth": 2430,
-            "s": 1069.0,
-            "m": 79.51754086982828,
-            "dti": 0.09822106458715416,
-            "achieved": 1069
-          },
-          "R10-DFA-crossover": {
-            "tp": 72.97903288009681,
-            "fp": 608.7049642249445,
-            "fn": 2357.020967119903,
-            "n_truth": 2430,
-            "s": 635.0,
-            "m": 26.29503577505542,
-            "dti": 0.03508039318459058,
-            "achieved": 635
-          }
-        }
-      },
-      {
-        "block": [
-          0,
-          2
-        ],
-        "budget": 2496,
-        "truth": 3464,
-        "scores": {
-          "R11": {
-            "tp": 600.3962508309414,
-            "fp": 2286.827578507094,
-            "fn": 2863.6037491690586,
-            "n_truth": 3464,
-            "s": 2496.0,
-            "m": 209.1724214929057,
-            "dti": 0.1792952949057301,
-            "achieved": 2496
-          },
-          "REF_rtp_gradient": {
-            "tp": 287.7634452464352,
-            "fp": 2391.027853800243,
-            "fn": 3176.2365547535646,
-            "n_truth": 3464,
-            "s": 2496.0,
-            "m": 104.97214619975671,
-            "dti": 0.08701756195221506,
-            "achieved": 2496
-          },
-          "PART_radiometric_only": {
-            "tp": 518.9021785555243,
-            "fp": 2307.8031578022637,
-            "fn": 2945.097821444476,
-            "n_truth": 3464,
-            "s": 2496.0,
-            "m": 188.1968421977361,
-            "dti": 0.15552099257681215,
-            "achieved": 2496
-          },
-          "PART_lidar_only": {
-            "tp": 444.99945750903447,
-            "fp": 2340.2501416182245,
-            "fn": 3019.0005424909655,
-            "n_truth": 3464,
-            "s": 2496.0,
-            "m": 155.74985838177543,
-            "dti": 0.13370373867003307,
-            "achieved": 2496
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 188.90505982091145,
-            "fp": 2418.4504169113734,
-            "fn": 3275.0949401790886,
-            "n_truth": 3464,
-            "s": 2496.0,
-            "m": 77.54958308862643,
-            "dti": 0.057371372466516385,
-            "achieved": 2496
-          },
-          "R10-DFA-crossover": {
-            "tp": 351.43200933510207,
-            "fp": 2368.022423189482,
-            "fn": 3112.567990664898,
-            "n_truth": 3464,
-            "s": 2496.0,
-            "m": 127.977576810518,
-            "dti": 0.10600976605667334,
-            "achieved": 2496
-          }
-        }
-      },
-      {
-        "block": [
-          0,
-          4
-        ],
-        "budget": 2452,
-        "truth": 7653,
-        "scores": {
-          "R11": {
-            "tp": 954.3996351032916,
-            "fp": 2132.572299759315,
-            "fn": 6698.600364896708,
-            "n_truth": 7653,
-            "s": 2452.0,
-            "m": 319.4277002406853,
-            "dti": 0.14160663965475379,
-            "achieved": 2452
-          },
-          "REF_rtp_gradient": {
-            "tp": 344.0014140453543,
-            "fp": 2332.0420480238304,
-            "fn": 7308.998585954646,
-            "n_truth": 7653,
-            "s": 2452.0,
-            "m": 119.95795197616944,
-            "dti": 0.0516704165021418,
-            "achieved": 2452
-          },
-          "PART_radiometric_only": {
-            "tp": 618.2287423919609,
-            "fp": 2244.32120943009,
-            "fn": 7034.771257608039,
-            "n_truth": 7653,
-            "s": 2452.0,
-            "m": 207.67879056990995,
-            "dti": 0.09234309994931203,
-            "achieved": 2452
-          },
-          "PART_lidar_only": {
-            "tp": 850.4056799648181,
-            "fp": 2167.2414746993277,
-            "fn": 6802.594320035182,
-            "n_truth": 7653,
-            "s": 2452.0,
-            "m": 284.7585253006724,
-            "dti": 0.12643690194750493,
-            "achieved": 2452
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 787.8283260792015,
-            "fp": 2176.3966624477875,
-            "fn": 6865.171673920799,
-            "n_truth": 7653,
-            "s": 2452.0,
-            "m": 275.60333755221234,
-            "dti": 0.11731937201818926,
-            "achieved": 2452
-          },
-          "R10-DFA-crossover": {
-            "tp": 609.5911057115866,
-            "fp": 2259.003529789342,
-            "fn": 7043.408894288414,
-            "n_truth": 7653,
-            "s": 2452.0,
-            "m": 192.99647021065803,
-            "dti": 0.09103648133314807,
-            "achieved": 2452
-          }
-        }
-      },
-      {
-        "block": [
-          1,
-          1
-        ],
-        "budget": 2410,
-        "truth": 1963,
-        "scores": {
-          "R11": {
-            "tp": 246.93115387211216,
-            "fp": 2320.2788440361196,
-            "fn": 1716.0688461278878,
-            "n_truth": 1963,
-            "s": 2410.0,
-            "m": 89.72115596388025,
-            "dti": 0.11849802140544614,
-            "achieved": 2410
-          },
-          "REF_rtp_gradient": {
-            "tp": 143.06838324075625,
-            "fp": 2356.3170449004688,
-            "fn": 1819.9316167592438,
-            "n_truth": 1963,
-            "s": 2410.0,
-            "m": 53.682955099531384,
-            "dti": 0.06910591062126918,
-            "achieved": 2410
-          },
-          "PART_radiometric_only": {
-            "tp": 200.50754535605273,
-            "fp": 2334.5462227982093,
-            "fn": 1762.4924546439472,
-            "n_truth": 1963,
-            "s": 2410.0,
-            "m": 75.45377720179084,
-            "dti": 0.09651800685324921,
-            "achieved": 2410
-          },
-          "PART_lidar_only": {
-            "tp": 185.21479717813284,
-            "fp": 2343.0460157661746,
-            "fn": 1777.7852028218672,
-            "n_truth": 1963,
-            "s": 2410.0,
-            "m": 66.95398423382525,
-            "dti": 0.08921490534567234,
-            "achieved": 2410
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 217.1606525394116,
-            "fp": 2327.9939380483784,
-            "fn": 1745.8393474605884,
-            "n_truth": 1963,
-            "s": 2410.0,
-            "m": 82.00606195162163,
-            "dti": 0.10443273236309081,
-            "achieved": 2410
-          },
-          "R10-DFA-crossover": {
-            "tp": 140.00899797971266,
-            "fp": 2357.4099284498893,
-            "fn": 1822.9910020202874,
-            "n_truth": 1963,
-            "s": 2410.0,
-            "m": 52.59007155011085,
-            "dti": 0.06764099461763022,
-            "achieved": 2410
-          }
-        }
-      },
-      {
-        "block": [
-          1,
-          3
-        ],
-        "budget": 868,
-        "truth": 2887,
-        "scores": {
-          "R11": {
-            "tp": 464.5142694293059,
-            "fp": 703.5736625343836,
-            "fn": 2422.485730570694,
-            "n_truth": 2887,
-            "s": 868.0,
-            "m": 164.42633746561637,
-            "dti": 0.18264826097242565,
-            "achieved": 868
-          },
-          "REF_rtp_gradient": {
-            "tp": 239.377723624004,
-            "fp": 785.4751549863437,
-            "fn": 2647.622276375996,
-            "n_truth": 2887,
-            "s": 868.0,
-            "m": 82.52484501365632,
-            "dti": 0.09519626370207188,
-            "achieved": 868
-          },
-          "PART_radiometric_only": {
-            "tp": 308.4142648326585,
-            "fp": 762.5630219890718,
-            "fn": 2578.5857351673417,
-            "n_truth": 2887,
-            "s": 868.0,
-            "m": 105.43697801092826,
-            "dti": 0.12220255961416934,
-            "achieved": 868
-          },
-          "PART_lidar_only": {
-            "tp": 453.62144729566194,
-            "fp": 710.5944294675904,
-            "fn": 2433.3785527043383,
-            "n_truth": 2887,
-            "s": 868.0,
-            "m": 157.40557053240957,
-            "dti": 0.1784195028203782,
-            "achieved": 868
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 226.62767185437048,
-            "fp": 780.9159801567537,
-            "fn": 2660.3723281456296,
-            "n_truth": 2887,
-            "s": 868.0,
-            "m": 87.08401984324635,
-            "dti": 0.09025004338142674,
-            "achieved": 868
-          },
-          "R10-DFA-crossover": {
-            "tp": 0.0,
-            "fp": 277.0,
-            "fn": 2887.0,
-            "n_truth": 2887,
-            "s": 277.0,
-            "m": 0.0,
-            "dti": 0.0,
-            "achieved": 277
-          }
-        }
-      },
-      {
-        "block": [
-          1,
-          5
-        ],
-        "budget": 602,
-        "truth": 1623,
-        "scores": {
-          "R11": {
-            "tp": 198.1498914112372,
-            "fp": 537.1250224621477,
-            "fn": 1424.8501085887629,
-            "n_truth": 1623,
-            "s": 602.0,
-            "m": 64.87497753785223,
-            "dti": 0.13708478906118138,
-            "achieved": 602
-          },
-          "REF_rtp_gradient": {
-            "tp": 141.41924379974157,
-            "fp": 550.8146469652277,
-            "fn": 1481.5807562002585,
-            "n_truth": 1623,
-            "s": 602.0,
-            "m": 51.18535303477229,
-            "dti": 0.09842332943908717,
-            "achieved": 602
-          },
-          "PART_radiometric_only": {
-            "tp": 198.1498914112372,
-            "fp": 537.1250224621477,
-            "fn": 1424.8501085887629,
-            "n_truth": 1623,
-            "s": 602.0,
-            "m": 64.87497753785223,
-            "dti": 0.13708478906118138,
-            "achieved": 602
-          },
-          "PART_lidar_only": {
-            "tp": 0.0,
-            "fp": 0.0,
-            "fn": 1623.0,
-            "n_truth": 1623,
-            "s": 0.0,
-            "m": 0.0,
-            "dti": 0.0,
-            "achieved": 0
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 193.59176198657633,
-            "fp": 535.3410515412302,
-            "fn": 1429.4082380134237,
-            "n_truth": 1623,
-            "s": 602.0,
-            "m": 66.65894845876983,
-            "dti": 0.1340489982289854,
-            "achieved": 602
-          },
-          "R10-DFA-crossover": {
-            "tp": 0.0,
-            "fp": 0.0,
-            "fn": 1623.0,
-            "n_truth": 1623,
-            "s": 0.0,
-            "m": 0.0,
-            "dti": 0.0,
-            "achieved": 0
-          }
-        }
-      },
-      {
-        "block": [
-          2,
-          0
-        ],
-        "budget": 560,
-        "truth": 1520,
-        "scores": {
-          "R11": {
-            "tp": 127.00033106081574,
-            "fp": 513.1650968595634,
-            "fn": 1392.9996689391842,
-            "n_truth": 1520,
-            "s": 560.0,
-            "m": 46.83490314043662,
-            "dti": 0.0944919678115891,
-            "achieved": 560
-          },
-          "REF_rtp_gradient": {
-            "tp": 116.73660607034992,
-            "fp": 517.5341227838993,
-            "fn": 1403.2633939296502,
-            "n_truth": 1520,
-            "s": 560.0,
-            "m": 42.46587721610068,
-            "dti": 0.08693170917922116,
-            "achieved": 560
-          },
-          "PART_radiometric_only": {
-            "tp": 113.45430504988383,
-            "fp": 518.1978671131509,
-            "fn": 1406.5456949501163,
-            "n_truth": 1520,
-            "s": 560.0,
-            "m": 41.802132886849066,
-            "dti": 0.08452039985054469,
-            "achieved": 560
-          },
-          "PART_lidar_only": {
-            "tp": 57.393563812609656,
-            "fp": 538.0026049672753,
-            "fn": 1462.6064361873903,
-            "n_truth": 1520,
-            "s": 560.0,
-            "m": 21.9973950327247,
-            "dti": 0.04298888212881674,
-            "achieved": 560
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 140.72596552503802,
-            "fp": 508.04560170210596,
-            "fn": 1379.274034474962,
-            "n_truth": 1520,
-            "s": 560.0,
-            "m": 51.954398297894045,
-            "dti": 0.10457032470112902,
-            "achieved": 560
-          },
-          "R10-DFA-crossover": {
-            "tp": 27.03673799593176,
-            "fp": 81.49290288820636,
-            "fn": 1492.9632620040682,
-            "n_truth": 1520,
-            "s": 91.0,
-            "m": 9.507097111793641,
-            "dti": 0.021844234062719344,
-            "achieved": 91
-          }
-        }
-      },
-      {
-        "block": [
-          2,
-          2
-        ],
-        "budget": 2279,
-        "truth": 3594,
-        "scores": {
-          "R11": {
-            "tp": 574.8659820053622,
-            "fp": 2075.428287203098,
-            "fn": 3019.134017994638,
-            "n_truth": 3594,
-            "s": 2279.0,
-            "m": 203.5717127969021,
-            "dti": 0.168817116900423,
-            "achieved": 2279
-          },
-          "REF_rtp_gradient": {
-            "tp": 290.548368277772,
-            "fp": 2175.574293875244,
-            "fn": 3303.451631722228,
-            "n_truth": 3594,
-            "s": 2279.0,
-            "m": 103.42570612475602,
-            "dti": 0.08625645772388153,
-            "achieved": 2279
-          },
-          "PART_radiometric_only": {
-            "tp": 250.96455546656006,
-            "fp": 2186.670831196288,
-            "fn": 3343.03544453344,
-            "n_truth": 3594,
-            "s": 2279.0,
-            "m": 92.32916880371188,
-            "dti": 0.07463125900349876,
-            "achieved": 2279
-          },
-          "PART_lidar_only": {
-            "tp": 591.9180529243202,
-            "fp": 2070.7073519154283,
-            "fn": 3002.0819470756796,
-            "n_truth": 3594,
-            "s": 2279.0,
-            "m": 208.29264808457168,
-            "dti": 0.17369888675292278,
-            "achieved": 2279
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 357.4466210221773,
-            "fp": 2147.090157999283,
-            "fn": 3236.553378977823,
-            "n_truth": 3594,
-            "s": 2279.0,
-            "m": 131.90984200071725,
-            "dti": 0.10587537164881317,
-            "achieved": 2279
-          },
-          "R10-DFA-crossover": {
-            "tp": 299.9497503916267,
-            "fp": 2173.0012421922065,
-            "fn": 3294.050249608373,
-            "n_truth": 3594,
-            "s": 2279.0,
-            "m": 105.9987578077936,
-            "dti": 0.08901140211149121,
-            "achieved": 2279
-          }
-        }
-      },
-      {
-        "block": [
-          3,
-          1
-        ],
-        "budget": 383,
-        "truth": 114,
-        "scores": {
-          "R11": {
-            "tp": 12.591945083177599,
-            "fp": 377.76904526312177,
-            "fn": 101.40805491682241,
-            "n_truth": 114,
-            "s": 383.0,
-            "m": 5.230954736878244,
-            "dti": 0.07438873735160605,
-            "achieved": 383
-          },
-          "REF_rtp_gradient": {
-            "tp": 7.308912628502961,
-            "fp": 380.0,
-            "fn": 106.69108737149703,
-            "n_truth": 114,
-            "s": 383.0,
-            "m": 3.0,
-            "dti": 0.043334728941014825,
-            "achieved": 383
-          },
-          "PART_radiometric_only": {
-            "tp": 27.18681250377024,
-            "fp": 372.7475468957064,
-            "fn": 86.81318749622976,
-            "n_truth": 114,
-            "s": 383.0,
-            "m": 10.252453104293572,
-            "dti": 0.15881365320283258,
-            "achieved": 383
-          },
-          "PART_lidar_only": {
-            "tp": 15.613443450592925,
-            "fp": 376.90273464416646,
-            "fn": 98.38655654940708,
-            "n_truth": 114,
-            "s": 383.0,
-            "m": 6.097265355833544,
-            "dti": 0.09200439457476828,
-            "achieved": 383
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 31.552184656482588,
-            "fp": 370.9264239147883,
-            "fn": 82.44781534351742,
-            "n_truth": 114,
-            "s": 383.0,
-            "m": 12.07357608521172,
-            "dti": 0.18376803068401298,
-            "achieved": 383
-          },
-          "R10-DFA-crossover": {
-            "tp": 0.0,
-            "fp": 15.0,
-            "fn": 114.0,
-            "n_truth": 114,
-            "s": 15.0,
-            "m": 0.0,
-            "dti": 0.0,
-            "achieved": 15
-          }
-        }
-      },
-      {
-        "block": [
-          3,
-          3
-        ],
-        "budget": 1070,
-        "truth": 1284,
-        "scores": {
-          "R11": {
-            "tp": 215.31625095252127,
-            "fp": 995.8033750790555,
-            "fn": 1068.6837490474786,
-            "n_truth": 1284,
-            "s": 1070.0,
-            "m": 74.19662492094453,
-            "dti": 0.16961729385820187,
-            "achieved": 1070
-          },
-          "REF_rtp_gradient": {
-            "tp": 75.25402975673487,
-            "fp": 1041.234291138362,
-            "fn": 1208.7459702432652,
-            "n_truth": 1284,
-            "s": 1070.0,
-            "m": 28.765708861637904,
-            "dti": 0.06017926455390918,
-            "achieved": 1070
-          },
-          "PART_radiometric_only": {
-            "tp": 139.15395924692962,
-            "fp": 1018.4077375466827,
-            "fn": 1144.8460407530704,
-            "n_truth": 1284,
-            "s": 1070.0,
-            "m": 51.592262453317346,
-            "dti": 0.11055262977537343,
-            "achieved": 1070
-          },
-          "PART_lidar_only": {
-            "tp": 202.7101116457564,
-            "fp": 1002.4744235521351,
-            "fn": 1081.2898883542437,
-            "n_truth": 1284,
-            "s": 1070.0,
-            "m": 67.52557644786486,
-            "dti": 0.1598361556270894,
-            "achieved": 1070
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 104.4430331637116,
-            "fp": 1028.7767634710185,
-            "fn": 1179.5569668362884,
-            "n_truth": 1284,
-            "s": 1070.0,
-            "m": 41.2232365289814,
-            "dti": 0.08329827040016409,
-            "achieved": 1070
-          },
-          "R10-DFA-crossover": {
-            "tp": 14.391569696680419,
-            "fp": 555.433521026582,
-            "fn": 1269.6084303033197,
-            "n_truth": 1284,
-            "s": 561.0,
-            "m": 5.566478973418077,
-            "dti": 0.012611295884328931,
-            "achieved": 561
-          }
-        }
-      },
-      {
-        "block": [
-          4,
-          2
-        ],
-        "budget": 797,
-        "truth": 1019,
-        "scores": {
-          "R11": {
-            "tp": 101.85067061704605,
-            "fp": 759.9053396114417,
-            "fn": 917.149329382954,
-            "n_truth": 1019,
-            "s": 797.0,
-            "m": 37.09466038855824,
-            "dti": 0.10313457206670476,
-            "achieved": 797
-          },
-          "REF_rtp_gradient": {
-            "tp": 83.63505560203245,
-            "fp": 764.3439738786452,
-            "fn": 935.3649443979675,
-            "n_truth": 1019,
-            "s": 797.0,
-            "m": 32.65602612135477,
-            "dti": 0.08492629142123738,
-            "achieved": 797
-          },
-          "PART_radiometric_only": {
-            "tp": 73.59686153652189,
-            "fp": 769.3381292038151,
-            "fn": 945.4031384634782,
-            "n_truth": 1019,
-            "s": 797.0,
-            "m": 27.661870796184864,
-            "dti": 0.07480975218720076,
-            "achieved": 797
-          },
-          "PART_lidar_only": {
-            "tp": 112.683796918345,
-            "fp": 755.720621316949,
-            "fn": 906.316203081655,
-            "n_truth": 1019,
-            "s": 797.0,
-            "m": 41.27937868305105,
-            "dti": 0.113950829449393,
-            "achieved": 797
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 90.99970311937453,
-            "fp": 760.3975110654396,
-            "fn": 928.0002968806255,
-            "n_truth": 1019,
-            "s": 797.0,
-            "m": 36.60248893456043,
-            "dti": 0.09234053919716023,
-            "achieved": 797
-          },
-          "R10-DFA-crossover": {
-            "tp": 0.0,
-            "fp": 0.0,
-            "fn": 1019.0,
-            "n_truth": 1019,
-            "s": 0.0,
-            "m": 0.0,
-            "dti": 0.0,
-            "achieved": 0
-          }
-        }
-      },
-      {
-        "block": [
-          4,
-          4
-        ],
-        "budget": 52,
-        "truth": 102,
-        "scores": {
-          "R11": {
-            "tp": 35.51503259648203,
-            "fp": 40.299831645537225,
-            "fn": 66.48496740351797,
-            "n_truth": 102,
-            "s": 52.0,
-            "m": 11.700168354462779,
-            "dti": 0.3670312264150412,
-            "achieved": 52
-          },
-          "REF_rtp_gradient": {
-            "tp": 16.511064854137835,
-            "fp": 46.55009384662429,
-            "fn": 85.48893514586217,
-            "n_truth": 102,
-            "s": 52.0,
-            "m": 5.449906153375705,
-            "dti": 0.1752539404809122,
-            "achieved": 52
-          },
-          "PART_radiometric_only": {
-            "tp": 6.577750859590313,
-            "fp": 49.68816503408199,
-            "fn": 95.42224914040969,
-            "n_truth": 102,
-            "s": 52.0,
-            "m": 2.3118349659180066,
-            "dti": 0.07084033777127341,
-            "achieved": 52
-          },
-          "PART_lidar_only": {
-            "tp": 25.648721977526733,
-            "fp": 43.593090581454945,
-            "fn": 76.35127802247327,
-            "n_truth": 102,
-            "s": 52.0,
-            "m": 8.406909418545053,
-            "dti": 0.26871830277955916,
-            "achieved": 52
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 1.449906153375705,
-            "fp": 51.07868932583326,
-            "fn": 100.55009384662429,
-            "n_truth": 102,
-            "s": 52.0,
-            "m": 0.9213106741667368,
-            "dti": 0.01574176031187862,
-            "achieved": 52
-          },
-          "R10-DFA-crossover": {
-            "tp": 0.0,
-            "fp": 0.0,
-            "fn": 102.0,
-            "n_truth": 102,
-            "s": 0.0,
-            "m": 0.0,
-            "dti": 0.0,
-            "achieved": 0
-          }
-        }
-      },
-      {
-        "block": [
-          5,
-          3
-        ],
-        "budget": 2045,
-        "truth": 9237,
-        "scores": {
-          "R11": {
-            "tp": 1423.5752372824318,
-            "fp": 1595.2522119385685,
-            "fn": 7813.424762717568,
-            "n_truth": 9237,
-            "s": 2045.0,
-            "m": 449.7477880614314,
-            "dti": 0.17809460096513124,
-            "achieved": 2045
-          },
-          "REF_rtp_gradient": {
-            "tp": 784.0358953179209,
-            "fp": 1772.5719857885942,
-            "fn": 8452.96410468208,
-            "n_truth": 9237,
-            "s": 2045.0,
-            "m": 272.42801421140587,
-            "dti": 0.09923347393770673,
-            "achieved": 2045
-          },
-          "PART_radiometric_only": {
-            "tp": 982.6125416582627,
-            "fp": 1722.5585195997962,
-            "fn": 8254.387458341738,
-            "n_truth": 9237,
-            "s": 2045.0,
-            "m": 322.4414804002038,
-            "dti": 0.12390087795754759,
-            "achieved": 2045
-          },
-          "PART_lidar_only": {
-            "tp": 1296.5369465229924,
-            "fp": 1635.2187102507723,
-            "fn": 7940.463053477008,
-            "n_truth": 9237,
-            "s": 2045.0,
-            "m": 409.78128974922754,
-            "dti": 0.16255577863634763,
-            "achieved": 2045
-          },
-          "GEMSDOE32-owner-reported-02778": {
-            "tp": 858.0044184338259,
-            "fp": 1749.30127402444,
-            "fn": 8378.995581566174,
-            "n_truth": 9237,
-            "s": 2045.0,
-            "m": 295.69872597555997,
-            "dti": 0.1084562997824723,
-            "achieved": 2045
-          },
-          "R10-DFA-crossover": {
-            "tp": 839.6370487657651,
-            "fp": 1770.59379812673,
-            "fn": 8397.362951234234,
-            "n_truth": 9237,
-            "s": 2045.0,
-            "m": 274.40620187326994,
-            "dti": 0.1061267188635683,
-            "achieved": 2045
-          }
+  "folds": [
+    {
+      "block": 0,
+      "emitted_each": 3735,
+      "truth": 6707,
+      "scores": {
+        "R11-D": {
+          "tp": 281.89754869154865,
+          "fp": 3638.9294429461324,
+          "fn": 6425.102451308451,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 96.07055705386762,
+          "dti": 0.04583874838024982
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 607.3961575364315,
+          "fp": 3504.0896233523513,
+          "fn": 6099.603842463568,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 230.91037664764855,
+          "dti": 0.09815873506073587
+        },
+        "H46-structural-DFA": {
+          "tp": 834.4246734583063,
+          "fp": 3443.791347869741,
+          "fn": 5872.575326541693,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 291.20865213025877,
+          "dti": 0.13412506890681383
+        },
+        "R8-conformal": {
+          "tp": 662.9303941043551,
+          "fp": 3492.2215358942585,
+          "fn": 6044.069605895645,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 242.7784641057415,
+          "dti": 0.10698240056435047
+        },
+        "R9-conformal": {
+          "tp": 154.58643146916324,
+          "fp": 3681.3862391792672,
+          "fn": 6552.4135685308365,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 53.61376082073267,
+          "dti": 0.025206523813711232
+        },
+        "H46-pure-DFA": {
+          "tp": 481.81159280149683,
+          "fp": 3566.0133422065164,
+          "fn": 6225.188407198503,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 168.98665779348374,
+          "dti": 0.07802408418489333
+        },
+        "R10-DFA-crossover": {
+          "tp": 342.1097306111494,
+          "fp": 3616.8770478581964,
+          "fn": 6364.89026938885,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 118.12295214180375,
+          "dti": 0.05556076875479509
         }
       }
-    ],
-    "r11_wins": true
+    },
+    {
+      "block": 1,
+      "emitted_each": 5614,
+      "truth": 6074,
+      "scores": {
+        "R11-D": {
+          "tp": 448.50821087710335,
+          "fp": 5455.3652515698495,
+          "fn": 5625.491789122897,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 158.63474843015015,
+          "dti": 0.07425663743835577
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 556.5134379017491,
+          "fp": 5396.250238312154,
+          "fn": 5517.486562098251,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 217.74976168784636,
+          "dti": 0.09198945184316261
+        },
+        "H46-structural-DFA": {
+          "tp": 744.591333279635,
+          "fp": 5343.712244479839,
+          "fn": 5329.408666720365,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 270.2877555201608,
+          "dti": 0.12252894514662072
+        },
+        "R8-conformal": {
+          "tp": 613.3180722631062,
+          "fp": 5384.6017370108375,
+          "fn": 5460.681927736894,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 229.3982629891624,
+          "dti": 0.10122791572110262
+        },
+        "R9-conformal": {
+          "tp": 278.87554296555464,
+          "fp": 5516.26569861688,
+          "fn": 5795.124457034445,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 97.73430138311923,
+          "dti": 0.046338478944117766
+        },
+        "H46-pure-DFA": {
+          "tp": 430.33193542587765,
+          "fp": 5460.40240702927,
+          "fn": 5643.668064574123,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 153.59759297073043,
+          "dti": 0.07127831890390675
+        },
+        "R10-DFA-crossover": {
+          "tp": 402.9550741102015,
+          "fp": 5467.173960565738,
+          "fn": 5671.044925889799,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 146.8260394342624,
+          "dti": 0.06678932415341361
+        }
+      }
+    },
+    {
+      "block": 2,
+      "emitted_each": 4801,
+      "truth": 10172,
+      "scores": {
+        "R11-D": {
+          "tp": 662.4676326135276,
+          "fp": 4570.423684720474,
+          "fn": 9509.532367386473,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 230.5763152795258,
+          "dti": 0.07213139963197863
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 949.5300915756197,
+          "fp": 4446.474085692481,
+          "fn": 9222.46990842438,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 354.52591430751886,
+          "dti": 0.10302165670359566
+        },
+        "H46-structural-DFA": {
+          "tp": 952.4268814516079,
+          "fp": 4461.174250647525,
+          "fn": 9219.573118548393,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 339.8257493524752,
+          "dti": 0.10329650793715695
+        },
+        "R8-conformal": {
+          "tp": 779.1275468733927,
+          "fp": 4519.460112145104,
+          "fn": 9392.872453126607,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 281.5398878548955,
+          "dti": 0.08471247667367554
+        },
+        "R9-conformal": {
+          "tp": 542.3173476277359,
+          "fp": 4611.013756270585,
+          "fn": 9629.682652372265,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 189.98624372941495,
+          "dti": 0.059151570707941144
+        },
+        "H46-pure-DFA": {
+          "tp": 740.6358861773926,
+          "fp": 4536.367956630474,
+          "fn": 9431.364113822607,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 264.6320433695266,
+          "dti": 0.08056519354487111
+        },
+        "R10-DFA-crossover": {
+          "tp": 323.86093467789857,
+          "fp": 4681.934238816614,
+          "fn": 9848.1390653221,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 119.06576118338582,
+          "dti": 0.035438174203761955
+        }
+      }
+    },
+    {
+      "block": 3,
+      "emitted_each": 4054,
+      "truth": 13365,
+      "scores": {
+        "R11-D": {
+          "tp": 878.6139908360036,
+          "fp": 3766.0298274266584,
+          "fn": 12486.386009163996,
+          "n_truth": 13365,
+          "s": 4054.0,
+          "m": 287.97017257334176,
+          "dti": 0.07560617646878802
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 1347.562706113958,
+          "fp": 3575.768904190745,
+          "fn": 12017.437293886042,
+          "n_truth": 13365,
+          "s": 4054.0,
+          "m": 478.23109580925507,
+          "dti": 0.11540645839710839
+        },
+        "H46-structural-DFA": {
+          "tp": 872.8220844303977,
+          "fp": 3745.734474281463,
+          "fn": 12492.177915569602,
+          "n_truth": 13365,
+          "s": 4054.0,
+          "m": 308.26552571853694,
+          "dti": 0.07514150971951093
+        },
+        "R8-conformal": {
+          "tp": 1067.479901081566,
+          "fp": 3684.437564973341,
+          "fn": 12297.520098918434,
+          "n_truth": 13365,
+          "s": 4054.0,
+          "m": 369.56243502665916,
+          "dti": 0.09168912033381767
+        },
+        "R9-conformal": {
+          "tp": 842.1619870739314,
+          "fp": 3779.106325849285,
+          "fn": 12522.83801292607,
+          "n_truth": 13365,
+          "s": 4054.0,
+          "m": 274.893674150715,
+          "dti": 0.07249858788693805
+        },
+        "H46-pure-DFA": {
+          "tp": 769.9803879041308,
+          "fp": 3790.785820565051,
+          "fn": 12595.01961209587,
+          "n_truth": 13365,
+          "s": 4054.0,
+          "m": 263.2141794349491,
+          "dti": 0.06635386243758978
+        },
+        "R10-DFA-crossover": {
+          "tp": 1318.7814709414356,
+          "fp": 3620.48066180152,
+          "fn": 12046.218529058564,
+          "n_truth": 13365,
+          "s": 4054.0,
+          "m": 433.5193381984802,
+          "dti": 0.11291079910767536
+        }
+      }
+    },
+    {
+      "block": 4,
+      "emitted_each": 2884,
+      "truth": 6224,
+      "scores": {
+        "R11-D": {
+          "tp": 408.95519469306396,
+          "fp": 2735.782390869057,
+          "fn": 5815.044805306936,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 148.21760913094283,
+          "dti": 0.0729216186708936
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 645.5513384860533,
+          "fp": 2640.993817465516,
+          "fn": 5578.448661513947,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 243.00618253448414,
+          "dti": 0.11453034758104726
+        },
+        "H46-structural-DFA": {
+          "tp": 672.6655304144502,
+          "fp": 2643.296568049049,
+          "fn": 5551.334469585549,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 240.703431950951,
+          "dti": 0.11921636787732785
+        },
+        "R8-conformal": {
+          "tp": 452.82766395756994,
+          "fp": 2715.823924735471,
+          "fn": 5771.17233604243,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 168.1760752645293,
+          "dti": 0.0806758036041197
+        },
+        "R9-conformal": {
+          "tp": 152.45347692174624,
+          "fp": 2821.0179446891398,
+          "fn": 6071.546523078254,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 62.98205531086006,
+          "dti": 0.027351339861347627
+        },
+        "H46-pure-DFA": {
+          "tp": 485.6793628894501,
+          "fp": 2708.7452354096376,
+          "fn": 5738.32063711055,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 175.25476459036256,
+          "dti": 0.08644927405596642
+        },
+        "R10-DFA-crossover": {
+          "tp": 334.0178958660772,
+          "fp": 2760.637743572561,
+          "fn": 5889.982104133923,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 123.36225642743918,
+          "dti": 0.059665964986434374
+        }
+      }
+    },
+    {
+      "block": 5,
+      "emitted_each": 5345,
+      "truth": 5674,
+      "scores": {
+        "R11-D": {
+          "tp": 267.99472075287235,
+          "fp": 5250.432572315582,
+          "fn": 5406.005279247128,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 94.56742768441816,
+          "dti": 0.047492497006782076
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 762.6391292843666,
+          "fp": 5064.5184452023805,
+          "fn": 4911.360870715634,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 280.4815547976193,
+          "dti": 0.13368771099283805
+        },
+        "H46-structural-DFA": {
+          "tp": 655.5060575535063,
+          "fp": 5109.144620008144,
+          "fn": 5018.493942446494,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 235.85537999185624,
+          "dti": 0.11516006169004972
+        },
+        "R8-conformal": {
+          "tp": 441.3298412166002,
+          "fp": 5187.5185657852435,
+          "fn": 5232.6701587833995,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 157.48143421475686,
+          "dti": 0.07790506675887918
+        },
+        "R9-conformal": {
+          "tp": 168.9222730758428,
+          "fp": 5284.7239543190135,
+          "fn": 5505.077726924157,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 60.276045680986336,
+          "dti": 0.03000433321812405
+        },
+        "H46-pure-DFA": {
+          "tp": 402.85374431809475,
+          "fp": 5200.39583431965,
+          "fn": 5271.146255681905,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 144.60416568034992,
+          "dti": 0.07117746058929522
+        },
+        "R10-DFA-crossover": {
+          "tp": 340.1244628810871,
+          "fp": 5221.01115130331,
+          "fn": 5333.875537118913,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 123.98884869669025,
+          "dti": 0.060183818261871636
+        }
+      }
+    },
+    {
+      "block": 9,
+      "emitted_each": 3129,
+      "truth": 1774,
+      "scores": {
+        "R11-D": {
+          "tp": 108.46380009691836,
+          "fp": 3088.398242499648,
+          "fn": 1665.5361999030815,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 40.60175750035188,
+          "dti": 0.05268884380651023
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 218.32396916041813,
+          "fp": 3043.4037698043385,
+          "fn": 1555.676030839582,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 85.59623019566155,
+          "dti": 0.1053918265967734
+        },
+        "H46-structural-DFA": {
+          "tp": 210.22483027151782,
+          "fp": 3050.5298376714154,
+          "fn": 1563.775169728482,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 78.47016232858462,
+          "dti": 0.10149165303785812
+        },
+        "R8-conformal": {
+          "tp": 166.36268758160313,
+          "fp": 3064.922870236513,
+          "fn": 1607.637312418397,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 64.07712976348711,
+          "dti": 0.08054521522142873
+        },
+        "R9-conformal": {
+          "tp": 11.833126301298933,
+          "fp": 3124.6903559372886,
+          "fn": 1762.166873698701,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 4.309644062711508,
+          "dti": 0.005782115390124859
+        },
+        "H46-pure-DFA": {
+          "tp": 99.65979367700257,
+          "fp": 3090.914834658476,
+          "fn": 1674.3402063229973,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 38.085165341523705,
+          "dti": 0.048441681161010816
+        },
+        "R10-DFA-crossover": {
+          "tp": 37.64579964011168,
+          "fp": 3114.064495102246,
+          "fn": 1736.3542003598884,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 14.935504897754022,
+          "dti": 0.018367907833717587
+        }
+      }
+    },
+    {
+      "block": 10,
+      "emitted_each": 862,
+      "truth": 2491,
+      "scores": {
+        "R11-D": {
+          "tp": 72.9910362004776,
+          "fp": 835.9574173292382,
+          "fn": 2418.0089637995225,
+          "n_truth": 2491,
+          "s": 862.0,
+          "m": 26.04258267076185,
+          "dti": 0.03356542915309634
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 84.50210105461544,
+          "fp": 830.2721746325713,
+          "fn": 2406.4978989453843,
+          "n_truth": 2491,
+          "s": 862.0,
+          "m": 31.727825367428796,
+          "dti": 0.0388380615835688
+        },
+        "H46-structural-DFA": {
+          "tp": 55.518900245478015,
+          "fp": 841.4667053442383,
+          "fn": 2435.481099754522,
+          "n_truth": 2491,
+          "s": 862.0,
+          "m": 20.533294655761708,
+          "dti": 0.025558868348411718
+        },
+        "R8-conformal": {
+          "tp": 53.16740494621321,
+          "fp": 841.7956568711586,
+          "fn": 2437.832595053787,
+          "n_truth": 2491,
+          "s": 862.0,
+          "m": 20.204343128841373,
+          "dti": 0.024480884889063498
+        },
+        "R9-conformal": {
+          "tp": 84.19099412348683,
+          "fp": 831.3100581267803,
+          "fn": 2406.8090058765133,
+          "n_truth": 2491,
+          "s": 862.0,
+          "m": 30.689941873219688,
+          "dti": 0.03869248861648598
+        },
+        "H46-pure-DFA": {
+          "tp": 73.17241809348656,
+          "fp": 834.7056956591531,
+          "fn": 2417.8275819065134,
+          "n_truth": 2491,
+          "s": 862.0,
+          "m": 27.294304340846875,
+          "dti": 0.03365215160060143
+        },
+        "R10-DFA-crossover": {
+          "tp": 28.235967884151584,
+          "fp": 851.6524724430794,
+          "fn": 2462.7640321158483,
+          "n_truth": 2491,
+          "s": 862.0,
+          "m": 10.347527556920618,
+          "dti": 0.013019300244334911
+        }
+      }
+    },
+    {
+      "block": 14,
+      "emitted_each": 3561,
+      "truth": 11440,
+      "scores": {
+        "R11-D": {
+          "tp": 741.2373331064431,
+          "fp": 3322.8206850279157,
+          "fn": 10698.762666893557,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 238.1793149720841,
+          "dti": 0.07438548389982426
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 1050.6340639146113,
+          "fp": 3199.156726821292,
+          "fn": 10389.365936085389,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 361.84327317870816,
+          "dti": 0.10504283734267605
+        },
+        "H46-structural-DFA": {
+          "tp": 965.7021922989666,
+          "fp": 3226.0026811716903,
+          "fn": 10474.297807701034,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 334.9973188283099,
+          "dti": 0.0966635868330246
+        },
+        "R8-conformal": {
+          "tp": 908.4623533663998,
+          "fp": 3255.002170413692,
+          "fn": 10531.5376466336,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 305.99782958630783,
+          "dti": 0.0909855077198799
+        },
+        "R9-conformal": {
+          "tp": 657.7764485481016,
+          "fp": 3344.2308341540156,
+          "fn": 10782.223551451898,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 216.76916584598428,
+          "dti": 0.06609223426329575
+        },
+        "H46-pure-DFA": {
+          "tp": 872.5394626403727,
+          "fp": 3268.967205857479,
+          "fn": 10567.460537359628,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 292.03279414252097,
+          "dti": 0.0874261641473751
+        },
+        "R10-DFA-crossover": {
+          "tp": 1072.5885555070154,
+          "fp": 3208.149101907905,
+          "fn": 10367.411444492984,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 352.85089809209506,
+          "dti": 0.1071715372033464
+        }
+      }
+    }
+  ],
+  "skipped_blocks": [
+    {
+      "block": 6,
+      "reason": "zero shared emission capacity",
+      "counts": {
+        "R11-D": 493,
+        "GEMSDOE32-owner-reported-02778": 493,
+        "H46-structural-DFA": 493,
+        "R8-conformal": 493,
+        "R9-conformal": 493,
+        "H46-pure-DFA": 493,
+        "R10-DFA-crossover": 0
+      }
+    },
+    {
+      "block": 7,
+      "reason": "no proxy truth or empty domain"
+    },
+    {
+      "block": 8,
+      "reason": "no proxy truth or empty domain"
+    },
+    {
+      "block": 11,
+      "reason": "no proxy truth or empty domain"
+    },
+    {
+      "block": 12,
+      "reason": "no proxy truth or empty domain"
+    },
+    {
+      "block": 13,
+      "reason": "zero shared emission capacity",
+      "counts": {
+        "R11-D": 842,
+        "GEMSDOE32-owner-reported-02778": 842,
+        "H46-structural-DFA": 842,
+        "R8-conformal": 842,
+        "R9-conformal": 842,
+        "H46-pure-DFA": 842,
+        "R10-DFA-crossover": 0
+      }
+    },
+    {
+      "block": 15,
+      "reason": "no proxy truth or empty domain"
+    }
+  ],
+  "mean_block_dti": {
+    "R11-D": 0.06098742605071986,
+    "GEMSDOE32-owner-reported-02778": 0.10067412067794511,
+    "H46-structural-DFA": 0.09924250772186383,
+    "R8-conformal": 0.08213382127625748,
+    "R9-conformal": 0.041235296966898496,
+    "H46-pure-DFA": 0.06926313229172333,
+    "R10-DFA-crossover": 0.058789732749927874
   },
-  "gate_passed": true,
-  "gate_preregistered": true,
-  "gate_strict_r10_style": false,
-  "status": "PROXY_GATE_PASSED_NOT_SUBMITTED",
-  "runtime_seconds": 168.0,
+  "best_comparator": "GEMSDOE32-owner-reported-02778",
+  "paired_delta": -0.03968669462722526,
+  "paired_bootstrap_95": [
+    -0.05461972277301271,
+    -0.02581955430864871
+  ],
+  "gate_passed": false,
+  "low_correlation_gate_passed": false,
+  "max_absolute_correlation": 0.5431496684595876,
+  "status": "HOLD_DO_NOT_SUBMIT",
   "limitations": [
-    "The off-catalogue SGMC proxy is reused and imperfect; it is not hidden competition truth.",
-    "Comparator files are re-emitted from their own fields at matched per-block mass; these are not scores of the original files.",
-    "2 m LiDAR morphology covers 75.3% of the footprint; results are conditioned on that coverage.",
-    "The mirrored USGS products are rank-quantised uint8; only ordering and structure are used, never physical units.",
-    "Mirror hashes prove consistency with a public USGS data release, not organiser authentication.",
-    "Selection used 6x6 odd blocks of the same proxy family as earlier sessions; this reduces, but does not remove, instrument reuse risk.",
-    "Low correlation with prior files is non-redundancy on the chosen mask, not proof of geological independence.",
-    "Strong two-sensor concordance was falsified on the selection blocks (w=1 scores below w=0); only a mild reweighting (w=0.25) survived. Ridge-axis thinning was falsified outright.",
-    "The smoothed-field correlation with the restored GEMSDOE32 file is not negligible, so R11 is not spatially independent of the family's best field at coarse scales even though the emitted pixels are almost disjoint.",
-    "Three locked blocks were dropped from the matched-mass comparison because a gapped comparator could emit nothing there; the all-blocks robustness view keeps them."
+    "SGMC is an imperfect reused proxy, not hidden competition truth.",
+    "Matched-mass comparator rules re-emit fields within each block; these are not scores of original files.",
+    "25-tap template merges contacts closer than ~1.2 km; |r|>=0.8 floor drops weak/gradual contacts.",
+    "Correlation cannot establish geological independence or fault discovery.",
+    "Unique against inspected local rasters and restored GEMSDOE32 only; universal uniqueness not verified."
   ]
 }

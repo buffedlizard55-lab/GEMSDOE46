@@ -1,4 +1,4 @@
-"""R11 field construction: two-sensor scarp/regolith concordance plus a ridge-axis thinning operator.
+"""R12 field construction: two-sensor scarp/regolith concordance plus a ridge-axis thinning operator.
 
 Physical basis
 --------------
@@ -185,7 +185,7 @@ def build_field(morph: dict[str, np.ndarray], rad: dict[str, np.ndarray], lidar_
                 domain: np.ndarray, w: float = 0.5, corr_sigma: float = 2.0,
                 fallback_quantile: float = 0.0, rad_sigma: float = 2.0,
                 thin: bool = False) -> tuple[np.ndarray, dict]:
-    """Return the R11 evidence field in [0, 1] on ``domain`` and a diagnostics dict.
+    """Return the R12 evidence field in [0, 1] on ``domain`` and a diagnostics dict.
 
     Parameters
     ----------

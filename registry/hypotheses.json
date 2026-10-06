@@ -1,32 +1,9 @@
 {
  "schema_version": 1,
  "created_utc": "2026-10-06",
- "ranking_rule": "expected DTI improvement first (evidence-weighted: locked off-catalogue proxy blocks at matched emitted mass), then implementation cost. Hypotheses needing data this environment cannot obtain are marked BLOCKED with the exact official source named. Rank 0 is the current recommendation; ranks 1-5 are the R10-era set; 6-8 are R11 arms that were falsified, implemented as a sensitivity, or remain blocked.",
- "current_target": {
-  "leader_public": 0.3774,
-  "leader_participant": "xiaofanhu",
-  "retrieved_utc": "2026-10-06T16:06Z",
-  "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
-  "note": "retrieved by the agent's web tool on 2026-10-06; 0.3345 (alexoktaba) was #2. The 0.3195 quoted in the standing prompt is the #7 value on that date. Dated observation, not a live feed."
- },
+ "ranking_rule": "expected DTI improvement first (evidence-weighted: off-catalogue proxy at matched emitted mass, plus the live-anchored emitted-mass rule), then implementation cost. Hypotheses that cannot be validated without data this environment cannot obtain are marked BLOCKED with the exact official source named. H47 update (2026-10-06): a candidate is only spendable if it beats the 0.2778 geometry at matched mass on the stratified-SGMC instrument with a paired-block t >= 2 and a ranking AUC over the incumbent's own dots >= 0.55.",
+ "current_target": "Beat the live-scored 0.2778 dot file. The 0.2600/0.2708/0.2778 files share one identical 37,654-pixel core; the family's entire score progression is the removal of near-catalogue dead dots. A new file must win by placement, not by budget.",
  "hypotheses": [
-  {
-   "id": "H46-R11-A",
-   "rank": 0,
-   "title": "2 m LiDAR scarp morphology with mild airborne gamma-ray reweighting and a quantile-capped radiometric fallback (SHIPPED, gate passed)",
-   "layers": [
-    "external USGS GeoDAWN/3DEP 2 m LiDAR scarp morphology channels downface_max, upface_max, step_max, lappos_max (restored, hash-pinned)",
-    "external USGS GeoDAWN airborne gamma-ray spectrometry Th/K, TC, Th gradients (DOI 10.5066/P93LGLVQ)",
-    "labels.tif only as the fixed 200 m organiser-masked exclusion zone"
-   ],
-   "physical_signature": "an ORIENTED slope break (downslope vs upslope band-passed 2 m gradient) corroborated by a break in the top 0.3-0.5 m sampled by gamma rays; neither is an amplitude or curvature maximum of a potential field",
-   "why_off_catalogue": "the published catalogue is a Quaternary-fault compilation mapped from surface expression; traces with subtle morphology but a regolith contrast, or buried under alluvium, are under-recorded, and the fixed catalogue exclusion removes the already-mapped population",
-   "differs_from_repo": "gamma-ray spectrometry had never been used by any arm in this repository, nor had the LiDAR morphology product; no prior arm had a coverage-aware fallback for the 24.87% of the emittable domain with no LiDAR. A sibling site used a LiDAR ridge alone (7GEMSDOE, owner-reported 0.1461), so novelty is claimed for this repository plus pixel-level distinctness, not universally.",
-   "expected_dti": "locked-block mean 0.10420 vs 0.09368 for the best comparator (its own LiDAR-only component) and 0.06781 for the restored GEMSDOE32 file; pooled 0.13912; all-blocks full-budget 0.15586. Paired delta +0.01052, bootstrap 95% [+0.00140, +0.02121].",
-   "cost": "low (CPU only, ~3 min end to end)",
-   "validation_status": "VALIDATED on a locked 6x6 even-parity block set that was never used for selection; preregistered gate PASSED; R10's stricter no-skipped-block rule FAILS (3 blocks dropped where a gapped comparator could emit nothing) and is reported",
-   "data_status": "no new download needed; USGS layers restored from the group's hash-pinned public mirror of ScienceBase item 657e1d85d34e23d3533209f7"
-  },
   {
    "id": "H46-2",
    "rank": 1,
@@ -110,7 +87,120 @@
    "data_status": "available in-repo mirror: data/external/gdr_wellspring_in_footprint.csv (restored); original free and official at gdr.openei.org/submissions/1391"
   },
   {
-   "id": "H46-R11-B",
+   "id": "H47-1",
+   "rank": 1,
+   "title": "Catalogue-supervised multi-scale oriented-lineament detector with metric-algebraic dashed emission (IMPLEMENTED, SCREEN FAILED -> HOLD_DO_NOT_SUBMIT)",
+   "layers": [
+    "19 official bands; 55 features: |grad| at sigma 1/2/4, Laplacian, structure-tensor coherence, 4-px high-pass on 8 principal bands + raw/context channels",
+    "labels.tif as supervision (positives) and, beyond 500 m, as hard negatives; no external data"
+   ],
+   "physical_signature": "a learned joint multi-scale lineament descriptor over magnetic, gravity, topographic, conductivity and seismicity context bands",
+   "why_off_catalogue": "the catalogue under-records weakly expressed structures; a joint descriptor is the classical criterion for a fault with no clean surface trace",
+   "differs_from_repo": "no prior GEMSDOE46 arm trains on the catalogue; family detectors exist (GEMSDOE32 HGB harness, GEMSDOE36 U-Net), so the claim was the feature stack plus the metric-algebraic emission rule",
+   "measured_outcome": {
+    "cv_auc_blocked_catalogue": 0.5685,
+    "matched_mass_stratified_sgmc_d0_5_ship_field": {
+     "delta_vs_incumbent_0.2778": -0.035274,
+     "paired_t_127_blocks": -5.48,
+     "auc_over_incumbent_dots": 0.497,
+     "hit_fraction": 0.0634
+    },
+    "matched_mass_stratified_sgmc_d0_5_oof_field": {
+     "delta_vs_incumbent_0.2778": 0.005093,
+     "paired_t": 0.64,
+     "auc_over_incumbent_dots": 0.5645
+    },
+    "uniform_random_T_at_same_mass": 4140.2
+   },
+   "status": "HOLD_DO_NOT_SUBMIT - artifact published for inspection, no slot spent",
+   "evidence": [
+    "registry/h47.json -> screen",
+    "docs/research/h47-review.md"
+   ]
+  },
+  {
+   "id": "H47-2",
+   "rank": 2,
+   "title": "Along-strike continuation of catalogue fault tips",
+   "layers": [
+    "labels.tif endpoints only (no official band used)"
+   ],
+   "physical_signature": "catalogue trace geometry alone: tip position plus local PCA strike",
+   "why_off_catalogue": "relay ramps and tip zones beyond a mapped trace end are faults the compilation did not extend",
+   "differs_from_repo": "family H18-3a used catalogue-tip density and H33-5 uses the detector's own ridge field; this tested the pure geometric projection",
+   "measured_outcome": {
+    "endpoints": 4898,
+    "P_hit_within_500m_of_off_catalogue_SGMC": {
+     "L_5px": 0.152,
+     "L_10px": 0.159,
+     "L_20px": 0.126,
+     "L_30px": 0.124,
+     "L_40px": 0.118
+    },
+    "unconditional_random_base_rate": 0.305
+   },
+   "status": "FALSIFIED (below the random base rate)"
+  },
+  {
+   "id": "H47-3",
+   "rank": 3,
+   "title": "Explicit 1 m lidar scarp channels / 3DEP-GeoDAWN tiles",
+   "layers": [
+    "USGS 3DEP / GeoDAWN hillshade and DEM-derived scarp metrics at 1 m, resampled to 100 m"
+   ],
+   "physical_signature": "fresh fault scarps resolved only below the 100 m grid of the official bands",
+   "why_off_catalogue": "surface ruptures younger than the compilation, visible only in lidar",
+   "differs_from_repo": "family H33-C used lidar scarplet chains from a different lidar source; this would add the official 3DEP product",
+   "external_source": {
+    "name": "USGS 3DEP / GeoDAWN sciencebase item",
+    "url": "https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7"
+   },
+   "obtainability": "NOT VERIFIED - competition data tab is login-walled and sciencebase/usgs/s3 hosts return HTTP 000 from this sandbox",
+   "status": "BLOCKED, source named"
+  },
+  {
+   "id": "H47-4",
+   "rank": 4,
+   "title": "Cross-physics rank product without supervision",
+   "layers": [
+    "official bands 1-19, rank-normalised per physics family"
+   ],
+   "physical_signature": "agreement of independent physics at a location, with no learned weights",
+   "why_off_catalogue": "a fault that perturbs several fields should survive a rank product even where no single field is decisive",
+   "differs_from_repo": "close to H46-2 (geometric-mean corroboration) and family H33-A, so it is a re-parameterisation, not a new mechanism",
+   "status": "NOT RUN - superseded by the H47-1 failure and the 'already taken' table"
+  },
+  {
+   "id": "H47-5",
+   "rank": 5,
+   "title": "Collar/budget engineering on the incumbent geometry",
+   "layers": [
+    "previous submission bytes only"
+   ],
+   "physical_signature": "none - metric-space optimisation",
+   "why_off_catalogue": "n/a",
+   "differs_from_repo": "the 200 m collar is already live-validated by H33-2-B2; the open question is dead-dot identification, which H47-1 measured at chance (AUC 0.497 over the incumbent's own dots)",
+   "status": "NOT RUN - one measured blocker"
+  },
+  {
+   "id": "H46-R12-A",
+   "rank": 0,
+   "title": "2 m LiDAR scarp morphology with mild airborne gamma-ray reweighting and a quantile-capped radiometric fallback (SHIPPED, gate passed)",
+   "layers": [
+    "external USGS GeoDAWN/3DEP 2 m LiDAR scarp morphology channels downface_max, upface_max, step_max, lappos_max (restored, hash-pinned)",
+    "external USGS GeoDAWN airborne gamma-ray spectrometry Th/K, TC, Th gradients (DOI 10.5066/P93LGLVQ)",
+    "labels.tif only as the fixed 200 m organiser-masked exclusion zone"
+   ],
+   "physical_signature": "an ORIENTED slope break (downslope vs upslope band-passed 2 m gradient) corroborated by a break in the top 0.3-0.5 m sampled by gamma rays; neither is an amplitude or curvature maximum of a potential field",
+   "why_off_catalogue": "the published catalogue is a Quaternary-fault compilation mapped from surface expression; traces with subtle morphology but a regolith contrast, or buried under alluvium, are under-recorded, and the fixed catalogue exclusion removes the already-mapped population",
+   "differs_from_repo": "gamma-ray spectrometry had never been used by any arm in this repository, nor had the LiDAR morphology product; no prior arm had a coverage-aware fallback for the 24.87% of the emittable domain with no LiDAR. A sibling site used a LiDAR ridge alone (7GEMSDOE, owner-reported 0.1461), so novelty is claimed for this repository plus pixel-level distinctness, not universally.",
+   "expected_dti": "locked-block mean 0.10420 vs 0.09368 for the best comparator (its own LiDAR-only component) and 0.06781 for the restored GEMSDOE32 file; pooled 0.13912; all-blocks full-budget 0.15586. Paired delta +0.01052, bootstrap 95% [+0.00140, +0.02121].",
+   "cost": "low (CPU only, ~3 min end to end)",
+   "validation_status": "VALIDATED on a locked 6x6 even-parity block set that was never used for selection; preregistered gate PASSED; R10's stricter no-skipped-block rule FAILS (3 blocks dropped where a gapped comparator could emit nothing) and is reported",
+   "data_status": "no new download needed; USGS layers restored from the group's hash-pinned public mirror of ScienceBase item 657e1d85d34e23d3533209f7"
+  },
+  {
+   "id": "H46-R12-B",
    "rank": 6,
    "title": "Ridge-axis thinning before emission (FALSIFIED on the selection blocks)",
    "layers": [
@@ -125,7 +215,7 @@
    "data_status": "no external data needed"
   },
   {
-   "id": "H46-R11-C",
+   "id": "H46-R12-C",
    "rank": 7,
    "title": "Truth-mass-matched proxy instrument and budget re-derivation (IMPLEMENTED as a sensitivity, budget unchanged)",
    "layers": [
@@ -140,7 +230,7 @@
    "data_status": "no external data needed"
   },
   {
-   "id": "H46-R11-E",
+   "id": "H46-R12-E",
    "rank": 8,
    "title": "Hypocentre lineaments from the USGS ANSS catalogue (STILL BLOCKED)",
    "layers": [
@@ -154,5 +244,12 @@
    "validation_status": "BLOCKED, no slot spent",
    "data_status": "https://earthquake.usgs.gov/fdsnws/event/1/query is free and needs no key; it returns HTTP 000 from this sandbox (re-measured 2026-10-06). The agent's web tool reaches the service, but ~10^4 CSV rows cannot be transferred reproducibly that way. Run scripts/fetch_earthquake_catalog.sh on an unrestricted machine."
   }
- ]
+ ],
+ "leaderboard_snapshot": {
+  "retrieved_utc": "2026-10-06T16:06Z",
+  "leader_public": 0.3774,
+  "leader_participant": "xiaofanhu",
+  "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+  "note": "Dated observation, not a live feed. The public board attributes scores to participants, not files (IR-46-01)."
+ }
 }

@@ -78,7 +78,7 @@ def test_active_site_local_links():
                     if not url.scheme and url.path:
                         assert (self.base/unquote(url.path)).is_file(), value
     import json
-    receipt=json.loads((root/'registry/r11.json').read_text())
+    receipt=json.loads((root/'registry/r12.json').read_text())
     for page in ('index.html','docs/index.html','docs/executive-summary.html'):
         parser=Links(); parser.base=(root/page).parent
         text=(root/page).read_text()

@@ -6,6 +6,8 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "docs"
+#: the receipt tag that drives the live pages (built by scripts/build_r12_site.py)
+ACTIVE_TAG = "r12"
 
 
 class PageAudit(HTMLParser):
@@ -68,23 +70,24 @@ def test_homepage_puts_the_verified_download_first() -> None:
     import json
     home = (SITE / "index.html").read_text(encoding="utf-8")
     assert home.index('id="submission-download"') < home.index('id="validation"')
-    receipt = json.loads((ROOT / "registry/r11.json").read_text())
+    receipt = json.loads((ROOT / f"registry/{ACTIVE_TAG}.json").read_text())
     assert receipt["file"] in home
-    assert (SITE / "r11" / receipt["file"]).is_file()
+    assert (SITE / ACTIVE_TAG / receipt["file"]).is_file()
     assert all(receipt["audit"]["checks"].values())
     assert receipt["audit"]["positive"] == 37654
-    # the gate result and its limits must both be visible on the landing page
-    assert receipt["gate_passed"] is True
+    # the page must state the gate outcome truthfully whatever it was, plus its limits
     assert "no leaderboard score" in home.lower()
     assert receipt["note"] in home
     assert receipt["audit"]["sha256"] in home
+    assert ("Proxy gate PASSED" in home) is bool(receipt["gate_passed"])
+    assert ("do not submit" in home) is not bool(receipt["gate_passed"])
 
 
 def test_executive_summary_explains_how_to_submit() -> None:
     """The submission guide must exist, name the file and cover the known range error."""
     import json
     page = (SITE / "executive-summary.html").read_text(encoding="utf-8")
-    receipt = json.loads((ROOT / "registry/r11.json").read_text())
+    receipt = json.loads((ROOT / f"registry/{ACTIVE_TAG}.json").read_text())
     assert 'id="how-to-submit"' in page
     assert receipt["file"] in page
     assert receipt["note"] in page
@@ -94,11 +97,37 @@ def test_executive_summary_explains_how_to_submit() -> None:
     assert "https://www.drivendata.org/competitions/306/competition-doe-gems/" in page
 
 
-def test_r10_hold_candidate_is_still_labelled_held() -> None:
-    """A failed gate must stay visible; the new page may not quietly promote it."""
+def test_r10_receipt_is_archived_unchanged() -> None:
+    """The failed R10 arm stays on disk with its own receipt (published negative result)."""
     import json
-    r10 = json.loads((ROOT / "registry/r10.json").read_text())
-    assert r10["gate_passed"] is False
+    receipt = json.loads((ROOT / "registry/r10.json").read_text())
+    assert (SITE / "r10" / receipt["file"]).is_file()
+    assert json.loads((SITE / "r10" / "receipt.json").read_text())["file"] == receipt["file"]
+    assert not receipt["gate_passed"]
+    assert receipt["audit"]["positive"] == 37654
     review = (ROOT / "docs/research/r10-review.md").read_text(encoding="utf-8")
     assert "HOLD" in review
-    assert (SITE / "r10" / r10["file"]).is_file()
+
+
+def test_r11_receipt_is_archived_unchanged() -> None:
+    """The R11 matched-filter arm stays on disk with its own receipt (published negative result)."""
+    import json
+    receipt = json.loads((ROOT / "registry/r11.json").read_text())
+    assert (SITE / "r11" / receipt["file"]).is_file()
+    assert json.loads((SITE / "r11" / "receipt.json").read_text())["file"] == receipt["file"]
+    assert receipt["status"] == "HOLD_DO_NOT_SUBMIT"
+    assert receipt["audit"]["positive"] == 37654
+
+
+def test_h47_receipt_is_archived_unchanged() -> None:
+    """The screened H47 arm stays on disk with its own receipt (published negative result)."""
+    import json
+    receipt = json.loads((ROOT / "registry/h47.json").read_text())
+    emission = receipt["emission"]
+    name = Path(emission["zeros"]["path"]).name
+    assert (SITE / "downloads" / "h47" / name).is_file()
+    audit = emission["zeros"]["audit"]
+    assert audit["passes"] is True
+    assert audit["positive_px"] == emission["emitted_px"] == 37654
+    assert receipt["screen"]["verdict"] == "HOLD_DO_NOT_SUBMIT"
+    assert receipt["screen"]["full"]["delta_vs_C"] < 0

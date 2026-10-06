@@ -1,73 +1,73 @@
 {
-  "schema_version": 1,
-  "note": "Every hash below was recomputed in this checkout from the restored bytes. Pins prove mirror consistency, not organiser authentication. The r11_layer_* entries were added on 2026-10-06 and their sha256 values for geodawn_rad and geodawn_extensions equal the product_sha256 recorded in the mirror's own receipts (geodawn_rad.json, geodawn_extensions.json).",
-  "files": [
-    {
-      "id": "training_features",
-      "dest": "data/raw/training_features.tif",
-      "mirror": "github.com/buffedlizard55-lab/GEMSDOE data/bridge/gems-geodawn-numerical-features.tif.part-000..004 (reassembled)",
-      "official_source": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/ (login-walled)",
-      "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
-      "bytes": 418912844,
-      "verified_here": true,
-      "properties": "19 float32 bands, 3730x3292, EPSG:32611, 100 m, origin (243350, 4508550), nodata -3.4028234663852886e38"
-    },
-    {
-      "id": "labels",
-      "dest": "data/raw/labels.tif",
-      "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/bridge/labels.tif",
-      "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
-      "bytes": 425830,
-      "verified_here": true,
-      "properties": "int8, 60,988 positive pixels inside the footprint; byte-identical to the mirror's existing_faults.tif"
-    },
-    {
-      "id": "sample_submission",
-      "dest": "data/raw/sample_submission.tif",
-      "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/bridge/sample_submission.tif",
-      "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
-      "bytes": 1599597,
-      "verified_here": true,
-      "properties": "float32; 5,167,373 finite pixels (the scored footprint used as the template); contains 1s on the catalogue, see IR-46-03"
-    },
-    {
-      "id": "sgmc_faults_100m",
-      "dest": "data/external/sgmc_faults_100m_u8.tif",
-      "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/external/derived_sgmc_faults_100m_u8.tif",
-      "overlying_source": "USGS State Geologic Map Compilation fault traces",
-      "sha256": "643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0",
-      "verified_here": true,
-      "properties": "uint8 binary, 83,593 positive pixels inside the footprint; 66,277 remain as off-catalogue proxy truth after removing pixels coincident with the published catalogue"
-    },
-    {
-      "id": "r11_layer_geodawn_rad",
-      "dest": "data/external/geodawn_rad_u8.tif",
-      "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/external/geodawn_rad_u8.tif",
-      "overlying_source": "USGS GeoDAWN airborne gamma-ray spectrometry grids K/Th/U/TC, DOI 10.5066/P93LGLVQ, ScienceBase item 657e1d85d34e23d3533209f7",
-      "sha256": "c22420f75999030d7cc65c9e31e50d232ea6158423bca051613a18a8b20ba682",
-      "bytes": 26612970,
-      "verified_here": true,
-      "properties": "uint8, 4 bands (K, Th, U, TC), 3730x3292, EPSG:32611, 100 m; rank-quantised 1..255 over the 1st-99th percentile of each channel, 0 = no data; sha256 equals the mirror's recorded product_sha256"
-    },
-    {
-      "id": "r11_layer_geodawn_extensions",
-      "dest": "data/external/geodawn_extensions_u8.tif",
-      "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/external/geodawn_extensions_u8.tif",
-      "overlying_source": "USGS GeoDAWN contractor ratio/derivative grids Th/K, U/K, U/Th, TMI up-continued 150 m, DOI 10.5066/P93LGLVQ",
-      "sha256": "a35a9c6d2a14786f4dab85481ee59769213072f5dab5b2535ea82ae4d9bb7d9b",
-      "bytes": 27132925,
-      "verified_here": true,
-      "properties": "uint8, 4 bands (ThK, UK, UTh, TMI_up150), 3730x3292, EPSG:32611; rank-quantised, units not preserved; sha256 equals the mirror's recorded product_sha256"
-    },
-    {
-      "id": "r11_layer_lidar_scarp",
-      "dest": "data/external/lidar_scarp_features_u8.tif",
-      "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/external/lidar_scarp_features_u8.tif",
-      "overlying_source": "2 m LiDAR (3DEP, flown with GeoDAWN) scarp-morphology channels aggregated to 100 m; product of the group's own derivation, DOI of the underlying survey 10.5066/P93LGLVQ",
-      "sha256": "d580bb8bdcdb941e32fefb8b38044bc5bf04e199bf2e83498c3576e6fc465568",
-      "bytes": 36943606,
-      "verified_here": true,
-      "properties": "uint8, 12 bands, 3730x3292, EPSG:32611; covers 75.3% of the scored footprint (valid band); channels are sqrt/linear quantisations of 2 m DEM morphology, not physical units"
-    }
-  ]
+ "schema_version": 1,
+ "note": "Every hash below was recomputed in this checkout from the restored bytes. Pins prove mirror consistency, not organiser authentication. The r11_layer_* entries were added on 2026-10-06 and their sha256 values for geodawn_rad and geodawn_extensions equal the product_sha256 recorded in the mirror's own receipts (geodawn_rad.json, geodawn_extensions.json).",
+ "files": [
+  {
+   "id": "training_features",
+   "dest": "data/raw/training_features.tif",
+   "mirror": "github.com/buffedlizard55-lab/GEMSDOE data/bridge/gems-geodawn-numerical-features.tif.part-000..004 (reassembled)",
+   "official_source": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/ (login-walled)",
+   "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+   "bytes": 418912844,
+   "verified_here": true,
+   "properties": "19 float32 bands, 3730x3292, EPSG:32611, 100 m, origin (243350, 4508550), nodata -3.4028234663852886e38"
+  },
+  {
+   "id": "labels",
+   "dest": "data/raw/labels.tif",
+   "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/bridge/labels.tif",
+   "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+   "bytes": 425830,
+   "verified_here": true,
+   "properties": "int8, 60,988 positive pixels inside the footprint; byte-identical to the mirror's existing_faults.tif"
+  },
+  {
+   "id": "sample_submission",
+   "dest": "data/raw/sample_submission.tif",
+   "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/bridge/sample_submission.tif",
+   "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+   "bytes": 1599597,
+   "verified_here": true,
+   "properties": "float32; 5,167,373 finite pixels (the scored footprint used as the template); contains 1s on the catalogue, see IR-46-03"
+  },
+  {
+   "id": "sgmc_faults_100m",
+   "dest": "data/external/sgmc_faults_100m_u8.tif",
+   "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/external/derived_sgmc_faults_100m_u8.tif",
+   "overlying_source": "USGS State Geologic Map Compilation fault traces",
+   "sha256": "643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0",
+   "verified_here": true,
+   "properties": "uint8 binary, 83,593 positive pixels inside the footprint; 66,277 remain as off-catalogue proxy truth after removing pixels coincident with the published catalogue"
+  },
+  {
+   "id": "r12_layer_geodawn_rad",
+   "dest": "data/external/geodawn_rad_u8.tif",
+   "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/external/geodawn_rad_u8.tif",
+   "overlying_source": "USGS GeoDAWN airborne gamma-ray spectrometry grids K/Th/U/TC, DOI 10.5066/P93LGLVQ, ScienceBase item 657e1d85d34e23d3533209f7",
+   "sha256": "c22420f75999030d7cc65c9e31e50d232ea6158423bca051613a18a8b20ba682",
+   "bytes": 26612970,
+   "verified_here": true,
+   "properties": "uint8, 4 bands (K, Th, U, TC), 3730x3292, EPSG:32611, 100 m; rank-quantised 1..255 over the 1st-99th percentile of each channel, 0 = no data; sha256 equals the mirror's recorded product_sha256"
+  },
+  {
+   "id": "r12_layer_geodawn_extensions",
+   "dest": "data/external/geodawn_extensions_u8.tif",
+   "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/external/geodawn_extensions_u8.tif",
+   "overlying_source": "USGS GeoDAWN contractor ratio/derivative grids Th/K, U/K, U/Th, TMI up-continued 150 m, DOI 10.5066/P93LGLVQ",
+   "sha256": "a35a9c6d2a14786f4dab85481ee59769213072f5dab5b2535ea82ae4d9bb7d9b",
+   "bytes": 27132925,
+   "verified_here": true,
+   "properties": "uint8, 4 bands (ThK, UK, UTh, TMI_up150), 3730x3292, EPSG:32611; rank-quantised, units not preserved; sha256 equals the mirror's recorded product_sha256"
+  },
+  {
+   "id": "r12_layer_lidar_scarp",
+   "dest": "data/external/lidar_scarp_features_u8.tif",
+   "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/external/lidar_scarp_features_u8.tif",
+   "overlying_source": "2 m LiDAR (3DEP, flown with GeoDAWN) scarp-morphology channels aggregated to 100 m; product of the group's own derivation, DOI of the underlying survey 10.5066/P93LGLVQ",
+   "sha256": "d580bb8bdcdb941e32fefb8b38044bc5bf04e199bf2e83498c3576e6fc465568",
+   "bytes": 36943606,
+   "verified_here": true,
+   "properties": "uint8, 12 bands, 3730x3292, EPSG:32611; covers 75.3% of the scored footprint (valid band); channels are sqrt/linear quantisations of 2 m DEM morphology, not physical units"
+  }
+ ]
 }

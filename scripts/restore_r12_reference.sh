@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Restore the R11 external layers into data/external/ and verify their sha256.
+# Restore the R12 external layers into data/external/ and verify their sha256.
 #
-# WHY: R11 (docs/research/session-r11-plan.md) is the first arm in this repository to use
+# WHY: R12 (docs/research/session-r12-plan.md) is the first arm in this repository to use
 # airborne gamma-ray spectrometry and the 2 m LiDAR scarp-morphology product.  Neither is in
 # the organiser's training_features.tif.  Both are published by the USGS as part of the
 # GeoDAWN data release:
@@ -40,4 +40,4 @@ copy geodawn_rad_u8.tif          geodawn_rad_u8.tif          c22420f75999030d7cc
 copy geodawn_extensions_u8.tif   geodawn_extensions_u8.tif   a35a9c6d2a14786f4dab85481ee59769213072f5dab5b2535ea82ae4d9bb7d9b
 copy lidar_scarp_features_u8.tif lidar_scarp_features_u8.tif d580bb8bdcdb941e32fefb8b38044bc5bf04e199bf2e83498c3576e6fc465568
 
-echo "done. next: python3 scripts/run_r11.py"
+echo "done. next: python3 scripts/run_r12.py"
