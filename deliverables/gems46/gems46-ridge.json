@@ -1,0 +1,19 @@
+{
+ "path": "/home/user/GEMSDOE46/deliverables/gems46/gems46-ridge-37k-ridge.tif",
+ "shape": [
+  3730,
+  3292
+ ],
+ "min": 0.0,
+ "max": 1.0,
+ "nonzero": 37654,
+ "finite": true,
+ "bytes": 134653,
+ "sha256": "ab28c325ee57b49b0d518743c392754fff490b6861545ce04f51e795acef601d",
+ "mean_S": 0.7174074649810791,
+ "predicted_score": 0.8425448351042011,
+ "catalogue_buffer_px": 3,
+ "nms_half_width_px": 3,
+ "max_jaccard_vs_anchors": 0.008605288340834913,
+ "closest_anchor": "p19"
+}

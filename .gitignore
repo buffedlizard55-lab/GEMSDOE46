@@ -1,0 +1,6 @@
+data/raw/anchors
+data/raw/grid
+data/raw/*.tif
+__pycache__/
+.pytest_cache/
+*.pyc

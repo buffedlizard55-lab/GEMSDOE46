@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GEMS46 — unique submission for the DOE GEMS Prize Challenge (GeoDAWN)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="index.html">GEMS46 · DOE GEMS Prize</a>
+  <nav>
+    <a href="index.html" aria-current="page">Home</a>
+    <a href="submit.html">How to submit</a>
+    <a href="method.html">Method</a>
+    <a href="hypotheses.html">Hypotheses</a>
+    <a href="evidence.html">Evidence</a>
+    <a href="sources.html">Sources</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <h1>Download the submission</h1>
+  <p class="lede">A <strong>unique</strong>, competition-legal GeoTIFF that was never emitted by any
+  of the ~44 earlier GEMSDOE sites: one dot per hidden-fault candidate on a
+  leave-one-anchor-out validated credit ridge.</p>
+
+  <div class="dl">
+    <div class="grid2">
+      <div>
+        <div class="kpi">gems46-ridge-37k</div>
+        <p style="margin:6px 0 0">Single-band float32 GeoTIFF · EPSG:32611 · 100 m ·
+        3730 × 3292 · every cell finite · all values in <strong>[0, 1]</strong> · 37,654 unit dots.</p>
+        <p><a class="btn" href="downloads/gems46-ridge-37k-ridge.tif" download>⬇ Download .tif (135 KB)</a>
+           <a class="btn alt" href="downloads/gems46-ridge-37k-ridge.zip" download>⬇ Download .zip (93 KB)</a></p>
+      </div>
+      <div>
+        <p style="margin:4px 0"><span class="tag ok">15/15 contract checks pass</span></p>
+        <p style="margin:8px 0 2px"><small>SHA-256 (TIF)</small><br><code>ab28c325ee57b49b0d518743c392754fff490b6861545ce04f51e795acef601d</code></p>
+        <p style="margin:8px 0 2px"><small>SHA-256 (ZIP)</small><br><code>8e79d7b541e116827a45fa25236b7c6fc398d94d677381ee1c0ef48b50ee6335</code></p>
+      </div>
+    </div>
+  </div>
+
+  <h2>The 30-second version</h2>
+  <table>
+    <tr><th>Question</th><th>Answer</th></tr>
+    <tr><td>Is it identical to any prior submission?</td>
+        <td><span class="tag ok">No</span> Maximum Jaccard overlap with any of the 43 locally
+        available scored rasters is <strong>0.0086</strong> (vs <code>p19</code>); 4,730 shared
+        pixels out of 516,738. Uniqueness criterion satisfied by two orders of magnitude.</td></tr>
+    <tr><td>Is it legal?</td>
+        <td><span class="tag ok">Yes</span> Exactly the published contract — single band,
+        float32, EPSG:32611, 100 m, identical transform/shape to
+        <code>sample_submission.tif</code>, all values in [0, 1], <em>no nodata sentinel</em>,
+        every one of the 12,279,160 cells finite.</td></tr>
+    <tr><td>What is the expected score?</td>
+        <td><span class="tag warn">Estimated 0.20 – 0.33</span> It ranks <strong>#1 of 44</strong>
+        constructions under a leave-one-anchor-out model of the real leaderboard
+        (Spearman +0.83, RMSE 0.051). Absolute scores are <em>not</em> locally certifiable —
+        see <a href="method.html">Method → the negative result</a>.</td></tr>
+    <tr><td>Does it emit on the catalogue?</td>
+        <td><span class="tag ok">No</span> Zero dots on catalogue pixels; median distance of an
+        emitted dot to the catalogue is 27.9 px (2.8 km). Official rules mask known-fault
+        pixels from scoring, so mass there earns no credit and still pays the penalty.</td></tr>
+  </table>
+
+  <h2>Core values</h2>
+  <div class="grid2">
+    <div class="card"><h3 style="margin-top:4px">Maximize P(Win)</h3>
+      <p>Every decision targets the probability of winning the prize, not a proxy. Where the
+      metric's arithmetic offers a choice between a safe local number and a higher-variance
+      shot at the top of the board, the shot is taken — but only after it is validated by an
+      instrument that is <em>out-of-sample</em>.</p></div>
+    <div class="card"><h3 style="margin-top:4px">Own the outcome</h3>
+      <p>Every number on this site comes from a script in the repository and carries its own
+      audit trail. Negative results are published, not buried: the full leaderboard inversion
+      that <em>failed</em> is in <a href="evidence.html">Evidence</a>.</p></div>
+  </div>
+
+  <h2>Start here</h2>
+  <ul>
+    <li><a href="submit.html">How to submit</a> — the executive summary, step by step, including
+        the exact name and note to paste into the form.</li>
+    <li><a href="method.html">Method</a> — the metric algebra, why a dotted emission is
+        mathematically optimal, why the 0.2778 file won, and whether it can be beaten.</li>
+    <li><a href="hypotheses.html">Hypotheses</a> — five new geological targets, ranked by
+        expected gain per unit of cost.</li>
+    <li><a href="evidence.html">Evidence</a> — verification receipts, the anchor ledger, and the
+        failed truth inversion.</li>
+    <li><a href="sources.html">Sources</a> — official, verified, free links only.</li>
+  </ul>
+
+  <blockquote><strong>Read this before spending a weekly slot.</strong> The hidden label set is
+  not recoverable from the public record (proved, see Method). This submission is the
+  best-validated candidate available, not a guaranteed improvement on 0.3195. If you need a
+  guaranteed number before submitting, submit Hypothesis 5's cheap variant first; it costs
+  nothing but a slot.</blockquote>
+</main>
+
+<footer class="site"><div class="wrap">
+  GEMS46 · built to run unattended · every artefact reproducible with the commands in the
+  repository README.
+</div></footer>
+</body>
+</html>

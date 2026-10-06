@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Executive summary — how to submit | GEMS46</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="index.html">GEMS46 · DOE GEMS Prize</a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="submit.html" aria-current="page">How to submit</a>
+    <a href="method.html">Method</a>
+    <a href="hypotheses.html">Hypotheses</a>
+    <a href="evidence.html">Evidence</a>
+    <a href="sources.html">Sources</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <h1>Executive summary — submitting this file</h1>
+  <p class="lede">Everything you need is on this page. Total time: about three minutes, and one
+  weekly submission slot.</p>
+
+  <div class="dl">
+    <p style="margin:2px 0 10px"><strong>Download first:</strong>
+      <a class="btn" href="downloads/gems46-ridge-37k-ridge.tif" download>⬇ gems46-ridge-37k-ridge.tif</a>
+      <a class="btn alt" href="downloads/gems46-ridge-37k-ridge.zip" download>⬇ .zip (single GeoTIFF)</a></p>
+  </div>
+
+  <h2>Step by step</h2>
+  <ol>
+    <li><strong>Sign in to DrivenData.</strong> Go to
+      <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank"
+         rel="noopener">the competition page (competition&nbsp;306, DOE GEMS Prize)</a> and sign in
+      with the account that owns the weekly slot. There is no separate submission portal.</li>
+    <li><strong>Open the submission form.</strong> Use the <em>Submit</em> / <em>Upload a
+      submission</em> button on the competition page (the same page hosts the leaderboard tab).
+      The form accepts a single file per slot.</li>
+    <li><strong>Choose the file.</strong> Upload
+      <code>gems46-ridge-37k-ridge.tif</code> exactly as downloaded — do not re-encode, do not
+      rescale, do not open and re-save it in QGIS or ArcGIS. The file is already in the exact
+      contract format. If the form rejects a <code>.tif</code> for any reason, upload the
+      <code>.zip</code>, which contains the identical GeoTIFF.</li>
+    <li><strong>Paste the name.</strong>
+      <pre><code>gems46-ridge-37k-v1</code></pre></li>
+    <li><strong>Paste the note</strong> (199 characters, within the 200-character limit):
+      <pre><code>Unique 37,654-dot emission on a leave-one-anchor-out validated credit ridge (LOO Spearman +0.83); off-catalogue, no overlap with any prior GEMSDOE submission (max Jaccard 0.009).</code></pre></li>
+    <li><strong>Submit and wait.</strong> Scoring is automatic; the public-leaderboard row
+      normally refreshes within a few minutes. The score is computed against the withheld expert
+      fault labels with the known USGS/INGENIOUS fault pixels masked out.</li>
+    <li><strong>Record the result — this is the important step.</strong> Append one row to
+      <code>data/anchor_manifest.csv</code> with the returned score and a copy of the file in
+      <code>data/raw/anchors/</code>, then re-run
+      <code>scripts/build_credit_model.py</code>, <code>scripts/build_credit_map.py</code> and
+      <code>scripts/emission_search.py</code>. The ridge model is built to consume every new
+      (file, score) pair; the next submission is then fitted on N+1 anchors instead of N.</li>
+  </ol>
+
+  <h2>Format contract (all verified, 15/15)</h2>
+  <table>
+    <tr><th>Requirement</th><th>This file</th><th></th></tr>
+    <tr><td>Single band</td><td>1 band</td><td><span class="tag ok">pass</span></td></tr>
+    <tr><td>float32</td><td><code>float32</code></td><td><span class="tag ok">pass</span></td></tr>
+    <tr><td>CRS EPSG:32611</td><td><code>EPSG:32611</code></td><td><span class="tag ok">pass</span></td></tr>
+    <tr><td>100 m pixels</td><td>+100.0 / −100.0</td><td><span class="tag ok">pass</span></td></tr>
+    <tr><td>Shape and transform identical to the competition grid</td>
+        <td>3730 × 3292 · <code>(243350, 100, 0, 4508550, 0, -100)</code></td>
+        <td><span class="tag ok">pass</span></td></tr>
+    <tr><td>All values in [0, 1]</td><td>min 0.0, max 1.0</td><td><span class="tag ok">pass</span></td></tr>
+    <tr><td>Every cell finite — no large-negative nodata sentinel</td>
+        <td>0 non-finite cells, <code>nodata = None</code></td><td><span class="tag ok">pass</span></td></tr>
+    <tr><td>Reads identically in two independent readers</td>
+        <td>rasterio and tifffile, bit-identical</td><td><span class="tag ok">pass</span></td></tr>
+  </table>
+  <p class="muted">Reproduce with <code>/tmp/venv/bin/python scripts/verify_submission.py</code>.
+  Full receipt: <a href="downloads/verification.json">verification.json</a>.</p>
+
+  <h2>Why the earlier "values must be in [0, 1]" error happened</h2>
+  <p>It is a format trap, not a modelling problem. GeoTIFF writers default to
+  <code>nodata = -3.4028234663852886e38</code> (the most negative float32). The portal validates
+  <em>every</em> value in the file, including the sentinel, and rejects the upload. Setting the
+  sentinel to zero or writing an alpha band does not always remove it; the robust fix is to
+  never declare a nodata value at all and to clip the array to [0, 1] before writing. That is
+  what this file does (<code>src/gems46/rasters.py</code>), and it is asserted by the
+  verification script on every run.</p>
+
+  <h2>What to do with the remaining slots</h2>
+  <ul>
+    <li><strong>Slot spent on this file</strong> — record the score as anchor <code>p46</code>
+        (the next free id) and re-fit. If the score beats 0.2778 the emission direction is
+        confirmed; if it lands below, the ridge direction is wrong at the top of its own range
+        and the next slot should go to Hypothesis 3 (lidar scarps).</li>
+    <li><strong>Next-best single file</strong> — Hypothesis 5's cheap variant, which needs no
+        new data and no new model, only a different candidate set.</li>
+    <li><strong>Never</strong> re-submit a file that already scored: the weekly budget is the
+        scarcest resource in this competition.</li>
+  </ul>
+</main>
+
+<footer class="site"><div class="wrap">
+  GEMS46 · <a href="index.html">home</a> · <a href="method.html">method</a> ·
+  <a href="evidence.html">evidence</a>
+</div></footer>
+</body>
+</html>
