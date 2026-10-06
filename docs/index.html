@@ -32,6 +32,11 @@ two instruments audited first · no unscreened upload</p>
 than the file already scored 0.2778): name it
 <code>GEMSDOE46-H47-1-CATSUP-LINEAMENT</code> and paste this note:<br>
 <code>GEMSDOE46 H47-1 | catalogue-supervised 55-feature lineament detector, 37,654 dots at matched mass, 300 m separation, 200 m catalogue collar; measured below the 0.2778 file on the stratified-SGMC screen - published as a research artifact, not as a recommended submission</code></p>
+<p><b>Why the zeros twin is the primary download:</b> every family file that actually carries a
+live score was re-read here and is all-finite (12,279,160 finite pixels, min 0.0, max 1.0, no nodata
+sentinel) — the NaN-outside convention is what the portal once rejected with
+<q>Predicted values must be in range [0, 1]</q>. The NaN twin matches the template footprint exactly
+and is offered for the alternative reading of the format rule.</p>
 <p>Format audit re-read from disk after writing: single band, float32, shape [3730, 3292],
 CRS EPSG:32611, transform [100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0], min 0.0,
 max 1.0, values [0.0, 1.0], passes = True.

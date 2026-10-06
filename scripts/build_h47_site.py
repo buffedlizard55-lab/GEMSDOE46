@@ -111,6 +111,11 @@ def build(prefix: str, guide: bool = False) -> str:
 than the file already scored 0.2778): name it
 <code>GEMSDOE46-H47-1-CATSUP-LINEAMENT</code> and paste this note:<br>
 <code>{E(note)}</code></p>
+<p><b>Why the zeros twin is the primary download:</b> every family file that actually carries a
+live score was re-read here and is all-finite (12,279,160 finite pixels, min 0.0, max 1.0, no nodata
+sentinel) — the NaN-outside convention is what the portal once rejected with
+<q>Predicted values must be in range [0, 1]</q>. The NaN twin matches the template footprint exactly
+and is offered for the alternative reading of the format rule.</p>
 <p>Format audit re-read from disk after writing: single band, float32, shape {aud.get("shape", "?")},
 CRS {E(str(aud.get("crs", "?")))}, transform {aud.get("transform", "?")}, min {aud.get("min", "?")},
 max {aud.get("max", "?")}, values {aud.get("unique_values", "?")}, passes = {aud.get("passes", "?")}.
