@@ -1,106 +1,120 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GEMS46 — unique submission for the DOE GEMS Prize Challenge (GeoDAWN)</title>
-<link rel="stylesheet" href="style.css">
+<title>GEMSDOE46 — executive summary and submission download</title>
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <header class="site"><div class="wrap">
-  <a class="brand" href="index.html">GEMS46 · DOE GEMS Prize</a>
-  <nav>
-    <a href="index.html" aria-current="page">Home</a>
-    <a href="submit.html">How to submit</a>
-    <a href="method.html">Method</a>
-    <a href="hypotheses.html">Hypotheses</a>
-    <a href="evidence.html">Evidence</a>
-    <a href="sources.html">Sources</a>
-  </nav>
+  <b>GEMSDOE46 — split-conformal submission for the DOE GEMS Prize</b>
+  <span class="sub">DrivenData #306 · deadline 3 Dec 2026 23:59 UTC · $300,000 prize</span>
 </div></header>
+<nav class="site"><div class="wrap">
+  <a href="index.html" aria-current="page">Executive summary</a>
+  <a href="how-to-submit.html">How to submit</a>
+  <a href="submission-analysis.html">Submission analysis</a>
+  <a href="submission-hypotheses.html">Hypothesis test</a>
+  <a href="research-overview.html">Research layer</a>
+  <a href="analysis.html">Score analysis (research)</a>
+  <a href="hypotheses.html">Hypotheses (research)</a>
+  <a href="guide.html">Guide (research)</a>
+  <a href="sources.html">Sources</a>
+</div></nav>
 
-<main class="wrap">
-  <h1>Download the submission</h1>
-  <p class="lede">A <strong>unique</strong>, competition-legal GeoTIFF that was never emitted by any
-  of the ~44 earlier GEMSDOE sites: one dot per hidden-fault candidate on a
-  leave-one-anchor-out validated credit ridge.</p>
+<main>
+<h1>Executive summary</h1>
 
-  <div class="dl">
-    <div class="grid2">
-      <div>
-        <div class="kpi">gems46-ridge-37k</div>
-        <p style="margin:6px 0 0">Single-band float32 GeoTIFF · EPSG:32611 · 100 m ·
-        3730 × 3292 · every cell finite · all values in <strong>[0, 1]</strong> · 37,654 unit dots.</p>
-        <p><a class="btn" href="downloads/gems46-ridge-37k-ridge.tif" download>⬇ Download .tif (135 KB)</a>
-           <a class="btn alt" href="downloads/gems46-ridge-37k-ridge.zip" download>⬇ Download .zip (93 KB)</a></p>
-      </div>
-      <div>
-        <p style="margin:4px 0"><span class="tag ok">15/15 contract checks pass</span></p>
-        <p style="margin:8px 0 2px"><small>SHA-256 (TIF)</small><br><code>ab28c325ee57b49b0d518743c392754fff490b6861545ce04f51e795acef601d</code></p>
-        <p style="margin:8px 0 2px"><small>SHA-256 (ZIP)</small><br><code>8e79d7b541e116827a45fa25236b7c6fc398d94d677381ee1c0ef48b50ee6335</code></p>
-      </div>
-    </div>
-  </div>
-
-  <h2>The 30-second version</h2>
-  <table>
-    <tr><th>Question</th><th>Answer</th></tr>
-    <tr><td>Is it identical to any prior submission?</td>
-        <td><span class="tag ok">No</span> Maximum Jaccard overlap with any of the 43 locally
-        available scored rasters is <strong>0.0086</strong> (vs <code>p19</code>); 4,730 shared
-        pixels out of 516,738. Uniqueness criterion satisfied by two orders of magnitude.</td></tr>
-    <tr><td>Is it legal?</td>
-        <td><span class="tag ok">Yes</span> Exactly the published contract — single band,
-        float32, EPSG:32611, 100 m, identical transform/shape to
-        <code>sample_submission.tif</code>, all values in [0, 1], <em>no nodata sentinel</em>,
-        every one of the 12,279,160 cells finite.</td></tr>
-    <tr><td>What is the expected score?</td>
-        <td><span class="tag warn">Estimated 0.20 – 0.33</span> It ranks <strong>#1 of 44</strong>
-        constructions under a leave-one-anchor-out model of the real leaderboard
-        (Spearman +0.83, RMSE 0.051). Absolute scores are <em>not</em> locally certifiable —
-        see <a href="method.html">Method → the negative result</a>.</td></tr>
-    <tr><td>Does it emit on the catalogue?</td>
-        <td><span class="tag ok">No</span> Zero dots on catalogue pixels; median distance of an
-        emitted dot to the catalogue is 27.9 px (2.8 km). Official rules mask known-fault
-        pixels from scoring, so mass there earns no credit and still pays the penalty.</td></tr>
-  </table>
-
-  <h2>Core values</h2>
-  <div class="grid2">
-    <div class="card"><h3 style="margin-top:4px">Maximize P(Win)</h3>
-      <p>Every decision targets the probability of winning the prize, not a proxy. Where the
-      metric's arithmetic offers a choice between a safe local number and a higher-variance
-      shot at the top of the board, the shot is taken — but only after it is validated by an
-      instrument that is <em>out-of-sample</em>.</p></div>
-    <div class="card"><h3 style="margin-top:4px">Own the outcome</h3>
-      <p>Every number on this site comes from a script in the repository and carries its own
-      audit trail. Negative results are published, not buried: the full leaderboard inversion
-      that <em>failed</em> is in <a href="evidence.html">Evidence</a>.</p></div>
-  </div>
-
-  <h2>Start here</h2>
-  <ul>
-    <li><a href="submit.html">How to submit</a> — the executive summary, step by step, including
-        the exact name and note to paste into the form.</li>
-    <li><a href="method.html">Method</a> — the metric algebra, why a dotted emission is
-        mathematically optimal, why the 0.2778 file won, and whether it can be beaten.</li>
-    <li><a href="hypotheses.html">Hypotheses</a> — five new geological targets, ranked by
-        expected gain per unit of cost.</li>
-    <li><a href="evidence.html">Evidence</a> — verification receipts, the anchor ledger, and the
-        failed truth inversion.</li>
-    <li><a href="sources.html">Sources</a> — official, verified, free links only.</li>
+<div class="card download" id="submission-download">
+  <h2 style="margin-top:0;border:0;padding:0">⬇️ Download the submission file</h2>
+  <p><a class="big" href="SUBMISSION-GEMSDOE46-r8-conformal.tif" download>Download SUBMISSION-GEMSDOE46-r8-conformal.tif</a>
+  <span class="alt">(single-band float32 GeoTIFF, 250 KB, EPSG:32611, 100 m, values in [0,&nbsp;1])</span></p>
+  <ul class="tight small">
+    <li><b>Name:</b> <span class="mono">gemsdoe46-h46a-r8-conformal</span></li>
+    <li><b>Note (paste into the form's Note field):</b> <a href="downloads/NOTE-gemsdoe46-h46a-r8-conformal.txt">downloads/NOTE-gemsdoe46-h46a-r8-conformal.txt</a></li>
+    <li><b>Format audit of that exact file:</b> <a href="downloads/checks-gemsdoe46-h46a-r8-conformal-allfinite.json">checks-…-allfinite.json</a> — single band, float32, shape 3730 × 3292, EPSG:32611, transform matches the template, every cell in [0, 1], positives = 39,108</li>
+    <li><b>Fallback (same dots, NaN outside the survey bounds exactly like <span class="mono">sample_submission.tif</span>):</b> <a href="gemsdoe46-h46a-r8-conformal-nan.tif">gemsdoe46-h46a-r8-conformal-nan.tif</a></li>
+    <li><b>Step-by-step upload instructions:</b> <a href="how-to-submit.html">How to submit</a></li>
   </ul>
+  <p class="small" style="margin:10px 0 0"><b>Last verified 2026-10-06</b> — the file was generated
+  that day by <span class="mono">scripts/make_submission.py</span> from the hash-verified official
+  rasters and audited by re-reading the written bytes. Both encodings contain the same 39,108 dots;
+  this page does not poll or mirror the leaderboard.</p>
+</div>
+<div class="hero"><p class="lede">A single, unique, slot-ready GeoTIFF produced from the official competition
+rasters, whose operating point is <b>certified by split conformal prediction</b> rather than chosen
+by eye — with the confidence level, the certified floor and the metric's own density bound printed
+next to it.</p>
 
-  <blockquote><strong>Read this before spending a weekly slot.</strong> The hidden label set is
-  not recoverable from the public record (proved, see Method). This submission is the
-  best-validated candidate available, not a guaranteed improvement on 0.3195. If you need a
-  guaranteed number before submitting, submit Hypothesis 5's cheap variant first; it costs
-  nothing but a slot.</blockquote>
+
+<h2>The submission in numbers</h2>
+<div class="grid">
+  <div class="kpi"><div class="v">r = 8 px</div><div class="k">chosen spacing (800 m minimum separation between dots)</div></div>
+  <div class="kpi"><div class="v">90.0 %</div><div class="k">conformal confidence (α = 0.1000, 9 exchangeable calibration blocks)</div></div>
+  <div class="kpi"><div class="v">0.0283</div><div class="k">certified floor on the calibration half — a worst-case bound, not the observed score</div></div>
+  <div class="kpi"><div class="v">39,108</div><div class="k">positive cells (0.76 % of the 5,167,373-px surveyed footprint)</div></div>
+  <div class="kpi"><div class="v">0.5588</div><div class="k">analytic ceiling for this density at the declared scored-truth mass |G| = 7,905 px</div></div>
+  <div class="kpi"><div class="v">≤ 86,541</div><div class="k">dots that can still reach 0.3345 with <i>perfect</i> placement — the density rule every arm is checked against</div></div>
+</div>
+
+<h2>Why this is not "we tried a few spacings and this one looked best"</h2>
+<ol>
+  <li><b>Sweep.</b> 24 spatially blocked holdouts (4 × 6 tiles, ≈ 93 × 55 km each). For every block the
+      catalogue pixels inside the block are removed from training and the model must recover exactly
+      those pixels from the 25 physical features; the exact official metric is then evaluated on the
+      block with a halo, so blocking cannot change the metric's own 300 m reach.</li>
+  <li><b>Population matching.</b> The scored truth is the <i>new-fault</i> population, which is far
+      sparser than the catalogue. Every arm is therefore scored against a density-matched subsample of
+      the held-out catalogue (declared ratio 0.1296) as the primary population, with four other ratios
+      swept as a sensitivity screen.</li>
+  <li><b>Split conformal selection.</b> Blocks are split into a selection half and a calibration half by
+      tile parity. The calibration half yields a finite-sample one-sided bound
+      <span class="mono">L(s) = mean_cal(s) − q(s)</span> with <span class="mono">q</span> the
+      <span class="mono">ceil((n+1)(1−α))</span>-th smallest residual (Lei, G'Sell, Rinaldo, Tibshirani
+      &amp; Wasserman, JASA 113(523):1094–1111, 2018). α is set to the smallest value the data can
+      support, <span class="mono">1/(n_cal+1)</span> — asking for more confidence would make the bound
+      infinite.</li>
+  <li><b>Density admissibility (rule R3).</b> The metric collapses in the sparse regime to
+      <span class="mono">DTI = T / (0.2·N + 0.8·|G|)</span>, so a submission with too many dots cannot
+      reach the target <i>even with perfect placement</i>. An arm ships only if its <i>measured</i>
+      full-grid dot count leaves room for 0.3345 at the declared |G|.</li>
+  <li><b>Choice (rule R4).</b> Among admissible arms, the largest certified floor wins. That is
+      r = 8 px. The rules were fixed before the numbers were read, and the eligibility and split rules
+      depend only on the truth mask and the tile index — never on an arm's score.</li>
+</ol>
+
+<h2>Why the previous best (0.2778) scored what it did — and what would beat it</h2>
+<p>The published index is <span class="mono">DTI = TPw / (TPw + 0.2·FPw + 0.8·FNw)</span> with a 300 m
+triangular kernel. In the sparse regime it collapses to <b>a budget</b>,
+<span class="mono">DTI = T / (0.2·N + 0.8·|G|)</span>: adding mass pays only if its kernel credit
+exceeds <span class="mono">0.2 × (current score)</span>. The 0.2778 submission is the family's own
+0.2708 field with every dot within 200 m of the catalogue deleted — 37,654 dots left — and the whole
+family sequence (0.1922 @ 121k → 0.2477 @ 60k → 0.2600 @ 44k → 0.2708 @ 40k → 0.2778 @ 38k dots) is
+monotone in <b>mass removed</b>, not in model quality.
+Full derivation and the exact reproduction of the 0.2600 row from its own reported dot count:
+<a href="submission-analysis.html">Analysis &amp; evidence</a>.</p>
+
+<h2>Limitations, stated up front</h2>
+<ul class="tight">
+  <li>The certified floor <b>0.0283 is a statement about the catalogue-proxy holdout</b>, not a promise
+      about the leaderboard: the scored truth is the new-fault population, which no public data labels.
+      What transfers exactly is the <i>density</i> side of the metric, which is where the algebra is used.</li>
+  <li>No DrivenData account exists in the build environment, so the rasters are the project's own
+      hash-verified copies and the upload itself must be done by the project owner.</li>
+  <li>Band 10 ("distance to earthquake") has an ambiguous unit in the shipped raster; no unit was
+      assumed anywhere (the hypothesis test uses rank and median-relative transforms only).</li>
+  <li>The model is a histogram gradient-boosted classifier on hand-built multi-scale features, not a
+      deep network: no GPU and 4 GB of RAM in the build environment. The deep-model direction is ranked
+      in <a href="submission-hypotheses.html">Geological hypotheses</a>.</li>
+</ul>
+<p class="small">Every flag, every defect found and fixed, and every claim that is <i>not</i> verified:
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/IRREGULARITIES.md">docs/IRREGULARITIES.md</a>.
+Every external claim with its official link:
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/SOURCES.md">docs/SOURCES.md</a>.</p>
 </main>
-
-<footer class="site"><div class="wrap">
-  GEMS46 · built to run unattended · every artefact reproducible with the commands in the
-  repository README.
-</div></footer>
+<footer>Repository: <a href="https://github.com/buffedlizard55-lab/GEMSDOE46">buffedlizard55-lab/GEMSDOE46</a>.
+Generated by <span class="mono">scripts/run_pipeline.py</span> → <span class="mono">scripts/make_submission.py</span>.
+Scores quoted for other teams are from the public leaderboard; the mechanism analysis is from the project owner's own score history.</footer>
 </body>
 </html>

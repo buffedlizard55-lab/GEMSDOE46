@@ -26,15 +26,14 @@
 
   <div class="dl">
     <p style="margin:2px 0 10px"><strong>Download first:</strong>
-      <a class="btn" href="downloads/gems46-ridge-37k-ridge.tif" download>⬇ gems46-ridge-37k-ridge.tif</a>
-      <a class="btn alt" href="downloads/gems46-ridge-37k-ridge.zip" download>⬇ .zip (single GeoTIFF)</a></p>
+      <a class="btn" href="../downloads/gems46-ridge-37k-ridge.tif" download>⬇ gems46-ridge-37k-ridge.tif</a>
+      <a class="btn alt" href="../downloads/gems46-ridge-37k-ridge.zip" download>⬇ .zip (single GeoTIFF)</a></p>
   </div>
 
   <h2>Step by step</h2>
   <ol>
     <li><strong>Sign in to DrivenData.</strong> Go to
-      <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank"
-         rel="noopener">the competition page (competition&nbsp;306, DOE GEMS Prize)</a> and sign in
+      <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank" rel="noopener">the competition page (competition&nbsp;306, DOE GEMS Prize)</a> and sign in
       with the account that owns the weekly slot. There is no separate submission portal.</li>
     <li><strong>Open the submission form.</strong> Use the <em>Submit</em> / <em>Upload a
       submission</em> button on the competition page (the same page hosts the leaderboard tab).
@@ -76,7 +75,7 @@
         <td>rasterio and tifffile, bit-identical</td><td><span class="tag ok">pass</span></td></tr>
   </table>
   <p class="muted">Reproduce with <code>/tmp/venv/bin/python scripts/verify_submission.py</code>.
-  Full receipt: <a href="downloads/verification.json">verification.json</a>.</p>
+  Full receipt: <a href="../downloads/verification.json">verification.json</a>.</p>
 
   <h2>Why the earlier "values must be in [0, 1]" error happened</h2>
   <p>It is a format trap, not a modelling problem. GeoTIFF writers default to

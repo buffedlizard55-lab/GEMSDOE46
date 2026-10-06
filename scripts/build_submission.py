@@ -1,157 +1,256 @@
 #!/usr/bin/env python3
-"""Build THE submission: binary dots on the validated credit ridge, in legal GeoTIFF form.
+"""Create a format-valid submission only after the holdout gate passes."""
 
-Design (all justified in docs/method.md):
-  * The metric is linear within a dot: a unit of mass at x adds TP by k(x) and FP by 0.2,
-    so mass is all-or-nothing at unit value and should be emitted where the expected kernel
-    credit k_hat exceeds 0.2*DTI.  Hence binary dots, never partial values.
-  * Kernels are kept non-overlapping (Chebyshev spacing >= 4 px) because two dots covering
-    the same truth pixel waste one unit of mass: the max() in TP_w only counts it once while
-    FP_w charges both.
-  * Placement follows S(x), the kernel-smoothed credit direction r = sum_k beta_k z_k, whose
-    coverage-weighted mean is a leave-one-anchor-out-validated predictor of the real headline
-    score (deduped LOO Spearman +0.826 on 43 scored anchors).
-  * Pixels within 3 px of the visible catalogue are excluded: the official rules mask known
-    fault pixels from evaluation, so mass there earns no TP and still pays FP.
-
-Options let the user reproduce every variant and re-run the whole thing unattended.
-"""
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
+import math
+import re
 import sys
-import time
+from datetime import UTC, datetime
 from pathlib import Path
+
+# Make ``src/`` importable when the script is run directly from a checkout, so the
+# command line works without an editable install (``pip install -e .``).  Added during
+# the merge with the submission layer so that the documented commands are copy-pasteable.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import numpy as np
 import rasterio
 
-ROOT = Path("/home/user/GEMSDOE46")
-sys.path.insert(0, str(ROOT / "src"))
-from gems46 import anchors as A  # noqa: E402
-from gems46 import metric as M  # noqa: E402
-from gems46 import rasters as R  # noqa: E402
+from gemsdoe46.raster import (
+    RasterValidationError,
+    _same_grid,
+    sha256_file,
+    validate_submission_tif,
+    write_submission_tif,
+)
 
-DATA = Path("/tmp/gems46/data")
-GRID = ROOT / "data" / "raw" / "grid"
-
-
-def nms_select(S: np.ndarray, candidates: np.ndarray, n_max: int, half: int,
-               verbose: bool = True):
-    """Greedy non-maximum suppression; returns (flat_idx, S_value) in selection order."""
-    order = candidates[np.argsort(-S.ravel()[candidates], kind="stable")]
-    H, W = S.shape
-    blocked = np.zeros((H, W), bool)
-    sv = S.ravel()
-    picked = np.zeros(n_max, np.int64)
-    vals = np.zeros(n_max, np.float32)
-    n = 0
-    for f in order:
-        y, x = divmod(int(f), W)
-        if blocked[y, x]:
-            continue
-        picked[n] = f
-        vals[n] = sv[f]
-        n += 1
-        y0, y1 = max(0, y - half), min(H, y + half + 1)
-        x0, x1 = max(0, x - half), min(W, x + half + 1)
-        blocked[y0:y1, x0:x1] = True
-        if n >= n_max:
-            break
-    if verbose:
-        print(f"  nms: picked {n} dots (requested {n_max}, half-width {half})")
-    return picked[:n], vals[:n]
+_SHA256 = re.compile(r"[0-9a-f]{64}")
+_REQUIRED_GATES = (
+    "candidate_beats_baseline_global",
+    "candidate_wins_at_least_three_folds",
+    "prediction_mass_within_tolerance",
+    "provenance_manifest_valid",
+)
+_REQUIRED_INPUTS = ("candidate", "baseline", "labels", "sample", "manifest")
 
 
-def predict_score(mean_S: float, n_dots: int, dcat_med: float, model: dict) -> float:
-    x = np.array([mean_S, np.log(max(n_dots, 1)), dcat_med], float)
-    z = (x - np.array(model["x_mean"])) / np.array(model["x_sd"])
-    return float(model["intercept"] + z @ np.array(model["coef"]))
+def _prediction_fingerprint(path: Path, sample_path: Path) -> str:
+    """Hash grid identity plus float32 values inside the sample footprint."""
+    digest = hashlib.sha256()
+    with rasterio.open(sample_path) as sample, rasterio.open(path) as dataset:
+        if not _same_grid(sample, dataset):
+            raise RasterValidationError(f"prior/candidate grid does not match sample: {path}")
+        if dataset.count != 1:
+            raise RasterValidationError(f"prior/candidate must be single-band: {path}")
+        valid = sample.read_masks(1) > 0
+        values = dataset.read(1).astype(np.float64, copy=False)
+        inside = values[valid]
+        if not np.isfinite(inside).all() or np.any((inside < 0.0) | (inside > 1.0)):
+            raise RasterValidationError(
+                f"prior/candidate values invalid inside sample footprint: {path}"
+            )
+        digest.update(
+            f"{sample.width}x{sample.height}|EPSG:{sample.crs.to_epsg()}|".encode("ascii")
+        )
+        digest.update(np.asarray(sample.transform[:6], dtype="<f8").tobytes())
+        digest.update(np.packbits(valid, bitorder="little").tobytes())
+        digest.update(inside.astype("<f4", copy=False).tobytes())
+    return digest.hexdigest()
+
+
+def _check_validation_report(path: Path, candidate_id: str) -> dict:
+    if not path.is_file():
+        raise FileNotFoundError(path)
+    with path.open("r", encoding="utf-8") as stream:
+        report = json.load(stream)
+    if not isinstance(report, dict):
+        raise TypeError("validation report must be a JSON object")
+    if report.get("schema_version") != 1:
+        raise ValueError("validation report schema_version must be 1")
+    if report.get("status") != "pass":
+        raise ValueError("holdout report status is not 'pass'; no TIF will be built")
+    if report.get("candidate_id") != candidate_id:
+        raise ValueError("candidate_id does not match the passing holdout report")
+    for field in ("baseline_id", "validation_id"):
+        if not isinstance(report.get(field), str) or not report[field].strip():
+            raise ValueError(f"validation report is missing a valid {field}")
+
+    gates = report.get("gates")
+    if not isinstance(gates, dict) or any(gates.get(key) is not True for key in _REQUIRED_GATES):
+        raise ValueError("not all required holdout promotion gates are explicitly true")
+
+    inputs = report.get("inputs")
+    if not isinstance(inputs, dict):
+        raise TypeError("validation report is missing hashed input provenance")
+    for name in _REQUIRED_INPUTS:
+        row = inputs.get(name)
+        if not isinstance(row, dict) or not isinstance(row.get("sha256"), str):
+            raise TypeError(f"validation report is missing the {name} input hash")
+        if _SHA256.fullmatch(row["sha256"]) is None:
+            raise ValueError(f"validation report has an invalid {name} SHA-256")
+
+    metric = report.get("metric")
+    if not isinstance(metric, dict) or any(
+        metric.get(key) != value
+        for key, value in (("alpha", 0.2), ("beta", 0.8), ("radius_m", 300.0))
+    ):
+        raise ValueError("validation report metric does not match the registered DTI definition")
+
+    try:
+        delta_dti = float(report["delta_dti"])
+        mass_delta = float(report["prediction_mass_delta_fraction"])
+        mass_tolerance = float(report["mass_tolerance"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError(
+            "validation report is missing numeric improvement/mass diagnostics"
+        ) from exc
+    if not math.isfinite(delta_dti) or delta_dti <= 0.0:
+        raise ValueError("holdout report does not show a finite positive DTI improvement")
+    if (
+        not math.isfinite(mass_delta)
+        or not math.isfinite(mass_tolerance)
+        or mass_delta < 0.0
+        or mass_tolerance < 0.0
+        or mass_delta > mass_tolerance
+    ):
+        raise ValueError("holdout report does not show comparable prediction mass")
+
+    fold_wins = report.get("fold_wins")
+    fold_count = report.get("fold_count")
+    fold_rows = report.get("folds")
+    if type(fold_wins) is not int or type(fold_count) is not int or fold_count != 4:
+        raise ValueError("holdout report must contain integer 3-of-4 fold diagnostics")
+    if not isinstance(fold_rows, list) or len(fold_rows) != 4:
+        raise ValueError("holdout report must include all four fold results")
+    observed_wins = sum(
+        isinstance(row, dict) and row.get("candidate_wins") is True for row in fold_rows
+    )
+    if fold_wins != observed_wins or fold_wins < 3:
+        raise ValueError("holdout report does not show the required 3-of-4 fold improvement")
+    return report
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--n-dots", type=int, default=35000)
-    ap.add_argument("--n-max", type=int, default=60000)
-    ap.add_argument("--half", type=int, default=3)
-    ap.add_argument("--catalogue-buffer", type=int, default=3,
-                    help="px around the visible catalogue excluded as unwinnable")
-    ap.add_argument("--out", default=str(ROOT / "deliverables" / "gems46"))
-    ap.add_argument("--tag", default="ridge")
-    args = ap.parse_args()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--predictions", required=True, help="aligned single-band probability GeoTIFF"
+    )
+    parser.add_argument("--sample", required=True, help="official sample/reference GeoTIFF")
+    parser.add_argument(
+        "--validation-report", required=True, help="passing spatial holdout JSON report"
+    )
+    parser.add_argument(
+        "--candidate-id", required=True, help="unique lowercase model/hypothesis ID"
+    )
+    parser.add_argument(
+        "--output-dir", default="submissions", help="output directory (default: %(default)s)"
+    )
+    parser.add_argument(
+        "--prior-submission",
+        action="append",
+        default=[],
+        help="path to each known prior submission TIF (repeat the flag as needed)",
+    )
+    parser.add_argument(
+        "--no-prior-submissions",
+        action="store_true",
+        help="explicitly attest that no previous submission TIFs exist",
+    )
+    args = parser.parse_args()
 
-    t0 = time.time()
-    S = np.load(DATA / "credit_S.npy")
-    fp = np.load(DATA / "credit_model.npz", allow_pickle=True)["footprint"]
-    with rasterio.open(GRID / "labels.tif") as ds:
-        lab = ds.read(1) > 0
-        transform, crs = ds.transform, ds.crs
-    from scipy.ndimage import distance_transform_edt
-    dcat = distance_transform_edt(~lab)
-    cand = fp & (dcat > max(args.catalogue_buffer, 0))
-    print(f"candidates {int(cand.sum()):,} of footprint {int(fp.sum()):,} "
-          f"({time.time()-t0:.0f}s)")
+    candidate_id = args.candidate_id
+    if not re.fullmatch(r"[a-z0-9][a-z0-9._-]{2,63}", candidate_id):
+        parser.error("--candidate-id must be 3–64 lowercase letters/digits/dot/underscore/hyphen")
+    if args.no_prior_submissions and args.prior_submission:
+        parser.error("do not combine --no-prior-submissions with --prior-submission")
+    if not args.no_prior_submissions and not args.prior_submission:
+        parser.error(
+            "supply every known --prior-submission TIF, or explicitly attest --no-prior-submissions"
+        )
 
-    picked, vals = nms_select(S, np.flatnonzero(cand.ravel()), args.n_max, args.half)
-    np.save(DATA / f"emission_{args.tag}_nms.npy", picked)
+    prediction_path = Path(args.predictions)
+    sample_path = Path(args.sample)
+    report_path = Path(args.validation_report)
+    output_path: Path | None = None
+    receipt_path: Path | None = None
+    created_output = False
+    try:
+        holdout = _check_validation_report(report_path, candidate_id)
+        fingerprint = _prediction_fingerprint(prediction_path, sample_path)
+        prior_paths = [Path(path) for path in args.prior_submission]
+        for prior_path in prior_paths:
+            if not prior_path.is_file():
+                raise FileNotFoundError(prior_path)
+            if _prediction_fingerprint(prior_path, sample_path) == fingerprint:
+                raise ValueError(f"candidate predictions duplicate known prior TIF: {prior_path}")
 
-    model = json.loads((ROOT / "data" / "emission_model.json").read_text())
-    H, W = S.shape
-    dcat_med = float(np.median(dcat.ravel()[picked]))
+        timestamp = datetime.now(UTC).strftime("%Y%m%d")
+        filename = f"gemsdoe46-{candidate_id}-{timestamp}-{fingerprint[:10]}.tif"
+        output_path = Path(args.output_dir) / filename
+        receipt_path = output_path.with_suffix(".json")
+        if output_path.exists() or receipt_path.exists():
+            raise FileExistsError(output_path if output_path.exists() else receipt_path)
+        created_output = True
 
-    print(f"\n{'N':>7s} {'mean_S':>8s} {'pred':>7s}   (candidate prefixes)")
-    best = None
-    for n in (10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000):
-        if n > len(picked):
-            continue
-        mS = float(vals[:n].mean())
-        p = predict_score(mS, n, dcat_med, model)
-        print(f"{n:7d} {mS:8.4f} {p:7.4f}")
-        if n == args.n_dots:
-            best = (n, mS, p)
-    if best is None:
-        n = min(args.n_dots, len(picked))
-        best = (n, float(vals[:n].mean()), predict_score(float(vals[:n].mean()), n, dcat_med, model))
+        validation_sha = sha256_file(report_path)
+        raster_report = write_submission_tif(
+            prediction_path,
+            sample_path,
+            output_path,
+            candidate_id=candidate_id,
+            validation_report_sha256=validation_sha,
+        )
+        # A final byte-level and grid check is performed after writing.
+        final_report = validate_submission_tif(output_path, sample_path)
+        if final_report["sha256"] != raster_report["sha256"]:
+            raise RasterValidationError("post-write checksum changed unexpectedly")
 
-    n, mS, pred = best
-    rows, cols = np.divmod(picked[:n], W)
-    print(f"\nchosen N={n} mean_S={mS:.4f} predicted={pred:.4f} "
-          f"median dist to catalogue {dcat_med:.1f} px")
+        receipt_path.write_text(
+            json.dumps(
+                {
+                    "status": "pass",
+                    "candidate_id": candidate_id,
+                    "submission_file": output_path.name,
+                    "submission_sha256": final_report["sha256"],
+                    "prediction_fingerprint": fingerprint,
+                    "holdout_report_sha256": validation_sha,
+                    "holdout_delta_dti": holdout["delta_dti"],
+                    "holdout_fold_wins": holdout["fold_wins"],
+                    "prior_tifs_checked": [str(path) for path in prior_paths],
+                    "no_prior_submissions_attested": bool(args.no_prior_submissions),
+                    "format_validation": final_report,
+                },
+                indent=2,
+                allow_nan=False,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+    except (
+        FileNotFoundError,
+        RasterValidationError,
+        TypeError,
+        ValueError,
+        json.JSONDecodeError,
+        OSError,
+    ) as exc:
+        if created_output:
+            if output_path is not None:
+                output_path.unlink(missing_ok=True)
+            if receipt_path is not None:
+                receipt_path.unlink(missing_ok=True)
+        print(f"SUBMISSION BUILD BLOCKED: {exc}", file=sys.stderr)
+        return 2
 
-    arr = np.zeros((H, W), np.float32)
-    arr[rows, cols] = 1.0
-    out = Path(args.out) / f"gems46-{args.tag}-{n//1000}k-{args.tag}.tif"
-    info = R.write_submission(out, arr, transform=transform, crs=crs)
-    info["sha256"] = hashlib.sha256(out.read_bytes()).hexdigest()
-    info["mean_S"] = mS
-    info["predicted_score"] = pred
-    info["catalogue_buffer_px"] = args.catalogue_buffer
-    info["nms_half_width_px"] = args.half
-    print(json.dumps(info, indent=1))
-
-    # uniqueness vs every fetched anchor
-    print("\nuniqueness vs the 43 scored anchor rasters:")
-    mine = np.zeros(H * W, bool)
-    mine[picked[:n]] = True
-    worst = []
-    for p in sorted((ROOT / "data" / "raw" / "anchors").glob("p*.tif")):
-        d = A.load_dots(p, p.stem)
-        flat = np.sort(d.row.astype(np.int64) * W + d.col)
-        flat = flat[d.val > 0]
-        inter = np.intersect1d(flat, picked[:n], assume_unique=True).size
-        union = flat.size + n - inter
-        worst.append((inter / union if union else 0.0, p.stem, flat.size, inter))
-    worst.sort(reverse=True)
-    for jac, aid, na, inter in worst[:5]:
-        print(f"  {aid}: jaccard {jac:.4f}  shared {inter} px (anchor {na} dots)")
-    info["max_jaccard_vs_anchors"] = float(worst[0][0])
-    info["closest_anchor"] = worst[0][1]
-    (Path(args.out) / f"gems46-{args.tag}.json").write_text(json.dumps(info, indent=1) + "\n")
-    print(f"\nwrote {out}  ({info['bytes']:,} bytes)")
+    print(f"PASS: {output_path}")
+    print(f"SHA-256: {final_report['sha256']}")
+    print("The file was compared with all supplied prior TIFs and passed format validation.")
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

@@ -20,7 +20,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from . import metric as M
+from . import xmetric as M
 from .anchors import Dots
 
 OFFS = M.OFFSETS
@@ -36,7 +36,7 @@ def sample_dot_tables(dots_list, footprint, features_tif, labels_tif,
     footprint; the row weight is v * k, so sum(weights) over the full dot set equals the
     anchor's coverage mass C_i.
     """
-    from . import features as F
+    from . import xfeatures as F
     rng = np.random.default_rng(seed)
     lab, footprint, catalogue, raw = F.load_grid(features_tif, labels_tif)
     H, W = footprint.shape
@@ -92,7 +92,7 @@ def sample_dot_tables(dots_list, footprint, features_tif, labels_tif,
 
 def footprint_sample_matrix(features_tif, labels_tif, idx, feature_names):
     """(n_sample, K) uint8 matrix of rank-normalised features at sampled footprint pixels."""
-    from . import features as F
+    from . import xfeatures as F
     lab, footprint, catalogue, raw = F.load_grid(features_tif, labels_tif)
     H, W = footprint.shape
     out = np.zeros((len(idx[0]), len(feature_names)), np.uint8)

@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from gems46 import anchors as A  # noqa: E402
 from gems46 import credit2 as C2  # noqa: E402
-from gems46 import features as F  # noqa: E402
-from gems46 import metric as M  # noqa: E402
+from gems46 import xfeatures as F  # noqa: E402
+from gems46 import xmetric as M  # noqa: E402
 
 DATA = Path("/tmp/gems46/data")
 

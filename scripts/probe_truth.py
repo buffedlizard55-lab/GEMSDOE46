@@ -16,7 +16,7 @@ import rasterio
 ROOT = Path("/home/user/GEMSDOE46")
 sys.path.insert(0, str(ROOT / "src"))
 from gems46 import anchors as A  # noqa: E402
-from gems46 import metric as M  # noqa: E402
+from gems46 import xmetric as M  # noqa: E402
 
 GRID = ROOT / "data" / "raw" / "grid"
 

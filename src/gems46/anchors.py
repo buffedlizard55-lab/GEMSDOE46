@@ -17,7 +17,7 @@ from pathlib import Path
 
 import numpy as np
 
-from . import metric as M
+from . import xmetric as M
 
 ROOT = Path(__file__).resolve().parents[2]
 

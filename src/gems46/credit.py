@@ -28,7 +28,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from . import metric as M
+from . import xmetric as M
 from .anchors import Dots
 
 

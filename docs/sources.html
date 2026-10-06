@@ -1,120 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sources and background research | GEMS46</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Official DOE GEMS sources, data-availability prechecks, licensing, terms, and research limitations.">
+  <title>Sources & limits — GEMS46</title>
+  <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-<header class="site"><div class="wrap">
-  <a class="brand" href="index.html">GEMS46 · DOE GEMS Prize</a>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="submit.html">How to submit</a>
-    <a href="method.html">Method</a>
-    <a href="hypotheses.html">Hypotheses</a>
-    <a href="evidence.html">Evidence</a>
-    <a href="sources.html" aria-current="page">Sources</a>
-  </nav>
-</div></header>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="GEMS46 home"><span class="brand-mark" aria-hidden="true">46</span><span class="brand-copy"><strong>GEMS · DOE</strong><span>Fault-mapping research</span></span></a>
+      <nav class="site-nav" aria-label="Main navigation"><a href="index.html">Overview</a><a href="hypotheses.html">Hypotheses</a><a href="analysis.html">Score analysis</a><a href="sources.html" aria-current="page">Sources</a><a class="nav-cta" href="guide.html">Submission guide</a></nav>
+    </div>
+  </header>
 
-<main class="wrap">
-  <h1>Sources, and the background science</h1>
-  <p class="lede">Only free, public, official sources are used. The <em>status</em> column states
-  how each link was checked, because "verified" is a claim about a check, not about a URL.
-  <span class="tag ok">fetched</span> = the page was retrieved and read during this work;
-  <span class="tag hi">search-verified</span> = the title, publisher and content summary were
-  returned by a live search of the official domain; <span class="tag warn">carried</span> =
-  quoted from official documentation cached inside the sibling GEMSDOE repositories and
-  <strong>recommended for a manual click-through before citation</strong>.</p>
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Provenance · status · limitations</p>
+        <h1>Sources that support the claim.<br>Limits that bound it.</h1>
+        <p class="lead">Official sources were reviewed for the task, metric, upload format, data access, external-data licensing, and candidate availability. Catalogue metadata checks confirm that records exist—not that every input has been downloaded, spatially validated, or proven useful.</p>
+      </div>
+    </section>
 
-  <h2>Competition and scoring</h2>
-  <table>
-    <tr><th>Source</th><th>What it establishes</th><th>Status</th></tr>
-    <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank" rel="noopener">DrivenData — DOE GEMS Prize Challenge (competition 306)</a></td>
-        <td>the metric <code>DTI = TP_w/(TP_w + 0.2·FP_w + 0.8·FN_w)</code>, the 300 m triangular kernel, the worked example (TP 3.00 / FP 1.89 / FN 2.00 → 0.60), the submission contract (single-band float32, EPSG:32611, 100 m, values in [0, 1]), the 19 named input layers, and the two label sources (USGS Quaternary fault maps + INGENIOUS)</td><td><span class="tag ok">fetched</span></td></tr>
-    <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">Official leaderboard</a></td>
-        <td>the scores this project fits against; the top of the board read 0.3262 / 0.3222 / 0.3195 on the 2026-10-04 observation recorded in <code>data/anchor_manifest.csv</code></td><td><span class="tag ok">fetched</span></td></tr>
-    <tr><td><a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516" target="_blank" rel="noopener">DrivenData forum thread 11516 (staff post, 16 Sep 2026)</a></td>
-        <td>pixels corresponding to known USGS/INGENIOUS faults are <strong>masked out of evaluation</strong>; re-evaluation masks them identically. This is why the emission carries zero dots on the catalogue</td><td><span class="tag warn">carried</span> (read as a marked-up transcription in the sibling site GEMSDOE32; click through to confirm)</td></tr>
-    <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">Competition problem + submission page</a></td>
-        <td>the "Predicted values must be in range [0, 1]" validation rule that this file is built to satisfy</td><td><span class="tag ok">fetched</span></td></tr>
-  </table>
+    <section class="section-sm">
+      <div class="container">
+        <div class="callout warn" id="leaderboard-terms">
+          <h3>Leaderboard terms: no automated or manual monitoring feed</h3>
+          <p>DrivenData's <a href="https://www.drivendata.org/termsofuse/" target="_blank" rel="noopener noreferrer">Terms of Use</a> prohibit robots/spiders/automatic access for monitoring or copying, and manual monitoring/copying without prior written consent. This site keeps a dated research note and links to the official live board. It does not scrape, poll, embed, mirror, or claim to auto-refresh. Seek written permission or an authorized API before changing that policy.</p>
+          <p class="small">Current link: <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener noreferrer">official DOE GEMS leaderboard ↗</a></p>
+        </div>
+      </div>
+    </section>
 
-  <h2>Data and the geology it encodes</h2>
-  <table>
-    <tr><th>Source</th><th>What it establishes</th><th>Status</th></tr>
-    <tr><td><a href="https://catalog.data.gov/dataset/geodawn-airborne-magnetic-and-radiometric-surveys-of-the-northwestern-great-basin-nevada-a-e9fa9" target="_blank" rel="noopener">GeoDAWN airborne magnetic and radiometric surveys, NW Great Basin (data.gov)</a></td>
-        <td>the airborne magnetic + radiometric acquisition that underlies the magnetic and radiometric bands; conducted under USGS EarthMRI with DOE Geothermal Technologies Office support; landing page <a href="https://gdr.openei.org/submissions/1591" target="_blank" rel="noopener">GDR submission 1591</a>; licence CC-BY-4.0; project EE0008762</td><td><span class="tag hi">search-verified</span></td></tr>
-    <tr><td><a href="https://data.openei.org/submissions/7592" target="_blank" rel="noopener">GeoDAWN West Central Nevada EarthMRI data (OEDI)</a></td>
-        <td>the lidar side of the same programme, including the coverage map for the USGS 3DEP lidar tiles that Hypothesis 3 needs, and a public Entwine/Point-cloud interface</td><td><span class="tag hi">search-verified</span></td></tr>
-    <tr><td><a href="https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7" target="_blank" rel="noopener">USGS ScienceBase record, GeoDAWN aeromagnetic/aeroradiometric data</a> · DOI <a href="https://doi.org/10.5066/P93LGLVQ" target="_blank" rel="noopener">10.5066/P93LGLVQ</a></td>
-        <td>the official citable release of the survey data in the competition region</td><td><span class="tag warn">carried</span> (cited identically inside the sibling GEMSDOE repositories)</td></tr>
-    <tr><td><a href="https://pubs.usgs.gov/fs/2004/3033/" target="_blank" rel="noopener">USGS Fact Sheet 2004-3033 — Quaternary Fault and Fold Database for the Nation</a> · live database at <a href="https://earthquake.usgs.gov/hazards/qfaults/" target="_blank" rel="noopener">earthquake.usgs.gov/hazards/qfaults</a></td>
-        <td>~2,000 Quaternary faults with the mapping standard behind the "known fault" catalogue that the scorer masks; the reason a concealed fault is by definition absent from it</td><td><span class="tag hi">search-verified</span></td></tr>
-    <tr><td><a href="https://catalog.data.gov/dataset/ingenious-great-basin-regional-dataset-compilation" target="_blank" rel="noopener">INGENIOUS — Great Basin regional dataset compilation (data.gov)</a></td>
-        <td>the second label source: Quaternary Faults v1 and v2, Quaternary Volcanics, paleo-geothermal features, heat-flow and MT conductivity maps, gravity and magnetic compilations, geodetic shear and dilation models; DOE project EE0009254</td><td><span class="tag hi">search-verified</span></td></tr>
-  </table>
+    <section class="section" aria-labelledby="competition-sources-title">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Competition authority</p><h2 id="competition-sources-title">Rules, metric, and data access</h2><p>Always use the live competition pages as final authority before modeling or upload.</p></div></div>
+        <div class="source-list">
+          <article class="source-item"><h3><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank" rel="noopener noreferrer">Official competition homepage ↗</a></h3><p>Competition scope, enrollment, external-data guidance, and deadline. As reviewed 2026-10-06, the homepage listed Dec. 3, 2026 at 11:59 p.m. UTC.</p></article>
+          <article class="source-item"><h3><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener noreferrer">Official problem, metric, and format page ↗</a></h3><p>Fault-mapping task; distance-weighted Tversky metric with 300 m triangular support, α=0.2 and β=0.8; one float32 prediction layer on EPSG:32611 at 100 m, matching the official grid and valid footprint.</p></article>
+          <article class="source-item"><h3><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf" target="_blank" rel="noopener noreferrer">Official rules PDF ↗</a></h3><p>Rules describe up to three feedback submissions per week, one selected final submission for both rounds, reproducibility duties, and generative-AI disclosure. Its deadline wording (5 p.m. ET) differs from the homepage; use the earlier time unless organizers clarify.</p></article>
+          <article class="source-item"><h3><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/" target="_blank" rel="noopener noreferrer">Official Data page ↗</a></h3><p>Unauthenticated access redirected to login on 2026-10-06. No challenge rasters or labels were obtained; no authentication bypass was attempted.</p></article>
+          <article class="source-item"><h3><a href="https://github.com/drivendataorg/gems-prize-reference-solution" target="_blank" rel="noopener noreferrer">Official reference solution ↗</a></h3><p>Organizer-provided code reference. No local metric/baseline comparison could be run without authorized challenge data.</p></article>
+        </div>
+      </div>
+    </section>
 
-  <h2>Deep dive: how a hidden fault shows up in these data</h2>
-  <p>The competition's inputs are potential-field and topographic transforms of the GeoDAWN
-  survey plus a regional geodetic strain model. Reading them as physical instruments rather than
-  as image bands is what the five hypotheses rest on.</p>
-  <ul>
-    <li><strong>Magnetics see the basement, not the surface.</strong> An aeromagnetic survey
-    measures the field of magnetised crust; a fault that offsets that crust under alluvium
-    produces a linear gradient edge and a shallow equivalent-source depth. Reduction-to-pole
-    (<code>rtp</code>) centres an anomaly over its source, horizontal and vertical gradients
-    (<code>tmi_hg</code>, <code>tmi_vg</code>) turn an offset into a <em>crest line</em>, and
-    Euler deconvolution (<code>deq_n100a15</code>, <code>ieq_n100a15</code>) estimates how deep
-    that edge is. That triple — edge, crest, depth — is the whole of Hypothesis 1, and the
-    leaderboard agrees: the validated ridge loads positively on the magnetic-edge features and
-    <em>negatively</em> on Euler depth, i.e. the winning submissions sat on shallow magnetic
-    edges.</li>
-    <li><strong>Gravity sees mass where magnetics sees nothing.</strong> Radiometric and
-    magnetic response both collapse under young, weakly magnetised volcanic cover, whereas
-    density contrast survives. The second invariant of the gravity gradient tensor
-    (<code>geod_2ndinv</code>) is rotation-invariant, so a fault is detected at any strike — a
-    property that single component maps (and every previous construction in the family) lack.
-    That is Hypothesis 2.</li>
-    <li><strong>Topography sees the scarp, but only at the right resolution.</strong> A Quaternary
-    fault scarp is a 1–3 m step; the competition grid is 100 m. Detrending at 1 m and
-    skeletonising recovers traces that are geometrically destroyed at the competition
-    resolution. This is the strongest known source of post-publication fault discoveries, and
-    the honest blocker is that a single lidar quadrangle exceeds this sandbox's 3 GB of RAM.
-    That is Hypothesis 3, ranked last on cost and first on ceiling.</li>
-    <li><strong>Strain models see kinematics, not geology.</strong> <code>geod_shearrate</code>
-    and <code>geod_dilaterate</code> are model outputs, so a fault that is invisible to mapping
-    but occupies a kinematic node still has an expression there. Hypothesis 4 turns that into a
-    node detector instead of another layer to thin.</li>
-    <li><strong>The catalogue's own geometry is evidence.</strong> Stepovers and relay ramps are
-    places where a structure must continue across a gap; if the connecting trace is buried, the
-    compiler leaves exactly the hole the scorer is asking you to fill. That is Hypothesis 5, and
-    it is cheap because it needs no geophysics at all.</li>
-  </ul>
-  <p>Two physics-level caveats that constrain any detector here. First, all of these fields are
-  <em>finite-bandwidth</em>: at 100 m sampling, a fault's signature is at most a few cells wide,
-  so the metric's 300 m kernel is wider than the target — which is why a single well-placed dot
-  can earn credit from several hidden truth pixels at once, and why precision beats recall
-  (see <a href="method.html">Method §2</a>). Second, the scorer masks the known catalogue, so a
-  perfect reproductions of the mapped geology scores zero. The signal that matters lives in the
-  residual, exactly where the geophysics is weakest.</p>
+    <section class="section" style="background:#eaf1ed" aria-labelledby="availability-title">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Candidate-data prechecks · 2026-10-06</p><h2 id="availability-title">Official catalogues returned useful records.</h2><p>All queries below used an approximate broad rectangle associated with the GeoDAWN/competition area. It is not the official training-label footprint.</p></div></div>
+        <div class="card-grid two">
+          <article class="card">
+            <p class="card-label">H46-1 · InSAR availability</p>
+            <h3>NASA OPERA DISP-S1</h3>
+            <p>NASA/JPL's Level-3 OPERA DISP-S1 is a time-series LOS displacement product with 30 m posting. NASA CMR returned online-accessible granules overlapping parts of the broad area, including a central-strip granule spanning 2025-09-17 to 2025-09-23. The sample records demonstrate partial-area availability only; full grid tiling, valid observation count, data quality, and the file payload have not been checked.</p>
+            <p><a href="https://doi.org/10.5067/SNWG/OPL3DISPS1-V1" target="_blank" rel="noopener noreferrer">Dataset DOI ↗</a> · <a href="https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C3294057315-ASF&amp;bounding_box=-118.9,39.0,-118.2,39.8&amp;page_size=5&amp;sort_key=-start_date" target="_blank" rel="noopener noreferrer">CMR query: central-area records ↗</a> · <a href="https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C3294057315-ASF&amp;bounding_box=-120.0024,37.3641,-116.1415,40.7247&amp;page_size=5&amp;sort_key=-start_date" target="_blank" rel="noopener noreferrer">CMR query: broad rectangle ↗</a></p>
+            <p class="small">No OPERA payload was downloaded. NASA's catalogue says products are openly shared; preserve citation and product metadata. Earthdata account/access requirements must be followed.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">H46-1 · raw-SLC availability check</p>
+            <h3>Copernicus Sentinel-1C SLC</h3>
+            <p>The documented broad-area OData query returned S1A-only catalog products. It did not establish a repeat-pass pair, S1C/S1D coverage, payload access, complete AOI coverage, or raw-SLC/InSAR feasibility. Sentinel-1A operations ended 2026-06-29; the mission transition alone is not evidence that a suitable current repeat pair covers this grid. No SLC files, baselines, coherence, or interferograms were inspected.</p>
+            <p><a href="https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-missions/sentinel-1" target="_blank" rel="noopener noreferrer">Official Sentinel-1 collection ↗</a> · <a href="https://documentation.dataspace.copernicus.eu/APIs/OData.html" target="_blank" rel="noopener noreferrer">OData docs ↗</a> · <a href="https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/Time_to_say_goodbye_to_Sentinel-1A" target="_blank" rel="noopener noreferrer">ESA mission transition ↗</a></p>
+            <p class="small">Sentinel data are free/open with required source and modified-data attribution. Copernicus Data Space registration is required for data access. Data licensing does not waive the competition's independent-verification/sharing requirements.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">H46-2 · hydrology availability</p>
+            <h3>USGS Water Data APIs</h3>
+            <p>The modern `field-measurements` API returned example groundwater-level records with locations inside the broad rectangle. The `monitoring-locations` API returned groundwater wells there. This demonstrates some data presence, not dense coverage; returned readings span different dates/vertical datums and include multiple agencies.</p>
+            <p><a href="https://api.waterdata.usgs.gov/ogcapi/v0/collections/field-measurements/items?bbox=-120.0024,37.3641,-116.1415,40.7247&amp;f=json&amp;limit=5" target="_blank" rel="noopener noreferrer">Field-measurement sample query ↗</a> · <a href="https://api.waterdata.usgs.gov/ogcapi/v0/collections/monitoring-locations/items?bbox=-120.0024,37.3641,-116.1415,40.7247&amp;f=json&amp;limit=100&amp;filter=site_type_code%20eq%20%27GW%27" target="_blank" rel="noopener noreferrer">Groundwater-site query ↗</a> · <a href="https://api.waterdata.usgs.gov/docs/ogcapi/migration/" target="_blank" rel="noopener noreferrer">USGS migration guide ↗</a></p>
+            <p class="small">The legacy `/gwlevels` API was decommissioned; use modern `/field-measurements`. Check agency, aquifer, datum, time, well depth, pumping, and spatial support before inference.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">H46-3 · alteration availability</p>
+            <h3>USGS ASTER-derived maps</h3>
+            <p>A USGS CC0 release maps hydrothermal alteration types/mineral groups across the northwestern conterminous United States. A second USGS release covers central/southern Basin-and-Range plates. Neither was overlaid with the official grid in this session, and a prior owner-reported `conj_alteration_mag` test may overlap.</p>
+            <p><a href="https://doi.org/10.5066/F7CR5RK7" target="_blank" rel="noopener noreferrer">2017 western-U.S. data release ↗</a> · <a href="https://doi.org/10.3133/ofr20131139" target="_blank" rel="noopener noreferrer">Basin-and-Range report ↗</a> · <a href="https://www.earthdata.nasa.gov/data/alerts-outages/aster-swir-anomaly" target="_blank" rel="noopener noreferrer">ASTER SWIR limitation ↗</a></p>
+            <p class="small">ASTER SWIR observations acquired since April 2008 are unusable. Verify per-pixel acquisition dates, valid bands, registration, and exact coverage; do not equate alteration polygons with fault traces.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">H46-4 · temperature availability</p>
+            <h3>USGS Landsat Collection 2 ST</h3>
+            <p>USGS publishes Level-2 surface-temperature products and scaling/QA documentation. Exact cloud-free, usable scene count for this study footprint was not queried or downloaded.</p>
+            <p><a href="https://www.usgs.gov/landsat-missions/landsat-collection-2-surface-temperature" target="_blank" rel="noopener noreferrer">Collection 2 ST documentation ↗</a> · <a href="https://data.usgs.gov/datacatalog/data/USGS:EROS5e83d14f2fc39685" target="_blank" rel="noopener noreferrer">Landsat 8–9 Level-2 catalog ↗</a></p>
+            <p class="small">Thermal native sampling is coarser than the distributed grid, and weather, vegetation, topography, emissivity, and human activity confound the geothermal signal.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">Competition-area baselines</p>
+            <h3>GeoDAWN · INGENIOUS · 3DEP</h3>
+            <p>Official USGS/DOE sources provide GeoDAWN and public INGENIOUS materials; USGS 3DEP products are free/unrestricted. Exact competition grid coverage, versions, permissions for each component, and data lineage still require review.</p>
+            <p><a href="https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7" target="_blank" rel="noopener noreferrer">GeoDAWN ScienceBase item ↗</a> · <a href="https://gdr.openei.org/submissions/1391" target="_blank" rel="noopener noreferrer">GDR 1391 / INGENIOUS ↗</a> · <a href="https://www.usgs.gov/3d-elevation-program" target="_blank" rel="noopener noreferrer">USGS 3DEP ↗</a></p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-  <h2>How to re-check any claim on this site</h2>
-  <ol>
-    <li>Open the JSON receipt named next to the claim (all of them are in <code>data/</code> and
-        mirrored in <code>docs/downloads/</code>).</li>
-    <li>Run the script that produced it — the mapping is in
-        <a href="evidence.html">Evidence §6</a>.</li>
-    <li>For any external claim, follow the link above and compare the sentence you are checking
-        with the sentence on the page. Where the status is <span class="tag warn">carried</span>,
-        treat it as unverified until you have done so.</li>
-  </ol>
-</main>
+    <section class="section" aria-labelledby="scientific-context-title">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Scientific context</p><h2 id="scientific-context-title">Mechanisms are supported; score gains are not.</h2><p>Primary/official work motivates the hypotheses, but none establishes performance on the hidden challenge labels.</p></div></div>
+        <div class="source-list">
+          <article class="source-item"><h3><a href="https://pubs.usgs.gov/fs/fs06903/" target="_blank" rel="noopener noreferrer">USGS InSAR fact sheet: concealed fault and groundwater barrier ↗</a></h3><p>USGS describes linear groundwater barriers in interferograms and a previously unrecognized Santa Clara Valley fault later confirmed by seismic imaging. It also warns pumping deformation may mimic or obscure tectonic signals.</p></article>
+          <article class="source-item"><h3><a href="https://pubs.usgs.gov/publication/70021516" target="_blank" rel="noopener noreferrer">Amelung et al. (1999): fault control of Las Vegas subsidence ↗</a></h3><p>InSAR-derived subsidence was spatially controlled by geologic structures and sediment composition. This is a regional analogue, not proof of new-fault detection in GEMS.</p></article>
+          <article class="source-item"><h3><a href="https://pubs.usgs.gov/publication/ofr74271" target="_blank" rel="noopener noreferrer">Hose & Taylor (1974): northern Nevada geothermal systems ↗</a></h3><p>USGS discusses hot springs along Basin-and-Range faults and meteoric-fluid circulation. This supports geological rationale, not a model score.</p></article>
+          <article class="source-item"><h3><a href="https://pubs.usgs.gov/publication/70271419" target="_blank" rel="noopener noreferrer">Faulds et al. (2025): Reese River Valley / INGENIOUS ↗</a></h3><p>Recent USGS work discusses fault intersections, concealed geothermal potential, and subtle anomalies in north-central Nevada. Review labels, provenance, and leakage before using related material as an independent test.</p></article>
+          <article class="source-item"><h3><a href="https://www.usgs.gov/publications/detecting-geothermal-anomalies-and-evaluating-lst-geothermal-component-combining" target="_blank" rel="noopener noreferrer">Romaguera et al. (2018): geothermal LST component ↗</a></h3><p>USGS Publications Warehouse record describes topographic false positives and uncertainty in thermal remote-sensing estimates; terrain correction is essential.</p></article>
+        </div>
+      </div>
+    </section>
 
-<footer class="site"><div class="wrap">
-  GEMS46 · no claim on this site depends on a source whose status is not stated above.
-</div></footer>
+    <section class="section-sm" style="background:#f7f8f4">
+      <div class="container">
+        <p class="small">Full source register, exact query dates, and provenance caveats: <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/arena/61460a10-gemsdoe46/docs/research/source-register.md" target="_blank" rel="noopener noreferrer">detailed source register on GitHub ↗</a>. Competition inputs remain unavailable; external-data prechecks do not substitute for holdout validation.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-wrap"><div><div class="footer-brand">GEMSDOE46 · Sources and limits</div><p>Links are attributed to their issuing organizations. No underlying challenge or satellite payload has been redistributed here.</p></div><nav class="footer-links" aria-label="Footer navigation"><a href="index.html">Overview</a><a href="hypotheses.html">Hypotheses</a><a href="analysis.html">Score analysis</a><a href="guide.html">Submission guide</a></nav></div></footer>
 </body>
 </html>

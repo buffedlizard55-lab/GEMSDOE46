@@ -1,186 +1,196 @@
-"""Geological feature stack for the GEMS46 credit model (memory-frugal).
+"""Multi-scale structural / curvature feature stack from the official GeoDAWN bands.
 
-Inputs: the official 19-band `training_features.tif` (EPSG:32611, 100 m) and the official
-catalogue raster `labels.tif`.  Everything else is a named transform of those two files.
+All 19 input bands come from the organizer's ``training_features.tif``
+(sha256 4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5,
+19 bands, EPSG:32611, 100 m, 3730 x 3292 -- see ``docs/SOURCES.md``).
 
-Two products:
-  * `build_blocks()`  - block-averaged feature table for fitting the credit model
-                        (default 10 px = 1 km blocks; ~123k rows x K features, ~20 MB)
-  * `build_pixel_memmap()` - rank-normalised uint8 pixel stack on disk for the emission stage
+Physical signatures computed here
+---------------------------------
+1. **L2 ridge / scarp curvature**  (Lindeberg 1998, "Edge detection and ridge
+   detection with scale-space properties", IJCV 30(2):117-154).  For a smoothed
+   field ``G`` with Hessian ``H`` and gradient ``g``, the second directional
+   derivative along the gradient direction ``n`` is
 
-Hypothesis groups (see docs/hypotheses.html):
-  A off-catalogue along-strike context   dist_cat, catdens_15/40, offcat_weight, beyond_core
-  B magnetic & gravity edge boundaries   edge_tc, edge_rtp, edge_grav, tmi_hg, grav_hg,
-                                         mag_source_edge, euler
-  C geomorphic scarp/lineament signature ridge_s3/s7/s15, curv_s7, coherence_s7, slope
-  D strain-rate localisation             strain_grad, shear_grad, dila
-  E crustal/thermal/structural bounds    dzb_grad, cond_grad, ieq, deq
+        L_nn = (Gxx*gx^2 + 2*Gxy*gx*gy + Gyy*gy^2) / (gx^2 + gy^2)
+
+   and the ridge response is ``-L_nn``: it is large and positive on *crests*
+   (fault scarps, fault-line ridges, magnetic lineament crests) and negative in
+   valleys.  This is a curvature transform, not an edge detector.
+2. **Gradient-magnitude edge response** at matched scales (classic lineament
+   edge detection on magnetic and gravity grids).
+3. **Scale-space laplacian** ``grad^2 G`` (blob/edge energy).
+4. **Cover / concealment proxies**: depth-to-basement surface (band 15) and
+   conductivity surface (band 17), smoothed -- the family's H-34-01 concealment
+   direction, data already inside the official stack.
+
+Deliberate exclusion
+--------------------
+**Distance-to-catalogue is NOT a model feature.**  The family's own
+post-mortem (GEMSDOE32, IR-32-PROXY-01) shows that any field built on a
+proximity-to-catalogue prior scores well on a catalogue-truth proxy and then
+transfers badly, because the scored truth is the *new-fault* population.  Using
+it here would make the blocked holdout optimistic for a reason we already know
+is spurious.  The ablation flag ``include_distance_to_catalogue`` exists only so
+that the drift can be *measured* rather than assumed.
 """
+
 from __future__ import annotations
 
-from pathlib import Path
-
 import numpy as np
-from scipy import ndimage as ndi
+from scipy import ndimage
 
+SENTINEL = -3.0e38
+
+# band index (1-based, as in the official GeoTIFF) -> short name
 BANDS = {
-    1: "mag_anom", 2: "rtp", 3: "tmi_hg", 4: "geod_2ndinv", 5: "grav_slope",
-    6: "tc", 7: "geod_shearrate", 8: "geod_dilaterate", 9: "tmi_vg", 10: "deq",
-    11: "grav_vg", 12: "det_elev", 13: "grav_anom", 14: "tmi", 15: "depth_to_base",
-    16: "ieq", 17: "cond_surf", 18: "grav_hg", 19: "det_elev_slope",
+    1: "mag_anom",
+    2: "rtp",
+    3: "tmi_hgrad",
+    4: "geod_2ndinv",
+    5: "iso_grav_slope",
+    6: "tilt_curv",
+    7: "geod_shear",
+    8: "geod_dilat",
+    9: "tmi_vgrad",
+    10: "eq_dist",
+    11: "iso_grav_vgrad",
+    12: "detrend_elev",
+    13: "iso_grav",
+    14: "tmi",
+    15: "depth_basement",
+    16: "eq_density",
+    17: "conductivity",
+    18: "iso_grav_hgrad",
+    19: "detrend_elev_slope",
 }
-NODATA = np.float32(-3.4028234663852886e38)
-DERIVED_ONLY = [
-    "dist_cat", "catdens_15", "catdens_40", "offcat_weight", "beyond_core",
-    "edge_tc", "edge_rtp", "edge_grav", "tmi_hg", "grav_hg", "mag_source_edge", "euler",
-    "ridge_s3", "ridge_s7", "ridge_s15", "curv_s7", "coherence_s7", "slope",
-    "strain_grad", "shear_grad", "dila",
-    "dzb_grad", "cond_grad", "ieq", "deq",
+
+
+def _read_band(src, idx: int) -> np.ndarray:
+    a = src.read(idx).astype(np.float32)
+    bad = ~np.isfinite(a) | (a < SENTINEL)
+    if bad.any():
+        med = np.nanmedian(np.where(bad, np.nan, a))
+        if not np.isfinite(med):
+            med = 0.0
+        a[bad] = med
+        a = ndimage.gaussian_filter(a, 0.0)  # no-op; keeps dtype/contiguity
+    return a
+
+
+def _gradients(g: np.ndarray):
+    gy, gx = np.gradient(g)
+    return gx.astype(np.float32), gy.astype(np.float32)
+
+
+def ridge_and_edges(g: np.ndarray, sigma: float):
+    """Return (ridge, gradmag, lap) for a field smoothed at ``sigma`` pixels."""
+    gs = ndimage.gaussian_filter(g, sigma) if sigma > 0 else g
+    gx, gy = _gradients(gs)
+    gxx = ndimage.gaussian_filter(gs, sigma, order=(0, 2))
+    gyy = ndimage.gaussian_filter(gs, sigma, order=(2, 0))
+    gxy = ndimage.gaussian_filter(gs, sigma, order=(1, 1))
+    g2 = gx * gx + gy * gy
+    denom = g2 + 1e-12
+    l_nn = (gxx * gx * gx + 2.0 * gxy * gx * gy + gyy * gy * gy) / denom
+    ridge = -l_nn
+    gradmag = np.sqrt(g2)
+    lap = ndimage.gaussian_filter(gs, sigma, order=(0, 2)) + ndimage.gaussian_filter(
+        gs, sigma, order=(2, 0)
+    )
+    return ridge.astype(np.float32), gradmag.astype(np.float32), lap.astype(np.float32)
+
+
+FEATURE_PLAN = [
+    # (kind, band_index, sigma)  -- kind in {raw, smooth, ridge, gradmag, lap}
+    ("raw", 12, 0.0),
+    ("ridge", 12, 1.0),
+    ("ridge", 12, 2.0),
+    ("ridge", 12, 4.0),
+    ("gradmag", 12, 2.0),
+    ("gradmag", 19, 1.0),
+    ("smooth", 19, 1.0),
+    ("ridge", 6, 1.0),          # official tilt-angle / total-curvature edge band
+    ("ridge", 6, 2.0),
+    ("smooth", 6, 1.0),
+    ("ridge", 14, 1.5),         # TMI
+    ("ridge", 2, 1.5),          # RTP
+    ("gradmag", 3, 1.0),        # TMI horizontal gradient band
+    ("smooth", 9, 1.0),         # TMI vertical gradient band
+    ("ridge", 13, 2.0),         # isostatic gravity
+    ("gradmag", 18, 1.0),       # iso gravity horizontal gradient band
+    ("smooth", 11, 1.0),        # iso gravity vertical gradient band
+    ("smooth", 15, 2.0),        # depth to basement (concealment proxy)
+    ("gradmag", 15, 2.0),
+    ("smooth", 17, 2.0),        # conductivity surface
+    ("smooth", 4, 2.0),         # geodetic second invariant
+    ("smooth", 7, 2.0),         # shear rate
+    ("smooth", 8, 2.0),         # dilatation rate
+    ("smooth", 16, 2.0),        # earthquake density
+    ("smooth", 1, 2.0),         # magnetic anomaly
 ]
-BAND_FEATURES = [f"band_{BANDS[i]}" for i in sorted(BANDS)]
-
-FEATURE_NAMES = DERIVED_ONLY + BAND_FEATURES
 
 
-def _g(a, s):
-    return ndi.gaussian_filter(a, s, mode="nearest")
+def build_feature_stack(features_path: str, footprint: np.ndarray,
+                        include_distance_to_catalogue: np.ndarray | None = None,
+                        progress=print):
+    """Build the (n_footprint_pixels, n_features) float32 matrix.
 
-
-def _grad(a, s=1.0):
-    sm = _g(a, s) if s else a
-    gy, gx = np.gradient(sm)
-    return np.hypot(gy, gx)
-
-
-def _ridge(a, s):
-    """Largest absolute Hessian eigenvalue of the smoothed field (lineament detector)."""
-    sm = _g(a, s)
-    dyy = ndi.gaussian_filter(sm, s, order=(0, 2), mode="nearest")
-    dxx = ndi.gaussian_filter(sm, s, order=(2, 0), mode="nearest")
-    dxy = ndi.gaussian_filter(sm, s, order=(1, 1), mode="nearest")
-    tr = dyy + dxx
-    det = dyy * dxx - dxy * dxy
-    return np.abs(tr / 2.0) + np.sqrt(np.maximum(tr * tr / 4.0 - det, 0.0))
-
-
-def _coherence(a, s):
-    sm = _g(a, s)
-    gy, gx = np.gradient(sm)
-    jxx = _g(gx * gx, 2 * s)
-    jyy = _g(gy * gy, 2 * s)
-    jxy = _g(gx * gy, 2 * s)
-    tr = jxx + jyy
-    return np.sqrt(np.maximum((jxx - jyy) ** 2 + 4 * jxy * jxy, 0.0)) / (tr + 1e-12)
-
-
-def load_grid(features_tif: Path, labels_tif: Path):
-    """Return (labels_int8, footprint_bool, catalogue_bool, raw_bands float32 (19,H,W))."""
+    Returns ``(X, names)``.  ``footprint`` is the boolean scored-domain mask
+    (5,167,373 True cells, identical to ``np.isfinite(sample_submission.tif)``);
+    only those pixels are stacked, so peak RAM stays bounded on a 4 GB box.
+    """
     import rasterio
-    with rasterio.open(labels_tif) as ds:
-        lab = ds.read(1)
-    with rasterio.open(features_tif) as ds:
-        raw = ds.read().astype(np.float32)
-    raw[raw == NODATA] = np.nan
-    footprint = lab >= 0
-    raw[:, ~footprint] = np.nan
-    for i in range(raw.shape[0]):
-        b = raw[i]
-        bad = ~np.isfinite(b)
-        if bad.any():
-            b[bad] = np.nanmedian(b)
-    return lab, footprint, lab > 0, raw
+
+    n_pix = int(footprint.sum())
+    plan = list(FEATURE_PLAN)
+    names = [f"{k}:{BANDS[b]}:s{s:g}" for (k, b, s) in plan]
+    if include_distance_to_catalogue is not None:
+        plan.append(("raw", -1, 0.0))
+        names.append("dist_to_catalogue")
+
+    X = np.empty((n_pix, len(plan)), dtype=np.float32)
+    with rasterio.open(features_path) as src:
+        needed = sorted({b for (_k, b, _s) in plan if b > 0})
+        cache: dict[int, np.ndarray] = {}
+        col = 0
+        for kind, band, sigma in plan:
+            if band == -1:
+                X[:, col] = include_distance_to_catalogue[footprint]
+                col += 1
+                continue
+            if band not in cache:
+                # keep at most 4 bands resident
+                if len(cache) >= 4:
+                    cache.pop(next(iter(cache)))
+                cache[band] = _read_band(src, band)
+            g = cache[band]
+            if kind == "raw":
+                out = g
+            elif kind == "smooth":
+                out = ndimage.gaussian_filter(g, sigma) if sigma > 0 else g
+            elif kind == "gradmag":
+                gs = ndimage.gaussian_filter(g, sigma) if sigma > 0 else g
+                gx, gy = _gradients(gs)
+                out = np.sqrt(gx * gx + gy * gy)
+            elif kind == "ridge":
+                r, _gm, _lp = ridge_and_edges(g, sigma)
+                out = r
+            elif kind == "lap":
+                _r, _gm, lp = ridge_and_edges(g, sigma)
+                out = lp
+            else:
+                raise ValueError(kind)
+            X[:, col] = np.asarray(out, dtype=np.float32)[footprint]
+            col += 1
+            progress(f"  feature {col}/{len(plan)} {names[col-1]}")
+    return X, names
 
 
-def iter_features(raw: np.ndarray, footprint: np.ndarray, catalogue: np.ndarray):
-    """Yield (name, float32 full-grid array) one feature at a time, low peak memory."""
-    H, W = footprint.shape
-    dist_cat = ndi.distance_transform_edt(~catalogue).astype(np.float32)
-    yield "dist_cat", np.minimum(dist_cat, 100.0)
-    for rad in (15, 40):
-        yield f"catdens_{rad}", ndi.uniform_filter(
-            catalogue.astype(np.float32), size=2 * rad + 1) * (2 * rad + 1) ** 2
-    cat21 = ndi.uniform_filter(catalogue.astype(np.float32), size=21)
-    yield "offcat_weight", (np.minimum(dist_cat, 60.0) / 60.0) * (1.0 - cat21)
-    core = ndi.uniform_filter(catalogue.astype(np.float32), size=61) > 0.02
-    del cat21
-    yield "beyond_core", ndi.distance_transform_edt(~core).astype(np.float32)
-
-    yield "edge_tc", _grad(raw[5], 1.0)
-    yield "edge_rtp", _grad(raw[1], 1.0)
-    yield "edge_grav", _grad(_g(raw[12], 4.0), 1.0)
-    yield "tmi_hg", np.abs(raw[2])
-    yield "grav_hg", np.abs(raw[17])
-    yield "mag_source_edge", np.abs(-ndi.gaussian_laplace(raw[13], 5.0, mode="nearest"))
-    yield "euler", _grad(raw[13], 5.0) * np.maximum(7.0 - raw[14], 0.0)
-
-    det = raw[11]
-    for s in (3.0, 7.0, 15.0):
-        yield f"ridge_s{int(s)}", _ridge(det, s)
-    yield "curv_s7", np.abs(-ndi.gaussian_laplace(det, 7.0, mode="nearest"))
-    yield "coherence_s7", _coherence(det, 7.0)
-    yield "slope", np.abs(raw[18])
-
-    yield "strain_grad", _grad(raw[3], 5.0)
-    yield "shear_grad", _grad(raw[6], 5.0)
-    yield "dila", np.abs(raw[7])
-
-    yield "dzb_grad", _grad(raw[14], 5.0)
-    yield "cond_grad", _grad(raw[16], 5.0)
-    yield "ieq", raw[15].copy()
-    yield "deq", raw[9].copy()
-    for i in sorted(BANDS):
-        yield f"band_{BANDS[i]}", raw[i - 1].copy()
-
-
-def build_blocks(features_tif: Path, labels_tif: Path, block: int = 10,
-                 include_bands: bool = True):
-    """Block-mean feature table + block geometry.  Returns dict of arrays."""
-    lab, footprint, catalogue, raw = load_grid(features_tif, labels_tif)
-    H, W = footprint.shape
-    ny, nx = H // block, W // block
-    Hc, Wc = ny * block, nx * block
-    names, cols = [], []
-    for name, arr in iter_features(raw, footprint, catalogue):
-        if not include_bands and name.startswith("band_"):
-            continue
-        # block mean over the cropped grid, counting only footprint cells
-        a = arr[:Hc, :Wc].reshape(ny, block, nx, block)
-        f = footprint[:Hc, :Wc].reshape(ny, block, nx, block)
-        cnt = f.sum(axis=(1, 3))
-        s = np.where(f, a, 0.0).sum(axis=(1, 3))
-        cols.append(np.where(cnt > 0, s / np.maximum(cnt, 1), 0.0).astype(np.float32))
-        names.append(name)
-    Z = np.stack(cols, axis=-1)                      # (ny, nx, K)
-    cnt = footprint[:Hc, :Wc].reshape(ny, block, nx, block).sum(axis=(1, 3))
-    cat = catalogue[:Hc, :Wc].reshape(ny, block, nx, block).sum(axis=(1, 3))
-    meta = dict(block=block, ny=ny, nx=nx, H=H, W=W, Hc=Hc, Wc=Wc,
-                names=names, counts=cnt.astype(np.int32),
-                catalogue_counts=cat.astype(np.int32))
-    return Z, meta
-
-
-def build_pixel_memmap(features_tif: Path, labels_tif: Path, out_prefix: Path,
-                       include_bands: bool = True) -> dict:
-    """Write rank-normalised uint8 features to <out_prefix>.npy (K, H, W) on disk."""
-    lab, footprint, catalogue, raw = load_grid(features_tif, labels_tif)
-    H, W = footprint.shape
-    names = [n for n in FEATURE_NAMES if include_bands or not n.startswith("band_")]
-    K = len(names)
-    mm = np.lib.format.open_memmap(f"{out_prefix}.npy", mode="w+", dtype=np.uint8, shape=(K, H, W))
-    idx = 0
-    for name, arr in iter_features(raw, footprint, catalogue):
-        if name not in names:
-            continue
-        v = arr[footprint]
-        order = np.argsort(v, kind="stable")
-        ranks = np.empty(v.size, dtype=np.float32)
-        ranks[order] = np.linspace(0, 255, v.size, dtype=np.float32)
-        layer = np.zeros((H, W), np.float32)
-        layer[footprint] = ranks
-        mm[idx] = np.rint(layer).astype(np.uint8)
-        idx += 1
-        del v, order, ranks, layer
-    mm.flush()
-    np.save(f"{out_prefix}_names.npy", np.array(names))
-    return dict(K=K, names=names, path=f"{out_prefix}.npy", footprint=footprint,
-                shape=(H, W), H=H, W=W)
+def standardise(X: np.ndarray, mask: np.ndarray | None = None):
+    """Robust standardisation (median / IQR) computed on ``mask`` rows."""
+    ref = X if mask is None else X[mask]
+    med = np.median(ref, axis=0)
+    q1 = np.percentile(ref, 25, axis=0)
+    q3 = np.percentile(ref, 75, axis=0)
+    scale = np.where((q3 - q1) > 1e-9, (q3 - q1) / 1.349, 1.0)
+    return med.astype(np.float32), scale.astype(np.float32)

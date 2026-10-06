@@ -1,161 +1,194 @@
-"""Distance-Weighted Tversky Index (DTI) for the DOE GEMS Prize — independent implementation.
+"""Exact implementation of the official GEMS Prize distance-weighted Tversky index.
 
-Transcribed from the official problem description (DrivenData page 967,
-"Mathematical representation", read 2026-10-06) plus the official staff ruling that
-*known* USGS/INGENIOUS fault pixels are masked out of scoring (community thread
-11516, quoted in `docs/sources.html`).
+Transcribed line-by-line from the official problem description
+(https://www.drivendive... -> actually:
+ https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/
+ section "Mathematical representation"), which states verbatim:
 
-Published definitions (R = 300 m = 3 px at 100 m):
+    k(d) = (1 - d/R)_+ = max(1 - d/R, 0),  R = 300 m  (3 pixels at 100 m)
+    TPw = sum_{g in G} max_{x: d(x,g)<=R} p(x) k(d(x,g))
+    FPw = sum_{x: p(x)>0} p(x) [1 - max_{g in G} k(d(x,g))]
+    FNw = sum_{g in G} [1 - max_{x: d(x,g)<=R} p(x) k(d(x,g))]
+    DTI = TPw / (TPw + alpha*FPw + beta*FNw + eps),   alpha = 0.2, beta = 0.8
 
-    k(d)  = max(1 - d/R, 0)
-    TP_w  = sum_{g in G} max_{x : d(x,g) <= R} p(x) * k(d(x,g))
-    FP_w  = sum_{x : p(x) > 0} p(x) * [1 - max_{g in G} k(d(x,g))]
-    FN_w  = sum_{g in G} [1 - max_{x : d(x,g) <= R} p(x) * k(d(x,g))]
-    DTI   = TP_w / (TP_w + alpha * FP_w + beta * FN_w + eps),  alpha=0.2, beta=0.8
+Notes on the transcription
+--------------------------
+* ``FNw`` as published has no explicit ``g``-weight, but for a binary truth raster
+  every g contributes ``1 - coverage(g)``; the total truth mass is ``G = |G|``.
+* All three sums are over the *scored* domain: the competition excludes pixels that
+  belong to the given USGS/INGENIOUS catalogue (organizer clarification, DrivenData
+  community thread 11516, quoted in the family's own docs).  We never mask inside
+  ``DTI`` itself: the caller passes the truth raster it wants scored.
+* Coordinates: pixels, 100 m spacing, 8-connected distance (Euclidean in metres).
 
-Two exact identities are used throughout the project and are asserted in `tests/`:
-
-    FN_w  = |G| - TP_w                                        (I1)
-    FP_w  = S - M, S = sum_x p(x), M = sum_x p(x) * max_g k    (I2)
-
-so that, writing T = TP_w,
-
-    DTI = T / (0.2 * (T + S - M) + 0.8 * |G|)                  (I3)
-
-Marginal rule (differentiate I3 in one unit of mass at kernel credit k, correct to
-first order in the DTI change):
-
-    adding mass at x raises DTI  <=>  k_eff(x) > 0.2 * DTI     (I4)
-
-where k_eff(x) = dT/d(mass) - 0.2*DTI*(1 - dM/d(mass)) is evaluated exactly in
-`marginal_gain`; (I4) is the small-mass limit used for planning.
+Verified against the official worked example in ``tests/test_metric.py``:
+    TPw = 3.00, FPw = 1.89, FNw = 2.00  ->  DTI(0.2, 0.8) = 0.60
 """
+
 from __future__ import annotations
 
 import numpy as np
+from scipy import ndimage
 
+R_METRES = 300.0
+PIXEL_METRES = 100.0
+R_PIXELS = R_METRES / PIXEL_METRES  # 3.0
 ALPHA = 0.2
 BETA = 0.8
-RADIUS_PX = 3.0
-EPS = 1e-12
+EPS = 1e-9
 
 
-def kernel(d: np.ndarray | float, radius: float = RADIUS_PX) -> np.ndarray:
-    """Triangular kernel k(d) = max(1 - d/R, 0); distances in pixels (1 px = 100 m)."""
-    return np.maximum(1.0 - np.asarray(d, dtype=np.float64) / radius, 0.0)
+def kernel_from_distance(d_pixels: np.ndarray) -> np.ndarray:
+    """Triangular kernel k(d) = max(1 - d/R, 0) with d in pixels."""
+    return np.maximum(1.0 - d_pixels / R_PIXELS, 0.0)
 
 
-def shadow_offsets(radius: float = RADIUS_PX) -> list[tuple[int, int, float]]:
-    """(dy, dx, k) for every integer offset within the kernel support."""
-    r = int(np.ceil(radius))
-    out = []
-    for dy in range(-r, r + 1):
-        for dx in range(-r, r + 1):
-            k = float(kernel(np.hypot(dy, dx), radius))
-            if k > 0.0:
-                out.append((dy, dx, k))
-    return out
+def _nearest_truth_distance(truth: np.ndarray) -> np.ndarray:
+    """Euclidean distance (in pixels) from every cell to the nearest truth cell.
 
-
-OFFSETS = shadow_offsets()
-
-
-def dti_from_parts(tp: float, fp: float, fn: float, alpha: float = ALPHA, beta: float = BETA) -> float:
-    return float(tp / (tp + alpha * fp + beta * fn + EPS))
-
-
-def mask_known(pred: np.ndarray, truth: np.ndarray, known: np.ndarray | None,
-               footprint: np.ndarray | None = None):
-    """Apply the official masks: outside the footprint and on known faults, p := 0.
-
-    Returns (p, g, active) with p float32 (masked prediction) and g bool (scored truth).
+    ``ndimage.distance_transform_edt`` called on the *complement* gives exactly
+    ``d(x) = min_{g in G} ||x - g||`` in pixel units.
     """
-    p = np.asarray(pred, dtype=np.float32)
-    active = np.isfinite(p)
-    if footprint is not None:
-        active &= np.asarray(footprint, bool)
-    if known is not None:
-        active &= ~np.asarray(known, bool)
-    pm = np.where(active, p, 0.0).astype(np.float32)
-    g = np.asarray(truth, bool)
-    if known is not None:
-        g = g & ~np.asarray(known, bool)
-    if footprint is not None:
-        g = g & np.asarray(footprint, bool)
-    return pm, g, active
+    return ndimage.distance_transform_edt(~truth)
 
 
-def coverage_field(pred: np.ndarray, radius: float = RADIUS_PX, offsets=None) -> np.ndarray:
-    """C(x) = max over predicted pixels y within R of p(y)*k(d(x,y)).
+def distance_weighted_terms(pred: np.ndarray, truth: np.ndarray):
+    """Return (TPw, FPw, FNw, G) exactly as published.
 
-    This is the per-pixel kernel credit available at x; TP_w = sum_g C(g) over the
-    truth set, which makes C the object the leaderboard score is a functional of.
+    Parameters
+    ----------
+    pred : float array, values in [0, 1]
+    truth : bool array, same shape
     """
-    p = np.asarray(pred, dtype=np.float32)
-    offs = OFFSETS if offsets is None else offsets
-    c = np.zeros_like(p, dtype=np.float32)
-    for dy, dx, k in offs:
-        sh = np.roll(np.roll(p, -dy, axis=0), -dx, axis=1) * np.float32(k)
-        # roll wraps; the wrapped strip cannot contain valid neighbours, so zero it
-        if dy > 0:
-            sh[-dy:, :] = 0.0
-        elif dy < 0:
-            sh[:-dy, :] = 0.0
-        if dx > 0:
-            sh[:, -dx:] = 0.0
-        elif dx < 0:
-            sh[:, :-dx] = 0.0
-        np.maximum(c, sh, out=c)
-    return c
+    pred = np.asarray(pred, dtype=np.float64)
+    truth = np.asarray(truth, dtype=bool)
+    if pred.shape != truth.shape:
+        raise ValueError("pred and truth must have the same shape")
+
+    g_mass = float(truth.sum())
+    if g_mass == 0.0:
+        return 0.0, float(pred[pred > 0].sum()), 0.0, 0.0
+
+    # distance from every cell to nearest truth cell (pixels)
+    d = _nearest_truth_distance(truth)
+    k = kernel_from_distance(d)  # k(d(x,g*)) per cell
+
+    # --- TPw -----------------------------------------------------------------
+    # sum over truth pixels of the best (max) weighted prediction within R.
+    # For a truth cell g, the max over x is attained at the cell x maximising
+    # p(x)*k(d(x,g)).  Computed by iterating a 3x3 (7x7 metre window) max-filter
+    # over the "sparse-set" transform of pred, but we do it exactly with a
+    # distance-limited dilation of the credit field.
+    # credit(x) = p(x); contribution to truth cell g is max_x p(x) k(d(x,g)).
+    # Because k is radial and decreases with d, this is a max-plus convolution.
+    # Exact evaluation: only cells within R can contribute, so we build the
+    # (R_pixels rounded up +1) ball offsets.
+    tpw = _max_plus_kernel_sum(pred, truth)
+
+    # --- FPw -----------------------------------------------------------------
+    fpw = float((pred * (1.0 - k))[pred > 0].sum())
+
+    # --- FNw -----------------------------------------------------------------
+    covered = np.zeros_like(pred)
+    _fill_best_coverage(pred, truth, covered)
+    fnw = float((1.0 - covered[truth]).sum())
+
+    return tpw, fpw, fnw, g_mass
 
 
-def components(pred: np.ndarray, truth: np.ndarray, known: np.ndarray | None = None,
-               footprint: np.ndarray | None = None, offsets=None) -> dict:
-    """Exact TP_w / FP_w / FN_w / DTI by shift-max (TP) + nearest-truth distance (FP)."""
-    p, g, _ = mask_known(pred, truth, known, footprint)
-    n = int(g.sum())
-    if n == 0:
-        return dict(tp=0.0, fp=float(p.sum()), fn=0.0, n_truth=0, dti=0.0, coverage=0.0, mass=float(p.sum()))
-    tp = float(coverage_field(p, offsets=offsets)[g].sum())
-    fn = float(n) - tp
-    # nearest truth distance for every pixel (metric: Euclidean, R = 3 px)
-    from scipy.ndimage import distance_transform_edt
-    d = distance_transform_edt(~g)
-    fp = float((p * (1.0 - kernel(d))).sum())
-    return dict(tp=tp, fp=fp, fn=fn, n_truth=n,
-                dti=dti_from_parts(tp, fp, fn), coverage=tp / n, mass=float(p.sum()))
+def _ball_offsets(radius_cells: int):
+    rr, cc = np.mgrid[-radius_cells : radius_cells + 1, -radius_cells : radius_cells + 1]
+    m = np.sqrt(rr * rr + cc * cc) <= radius_cells
+    return rr[m], cc[m]
 
 
-def components_bruteforce(pred: np.ndarray, truth: np.ndarray, known: np.ndarray | None = None,
-                          radius: float = RADIUS_PX) -> dict:
-    """Literal O(|G|*|P|) transcription of the published equations (small grids only)."""
-    p, g, _ = mask_known(pred, truth, known, None)
-    gs = np.argwhere(g)
-    xs = np.argwhere(p > 0)
-    tp = 0.0
-    for gy, gx in gs:
-        best = 0.0
-        for y, x in xs:
-            d = float(np.hypot(y - gy, x - gx))
-            if d <= radius:
-                best = max(best, float(p[y, x]) * float(kernel(d, radius)))
-        tp += best
-    fn = float(len(gs)) - tp
-    fp = 0.0
-    for y, x in xs:
-        kmax = 0.0
-        for gy, gx in gs:
-            kmax = max(kmax, float(kernel(float(np.hypot(y - gy, x - gx)), radius)))
-        fp += float(p[y, x]) * (1.0 - kmax)
-    return dict(tp=tp, fp=fp, fn=fn, n_truth=len(gs), dti=dti_from_parts(tp, fp, fn))
+def _max_plus_kernel_sum(pred: np.ndarray, truth: np.ndarray) -> float:
+    """sum_g max_{x: d<=R} p(x) k(d(x,g)), exactly."""
+    rad = int(np.ceil(R_PIXELS))
+    offs = _ball_offsets(rad)
+    h, w = pred.shape
+    total = 0.0
+    # For every candidate displacement delta, truth cells that can be reached by
+    # an emitted cell at delta share the value p(x)*k(||delta||).  Taking the max
+    # over deltas replicates max_x.
+    best = np.zeros(pred.shape, dtype=np.float64)
+    for dy, dx in zip(*offs):
+        dist = float(np.hypot(dy, dx))
+        kval = max(1.0 - dist / R_PIXELS, 0.0)
+        if kval <= 0.0:
+            continue
+        shifted = np.zeros_like(pred)
+        ys_src = slice(max(0, -dy), h - max(0, dy))
+        xs_src = slice(max(0, -dx), w - max(0, dx))
+        ys_dst = slice(max(0, dy), h - max(0, -dy))
+        xs_dst = slice(max(0, dx), w - max(0, -dx))
+        shifted[ys_dst, xs_dst] = pred[ys_src, xs_src] * kval
+        np.maximum(best, shifted, out=best)
+    total = float(best[truth].sum())
+    return total
 
 
-def marginal_gain_full(tp: float, fp: float, fn: float, dt: float, dm: float,
-                       mass: float = 1.0) -> float:
-    """Return the exact change in DTI when one unit of prediction mass is added."""
-    den = tp + ALPHA * fp + BETA * fn + EPS
-    t2 = tp + dt
-    f2 = fp + (mass - dm)
-    fn2 = fn - dt
-    den2 = t2 + ALPHA * f2 + BETA * fn2 + EPS
-    return float(t2 / den2 - tp / den)
+def _fill_best_coverage(pred: np.ndarray, truth: np.ndarray, out: np.ndarray) -> None:
+    """out[g] = max_{x: d(x,g)<=R} p(x) k(d(x,g)) for truth cells g."""
+    rad = int(np.ceil(R_PIXELS))
+    offs = _ball_offsets(rad)
+    h, w = pred.shape
+    best = np.zeros(pred.shape, dtype=np.float64)
+    for dy, dx in zip(*offs):
+        dist = float(np.hypot(dy, dx))
+        kval = max(1.0 - dist / R_PIXELS, 0.0)
+        if kval <= 0.0:
+            continue
+        shifted = np.zeros_like(pred)
+        ys_src = slice(max(0, -dy), h - max(0, dy))
+        xs_src = slice(max(0, -dx), w - max(0, dx))
+        ys_dst = slice(max(0, dy), h - max(0, -dy))
+        xs_dst = slice(max(0, dx), w - max(0, -dx))
+        shifted[ys_dst, xs_dst] = pred[ys_src, xs_src] * kval
+        np.maximum(best, shifted, out=best)
+    out[...] = best
+
+
+def dti(pred: np.ndarray, truth: np.ndarray, alpha: float = ALPHA, beta: float = BETA):
+    """Official distance-weighted Tversky index. Returns a float."""
+    tpw, fpw, fnw, _ = distance_weighted_terms(pred, truth)
+    return tpw / (tpw + alpha * fpw + beta * fnw + EPS)
+
+
+def dti_terms(pred: np.ndarray, truth: np.ndarray, alpha: float = ALPHA, beta: float = BETA):
+    tpw, fpw, fnw, g = distance_weighted_terms(pred, truth)
+    val = tpw / (tpw + alpha * fpw + beta * fnw + EPS)
+    return {
+        "DTI": val,
+        "TPw": tpw,
+        "FPw": fpw,
+        "FNw": fnw,
+        "G": g,
+        "emitted_px": float((np.asarray(pred) > 0).sum()),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Fast path used by the emitter/optimiser.  The *sparse* regime assumption is
+# explicit here: the caller emits a set of unit-mass dots; the credit each dot
+# delivers to truth pixels is computed with the same max-plus rule, but the
+# truth-side max is taken over the accepted dot set only.
+# ---------------------------------------------------------------------------
+def sparse_terms_from_credit(credit: np.ndarray, n_dots: int, n_truth: int,
+                             alpha: float = ALPHA, beta: float = BETA,
+                             fp_mass: float | None = None):
+    """DTI for a sparse binary emission.
+
+    ``credit`` : per-truth-pixel delivered coverage in [0, 1] (sum -> TPw).
+    ``n_dots`` : number of unit-mass emitted pixels.
+    ``n_truth``: number of scored truth pixels G.
+    ``fp_mass``: sum_x (1 - k(x)); defaults to the exact sparse identity
+                 FPw = n_dots - TPw  which holds when no two dots share a
+                 best-cover truth pixel (the regime a thin dotted line targets).
+    """
+    tpw = float(credit.sum())
+    if fp_mass is None:
+        fp_mass = float(n_dots) - tpw
+    fnw = float(n_truth) - tpw
+    val = tpw / (tpw + alpha * fp_mass + beta * fnw + EPS)
+    return val, tpw, fp_mass, fnw

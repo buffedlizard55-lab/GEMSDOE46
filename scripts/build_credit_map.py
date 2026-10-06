@@ -15,7 +15,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, "/home/user/GEMSDOE46/src")
-from gems46 import features as F  # noqa: E402
+from gems46 import xfeatures as F  # noqa: E402
 
 DATA = Path("/tmp/gems46/data")
 

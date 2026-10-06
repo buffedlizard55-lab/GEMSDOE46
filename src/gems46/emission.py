@@ -24,7 +24,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from . import metric as M
+from . import xmetric as M
 
 
 def coverage_from_dots(rows, cols, vals, shape, offsets=None) -> np.ndarray:

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Executive summary and exact DOE GEMS upload steps. No validated submission file is currently available.">
+  <title>Submission guide — GEMS46</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="GEMS46 home"><span class="brand-mark" aria-hidden="true">46</span><span class="brand-copy"><strong>GEMS · DOE</strong><span>Fault-mapping research</span></span></a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="index.html">Overview</a><a href="hypotheses.html">Hypotheses</a><a href="analysis.html">Score analysis</a><a href="sources.html">Sources</a><a class="nav-cta" href="guide.html" aria-current="page">Submission guide</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Executive summary · upload checklist</p>
+        <h1>No upload is ready yet.</h1>
+        <p class="lead">The competition inputs and sample grid are not in this checkout, so there is no validated prediction file to download or submit. Do not use a blank, synthetic, or untested raster to consume a submission slot.</p>
+      </div>
+    </section>
+
+    <section class="section-sm">
+      <div class="container">
+        <div class="download-gate">
+          <div class="gate-icon" aria-hidden="true">↓</div>
+          <div>
+            <p class="card-label">Submission GeoTIFF</p>
+            <h3>Unavailable — validation gate not passed.</h3>
+            <p>The eventual download will appear here first, after a real model beats the current spatial holdout best and passes independent GeoTIFF checks.</p>
+          </div>
+          <button class="button button-disabled" type="button" disabled aria-label="No validated submission is available">No file yet</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="future-name-title">
+      <div class="container split">
+        <div>
+          <p class="eyebrow">Unique artifact name</p>
+          <h2 id="future-name-title">Name the method and the bytes.</h2>
+          <p>The packaging tool will create a unique filename only after a passing holdout report. The expected pattern is:</p>
+          <p class="card mono" style="overflow-wrap:anywhere">gemsdoe46-{candidate-id}-{YYYYMMDD}-{10-char-prediction-hash}.tif</p>
+          <p>For example, a future H46-1 result would use a name beginning with <span class="mono">gemsdoe46-h46-1-opera-disp-v1-</span>. Copy the actual filename stem (everything before <span class="mono">.tif</span>) exactly into DrivenData's submission-name field. That stem is generated from the UTC date and probability fingerprint; it is a naming template—not an existing file or score claim. No actual submission name is assigned yet. Known prior TIFs must be supplied to the duplicate check.</p>
+        </div>
+        <aside class="callout warn">
+          <h3>Do not upload before the gate</h3>
+          <p>The public leaderboard's 0.3195 is not the project holdout baseline. The required comparison is against the current best local out-of-fold result on the same spatial blocks and prediction-mass budget.</p>
+          <p>See the <a href="hypotheses.html">ranked hypotheses</a> and <a href="analysis.html">score attribution note</a>.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" style="background:#eaf1ed" aria-labelledby="steps-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Exact portal workflow</p>
+            <h2 id="steps-title">When a validated file exists</h2>
+            <p>These steps follow the official competition flow. Portal labels can change; use the live competition page as the final authority.</p>
+          </div>
+          <a class="button button-secondary" href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank" rel="noopener noreferrer">Open official competition ↗</a>
+        </div>
+        <div class="steps">
+          <article class="step"><div><h3>Enroll and sign in</h3><p>Open the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank" rel="noopener noreferrer">DOE GEMS competition page</a>, accept the competition terms, and sign in to the authorized participant account. Do not share credentials with this repository or store them in Git.</p></div></article>
+          <article class="step"><div><h3>Download the official inputs from the Data page</h3><p>Use the competition's authenticated Data page. Place the downloaded ZIP in <span class="mono">data/inbox/</span>, then run <span class="mono">bash scripts/download_competition_data.sh</span>. The script imports a local archive only; it does not log in, scrape, or fetch competition files.</p></div></article>
+          <article class="step"><div><h3>Verify the grid and inputs</h3><p>Set up the project environment with <span class="mono">python -m venv .venv &amp;&amp; .venv/bin/python -m pip install -e '.[test]'</span>. Identify the official feature, label, and sample rasters from the archive, then run <span class="mono">.venv/bin/python scripts/validate_inputs.py --features … --labels … --sample …</span>. Confirm EPSG:32611, 100 m resolution, identical bounds/transform, binary-label semantics, and the exact valid mask before modeling.</p></div></article>
+          <article class="step"><div><h3>Require a spatial holdout win</h3><p>Generate candidate and baseline out-of-fold predictions using four contiguous blocks and a 300 m label embargo. Run <span class="mono">.venv/bin/python scripts/evaluate_holdout.py …</span>. Continue only if the report shows a higher DTI, at least three of four block wins, comparable probability mass, and verified fold provenance.</p></div></article>
+          <article class="step"><div><h3>Download the generated TIF from this site's first card</h3><p>Only after packaging passes, the download control at the top of the project home will link to the unique float32 GeoTIFF. Check its hash/receipt and run <span class="mono">.venv/bin/python scripts/validate_submission.py --submission … --sample …</span> independently.</p></div></article>
+          <article class="step"><div><h3>Upload the file on DrivenData</h3><p>Return to the competition page, choose <strong>Submit Predictions</strong> (or the current equivalent in the competition navigation), select the generated <span class="mono">.tif</span>, and paste its exact filename stem as the submission name. Confirm the upload and wait for the organizer's format/score feedback; save the receipt and reported score next to the run record.</p></div></article>
+          <article class="step"><div><h3>Choose the final submission only after review</h3><p>The official rules state up to three feedback submissions per week and one selected final submission used for both rounds. Do not spend a feedback slot on an idea that has not beaten the current spatial holdout best. Recheck the live rules and deadline before final selection.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="drivendata-note-title">
+      <div class="container split">
+        <div>
+          <p class="eyebrow">DrivenData note</p>
+          <h2 id="drivendata-note-title">The live board stays on the official site.</h2>
+          <p>DrivenData's Terms of Use prohibit automated monitoring/copying and manual monitoring/copying without prior written consent. This project therefore provides a dated score analysis and a direct link to the official live leaderboard—not a scraper, scheduled refresh, or cached mirror.</p>
+          <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener noreferrer">Check current official leaderboard ↗</a>
+        </div>
+        <aside class="card">
+          <p class="card-label">Deadline watch</p>
+          <h3>Two official pages use different times.</h3>
+          <p>The homepage listed <strong>Dec. 3, 2026 at 11:59 p.m. UTC</strong>; the rules PDF says <strong>5 p.m. ET</strong> the same day. Until the organizer clarifies, plan to finish by the earlier time.</p>
+          <p class="small">Source links and the discrepancy are recorded on the <a href="sources.html">sources page</a>.</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-wrap">
+      <div><div class="footer-brand">GEMSDOE46 · Evidence before upload</div><p>No validated TIF exists as of the 2026-10-06 research snapshot.</p></div>
+      <nav class="footer-links" aria-label="Footer navigation"><a href="index.html">Overview</a><a href="hypotheses.html">Hypotheses</a><a href="analysis.html">Score analysis</a><a href="sources.html">Sources</a></nav>
+    </div>
+  </footer>
+</body>
+</html>
