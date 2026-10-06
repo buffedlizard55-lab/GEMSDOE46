@@ -56,8 +56,8 @@ jobs:
           # the receipts predate a shared schema: r11/r12 are flat, r11f nests them under `candidate`
           for tag, positive in (('r11', 37654), ('r11f', 44090), ('r12', 37654)):
               r = json.loads((root / 'registry' / f'{tag}.json').read_text())
-              a_rec = r.get('audit', r.get('candidate', {}))
-              name = r.get('file', a_rec['file'])
+              a_rec = r.get('audit') or r.get('candidate') or {}
+              name = r.get('file') or a_rec['file']
               p = root / 'docs' / tag / name
               assert p.is_file(), p
               with rasterio.open(p) as s, rasterio.open('data/raw/sample_submission.tif') as t:
