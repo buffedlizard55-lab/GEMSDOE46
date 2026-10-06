@@ -1,0 +1,51 @@
+anchor_id,label,reported_score,score_status,repo,path,artifact_kind,note
+p01,gems-submission-20260925T001403Z-7f00890a,0.1563,user-reported,7GEMSDOE,external/scored/gemsdoe1-ens12-7f00890a.tif,submission,"sha-prefix 7f00890a matches the ledger id"
+p02,gems6_hgb88-topk03_33cec71ff0,0.0286,user-reported,7GEMSDOE,external/scored/gems6-hgb88-topk03-33cec71ff0.tif,submission,
+p03,pindrop-v4-nodes-20260925T152420Z-f347b70daa,0.1193,user-reported,7GEMSDOE,external/scored/gemsdoe3-pindrop-nodes-f347b70daa.tif,submission,
+p04,pindrop-v4-discovery-20260925T152423Z-37f9d5b855,0.0830,user-reported,7GEMSDOE,external/scored/gemsdoe3-pindrop-discovery-37f9d5b855.tif,submission,
+p05,pindrop-v4-ridge-20260925T152422Z-4e03fc9705,0.1152,user-reported,7GEMSDOE,external/scored/gemsdoe3-pindrop-ridge-4e03fc9705.tif,submission,
+p06,gemsdoe2-dual-family-union-20260925T160406Z-f68e590f,0.1560,user-reported,7GEMSDOE,external/scored/gemsdoe2-dual-union-f68e590f.tif,submission,
+p07,gems-submission-20260926T163915Z-237f0063,0.0343,user-reported,7GEMSDOE,external/scored/gemsdoe4-combined-237f0063.tif,submission,
+p08,Hedge-v2_submission,0.1563,user-reported,GEMSDOE24,inputs/calibration/8GEMSDOE_Hedge-v2_submission.tif,submission,
+p09,2314b599,0.0107,user-reported,GEMSDOE24,inputs/calibration/gemsdoe9-PLACEHOLDER-2314b599.tif,submission,
+p10,H25-ctx-ridge-20260927T232947704150Z-6452ae1d00,0.1280,user-reported,GEMSDOE24,inputs/calibration/gems10-h25-ctx-ridge-20260927T232947704150Z-6452ae1d00.tif,submission,
+p11,h28-dotted-ridge-20260928T020256236880Z-6452ae1d00,0.1839,user-reported,GEMSDOE24,inputs/calibration/gems10-h28-dotted-ridge-20260928T020256236880Z-6452ae1d00.tif,submission,
+p12,20261001_r13-lattice-s5_v2_nan-outside,0.0904,user-reported,GEMSDOE24,inputs/calibration/13gems_20261001_r13-lattice-s5_v2_nan-outside.tif,submission,
+p13,h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-nan,0.1855,user-reported,GEMSDOE24,inputs/gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-nan.tif,submission,
+p14,h19-4-multiline-corroborated-openness-thermal-pop-20260930-691e4dfa-nan,0.1894,user-reported,GEMSDOE24,inputs/gems19-h19-4-multiline-corroborated-openness-thermal-pop-20260930-691e4dfa-nan.tif,submission,
+p15,h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-nan,0.1922,user-reported,GEMSDOE24,inputs/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-nan.tif,submission,
+p16,h20-1-sarnnpu-powerlaw-pi0363-tilt-wingcrack-20260930-be0e8f6b-nan,0.1890,user-reported,20GEMSDOE,submissions/gems20-h20-1-sarnnpu-powerlaw-pi0363-tilt-wingcrack-20260930-be0e8f6b-nan.tif,submission,
+p17,h20-5-continuous-pu-proxy-unverified-20260930-824ce73a-nan,0.1859,user-reported,20GEMSDOE,submissions/gems20-h20-5-calibrated-continuous-nnpu-brier-verified-20260930-824ce73a-nan.tif,submission,"file name differs from ledger label; 8-hex suffix 824ce73a identical - association is an inference, flagged"
+p18,h23-a-dti-optimal-emission-6pct-20261002-e2ec4b49-nan,0.1002,user-reported,GEMSDOE22,docs/downloads/gems22-h23-a-dti-optimal-emission-6pct-20261002-e2ec4b49-allfinite.tif,submission,"using the allfinite twin (identical inside footprint)"
+p19,h23-b-dti-optimal-emission-10pct-20261002-86176698-nan,0.0748,user-reported,GEMSDOE22,docs/downloads/gems22-h23-b-dti-optimal-emission-10pct-20261002-86176698-allfinite.tif,submission,"using the allfinite twin"
+p20,h30-arrangement-matched-habitat-20261002-0d4e02e8-nan,0.1352,user-reported,GEMSDOE23,docs/downloads/gemsdoe23-h30-arrangement-matched-habitat-20261002-0d4e02e8-allfinite.tif,submission,"using the allfinite twin"
+p21,h25-1-dotted-h19-5-d1-5-20261002-989f59505db1-nan,0.2477,user-reported,GEMSDOE24,docs/downloads/gems24-h25-1-dotted-h19-5-d1-5-20261002-989f59505db1-allfinite.tif,submission,"using the allfinite twin"
+p22,dotted-h19-5-d2-8-20261002-e56ea318af89-nan,0.2600,user-reported,GEMSDOE25,docs/downloads/gems25-dotted-h19-5-d2-8-20261002-e56ea318af89-nan.tif,submission,
+p23,dilcond-oof-v1-20261003-47629f496133-nan,0.1223,user-reported,GEMSDOE26,docs/downloads/gems26-dilcond-oof-v1-20261003-47629f496133-nan.tif,submission,
+p24,topo-gap-closure-t-v2-on-d1-5-20261002-5512495c6bd1-nan,0.2449,user-reported,GEMSDOE27,docs/downloads/gems27-topo-gap-closure-t-v2-on-d1-5-20261002-5512495c6bd1-nan.tif,submission,
+p25,h27-4-r1-solo-d2-8-20261003-8acb75e1f2cc-nan,0.2708,user-reported,GEMSDOE28,docs/downloads/gems28-h27-4-r1-solo-d2-8-20261003-8acb75e1f2cc-nan.tif,submission,
+p26,h32-1-prethin-tip-euler-d2-8-20261003-31e35eee884e-nan,0.2649,user-reported,GEMSDOE28,docs/downloads/gems28-h32-1-prethin-tip-euler-d2-8-20261003-31e35eee884e-nan.tif,submission,
+p27,d28-poisson300m-offcat-44090-20261003T233156Z-91eae1ca,0.2600,user-reported,GEMSDOE30,docs/downloads/gemsdoe30-d28-poisson300m-offcat-44090-20261003T233156Z-91eae1ca-nanoutside.tif,submission,
+p28,efd28-repro-20261003-1cc7dc534d51-nan,0.2600,user-reported,GEMSDOE29,docs/downloads/gems29-refd28-repro-20261003-1cc7dc534d51-nan.tif,submission,
+p29,repo-c0-habitat-emission-20261003-a4d439b07426-nan,0.0041,user-reported,GEMSDOE29,docs/downloads/gemsdoe29-repo-c0-habitat-emission-20261003-a4d439b07426-nan.tif,submission,
+p30,h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros,0.2778,user-reported,GEMSDOE32,docs/downloads/gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros.tif,submission,"group best as of 2026-10-04",
+p31,h33d-analog-tip-stepover-r30-20261004-cb490425926e,0.2632,user-reported,GEMSDOE33,docs/downloads/GEMSDOE33-h33d-analog-tip-stepover-r30-20261004-cb490425926e.tif,submission,
+p32,h34-scatter-q50-arr-matched-20261004T223317Z,0.0778,user-reported,GEMSDOE34,docs/downloads/h34-scatter-q50-arr-matched-20261004T223317Z.tif,submission,
+p33,h35-06-aaa86efb25-20261004T225420098147Z-candidate,0.0418,user-reported,GEMSDOE35,docs/downloads/gemsdoe35-h35-06-aaa86efb25-20261004T225420098147Z-candidate.tif,submission,
+p34,h16-continuation-20260927T065521077735Z-3431b83c7c,0.0461,user-reported,GEMSDOE10,docs/downloads/gems10-h16-continuation-20260927T065521077735Z-3431b83c7c.tif,submission,
+p35,h20-dem10-scarp-thin-20260927T155223039488Z-ffc91a1686,0.0921,user-reported,GEMSDOE10,docs/downloads/gems10-h20-dem10-scarp-thin-20260927T155223039488Z-ffc91a1686.tif,submission,
+p36,r7-nms3-dem10-scarp_0c9199f14e62,0.1294,user-reported,12GEMSDOE,docs/downloads/12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62.tif,submission,
+p37,17GEMSDOE_F-ensemble-2pct_20260930T050626Z,0.0187,user-reported,17GEMSDOE,docs/downloads/17GEMSDOE_F-ensemble-2pct_20260930T050626Z.tif,submission,
+p38,H19-C_20260930T212401Z_c11e495e,0.0297,user-reported,18GEMSDOE,docs/downloads/18GEMSDOE_H19-C_20260930T212401Z_c11e495e.tif,submission,
+p39,gems-tso1-20260929T005627Z-conj_alteration_mag,0.0782,user-reported,15GEMSDOE,docs/downloads/gems-tso1-20260929T005627Z-conj_alteration_mag.tif,submission,
+p40,GEMS_r5-geom-horse-ensemble_20260929T154852Z_ccbe1de0_site_e96e942f,0.0020,user-reported,14GEMSDOE,docs/downloads/GEMS_r5-geom-horse-ensemble_20260929T154852Z_ccbe1de0_site_e96e942f.tif,submission,
+p41,gems-structural-area06-v1,0.0202,user-reported,11GEMSDOE,docs/downloads/gems-structural-area06-v1.tif,submission,
+p42,h6-physics-dotted-80k-20261005T055000Z-0bef9211631c,,not-reported,GEMSDOE37,docs/downloads/h6-physics-dotted-80k-20261005T055000Z-0bef9211631c.tif,submission,"no reported score"
+p43,h33-h33-2b2-plus-h33-1-20261004T220000Z-31588dc7-zeros,,not-reported,GEMSDOE32,docs/downloads/gemsdoe32-h33-h33-2b2-plus-h33-1-20261004T220000Z-31588dc7-zeros.tif,submission,"no reported score"
+p44,gems40-euler-si0-depthcluster-crossfamily-continuous-20261005-f3e0ed7a,,not-reported,GEMSDOE40,docs/downloads/gems40-euler-si0-depthcluster-crossfamily-continuous-20261005-f3e0ed7a.tif,submission,"no reported score"
+p45,gems41-h42-basinmargin-s4-n40000-20261006T015229Z-allfinite,,not-reported,GEMSDOE41,docs/downloads/gems41-h42-basinmargin-s4-n40000-20261006T015229Z-allfinite.tif,submission,"no reported score"
+p46,gems27-topo-gap-closure-t-v2-on-d2-8-20261002-3ebd51534bb1-nan,,not-reported,GEMSDOE27,docs/downloads/gems27-topo-gap-closure-t-v2-on-d2-8-20261002-3ebd51534bb1-nan.tif,submission,"no reported score"
+p47,gemsdoe29-sgmc-off-catalogue-44k-20261003-c8dcd780e3fd-nan,,not-reported,GEMSDOE29,docs/downloads/gemsdoe29-sgmc-off-catalogue-44k-20261003-c8dcd780e3fd-nan.tif,submission,"no reported score"
+p48,13gems_20261001_r14-union-tips10-lat6_nan-outside,,not-reported,13GEMSDOE,docs/downloads/13gems_20261001_r14-union-tips10-lat6_nan-outside.tif,submission,"no reported score"
+p49,gems7-lidarscarp-ridge-top2pct-36c3a3f341c8,0.1461,user-reported,7GEMSDOE,downloads/gems7-lidarscarp-ridge-top2pct-36c3a3f341c8.tif,submission,
+p50,gems-submission-20260926T175114Z-7f00890a,0.1563,user-reported,7GEMSDOE,downloads/submission.tif,submission,"7GEMSDOE docs/downloads/submission.tif (1.29MB) - association inferred from the site pairing; flagged"

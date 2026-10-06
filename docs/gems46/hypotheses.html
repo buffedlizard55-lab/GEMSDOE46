@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Five new geological hypotheses | GEMS46</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="index.html">GEMS46 · DOE GEMS Prize</a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="submit.html">How to submit</a>
+    <a href="method.html">Method</a>
+    <a href="hypotheses.html" aria-current="page">Hypotheses</a>
+    <a href="evidence.html">Evidence</a>
+    <a href="sources.html">Sources</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <h1>Five new candidate targets, ranked by expected gain per unit of cost</h1>
+  <p class="lede">Each hypothesis names the layers it needs, the physical signature it looks for,
+  why it should find a fault the catalogue misses, and what makes it different from every
+  construction already in the GEMSDOE family. None of them is claimed to be validated against
+  the hidden labels — that is impossible locally (see <a href="method.html">Method §4</a>).
+  They are ranked by <em>expected DTI gain per unit of implementation cost</em> under the
+  validated direction of §3.</p>
+
+  <h2>Ranking</h2>
+  <table>
+    <tr><th>#</th><th>Target</th><th>Layers</th><th>Signature</th><th>Cost</th><th>Expected gain</th></tr>
+    <tr><td><strong>1</strong></td><td>H5 · Catalogue stepover corridors</td>
+        <td><code>labels.tif</code> geometry + <code>det_elev</code>, <code>det_elev_slope</code></td>
+        <td>geometric: relay gaps between mapped traces</td>
+        <td><span class="tag ok">very low</span></td><td>highest per unit cost</td></tr>
+    <tr><td>2</td><td>H1 · Euler-gated magnetic-edge tips</td>
+        <td><code>rtp</code>, <code>tmi_hg</code>, <code>tmi_vg</code>, <code>deq_n100a15</code>, <code>ieq_n100a15</code></td>
+        <td>edge ridge of the horizontal gradient × depth gate</td>
+        <td><span class="tag ok">low</span></td><td>high</td></tr>
+    <tr><td>3</td><td>H2 · Gravity-tensor 2nd-invariant ridges under magnetic cover</td>
+        <td><code>geod_2ndinv</code>, <code>iso_grav_anom</code>, <code>iso_grav_anom_slope</code>, <code>iso_grav_anom_vg</code>, <code>iso_grav_anom_hg</code></td>
+        <td>ridge of the second invariant of the gravity gradient tensor</td>
+        <td><span class="tag warn">low-medium</span></td><td>medium-high</td></tr>
+    <tr><td>4</td><td>H4 · Kinematic strain-node detector</td>
+        <td><code>geod_shearrate</code>, <code>geod_dilaterate</code>, <code>tc</code></td>
+        <td>saddle nodes of shear/dilation along the max-shear azimuth</td>
+        <td><span class="tag warn">medium</span></td><td>medium</td></tr>
+    <tr><td>5</td><td>H3 · 1 m lidar scarp skeleton, gap-closed</td>
+        <td>USGS 3DEP 1 m lidar (free, public) + <code>det_elev</code>, <code>det_elev_slope</code></td>
+        <td>scarp crest lines in detrended residual relief</td>
+        <td><span class="tag bad">high (blocked by RAM)</span></td><td>highest ceiling</td></tr>
+  </table>
+
+  <h2>H5 · Catalogue stepover corridors <span class="tag hi">rank 1</span></h2>
+  <p><strong>Layers.</strong> <code>labels.tif</code> (the given catalogue) as geometry, plus
+  <code>det_elev</code> / <code>det_elev_slope</code> only as a tie-breaker.</p>
+  <p><strong>Signature.</strong> Purely geometric: find every pair of catalogue traces whose ends
+  approach within 500 m without touching, and mark the corridor between them. No raster
+  transform is involved — the "edge detection" here is on the topological graph of the
+  catalogue, not on a field.</p>
+  <p><strong>Why it finds a <em>missing</em> fault.</strong> A stepover is a place where the
+  structure physically must continue but a compiler leaves it blank: the connecting trace is
+  usually buried, so it is absent from surface mapping yet present in the 300 m kernel of the
+  hidden labels. These corridors are literally the catalogue's own holes — the highest prior
+  probability for a withheld expert trace that the scorer will count.</p>
+  <p><strong>Why it is different from everything already tried.</strong> Every prior artefact in
+  the family uses the catalogue only as a <em>negation</em> (a buffer to avoid) or as a candidate
+  field. None of them uses its <em>graph topology</em> as the generative model of the target.
+  It is also the first construction here whose candidate set cannot be produced by any threshold
+  on any of the 19 bands.</p>
+  <p><strong>Why rank 1.</strong> It costs an afternoon, needs no new data, and it explains the
+  only piece of leaderboard naming evidence available: the best-scoring family in the corpus is
+  literally named <em>tip</em> and <em>stepover</em>
+  (<code>h32-1-prethin-tip-euler-d2-8</code> 0.2649, <code>h33d-analog-tip-stepover-r30</code>
+  0.2632) — the winners converged on tip/stepover geometry, not on magnetic anomalies.</p>
+  <p><strong>Cheapest validation.</strong> Emit the corridor set, prune by
+  <code>det_elev_slope</code>, take the top 5,000, run the same
+  <code>emission_search</code> LOO instrument, and submit only if it beats the rank-1
+  prediction of the current file.</p>
+
+  <h2>H1 · Euler-gated magnetic-edge tips</h2>
+  <p><strong>Layers.</strong> <code>rtp</code>, <code>tmi_hg</code>, <code>tmi_vg</code>,
+  <code>deq_n100a15</code>, <code>ieq_n100a15</code>.</p>
+  <p><strong>Signature.</strong> Take the ridge (topographic <em>crest</em>) of the horizontal
+  gradient magnitude of the RTP field, then gate it: keep only pixels whose Euler-deconvolution
+  depth <code>deq_n100a15</code> is shallower than ~600 m. The gate is the physical part — a
+  linear magnetic edge with a shallow equivalent-source depth is a basement fault at a few
+  hundred metres, not a deep regional feature.</p>
+  <p><strong>Why it finds a missing fault.</strong> A fault that offsets magnetised basement
+  under alluvium produces a crisp magnetic edge with a shallow source, but no surface rupture —
+  precisely the class that a Quaternary-surface catalogue omits.</p>
+  <p><strong>Difference.</strong> The existing corpus has tip/stepover constructions and
+  separate Euler layers, but no artefact <em>conditions</em> one on the other. The gate is also
+  the empirically best-supported new idea: <code>mag_source_edge</code> (+0.58) and
+  <code>edge_rtp</code> (+0.56) are the two strongest univariate features and <code>euler</code>
+  (−0.56) is the strongest negative one, so the productive direction is "sharp magnetic edge,
+  small Euler depth" and it has not been isolated in that form.</p>
+
+  <h2>H2 · Gravity-tensor second-invariant ridges under magnetic cover</h2>
+  <p><strong>Layers.</strong> <code>geod_2ndinv</code>, with <code>iso_grav_anom</code> and its
+  slope / vertical-gradient / horizontal-gradient companions.</p>
+  <p><strong>Signature.</strong> Crest ridge of the second invariant of the gravity gradient
+  tensor — a rotation-invariant measure of density-contrast edges. Unlike a single gravity
+  component it does not cancel when a fault strikes at an unfavourable azimuth.</p>
+  <p><strong>Why it finds a missing fault.</strong> Where young, weakly magnetised volcanic cover
+  blankets a fault, the magnetic layers go quiet while mass contrast survives; the "missing"
+  faults are concentrated exactly there, which is also where the magnetic-edge instruments
+  (including H1) fail. The two hypotheses are therefore complementary, not competing.</p>
+  <p><strong>Difference.</strong> Gravity appears in the corpus as a corroborating layer
+  throughout, never as the primary field inside a magnetic-blanket mask.</p>
+
+  <h2>H4 · Kinematic strain-node detector</h2>
+  <p><strong>Layers.</strong> <code>geod_shearrate</code>, <code>geod_dilaterate</code>,
+  <code>tc</code>.</p>
+  <p><strong>Signature.</strong> Saddle points of the shear-rate field aligned with the local
+  maximum-shear azimuth, where the dilation rate changes sign — kinematic singularities.</p>
+  <p><strong>Why it finds a missing fault.</strong> These fields are computed from a regional
+  strain model, not from mapped geology; a fault that is invisible in the catalogue but occupies
+  a kinematic node has an expression in exactly these layers. <code>band_geod_shearrate</code> and
+  <code>band_geod_dilaterate</code> were among the few band-level features with non-trivial
+  positive loading in the validated ridge.</p>
+  <p><strong>Difference.</strong> Prior artefacts treat these as continuous layers to thin;
+  a node detector produces a sparse, intrinsically non-uniform candidate set that no thinning
+  cascade can reproduce.</p>
+
+  <h2>H3 · 1 m lidar scarp skeleton, gap-closed against the catalogue</h2>
+  <p><strong>Layers.</strong> USGS 3DEP 1 m lidar tiles (free, public,
+  <a href="sources.html">see Sources</a>), with <code>det_elev</code> /
+  <code>det_elev_slope</code> for continuity.</p>
+  <p><strong>Signature.</strong> Detrend a 1 m DEM locally, then skeletonise the residual
+  relief; a Quaternary fault scarp is a 1–3 m step, i.e. an object that exists at 1 m resolution
+  and is <em>destroyed</em> by resampling to the competition's 100 m grid. The gap-closing step
+  reconnects skeleton segments across the catalogue and keeps only the off-catalogue remainder.</p>
+  <p><strong>Why it finds a missing fault.</strong> The catalogue is compiled from published
+  mapping; lidar-derived scarps are exactly the discoveries made <em>after</em> a map sheet was
+  published, which is why they are the classic source of new Quaternary fault traces.</p>
+  <p><strong>Difference and honest blocker.</strong> The closest existing artefact is the
+  100 m "topo-gap-closure" family (best 0.2449); nobody in the corpus has used 1 m data. The
+  blocker is capacity, not availability: the tiles are freely downloadable, but this sandbox has
+  3 GB of RAM and no swap, and a single quadrangle tile exceeds it once mosaicked. It is ranked
+  last for that reason, not because it is the weakest idea — its ceiling is the highest of the
+  five. It should be run on a normal workstation.</p>
+
+  <h2>Validation status of the current submission, stated plainly</h2>
+  <ul class="tight">
+    <li><strong>Validated:</strong> the direction (LOO Spearman +0.83 on 43 scored anchors, with
+        near-duplicate rasters removed from each fold), the dot count (37,654, the winning file's
+        own count), the non-overlap rule (derived exactly from the metric), the catalogue
+        exclusion (official masking rule, plus the p29 counter-example), and the format
+        (15/15 contract checks).</li>
+    <li><strong>Not validated:</strong> the absolute score. The hidden truth field is provably
+        not identifiable from the public record. Any claim of a certified number would be false.</li>
+    <li><strong>What would falsify it:</strong> a submitted score below 0.2778 would show the
+        ridge direction mis-ranks at its own extreme; that result is expected to be recorded as
+        anchor <code>p46</code> and fed straight back into the fit.</li>
+  </ul>
+</main>
+
+<footer class="site"><div class="wrap">
+  GEMS46 · <a href="evidence.html">next: every number with its receipt →</a>
+</div></footer>
+</body>
+</html>

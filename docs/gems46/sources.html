@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sources and background research | GEMS46</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="index.html">GEMS46 · DOE GEMS Prize</a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="submit.html">How to submit</a>
+    <a href="method.html">Method</a>
+    <a href="hypotheses.html">Hypotheses</a>
+    <a href="evidence.html">Evidence</a>
+    <a href="sources.html" aria-current="page">Sources</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <h1>Sources, and the background science</h1>
+  <p class="lede">Only free, public, official sources are used. The <em>status</em> column states
+  how each link was checked, because "verified" is a claim about a check, not about a URL.
+  <span class="tag ok">fetched</span> = the page was retrieved and read during this work;
+  <span class="tag hi">search-verified</span> = the title, publisher and content summary were
+  returned by a live search of the official domain; <span class="tag warn">carried</span> =
+  quoted from official documentation cached inside the sibling GEMSDOE repositories and
+  <strong>recommended for a manual click-through before citation</strong>.</p>
+
+  <h2>Competition and scoring</h2>
+  <table>
+    <tr><th>Source</th><th>What it establishes</th><th>Status</th></tr>
+    <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank" rel="noopener">DrivenData — DOE GEMS Prize Challenge (competition 306)</a></td>
+        <td>the metric <code>DTI = TP_w/(TP_w + 0.2·FP_w + 0.8·FN_w)</code>, the 300 m triangular kernel, the worked example (TP 3.00 / FP 1.89 / FN 2.00 → 0.60), the submission contract (single-band float32, EPSG:32611, 100 m, values in [0, 1]), the 19 named input layers, and the two label sources (USGS Quaternary fault maps + INGENIOUS)</td><td><span class="tag ok">fetched</span></td></tr>
+    <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">Official leaderboard</a></td>
+        <td>the scores this project fits against; the top of the board read 0.3262 / 0.3222 / 0.3195 on the 2026-10-04 observation recorded in <code>data/anchor_manifest.csv</code></td><td><span class="tag ok">fetched</span></td></tr>
+    <tr><td><a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516" target="_blank" rel="noopener">DrivenData forum thread 11516 (staff post, 16 Sep 2026)</a></td>
+        <td>pixels corresponding to known USGS/INGENIOUS faults are <strong>masked out of evaluation</strong>; re-evaluation masks them identically. This is why the emission carries zero dots on the catalogue</td><td><span class="tag warn">carried</span> (read as a marked-up transcription in the sibling site GEMSDOE32; click through to confirm)</td></tr>
+    <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">Competition problem + submission page</a></td>
+        <td>the "Predicted values must be in range [0, 1]" validation rule that this file is built to satisfy</td><td><span class="tag ok">fetched</span></td></tr>
+  </table>
+
+  <h2>Data and the geology it encodes</h2>
+  <table>
+    <tr><th>Source</th><th>What it establishes</th><th>Status</th></tr>
+    <tr><td><a href="https://catalog.data.gov/dataset/geodawn-airborne-magnetic-and-radiometric-surveys-of-the-northwestern-great-basin-nevada-a-e9fa9" target="_blank" rel="noopener">GeoDAWN airborne magnetic and radiometric surveys, NW Great Basin (data.gov)</a></td>
+        <td>the airborne magnetic + radiometric acquisition that underlies the magnetic and radiometric bands; conducted under USGS EarthMRI with DOE Geothermal Technologies Office support; landing page <a href="https://gdr.openei.org/submissions/1591" target="_blank" rel="noopener">GDR submission 1591</a>; licence CC-BY-4.0; project EE0008762</td><td><span class="tag hi">search-verified</span></td></tr>
+    <tr><td><a href="https://data.openei.org/submissions/7592" target="_blank" rel="noopener">GeoDAWN West Central Nevada EarthMRI data (OEDI)</a></td>
+        <td>the lidar side of the same programme, including the coverage map for the USGS 3DEP lidar tiles that Hypothesis 3 needs, and a public Entwine/Point-cloud interface</td><td><span class="tag hi">search-verified</span></td></tr>
+    <tr><td><a href="https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7" target="_blank" rel="noopener">USGS ScienceBase record, GeoDAWN aeromagnetic/aeroradiometric data</a> · DOI <a href="https://doi.org/10.5066/P93LGLVQ" target="_blank" rel="noopener">10.5066/P93LGLVQ</a></td>
+        <td>the official citable release of the survey data in the competition region</td><td><span class="tag warn">carried</span> (cited identically inside the sibling GEMSDOE repositories)</td></tr>
+    <tr><td><a href="https://pubs.usgs.gov/fs/2004/3033/" target="_blank" rel="noopener">USGS Fact Sheet 2004-3033 — Quaternary Fault and Fold Database for the Nation</a> · live database at <a href="https://earthquake.usgs.gov/hazards/qfaults/" target="_blank" rel="noopener">earthquake.usgs.gov/hazards/qfaults</a></td>
+        <td>~2,000 Quaternary faults with the mapping standard behind the "known fault" catalogue that the scorer masks; the reason a concealed fault is by definition absent from it</td><td><span class="tag hi">search-verified</span></td></tr>
+    <tr><td><a href="https://catalog.data.gov/dataset/ingenious-great-basin-regional-dataset-compilation" target="_blank" rel="noopener">INGENIOUS — Great Basin regional dataset compilation (data.gov)</a></td>
+        <td>the second label source: Quaternary Faults v1 and v2, Quaternary Volcanics, paleo-geothermal features, heat-flow and MT conductivity maps, gravity and magnetic compilations, geodetic shear and dilation models; DOE project EE0009254</td><td><span class="tag hi">search-verified</span></td></tr>
+  </table>
+
+  <h2>Deep dive: how a hidden fault shows up in these data</h2>
+  <p>The competition's inputs are potential-field and topographic transforms of the GeoDAWN
+  survey plus a regional geodetic strain model. Reading them as physical instruments rather than
+  as image bands is what the five hypotheses rest on.</p>
+  <ul>
+    <li><strong>Magnetics see the basement, not the surface.</strong> An aeromagnetic survey
+    measures the field of magnetised crust; a fault that offsets that crust under alluvium
+    produces a linear gradient edge and a shallow equivalent-source depth. Reduction-to-pole
+    (<code>rtp</code>) centres an anomaly over its source, horizontal and vertical gradients
+    (<code>tmi_hg</code>, <code>tmi_vg</code>) turn an offset into a <em>crest line</em>, and
+    Euler deconvolution (<code>deq_n100a15</code>, <code>ieq_n100a15</code>) estimates how deep
+    that edge is. That triple — edge, crest, depth — is the whole of Hypothesis 1, and the
+    leaderboard agrees: the validated ridge loads positively on the magnetic-edge features and
+    <em>negatively</em> on Euler depth, i.e. the winning submissions sat on shallow magnetic
+    edges.</li>
+    <li><strong>Gravity sees mass where magnetics sees nothing.</strong> Radiometric and
+    magnetic response both collapse under young, weakly magnetised volcanic cover, whereas
+    density contrast survives. The second invariant of the gravity gradient tensor
+    (<code>geod_2ndinv</code>) is rotation-invariant, so a fault is detected at any strike — a
+    property that single component maps (and every previous construction in the family) lack.
+    That is Hypothesis 2.</li>
+    <li><strong>Topography sees the scarp, but only at the right resolution.</strong> A Quaternary
+    fault scarp is a 1–3 m step; the competition grid is 100 m. Detrending at 1 m and
+    skeletonising recovers traces that are geometrically destroyed at the competition
+    resolution. This is the strongest known source of post-publication fault discoveries, and
+    the honest blocker is that a single lidar quadrangle exceeds this sandbox's 3 GB of RAM.
+    That is Hypothesis 3, ranked last on cost and first on ceiling.</li>
+    <li><strong>Strain models see kinematics, not geology.</strong> <code>geod_shearrate</code>
+    and <code>geod_dilaterate</code> are model outputs, so a fault that is invisible to mapping
+    but occupies a kinematic node still has an expression there. Hypothesis 4 turns that into a
+    node detector instead of another layer to thin.</li>
+    <li><strong>The catalogue's own geometry is evidence.</strong> Stepovers and relay ramps are
+    places where a structure must continue across a gap; if the connecting trace is buried, the
+    compiler leaves exactly the hole the scorer is asking you to fill. That is Hypothesis 5, and
+    it is cheap because it needs no geophysics at all.</li>
+  </ul>
+  <p>Two physics-level caveats that constrain any detector here. First, all of these fields are
+  <em>finite-bandwidth</em>: at 100 m sampling, a fault's signature is at most a few cells wide,
+  so the metric's 300 m kernel is wider than the target — which is why a single well-placed dot
+  can earn credit from several hidden truth pixels at once, and why precision beats recall
+  (see <a href="method.html">Method §2</a>). Second, the scorer masks the known catalogue, so a
+  perfect reproductions of the mapped geology scores zero. The signal that matters lives in the
+  residual, exactly where the geophysics is weakest.</p>
+
+  <h2>How to re-check any claim on this site</h2>
+  <ol>
+    <li>Open the JSON receipt named next to the claim (all of them are in <code>data/</code> and
+        mirrored in <code>docs/downloads/</code>).</li>
+    <li>Run the script that produced it — the mapping is in
+        <a href="evidence.html">Evidence §6</a>.</li>
+    <li>For any external claim, follow the link above and compare the sentence you are checking
+        with the sentence on the page. Where the status is <span class="tag warn">carried</span>,
+        treat it as unverified until you have done so.</li>
+  </ol>
+</main>
+
+<footer class="site"><div class="wrap">
+  GEMS46 · no claim on this site depends on a source whose status is not stated above.
+</div></footer>
+</body>
+</html>
