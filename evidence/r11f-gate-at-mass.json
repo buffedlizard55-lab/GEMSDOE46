@@ -4,10 +4,10 @@
   "gate_passed": false,
   "chosen_mass": 10000,
   "blocked_means": {
-   "R11-fused": 0.06337782067393913,
+   "R11F-fused": 0.06337782067393913,
    "incumbent-as-shipped": 0.095807334660303,
    "incumbent-reemitted": 0.03561938015778974,
-   "R11-dfa-local": 0.023756602613190483
+   "R11F-dfa-local": 0.023756602613190483
   },
   "paired_delta": -0.032429513986363886,
   "paired_bootstrap_95": [
@@ -15,7 +15,7 @@
    0.0007800689987308689
   ],
   "candidate": {
-   "file": "gems46-r11-scarp-radiometric-fusion-7882fbcf5ff8-zeros.tif",
+   "file": "gems46-r11f-scarp-radiometric-fusion-7882fbcf5ff8-zeros.tif",
    "sha256": "802e35db1743dbf5cac4d92da6a69c1f0d1fd044db64ac397d2a1eb3abd06ab0",
    "pixel_sha256": "7882fbcf5ff82bd59559b28a8bf99439f2f3ccfab1d16025b492e01eb8072c47",
    "shape": [
@@ -42,7 +42,7 @@
    "bytes": 228774
   },
   "dfa_candidate": {
-   "file": "gems46-r11-dfa-regime-break-local-63f5cdd58768-zeros.tif",
+   "file": "gems46-r11f-dfa-regime-break-local-63f5cdd58768-zeros.tif",
    "sha256": "ba1ab182861d0361575d21803d1a6229a37d89b96df84abb414f7de7baa7e73c",
    "pixel_sha256": "63f5cdd58768d8aad106faf092e9176c9176d2bb7003283635ff754b1c4c61ad",
    "shape": [
@@ -153,13 +153,13 @@
    "passed": true
   },
   "blocked_means": {
-   "R11-fused": 0.17061172498171337,
+   "R11F-fused": 0.17061172498171337,
    "incumbent-as-shipped": 0.09129801973025739,
    "incumbent-reemitted": 0.10224101744540004,
-   "R11-dfa-local": 0.08972749013324673
+   "R11F-dfa-local": 0.08972749013324673
   },
   "candidate": {
-   "file": "gems46-r11-scarp-radiometric-fusion-00e049b51218-zeros.tif",
+   "file": "gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif",
    "sha256": "57be86502a03a22eb755f04204cb090b49ba4b89158662a728ca2e34b1d37f95",
    "pixel_sha256": "00e049b51218e29db08570b4317c10ebf1f05218c48e4dbbe14997774a53651c",
    "shape": [
@@ -186,7 +186,7 @@
    "bytes": 384938
   },
   "dfa_candidate": {
-   "file": "gems46-r11-dfa-regime-break-local-2373b213a1b9-zeros.tif",
+   "file": "gems46-r11f-dfa-regime-break-local-2373b213a1b9-zeros.tif",
    "sha256": "132a6b82835f70555191c750b6e1992354a45d9a1f3c3ad0fed0ebbf67b385f6",
    "pixel_sha256": "2373b213a1b90b27cb5e9aaed1a5b1851c962c1e9d0131860aa4b52711fac010",
    "shape": [
@@ -222,176 +222,176 @@
    "block": 0,
    "truth": 7038,
    "emitted": {
-    "R11-fused": 3129,
+    "R11F-fused": 3129,
     "incumbent-as-shipped": 4412,
     "incumbent-reemitted": 5238,
-    "R11-dfa-local": 5015
+    "R11F-dfa-local": 5015
    },
    "dti": {
-    "R11-fused": 0.08513775941878686,
+    "R11F-fused": 0.08513775941878686,
     "incumbent-as-shipped": 0.093248376094675,
     "incumbent-reemitted": 0.10432310201470223,
-    "R11-dfa-local": 0.0993553729001706
+    "R11F-dfa-local": 0.0993553729001706
    }
   },
   {
    "block": 1,
    "truth": 6623,
    "emitted": {
-    "R11-fused": 6119,
+    "R11F-fused": 6119,
     "incumbent-as-shipped": 5248,
     "incumbent-reemitted": 6145,
-    "R11-dfa-local": 5326
+    "R11F-dfa-local": 5326
    },
    "dti": {
-    "R11-fused": 0.2062320410440842,
+    "R11F-fused": 0.2062320410440842,
     "incumbent-as-shipped": 0.086637476106557,
     "incumbent-reemitted": 0.09258453777505499,
-    "R11-dfa-local": 0.07321870302803067
+    "R11F-dfa-local": 0.07321870302803067
    }
   },
   {
    "block": 2,
    "truth": 10675,
    "emitted": {
-    "R11-fused": 6844,
+    "R11F-fused": 6844,
     "incumbent-as-shipped": 5038,
     "incumbent-reemitted": 5939,
-    "R11-dfa-local": 4589
+    "R11F-dfa-local": 4589
    },
    "dti": {
-    "R11-fused": 0.22390252716392067,
+    "R11F-fused": 0.22390252716392067,
     "incumbent-as-shipped": 0.0929462862641189,
     "incumbent-reemitted": 0.1036844439691423,
-    "R11-dfa-local": 0.07263817475251688
+    "R11F-dfa-local": 0.07263817475251688
    }
   },
   {
    "block": 3,
    "truth": 13775,
    "emitted": {
-    "R11-fused": 817,
+    "R11F-fused": 817,
     "incumbent-as-shipped": 4025,
     "incumbent-reemitted": 4682,
-    "R11-dfa-local": 5369
+    "R11F-dfa-local": 5369
    },
    "dti": {
-    "R11-fused": 0.03847881710641704,
+    "R11F-fused": 0.03847881710641704,
     "incumbent-as-shipped": 0.10653443805233438,
     "incumbent-reemitted": 0.11698661052447311,
-    "R11-dfa-local": 0.13233774522461367
+    "R11F-dfa-local": 0.13233774522461367
    }
   },
   {
    "block": 4,
    "truth": 6486,
    "emitted": {
-    "R11-fused": 2299,
+    "R11F-fused": 2299,
     "incumbent-as-shipped": 4078,
     "incumbent-reemitted": 4794,
-    "R11-dfa-local": 4217
+    "R11F-dfa-local": 4217
    },
    "dti": {
-    "R11-fused": 0.07884115528471206,
+    "R11F-fused": 0.07884115528471206,
     "incumbent-as-shipped": 0.1347786844288102,
     "incumbent-reemitted": 0.14735300385612402,
-    "R11-dfa-local": 0.10244961828930103
+    "R11F-dfa-local": 0.10244961828930103
    }
   },
   {
    "block": 5,
    "truth": 6000,
    "emitted": {
-    "R11-fused": 6133,
+    "R11F-fused": 6133,
     "incumbent-as-shipped": 3974,
     "incumbent-reemitted": 4584,
-    "R11-dfa-local": 6776
+    "R11F-dfa-local": 6776
    },
    "dti": {
-    "R11-fused": 0.21063158504999732,
+    "R11F-fused": 0.21063158504999732,
     "incumbent-as-shipped": 0.08757565093199632,
     "incumbent-reemitted": 0.09883936857088775,
-    "R11-dfa-local": 0.11917012181804292
+    "R11F-dfa-local": 0.11917012181804292
    }
   },
   {
    "block": 6,
    "truth": 775,
    "emitted": {
-    "R11-fused": 1381,
+    "R11F-fused": 1381,
     "incumbent-as-shipped": 415,
     "incumbent-reemitted": 475,
-    "R11-dfa-local": 267
+    "R11F-dfa-local": 267
    },
    "dti": {
-    "R11-fused": 0.216373847908812,
+    "R11F-fused": 0.216373847908812,
     "incumbent-as-shipped": 0.029986369623090304,
     "incumbent-reemitted": 0.04096833696892381,
-    "R11-dfa-local": 0.040281828788705225
+    "R11F-dfa-local": 0.040281828788705225
    }
   },
   {
    "block": 9,
    "truth": 1907,
    "emitted": {
-    "R11-fused": 5606,
+    "R11F-fused": 5606,
     "incumbent-as-shipped": 3417,
     "incumbent-reemitted": 3953,
-    "R11-dfa-local": 4036
+    "R11F-dfa-local": 4036
    },
    "dti": {
-    "R11-fused": 0.1798859043713276,
+    "R11F-fused": 0.1798859043713276,
     "incumbent-as-shipped": 0.09416654615711531,
     "incumbent-reemitted": 0.10950471899048607,
-    "R11-dfa-local": 0.03812608618952309
+    "R11F-dfa-local": 0.03812608618952309
    }
   },
   {
    "block": 10,
    "truth": 2628,
    "emitted": {
-    "R11-fused": 2954,
+    "R11F-fused": 2954,
     "incumbent-as-shipped": 2165,
     "incumbent-reemitted": 2504,
-    "R11-dfa-local": 2528
+    "R11F-dfa-local": 2528
    },
    "dti": {
-    "R11-fused": 0.19833166311988795,
+    "R11F-fused": 0.19833166311988795,
     "incumbent-as-shipped": 0.06649914747306902,
     "incumbent-reemitted": 0.07245263378752648,
-    "R11-dfa-local": 0.08372437514053643
+    "R11F-dfa-local": 0.08372437514053643
    }
   },
   {
    "block": 13,
    "truth": 966,
    "emitted": {
-    "R11-fused": 1581,
+    "R11F-fused": 1581,
     "incumbent-as-shipped": 1327,
     "incumbent-reemitted": 1525,
-    "R11-dfa-local": 732
+    "R11F-dfa-local": 732
    },
    "dti": {
-    "R11-fused": 0.18409714762679044,
+    "R11F-fused": 0.18409714762679044,
     "incumbent-as-shipped": 0.1365419652688041,
     "incumbent-reemitted": 0.15258456853563676,
-    "R11-dfa-local": 0.09667552346286976
+    "R11F-dfa-local": 0.09667552346286976
    }
   },
   {
    "block": 14,
    "truth": 11681,
    "emitted": {
-    "R11-fused": 6683,
+    "R11F-fused": 6683,
     "incumbent-as-shipped": 3021,
     "incumbent-reemitted": 3599,
-    "R11-dfa-local": 4732
+    "R11F-dfa-local": 4732
    },
    "dti": {
-    "R11-fused": 0.2548165267041107,
+    "R11F-fused": 0.2548165267041107,
     "incumbent-as-shipped": 0.07536327663226079,
     "incumbent-reemitted": 0.08536986690644298,
-    "R11-dfa-local": 0.1290248418714036
+    "R11F-dfa-local": 0.1290248418714036
    }
   }
  ]

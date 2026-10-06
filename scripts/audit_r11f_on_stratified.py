@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
-"""Pass 3 audit: re-score the R11 candidate on the instrument that reproduces the live order.
+"""Pass 3 audit: re-score the R11F candidate on the instrument that reproduces the live order.
 
-The R11 gate (`scripts/run_r11.py`) used the *un-stratified* off-catalogue SGMC truth.  The H47
+The R11F gate (`scripts/run_r11f.py`) used the *un-stratified* off-catalogue SGMC truth.  The H47
 session measured (`registry/h47.json -> ladder`) that this instrument INVERTS the three known live
 orderings (0.2600 / 0.2708 / 0.2778) and that only the *stratified* version - truth = SGMC fault
 pixels more than ``d0`` pixels from every published catalogue pixel, with the catalogue masked -
 reproduces all three.  A gate pass on an instrument that inverts the live board is not evidence.
 
-This script therefore re-asks the R11 question on the stratified instrument:
+This script therefore re-asks the R11F question on the stratified instrument:
 
 * incumbent file (37,654 dots, owner-reported live 0.2778)
-* the shipped R11 candidate (44,090 dots)
-* the R11 fused field re-emitted at the matched mass 37,654 with the same emitter as the shipment
+* the shipped R11F candidate (44,090 dots)
+* the R11F fused field re-emitted at the matched mass 37,654 with the same emitter as the shipment
 * a uniform-random control at the same mass (the instrument's dynamic range reference)
 
 and reports, per instrument (d0 = 3 px and d0 = 5 px): the published-metric DTI under the masking
-rule, covered truth credit T, per-dot hit fraction, the ranking AUC of the R11 field over the
-incumbent's own dots (the H47 test), and a spatially paired block t-statistic for R11 vs incumbent.
+rule, covered truth credit T, per-dot hit fraction, the ranking AUC of the R11F field over the
+incumbent's own dots (the H47 test), and a spatially paired block t-statistic for R11F vs incumbent.
 
 Not a score forecast: the stratified SGMC truth is a compilation 4x denser than the inferred hidden
-truth and it is not the competition's label set.  See docs/research/r11-review.md.
+truth and it is not the competition's label set.  See docs/research/r11f-review.md.
 """
 from __future__ import annotations
 
@@ -47,9 +47,9 @@ TEMPLATE = ROOT / "data/raw/sample_submission.tif"
 FEATURES = ROOT / "data/raw/training_features.tif"
 SGMC = ROOT / "data/external/sgmc_faults_100m_u8.tif"
 INCUMBENT = ROOT / "data/derived/incumbent_02778.tif"
-R11 = ROOT / "docs/r11/gems46-r11-scarp-radiometric-fusion-00e049b51218-zeros.tif"
+R11F = ROOT / "docs/r11f/gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif"
 CACHE = ROOT / "data/derived/r11"
-OUT = ROOT / "evidence/r11-stratified-audit.json"
+OUT = ROOT / "evidence/r11f-stratified-audit.json"
 MASS_MATCHED = 37_654
 MASS_SHIPPED = 44_090
 
@@ -67,8 +67,8 @@ def main() -> None:
     d_cat = ndi.distance_transform_edt(~labels)
 
     incumbent = read_bool(INCUMBENT)
-    shipped = read_bool(R11)
-    print(f"incumbent {incumbent.sum():,} dots | R11 shipped {shipped.sum():,} dots", flush=True)
+    shipped = read_bool(R11F)
+    print(f"incumbent {incumbent.sum():,} dots | R11F shipped {shipped.sum():,} dots", flush=True)
 
     # Same field as the shipment, re-emitted at the matched mass.
     parts = [
@@ -122,7 +122,7 @@ def main() -> None:
             print(f"  d0={d0} {name:28s} dti={rows[name]['dti']:.6f} "
                   f"T={rows[name]['T_credit']:9.2f} hit={hit:.3f}", flush=True)
 
-        # H47 test: can the R11 field rank the incumbent's own dots?
+        # H47 test: can the R11F field rank the incumbent's own dots?
         dots_idx = incumbent & domain
         truth_at_dots = truth[dots_idx]
         score_at_dots = q[dots_idx]

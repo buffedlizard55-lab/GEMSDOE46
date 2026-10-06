@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""R11 screening: which *new* evidence channels actually separate hidden-fault proxies?
+"""R11F screening: which *new* evidence channels actually separate hidden-fault proxies?
 
 Screening harness, not a validation gate.  For every channel in the bank it answers one question:
 does a higher value sit closer to a fault that is **absent from the official catalogue**?  Two
@@ -17,7 +17,7 @@ index) so a channel chosen here can be confirmed on blocks it never saw.
 Memory discipline: channels are scored and discarded one at a time (a 19-band 100 m float32 stack is
 ~1 GB, and this sandbox has 4 GB).
 
-Output: ``evidence/r11-screen.json`` -- a superset of the earlier receipt's schema.
+Output: ``evidence/r11f-screen.json`` -- a superset of the earlier receipt's schema.
 """
 from __future__ import annotations
 
@@ -163,7 +163,7 @@ def main() -> int:
         del a, v
 
     # ---- the preregistered local DFA regime-break field ----------------------------------------
-    from run_r11 import local_dfa_break  # the frozen R11 implementation
+    from run_r11 import local_dfa_break  # the frozen R11F implementation
     a = feats.read(names.index("rtp") + 1).astype(np.float32)
     v = fp & np.isfinite(a) & (a > NOD)
     score("dfa_break_rtp", "dfa", local_dfa_break(a, v), v,
@@ -187,11 +187,11 @@ def main() -> int:
                                             EXT / "geodawn_extensions_u8.tif",
                                             EXT / "lidar_scarp_features_u8.tif"]},
         channels=rows)
-    (ROOT / "evidence/r11-screen.json").write_text(json.dumps(out, indent=1) + "\n")
+    (ROOT / "evidence/r11f-screen.json").write_text(json.dumps(out, indent=1) + "\n")
     print("\nTop 12 by off-catalogue AUC:")
     for r in best[:12]:
         print(f"  {r['channel']:26s} {r['auc_off']:.3f}  (catalogue {r['auc_cat']:.3f})")
-    print(f"\n{len(rows)} channels screened -> evidence/r11-screen.json")
+    print(f"\n{len(rows)} channels screened -> evidence/r11f-screen.json")
     return 0
 
 

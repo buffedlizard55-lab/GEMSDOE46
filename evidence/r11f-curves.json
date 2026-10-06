@@ -1,5 +1,5 @@
 {
- "R11-fused": {
+ "R11F-fused": {
   "10000": {
    "accepted": 10000,
    "proxy_credit": 2902.332,
@@ -31,7 +31,7 @@
    "proxy_credit_per_dot": 0.2335
   }
  },
- "R11-dfa-local": {
+ "R11F-dfa-local": {
   "10000": {
    "accepted": 10000,
    "proxy_credit": 1561.759,

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Locked R11 experiment: new evidence families + metric-optimal emission.
+"""Locked R11F experiment: new evidence families + metric-optimal emission.
 
-Decision rule (fixed in `docs/research/session-r11-plan.md` before this script ran):
+Decision rule (fixed in `docs/research/session-r11f-plan.md` before this script ran):
 
 1. the emission mass is chosen by transferring the *proxy credit ratio* between the candidate field
    and the incumbent field onto the incumbent's live-anchored credit, then maximising the implied
@@ -13,7 +13,7 @@ Decision rule (fixed in `docs/research/session-r11-plan.md` before this script r
    described as a new hypothesis;
 4. the artefact is written only if the raster contract passes.
 
-Outputs: registry/r11.json, docs/r11/<file>.tif (+ DFA artefact), evidence/r11-tests summary.
+Outputs: registry/r11f.json, docs/r11f/<file>.tif (+ DFA artefact), evidence/r11f-tests summary.
 """
 from __future__ import annotations
 
@@ -228,7 +228,7 @@ def main() -> None:
     inc_field = ndimage.gaussian_filter(inc_binary.astype(np.float32), 1.85)
     q_inc = EV.to_probability(inc_field, domain, target_mass=10_000.0)
 
-    fields = {"R11-fused": q_primary, "R11-dfa-local": q_dfa, "incumbent-field": q_inc}
+    fields = {"R11F-fused": q_primary, "R11F-dfa-local": q_dfa, "incumbent-field": q_inc}
 
     print("measuring proxy credit curves (this is the slow part) …", flush=True)
     curves, emitters = {}, {}
@@ -245,7 +245,7 @@ def main() -> None:
             print(f"  {name:16s} n<= {mass:6d} accepted {res.accepted:6d} "
                   f"proxy credit {tp:9.2f} dti {dti:.6f}", flush=True)
         curves[name] = curve
-    (ROOT / "evidence/r11-curves.json").write_text(json.dumps(curves, indent=1) + "\n")
+    (ROOT / "evidence/r11f-curves.json").write_text(json.dumps(curves, indent=1) + "\n")
 
     # ---- decision rule (preregistered) -------------------------------------------------------
     inc_credit = {G: INCUMBENT_LIVE * (0.2 * INCUMBENT_MASS + 0.8 * G) for G in G_CANDIDATES}
@@ -253,7 +253,7 @@ def main() -> None:
     for G in G_CANDIDATES:
         best = None
         for mass in MASS_GRID:
-            tp = curves["R11-fused"][int(mass)]["proxy_credit"]
+            tp = curves["R11F-fused"][int(mass)]["proxy_credit"]
             tp_inc = curves["incumbent-field"][int(mass)]["proxy_credit"]
             if tp_inc <= 0 or tp <= 0:
                 continue
@@ -282,18 +282,18 @@ def main() -> None:
 
     final = optemit.emit(q_primary, domain, budget=int(robust_mass), break_even_dti=None)
     comparator_masks = {
-        "R11-fused": final.mask,
+        "R11F-fused": final.mask,
         "incumbent-as-shipped": inc_binary,
         "incumbent-reemitted": emitters[("incumbent-field", robust_mass)].mask,
-        "R11-dfa-local": emitters[("R11-dfa-local", robust_mass)].mask,
+        "R11F-dfa-local": emitters[("R11F-dfa-local", robust_mass)].mask,
     }
     folds = blocked(comparator_masks, int(final.accepted))
     means = {nm: float(np.mean([f["dti"][nm] for f in folds])) for nm in comparator_masks}
-    best_comp = max((n for n in comparator_masks if n != "R11-fused"), key=means.get)
-    delta = np.array([f["dti"]["R11-fused"] - f["dti"][best_comp] for f in folds])
+    best_comp = max((n for n in comparator_masks if n != "R11F-fused"), key=means.get)
+    delta = np.array([f["dti"]["R11F-fused"] - f["dti"][best_comp] for f in folds])
     rng = np.random.default_rng(4611)
     ci = np.percentile(rng.choice(delta, (10000, len(delta)), replace=True).mean(axis=1), [2.5, 97.5])
-    gate = bool(len(folds) >= 8 and ci[0] > 0 and means["R11-fused"] > means[best_comp])
+    gate = bool(len(folds) >= 8 and ci[0] > 0 and means["R11F-fused"] > means[best_comp])
     print("blocked means:", {k: round(v, 5) for k, v in means.items()}, "delta", round(float(delta.mean()), 5),
           "CI", ci.round(5), "gate", gate, flush=True)
 
@@ -348,7 +348,7 @@ def main() -> None:
         return audit
 
     audit = write_candidate(final.mask, "r11-scarp-radiometric-fusion")
-    dfa_mask = emitters[("R11-dfa-local", robust_mass)].mask
+    dfa_mask = emitters[("R11F-dfa-local", robust_mass)].mask
     dfa_audit = write_candidate(dfa_mask, "r11-dfa-regime-break-local")
     dfa_corr = {}
     for nm, p in priors.items():
@@ -372,7 +372,7 @@ def main() -> None:
                                "largest mass the family ever scored at 0.26",
         candidate=audit,
         dfa_candidate=dfa_audit,
-        emissions=dict(r11_fused=dict(accepted=int(final.accepted), stopped=final.stopped,
+        emissions=dict(r11f_fused=dict(accepted=int(final.accepted), stopped=final.stopped,
                                       predicted_dti_at_break_even=(
                                           None if not final.predicted_dti_curve else
                                           max(v for _, v in final.predicted_dti_curve))),
@@ -396,7 +396,7 @@ def main() -> None:
                     "NOT claimed as a new hypothesis"),
         input_hashes=input_hashes,
         environment=dict(seconds=round(time.time() - t_start, 1)),
-        note='GEMSDOE46 R11 | lidar-scarp + GeoDAWN K/Th contrast lineament detector, expected-credit submodular emission, 44,090 dots, 0 on catalogue; proxy gate passed; UNSCORED',
+        note='GEMSDOE46 R11F | lidar-scarp + GeoDAWN K/Th contrast lineament detector, expected-credit submodular emission, 44,090 dots, 0 on catalogue; proxy gate passed; UNSCORED',
         limitations=[
             "SGMC is a reused, imperfect off-catalogue proxy; the group measured Spearman ~ +0.31 "
             "between this family of instruments and 11 live scores.",
@@ -408,7 +408,7 @@ def main() -> None:
             "No organizer receipt exists for any file in this repository.",
         ],
     )
-    (ROOT / "registry/r11.json").write_text(json.dumps(receipt, indent=1) + "\n")
+    (ROOT / "registry/r11f.json").write_text(json.dumps(receipt, indent=1) + "\n")
     (out_dir / "receipt.json").write_text(json.dumps(receipt, indent=1) + "\n")
     print(json.dumps({k: receipt[k] for k in ("status", "candidate", "gate_passed", "blocked_means",
                                               "paired_delta", "decision_rule")}, indent=1)[:2000])

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Publish the R11 receipt: one obvious download, one honest status, every limitation on the page.
+"""Publish the R11F receipt: one obvious download, one honest status, every limitation on the page.
 
-Renders three pages from ``registry/r11.json``:
+Renders three pages from ``registry/r11f.json``:
 
 * ``index.html``                (repository root -- what the project page opens with)
 * ``docs/index.html``           (same content, relative links)
 * ``docs/executive-summary.html`` (the exact click-by-click submission guide)
 
-``docs/r11/receipt.json`` and the two GeoTIFFs are written by ``scripts/run_r11.py`` (Pass 1) and
-``scripts/refine_r11_mass.py`` (Pass 2).  Every number on these pages is read from the receipt, so a
+``docs/r11f/receipt.json`` and the two GeoTIFFs are written by ``scripts/run_r11f.py`` (Pass 1) and
+``scripts/refine_r11f_mass.py`` (Pass 2).  Every number on these pages is read from the receipt, so a
 stale claim cannot survive a regeneration; CI re-runs this script and fails if the three pages move.
 """
 from __future__ import annotations
@@ -20,7 +20,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-R = json.loads((ROOT / "registry/r11.json").read_text())
+R = json.loads((ROOT / "registry/r11f.json").read_text())
 P2 = R["pass2"]
 P1 = R["pass1_as_executed"]
 E = html.escape
@@ -67,14 +67,14 @@ def render(prefix: str, guide: bool = False) -> str:
     st = R["status"]
     label, cls, blurb = STATUS.get(st, STATUS["HOLD_DO_NOT_SUBMIT"])
     cand, dfa = R["candidate"], R["dfa_candidate"]
-    d, res = prefix + "r11/", prefix + "research/"
+    d, res = prefix + "r11f/", prefix + "research/"
     d_gems, d_res = prefix, prefix + "research/"
     name = R.get("submission_name", "GEMSDOE46-R11")
     means = P2["blocked_means"]
     gate_re, gate_sh = P2["gate_vs_reemitted"], P2["gate_vs_shipped"]
     rows = "".join(f"<tr><td>{E(k)}</td><td>{f(v)}</td></tr>"
                    for k, v in sorted(means.items(), key=lambda kv: -kv[1]))
-    curves = R["proxy_curves"]["R11-fused"]
+    curves = R["proxy_curves"]["R11F-fused"]
     incf = R["proxy_curves"]["incumbent-field"]
     curve_rows = "".join(
         f"<tr><td>{int(m):,}</td><td>{curves[m]['accepted']:,}</td><td>{curves[m]['proxy_credit']:,.1f}</td>"
@@ -111,24 +111,24 @@ def render(prefix: str, guide: bool = False) -> str:
     folds = len(P2["gate_vs_shipped"].get("ci95") and P2.get("blocked_means", {}) and
                 R.get("blocked_folds", []) or []) or len(R["blocked_folds"])
 
-    html_out = f'''<p class="label">GEMSDOE46 / Experiment R11 / 06 October 2026</p>
+    html_out = f'''<p class="label">GEMSDOE46 / Experiment R11F / 06 October 2026</p>
 <h1>Lidar scarps, radiometric contrast,<br>and emission that follows the metric.</h1>
 <p class="muted">New evidence families · expected-credit submodular emission · spatially blocked gate</p>
 <section class="{cls}"><b>{E(label)}</b><p>{E(blurb)}</p></section>
 <section id="submission-download"><p class="label">Submission file / ready to download</p>
-<h2>R11 · primary candidate</h2>
+<h2>R11F · primary candidate</h2>
 <a class="button" download href="{d}{E(cand['file'])}">Download the unique .TIF</a>
 <a class="button alt" href="{prefix}executive-summary.html">How to submit it, step by step →</a>
 <p><code>{E(cand['file'])}</code><br>sha256 <code>{E(cand['sha256'])}</code></p>
 <div class="cards"><div><strong>[0, 1]</strong>every cell finite, no nodata tag</div>
 <div><strong>{cand['positive']:,}</strong>predicted pixels (unit dots)</div>
 <div><strong>EPSG:32611</strong>100 m · float32 · one band · {cand['shape'][0]}×{cand['shape'][1]}</div>
-<div><strong>{means['R11-fused']:.5f}</strong>blocked proxy DTI (mean of {folds} blocks)</div></div>
+<div><strong>{means['R11F-fused']:.5f}</strong>blocked proxy DTI (mean of {folds} blocks)</div></div>
 <p><b>Submission name:</b> <code>{E(name)}</code><br>
 <b>Note to paste in the submit form ({len(R['note'])}/200 characters):</b> <code>{E(R['note'])}</code></p>
 <p><a href="{d}receipt.json">Full machine-readable receipt</a> ·
 <a href="{d}{E(dfa['file'])}" download>DFA regime-break artefact ({dfa['positive']:,} dots, separate)</a> ·
-<a href="{res}r11-review.md">Scientific review, defects found and limitations</a> ·
+<a href="{res}r11f-review.md">Scientific review, defects found and limitations</a> ·
 <a href="{prefix}irregularities.html">Flagged irregularities</a></p>
 <p class="muted">Re-read from the bytes on disk: single band, float32, EPSG:32611, exact template
 transform, min {cand['min']}, max {cand['max']}, all finite, {cand['positive']:,} positive cells and
@@ -155,7 +155,7 @@ repository measured (<code>registry/h47.json → ladder</code>) that this instru
 three known live orderings (0.2600 / 0.2708 / 0.2778) and that only the <i>stratified</i> version --
 truth = SGMC fault pixels more than <code>d0</code> pixels from every catalogue pixel, with the
 catalogue masked -- reproduces all three. So the candidate was re-scored on it
-(<code>scripts/audit_r11_on_stratified.py</code>, receipt <code>evidence/r11-stratified-audit.json</code>) <i>before</i>
+(<code>scripts/audit_r11f_on_stratified.py</code>, receipt <code>evidence/r11f-stratified-audit.json</code>) <i>before</i>
 anything was claimed about it:</p>
 <div class="scroll"><table><tr><th>emission</th><th>DTI, d0 = 3 px</th><th>DTI, d0 = 5 px</th>
 <th>covered credit T</th><th>dots within 300 m of truth</th><th>mean credit per dot</th></tr>{p3_table}</table></div>
@@ -165,7 +165,7 @@ with a uniform-random control at the same mass at {f(p3i.get('sgmc_stratified_d0
 Paired over the {p3_sh.get('blocks', '--')} truth-bearing blocks: shipped <b>{p3_sh.get('mean_delta', 0):+.5f}</b>
 (t = {p3_sh.get('t', 0):+.2f}); the same field re-emitted at the matched mass 37,654
 <b>{p3_re.get('mean_delta', 0):+.5f}</b> (t = {p3_re.get('t', 0):+.2f}). The d0 = 3 px instrument agrees.
-<b>The advantage is new placement, not pruning:</b> the R11 field's AUC over the incumbent's
+<b>The advantage is new placement, not pruning:</b> the R11F field's AUC over the incumbent's
 <i>own</i> dots is {f(p3_auc, 4)} -- chance -- so the candidate wins by putting dots where the
 incumbent has none, exactly the route the H47 arm failed to take.</p>
 <p class="muted">Still a screen, not a score forecast: this truth is a 1:50k–1:1M compilation roughly
@@ -215,11 +215,11 @@ radiometric <i>total count</i> (band 6, labelled "tilt angle or total curvature"
 <li><b>The re-localised DFA regime-break detector</b> asked for by the standing brief: 12.8 km
 windows over 0.4–3.2 km scales, 800 m placement granularity, requiring both scale ranges to leave
 their own background regime. Its artefact and correlations are published whether or not it wins --
-and on this proxy it does not win ({means['R11-dfa-local']:.5f} vs {means['R11-fused']:.5f}).</li>
+and on this proxy it does not win ({means['R11F-dfa-local']:.5f} vs {means['R11F-fused']:.5f}).</li>
 </ol></section>
 
 <section id="other-arms"><h2>The other arms in this repository, and their real status</h2>
-<p>R11 is the first arm here whose candidate field beats the live-scored incumbent file on the
+<p>R11F is the first arm here whose candidate field beats the live-scored incumbent file on the
 stratified instrument. The other arms are published with their failures:</p>
 <ul>
 <li><b>R10 (DFA crossover, 0.8-12.8 km)</b> — <code>HOLD_DO_NOT_SUBMIT</code>: blocked proxy mean
@@ -230,11 +230,11 @@ stratified instrument. The other arms are published with their failures:</p>
 same d0 = 5 px instrument and the same matched mass it scores 0.053242 against the incumbent's
 0.088516 (paired t −5.48 over 127 blocks; AUC over the incumbent's dots 0.497). Its honest
 conclusion — <i>it cannot win by pruning or by learning the published catalogue alone</i> — is what
-led to the R11 placement route. Artefacts:
+led to the R11F placement route. Artefacts:
 <a href="{d_gems}downloads/h47/gemsdoe47-h47-1-catalogue-supervised-lineament-37654-20261006T180000Z-h47a-zeros.tif" download>the H47 TIF</a> ·
 <a href="{d_gems}h47/receipt.json">receipt</a> ·
 <a href="{d_res}h47-review.md">review</a>.</li>
-<li><b>R11 DFA regime-break (the standing brief's hypothesis)</b> — <b>not confirmed</b> on either
+<li><b>R11F DFA regime-break (the standing brief's hypothesis)</b> — <b>not confirmed</b> on either
 instrument; published as a separate artefact above rather than folded into the primary.</li>
 </ul>
 <p class="muted">Nothing here is an organizer score. The three live-scored family files
@@ -261,7 +261,7 @@ the number of dots and <code>G</code> the hidden truth mass. The family's whole 
 monotone in <i>deleted</i> mass (121 k → 0.1922, 44 k → 0.2600, 40 k → 0.2708, 37.7 k → 0.2778):
 the metric pays for fewer, better-placed dots, not for a better map.</p>
 <p>Measured break-even for this family: <b>0.0548</b> credit per dot empirically, 0.2·0.26 = 0.0520
-derived. R11's field delivers 0.23 proxy credit per dot at the shipped mass -- far above the bar --
+derived. R11F's field delivers 0.23 proxy credit per dot at the shipped mass -- far above the bar --
 which is why the corrected rule pushes the mass up rather than down.</p>
 <p class="muted">Leaderboard values are dated observations, not a live feed. Current leader 0.3774
 (xiaofanhu, retrieved 2026-10-06):
@@ -301,11 +301,11 @@ no nodata tag, no negative value and no NaN ({cand['shape'][0] * cand['shape'][1
 .venv/bin/pip install -r requirements.txt
 bash scripts/restore_competition_data.sh
 bash scripts/restore_r10_reference.sh
-.venv/bin/python scripts/screen_r11.py          # channel screen
-.venv/bin/python scripts/run_r11.py             # Pass 1: fields, curves, first gate
-.venv/bin/python scripts/refine_r11_mass.py     # Pass 2: corrected mass + matched-mass gate
-.venv/bin/python scripts/build_r11_site.py      # this site
-.venv/bin/python scripts/verify_r11_candidate.py
+.venv/bin/python scripts/screen_r11f.py          # channel screen
+.venv/bin/python scripts/run_r11f.py             # Pass 1: fields, curves, first gate
+.venv/bin/python scripts/refine_r11f_mass.py     # Pass 2: corrected mass + matched-mass gate
+.venv/bin/python scripts/build_r11f_site.py      # this site
+.venv/bin/python scripts/verify_r11f_candidate.py
 .venv/bin/python -m pytest</pre>
 <p class="muted">The science runs in this repository, not in your browser. No organizer credentials
 are used, requested or stored anywhere in this project.</p></section>'''
@@ -327,12 +327,12 @@ Every input hash and every measured comparison is in <a href="{d}receipt.json">t
 <footer><b>Maximize P(Win):</b> a candidate that fails the gate is published as a negative result
 instead of being spent on a slot. <b>Own the Outcome:</b> our own defects -- the degenerate mass rule
 and the unmatched gate -- are written down where they can be checked.<br>
-Generated from registry/r11.json by scripts/build_r11_site.py ·
+Generated from registry/r11f.json by scripts/build_r11f_site.py ·
 <a href="https://github.com/buffedlizard55-lab/GEMSDOE46">source repository</a>.</footer>'''
 
     return ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width,initial-scale=1">'
-            '<title>GEMSDOE46 — R11 submission, gate and receipts</title>'
+            '<title>GEMSDOE46 — R11F submission, gate and receipts</title>'
             f'<style>{CSS}</style></head><body><header><div><b>GEMS / DISCOVERY LAB</b>'
             f'<span><a href="{prefix}executive-summary.html">Submission guide</a> · '
             f'<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Live board</a></span>'
@@ -344,7 +344,7 @@ def main() -> None:
     (ROOT / "docs/index.html").write_text(render(""))
     (ROOT / "docs/executive-summary.html").write_text(render("", guide=True))
     active = {ROOT / "docs/index.html", ROOT / "docs/executive-summary.html", ROOT / "index.html"}
-    marker = "<!-- R11 archive notice -->"
+    marker = "<!-- R11F archive notice -->"
     # Only pages that belong to a superseded experiment get the banner. Stamping a reference page
     # (sources, validation, irregularities, how-to-submit) with "historical experiment" is false.
     stamp_dirs = {"r9", "r10", "h46", "gems46", "downloads"}
@@ -363,7 +363,7 @@ def main() -> None:
                   f'<a href="{link}">Current audited download, gate status and submission guide →</a></aside>')
         text = re.sub(r"(<body\b[^>]*>)", lambda m: m.group(1) + notice, text, count=1)
         page.write_text(text)
-    print("Built index.html, docs/index.html and docs/executive-summary.html from registry/r11.json")
+    print("Built index.html, docs/index.html and docs/executive-summary.html from registry/r11f.json")
 
 
 if __name__ == "__main__":

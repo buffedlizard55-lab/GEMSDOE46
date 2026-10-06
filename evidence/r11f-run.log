@@ -10,23 +10,23 @@ building localized DFA regime-break field …
   building dfa_iso_grav_anom …
   DFA iso_grav_anom: coarse cells 451x396 support 11,382,761
 measuring proxy credit curves (this is the slow part) …
-  R11-fused        n<=  10000 accepted  10000 proxy credit   2902.33 dti 0.052383
-  R11-fused        n<=  20000 accepted  20000 proxy credit   5444.40 dti 0.094293
-  R11-fused        n<=  30000 accepted  30000 proxy credit   7547.15 dti 0.125766
-  R11-fused        n<=  37654 accepted  37654 proxy credit   9147.69 dti 0.148159
-  R11-fused        n<=  44090 accepted  44090 proxy credit  10295.59 dti 0.163008
-  R11-dfa-local    n<=  10000 accepted  10000 proxy credit   1561.76 dti 0.028279
-  R11-dfa-local    n<=  20000 accepted  20000 proxy credit   3058.50 dti 0.053264
-  R11-dfa-local    n<=  30000 accepted  30000 proxy credit   4375.64 dti 0.073428
-  R11-dfa-local    n<=  37654 accepted  37654 proxy credit   5381.90 dti 0.087869
-  R11-dfa-local    n<=  44090 accepted  44090 proxy credit   6207.00 dti 0.099095
+  R11F-fused        n<=  10000 accepted  10000 proxy credit   2902.33 dti 0.052383
+  R11F-fused        n<=  20000 accepted  20000 proxy credit   5444.40 dti 0.094293
+  R11F-fused        n<=  30000 accepted  30000 proxy credit   7547.15 dti 0.125766
+  R11F-fused        n<=  37654 accepted  37654 proxy credit   9147.69 dti 0.148159
+  R11F-fused        n<=  44090 accepted  44090 proxy credit  10295.59 dti 0.163008
+  R11F-dfa-local    n<=  10000 accepted  10000 proxy credit   1561.76 dti 0.028279
+  R11F-dfa-local    n<=  20000 accepted  20000 proxy credit   3058.50 dti 0.053264
+  R11F-dfa-local    n<=  30000 accepted  30000 proxy credit   4375.64 dti 0.073428
+  R11F-dfa-local    n<=  37654 accepted  37654 proxy credit   5381.90 dti 0.087869
+  R11F-dfa-local    n<=  44090 accepted  44090 proxy credit   6207.00 dti 0.099095
   incumbent-field  n<=  10000 accepted  10000 proxy credit   1952.45 dti 0.035326
   incumbent-field  n<=  20000 accepted  20000 proxy credit   3569.31 dti 0.062117
   incumbent-field  n<=  30000 accepted  30000 proxy credit   5032.11 dti 0.084402
   incumbent-field  n<=  37654 accepted  37654 proxy credit   6005.35 dti 0.098064
   incumbent-field  n<=  44090 accepted  44090 proxy credit   6657.74 dti 0.106409
 decision rule: {"7905.0": {"mass": 10000, "predicted_dti": 0.68733, "rho": 1.4865}, "14089.0": {"mass": 10000, "predicted_dti": 0.58505, "rho": 1.4865}} -> chosen mass 10000
-blocked means: {'R11-fused': 0.06338, 'incumbent-as-shipped': 0.09581, 'incumbent-reemitted': 0.03562, 'R11-dfa-local': 0.02376} delta -0.03243 CI [-0.06436  0.00078] gate False
+blocked means: {'R11F-fused': 0.06338, 'incumbent-as-shipped': 0.09581, 'incumbent-reemitted': 0.03562, 'R11F-dfa-local': 0.02376} delta -0.03243 CI [-0.06436  0.00078] gate False
 correlations: {
  "GEMSDOE32-02778": {
   "pearson_smoothed": 0.18029043404914438,
@@ -57,7 +57,7 @@ correlations: {
 {
  "status": "HOLD_DO_NOT_SUBMIT",
  "candidate": {
-  "file": "gems46-r11-scarp-radiometric-fusion-7882fbcf5ff8-zeros.tif",
+  "file": "gems46-r11f-scarp-radiometric-fusion-7882fbcf5ff8-zeros.tif",
   "sha256": "802e35db1743dbf5cac4d92da6a69c1f0d1fd044db64ac397d2a1eb3abd06ab0",
   "pixel_sha256": "7882fbcf5ff82bd59559b28a8bf99439f2f3ccfab1d16025b492e01eb8072c47",
   "shape": [
@@ -85,10 +85,10 @@ correlations: {
  },
  "gate_passed": false,
  "blocked_means": {
-  "R11-fused": 0.06337782067393913,
+  "R11F-fused": 0.06337782067393913,
   "incumbent-as-shipped": 0.095807334660303,
   "incumbent-reemitted": 0.03561938015778974,
-  "R11-dfa-local": 0.023756602613190483
+  "R11F-dfa-local": 0.023756602613190483
  },
  "paired_delta": -0.032429513986363886,
  "decision_rule": {

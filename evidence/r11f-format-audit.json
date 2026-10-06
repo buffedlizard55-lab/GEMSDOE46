@@ -1,5 +1,5 @@
 {
- "docs/r11/gems46-r11-dfa-regime-break-local-2373b213a1b9-zeros.tif": [
+ "docs/r11f/gems46-r11f-dfa-regime-break-local-2373b213a1b9-zeros.tif": [
   {
    "check": "single band",
    "ok": true,
@@ -56,7 +56,7 @@
    "detail": "none matched"
   }
  ],
- "docs/r11/gems46-r11-scarp-radiometric-fusion-00e049b51218-zeros.tif": [
+ "docs/r11f/gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif": [
   {
    "check": "single band",
    "ok": true,

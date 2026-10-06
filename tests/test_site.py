@@ -66,21 +66,21 @@ def test_static_site_has_resolving_local_links_and_safe_external_targets() -> No
 def test_homepage_puts_the_verified_download_first() -> None:
     """Active download precedes analysis; format validation is not scientific promotion.
 
-    Reads the current receipt (`registry/r11.json`) instead of a hard-coded experiment, so this
+    Reads the current receipt (`registry/r11f.json`) instead of a hard-coded experiment, so this
     asserts a *contract*: the downloadable file named in the receipt is on the page, exists on disk,
     passes its own format audit, and the status banner matches `gate_passed`.
     """
     import json
     home = (SITE / "index.html").read_text(encoding="utf-8")
     assert home.index('id="submission-download"') < home.index('id="gate"')
-    receipt = json.loads((ROOT / "registry/r11.json").read_text())
+    receipt = json.loads((ROOT / "registry/r11f.json").read_text())
     candidate = receipt["candidate"]
     assert candidate["file"] in home
-    assert (SITE / "r11" / candidate["file"]).is_file()
+    assert (SITE / "r11f" / candidate["file"]).is_file()
     assert candidate["all_finite"] and candidate["in_range"] and candidate["nodata"] is None
     assert candidate["count"] == 1 and candidate["dtype"] == "float32"
     assert candidate["crs"] == "EPSG:32611" and candidate["shape"] == [3730, 3292]
-    assert candidate["positive"] == receipt["emissions"]["r11_fused"]["accepted"]
+    assert candidate["positive"] == receipt["emissions"]["r11f_fused"]["accepted"]
     if receipt["gate_passed"]:
         assert "Proxy gate passed" in home
     else:

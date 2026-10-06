@@ -189,7 +189,7 @@
    "status": "NOT RUN - one measured blocker"
   },
   {
-   "id": "H46-R11-1",
+   "id": "H46-R11F-1",
    "rank": 1,
    "title": "Radiometric compositional-contrast lineaments (GeoDAWN K, Th/K, U/K, U/Th) (TESTED: part of the R11 primary)",
    "layers": [
@@ -203,7 +203,7 @@
    "status": "TESTED 2026-10-06 as part of the R11 fusion; the fused proxy gate passed (registry/r11.json pass2); per-family ablation was not run, so the family's own contribution is not isolated - recorded as a limitation, not a claim"
   },
   {
-   "id": "H46-R11-2",
+   "id": "H46-R11F-2",
    "rank": 2,
    "title": "1 m lidar multi-channel scarp matched detector with strike coherence (TESTED: part of the R11 primary)",
    "layers": [
@@ -216,7 +216,7 @@
    "status": "TESTED 2026-10-06 as part of the R11 fusion; the fused proxy gate passed; not ablated separately"
   },
   {
-   "id": "H46-R11-3",
+   "id": "H46-R11F-3",
    "rank": 3,
    "title": "Local DFA scaling-regime break, re-localised (the standing brief's hypothesis) (TESTED: NOT CONFIRMED)",
    "layers": [
@@ -229,7 +229,7 @@
    "status": "TESTED 2026-10-06: mean blocked proxy DTI 0.08973 at matched mass 44,090 vs the incumbent file's 0.09130 and the R11 primary's 0.17061 - NOT CONFIRMED. Its artefact and correlations (max |r| 0.1406, below the 0.2 novelty ceiling) are published in docs/r11/."
   },
   {
-   "id": "H46-R11-4",
+   "id": "H46-R11F-4",
    "rank": 4,
    "title": "Dual-physics strike agreement (rtp/tmi vs iso_grav_anom) (NOT RUN AS A SEPARATE ARM)",
    "layers": [
@@ -243,5 +243,5 @@
   }
  ],
  "generated_utc": "2026-10-06",
- "register_note": "Identifiers in this file are H46-N and H46-R11-N. Two other registers use overlapping numbers: docs/HYPOTHESES.md (H1-H5, the brief's in-repo feature hypotheses) and docs/research/hypotheses.md (H46-1-H46-4, external-data hypotheses). Quote the file name with any id. H47-N entries were added by the parallel H47 session and are carried here unchanged."
+ "register_note": "Identifiers in this file are H46-N and H46-R11F-N. Two other registers use overlapping numbers: docs/HYPOTHESES.md (H1-H5, the brief's in-repo feature hypotheses) and docs/research/hypotheses.md (H46-1-H46-4, external-data hypotheses). Quote the file name with any id. H47-N entries were added by the parallel H47 session and are carried here unchanged."
 }

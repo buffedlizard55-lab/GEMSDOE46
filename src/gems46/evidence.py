@@ -1,4 +1,4 @@
-"""R11 evidence families: fixed, named transforms of hash-pinned layers.
+"""R11F evidence families: fixed, named transforms of hash-pinned layers.
 
 Three of the four families are new relative to the inspected GEMSDOE record:
 

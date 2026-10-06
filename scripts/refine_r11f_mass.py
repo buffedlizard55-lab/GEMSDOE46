@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""R11, Pass 2: correct the two defects found by re-reading the executed receipt, then re-gate.
+"""R11F, Pass 2: correct the two defects found by re-reading the executed receipt, then re-gate.
 
-What Pass 1 (``scripts/run_r11.py``) actually did, verbatim from ``registry/r11.json``:
+What Pass 1 (``scripts/run_r11f.py``) actually did, verbatim from ``registry/r11f.json``:
 
 * the preregistered mass rule transferred a *flat* proxy credit ratio onto the incumbent's credit and
   therefore made the predicted DTI decrease with emitted mass, so the "max-min" choice collapsed to
@@ -15,8 +15,8 @@ point), re-selects the mass with the preregistered max-min rule, re-emits at a *
 re-runs the blocked gate against both comparators.  Both gates are written into the receipt: the
 first one is never overwritten or deleted.
 
-Outputs: rewritten ``registry/r11.json`` (adds a ``pass2`` block), ``docs/r11/receipt.json``,
-``docs/r11/<candidate>.tif``, ``docs/r11/<dfa>.tif``, ``evidence/r11-gate-at-mass.json``.
+Outputs: rewritten ``registry/r11f.json`` (adds a ``pass2`` block), ``docs/r11f/receipt.json``,
+``docs/r11f/<candidate>.tif``, ``docs/r11f/<dfa>.tif``, ``evidence/r11f-gate-at-mass.json``.
 """
 from __future__ import annotations
 
@@ -51,7 +51,7 @@ def sha256(p: Path) -> str:
 
 def main() -> None:
     t0 = time.time()
-    receipt = json.loads((ROOT / "registry/r11.json").read_text())
+    receipt = json.loads((ROOT / "registry/r11f.json").read_text())
     fp = grid.footprint(RAW / "sample_submission.tif", RAW / "training_features.tif")
     with rasterio.open(RAW / "labels.tif") as s:
         cat = (s.read(1) > 0) & fp
@@ -92,7 +92,7 @@ def main() -> None:
     for G in G_CANDIDATES:
         row = {}
         for m in MASS_GRID:
-            tp = receipt["proxy_curves"]["R11-fused"][str(m)]["proxy_credit"]
+            tp = receipt["proxy_curves"]["R11F-fused"][str(m)]["proxy_credit"]
             row[int(m)] = dict(proxy_credit=tp, predicted_dti=factor[G] * tp / (0.2 * m + 0.8 * G))
         pred[G] = row
     # the max-min rule, now applied to a curve that is not monotone-degenerate
@@ -107,8 +107,8 @@ def main() -> None:
     inc_re = optemit.emit(q_inc, domain, budget=int(mass), break_even_dti=None)
     dfa_em = optemit.emit(q_dfa, domain, budget=int(mass), break_even_dti=None)
 
-    masks = {"R11-fused": final.mask, "incumbent-as-shipped": inc_binary,
-             "incumbent-reemitted": inc_re.mask, "R11-dfa-local": dfa_em.mask}
+    masks = {"R11F-fused": final.mask, "incumbent-as-shipped": inc_binary,
+             "incumbent-reemitted": inc_re.mask, "R11F-dfa-local": dfa_em.mask}
     folds = []
     for bid, sl in block_slices(fp.shape):
         d = domain[sl]
@@ -123,11 +123,11 @@ def main() -> None:
     rng = np.random.default_rng(BOOT_SEED)
     stat = {}
     for comp in ("incumbent-reemitted", "incumbent-as-shipped"):
-        delta = np.array([f["dti"]["R11-fused"] - f["dti"][comp] for f in folds])
+        delta = np.array([f["dti"]["R11F-fused"] - f["dti"][comp] for f in folds])
         ci = np.percentile(rng.choice(delta, (10_000, len(delta)), replace=True).mean(axis=1), [2.5, 97.5])
         stat[comp] = dict(mean_delta=float(delta.mean()), ci95=ci.tolist(),
                           blocks_improved=int((delta > 0).sum()), n_blocks=len(delta),
-                          passed=bool(len(folds) >= 8 and ci[0] > 0 and means["R11-fused"] > means[comp]))
+                          passed=bool(len(folds) >= 8 and ci[0] > 0 and means["R11F-fused"] > means[comp]))
     print("blocked means:", {k: round(v, 5) for k, v in means.items()}, flush=True)
     print("matched-mass gate:", json.dumps(stat, indent=1), flush=True)
 
@@ -225,7 +225,7 @@ def main() -> None:
     receipt["paired_bootstrap_95"] = stat["incumbent-as-shipped"]["ci95"]
     receipt["best_comparator"] = "incumbent-as-shipped"
     receipt["decided_mass"] = int(mass)
-    receipt["emissions"] = dict(r11_fused=dict(accepted=int(final.accepted), stopped=final.stopped),
+    receipt["emissions"] = dict(r11f_fused=dict(accepted=int(final.accepted), stopped=final.stopped),
                                 dfa=dict(accepted=int(dfa_em.accepted)))
     receipt["limitations"] = [
         "The gate compares two emission rules on the SGMC off-catalogue proxy, which this repository "
@@ -241,9 +241,9 @@ def main() -> None:
         "No organizer receipt exists for any file in this repository.",
     ]
     receipt["generated_utc_pass2"] = datetime.now(timezone.utc).isoformat()
-    (ROOT / "registry/r11.json").write_text(json.dumps(receipt, indent=1) + "\n")
+    (ROOT / "registry/r11f.json").write_text(json.dumps(receipt, indent=1) + "\n")
     (OUT_DIR / "receipt.json").write_text(json.dumps(receipt, indent=1) + "\n")
-    (ROOT / "evidence/r11-gate-at-mass.json").write_text(json.dumps(
+    (ROOT / "evidence/r11f-gate-at-mass.json").write_text(json.dumps(
         dict(pass1=receipt["pass1_as_executed"], pass2={k: v for k, v in pass2.items()
                                                         if k not in ("correlations_primary", "correlations_dfa")},
              folds=folds), indent=1) + "\n")

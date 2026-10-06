@@ -68,7 +68,7 @@ def test_shipped_r10_receipt_and_gate():
 def test_active_site_local_links():
     """The active three pages must be link-clean and must state the *current* receipt's status.
 
-    This test used to hard-code the R10 HOLD banner.  It now reads `registry/r11.json`, so the
+    This test used to hard-code the R10 HOLD banner.  It now reads `registry/r11f.json`, so the
     contract it enforces is "the page agrees with the receipt", not "the page says HOLD".
     """
     import json
@@ -76,7 +76,7 @@ def test_active_site_local_links():
     from pathlib import Path
     from urllib.parse import urlparse, unquote
     root = Path(__file__).resolve().parents[1]
-    receipt = json.loads((root / 'registry/r11.json').read_text())
+    receipt = json.loads((root / 'registry/r11f.json').read_text())
 
     class Links(HTMLParser):
         def handle_starttag(self, tag, attrs):

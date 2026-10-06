@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Independent format + uniqueness audit of an R11 deliverable, from the bytes on disk.
+"""Independent format + uniqueness audit of an R11F deliverable, from the bytes on disk.
 
 Checks every clause of the official submission contract (page 967, retrieved 2026-10-06) against
 the *template* the competition ships, and checks the uniqueness claim against every GeoTIFF in this
 repository. Exit status is non-zero if any check fails. No claim is printed that was not measured.
 
-Usage: python scripts/verify_r11_candidate.py [path ...]      (default: every docs/r11/*.tif)
+Usage: python scripts/verify_r11f_candidate.py [path ...]      (default: every docs/r11f/*.tif)
 """
 from __future__ import annotations
 
@@ -88,7 +88,7 @@ def main() -> int:
         report[str(t.relative_to(ROOT))] = checks
         total_failures += failures
         print()
-    out = ROOT / "evidence/r11-format-audit.json"
+    out = ROOT / "evidence/r11f-format-audit.json"
     out.write_text(json.dumps(report, indent=1) + "\n")
     print(f"{'ALL CHECKS PASSED' if total_failures == 0 else f'{total_failures} FAILURES'}; "
           f"report written to {out.relative_to(ROOT)}")

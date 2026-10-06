@@ -1,5 +1,5 @@
 {
- "experiment": "H46-R11",
+ "experiment": "H46-R11F",
  "generated_utc": "2026-10-06T16:31:54.662874+00:00",
  "status": "PROXY_GATE_PASSED_NOT_SUBMITTED",
  "decision_rule": {
@@ -21,7 +21,7 @@
  "target_mass_assumption": 10000.0,
  "mass_ceiling_rationale": "the family's highest-scored file emitted 37,654 px; 44,090 px is the largest mass the family ever scored at 0.26",
  "candidate": {
-  "file": "gems46-r11-scarp-radiometric-fusion-00e049b51218-zeros.tif",
+  "file": "gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif",
   "sha256": "57be86502a03a22eb755f04204cb090b49ba4b89158662a728ca2e34b1d37f95",
   "pixel_sha256": "00e049b51218e29db08570b4317c10ebf1f05218c48e4dbbe14997774a53651c",
   "shape": [
@@ -48,7 +48,7 @@
   "bytes": 384938
  },
  "dfa_candidate": {
-  "file": "gems46-r11-dfa-regime-break-local-2373b213a1b9-zeros.tif",
+  "file": "gems46-r11f-dfa-regime-break-local-2373b213a1b9-zeros.tif",
   "sha256": "132a6b82835f70555191c750b6e1992354a45d9a1f3c3ad0fed0ebbf67b385f6",
   "pixel_sha256": "2373b213a1b90b27cb5e9aaed1a5b1851c962c1e9d0131860aa4b52711fac010",
   "shape": [
@@ -75,16 +75,16 @@
   "bytes": 374535
  },
  "emissions": {
-  "r11_fused": {
-   "accepted": 44090,
-   "stopped": "budget"
-  },
   "dfa": {
    "accepted": 44090
+  },
+  "r11f_fused": {
+   "accepted": 44090,
+   "stopped": "budget"
   }
  },
  "proxy_curves": {
-  "R11-fused": {
+  "R11F-fused": {
    "10000": {
     "accepted": 10000,
     "proxy_credit": 2902.332,
@@ -116,7 +116,7 @@
     "proxy_credit_per_dot": 0.2335
    }
   },
-  "R11-dfa-local": {
+  "R11F-dfa-local": {
    "10000": {
     "accepted": 10000,
     "proxy_credit": 1561.759,
@@ -187,10 +187,10 @@
    "mass": 992,
    "truth": 6707,
    "dti": {
-    "R11-fused": 0.02439848607360708,
+    "R11F-fused": 0.02439848607360708,
     "incumbent-as-shipped": 0.10019546700262638,
     "incumbent-reemitted": 0.03727825706094875,
-    "R11-dfa-local": 0.027999714854551386
+    "R11F-dfa-local": 0.027999714854551386
    }
   },
   {
@@ -198,10 +198,10 @@
    "mass": 1491,
    "truth": 6074,
    "dti": {
-    "R11-fused": 0.06401827632509435,
+    "R11F-fused": 0.06401827632509435,
     "incumbent-as-shipped": 0.09039975606026956,
     "incumbent-reemitted": 0.029162018878772806,
-    "R11-dfa-local": 0.019516706932623785
+    "R11F-dfa-local": 0.019516706932623785
    }
   },
   {
@@ -209,10 +209,10 @@
    "mass": 1275,
    "truth": 10172,
    "dti": {
-    "R11-fused": 0.06464664725233138,
+    "R11F-fused": 0.06464664725233138,
     "incumbent-as-shipped": 0.097868666254917,
     "incumbent-reemitted": 0.028218932935355844,
-    "R11-dfa-local": 0.017246720261342472
+    "R11F-dfa-local": 0.017246720261342472
    }
   },
   {
@@ -220,10 +220,10 @@
    "mass": 1237,
    "truth": 13365,
    "dti": {
-    "R11-fused": 0.009791782490626372,
+    "R11F-fused": 0.009791782490626372,
     "incumbent-as-shipped": 0.11290883239200326,
     "incumbent-reemitted": 0.04567152043902285,
-    "R11-dfa-local": 0.04093425491936685
+    "R11F-dfa-local": 0.04093425491936685
    }
   },
   {
@@ -231,10 +231,10 @@
    "mass": 766,
    "truth": 6224,
    "dti": {
-    "R11-fused": 0.013984809745091387,
+    "R11F-fused": 0.013984809745091387,
     "incumbent-as-shipped": 0.13478264619916994,
     "incumbent-reemitted": 0.04799198530289271,
-    "R11-dfa-local": 0.02253620875108451
+    "R11F-dfa-local": 0.02253620875108451
    }
   },
   {
@@ -242,10 +242,10 @@
    "mass": 1420,
    "truth": 5674,
    "dti": {
-    "R11-fused": 0.049720898511228226,
+    "R11F-fused": 0.049720898511228226,
     "incumbent-as-shipped": 0.0937751414481979,
     "incumbent-reemitted": 0.03299993206392308,
-    "R11-dfa-local": 0.03500734443859316
+    "R11F-dfa-local": 0.03500734443859316
    }
   },
   {
@@ -253,10 +253,10 @@
    "mass": 131,
    "truth": 713,
    "dti": {
-    "R11-fused": 0.111348116790182,
+    "R11F-fused": 0.111348116790182,
     "incumbent-as-shipped": 0.03538957197953152,
     "incumbent-reemitted": 0.007083168773178523,
-    "R11-dfa-local": 0.002692607229593668
+    "R11F-dfa-local": 0.002692607229593668
    }
   },
   {
@@ -264,10 +264,10 @@
    "mass": 831,
    "truth": 1774,
    "dti": {
-    "R11-fused": 0.12578301103736625,
+    "R11F-fused": 0.12578301103736625,
     "incumbent-as-shipped": 0.10781492399455772,
     "incumbent-reemitted": 0.052671956028411654,
-    "R11-dfa-local": 0.010155455996833778
+    "R11F-dfa-local": 0.010155455996833778
    }
   },
   {
@@ -275,10 +275,10 @@
    "mass": 565,
    "truth": 2491,
    "dti": {
-    "R11-fused": 0.06768148389015284,
+    "R11F-fused": 0.06768148389015284,
     "incumbent-as-shipped": 0.07208951386221489,
     "incumbent-reemitted": 0.02615781261309479,
-    "R11-dfa-local": 0.026749478988355356
+    "R11F-dfa-local": 0.026749478988355356
    }
   },
   {
@@ -286,10 +286,10 @@
    "mass": 224,
    "truth": 876,
    "dti": {
-    "R11-fused": 0.06894963099914199,
+    "R11F-fused": 0.06894963099914199,
     "incumbent-as-shipped": 0.132971334650911,
     "incumbent-reemitted": 0.06009200924489362,
-    "R11-dfa-local": 0.024618741326550456
+    "R11F-dfa-local": 0.024618741326550456
    }
   },
   {
@@ -297,18 +297,18 @@
    "mass": 946,
    "truth": 11440,
    "dti": {
-    "R11-fused": 0.09683288429850853,
+    "R11F-fused": 0.09683288429850853,
     "incumbent-as-shipped": 0.07568482741893394,
     "incumbent-reemitted": 0.024485588395192506,
-    "R11-dfa-local": 0.03386539504619992
+    "R11F-dfa-local": 0.03386539504619992
    }
   }
  ],
  "blocked_means": {
-  "R11-fused": 0.17061172498171337,
+  "R11F-fused": 0.17061172498171337,
   "incumbent-as-shipped": 0.09129801973025739,
   "incumbent-reemitted": 0.10224101744540004,
-  "R11-dfa-local": 0.08972749013324673
+  "R11F-dfa-local": 0.08972749013324673
  },
  "best_comparator": "incumbent-as-shipped",
  "paired_delta": 0.07931370525145595,
@@ -380,9 +380,8 @@
  "environment": {
   "seconds": 662.9
  },
- "note": "GEMSDOE46 R11 | lidar-scarp + GeoDAWN K/Th contrast lineament detector, expected-credit submodular emission, 44,090 dots, 0 on catalogue; proxy gate passed; UNSCORED",
+ "note": "Primary: 1 m-lidar scarp matched filter + GeoDAWN K/Th compositional contrast + topographic and potential-field lineaments, emitted by an expected-credit submodular optimiser under the published metric. Research candidate; proxy-gated.",
  "limitations": [
-  "Pass 3 was run after the gate, not preregistered; it is reported because it is the only instrument in this repository known to reproduce the three live orderings, and it is stronger evidence than the preregistered gate rather than weaker. It is still not an organizer score.",
   "The gate compares two emission rules on the SGMC off-catalogue proxy, which this repository has already flagged as a weak instrument (group measurement: Spearman ~ +0.31 with 11 live scores); a pass is permission to consider a slot, not a score forecast.",
   "The corrected transfer multiplies a proxy credit ratio by a factor fitted once at the incumbent's owner-reported live score; it is a model, not a forecast, and it is reported next to the uncorrected Pass-1 model rather than replacing it.",
   "The mass rule was corrected after seeing that the preregistered rule was degenerate; the Pass-1 numbers are preserved unedited in pass1_as_executed so the correction is auditable.",
@@ -395,10 +394,10 @@
   "gate_passed": false,
   "chosen_mass": 10000,
   "blocked_means": {
-   "R11-fused": 0.06337782067393913,
+   "R11F-fused": 0.06337782067393913,
    "incumbent-as-shipped": 0.095807334660303,
    "incumbent-reemitted": 0.03561938015778974,
-   "R11-dfa-local": 0.023756602613190483
+   "R11F-dfa-local": 0.023756602613190483
   },
   "paired_delta": -0.032429513986363886,
   "paired_bootstrap_95": [
@@ -406,7 +405,7 @@
    0.0007800689987308689
   ],
   "candidate": {
-   "file": "gems46-r11-scarp-radiometric-fusion-7882fbcf5ff8-zeros.tif",
+   "file": "gems46-r11f-scarp-radiometric-fusion-7882fbcf5ff8-zeros.tif",
    "sha256": "802e35db1743dbf5cac4d92da6a69c1f0d1fd044db64ac397d2a1eb3abd06ab0",
    "pixel_sha256": "7882fbcf5ff82bd59559b28a8bf99439f2f3ccfab1d16025b492e01eb8072c47",
    "shape": [
@@ -433,7 +432,7 @@
    "bytes": 228774
   },
   "dfa_candidate": {
-   "file": "gems46-r11-dfa-regime-break-local-63f5cdd58768-zeros.tif",
+   "file": "gems46-r11f-dfa-regime-break-local-63f5cdd58768-zeros.tif",
    "sha256": "ba1ab182861d0361575d21803d1a6229a37d89b96df84abb414f7de7baa7e73c",
    "pixel_sha256": "63f5cdd58768d8aad106faf092e9176c9176d2bb7003283635ff754b1c4c61ad",
    "shape": [
@@ -544,13 +543,13 @@
    "passed": true
   },
   "blocked_means": {
-   "R11-fused": 0.17061172498171337,
+   "R11F-fused": 0.17061172498171337,
    "incumbent-as-shipped": 0.09129801973025739,
    "incumbent-reemitted": 0.10224101744540004,
-   "R11-dfa-local": 0.08972749013324673
+   "R11F-dfa-local": 0.08972749013324673
   },
   "candidate": {
-   "file": "gems46-r11-scarp-radiometric-fusion-00e049b51218-zeros.tif",
+   "file": "gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif",
    "sha256": "57be86502a03a22eb755f04204cb090b49ba4b89158662a728ca2e34b1d37f95",
    "pixel_sha256": "00e049b51218e29db08570b4317c10ebf1f05218c48e4dbbe14997774a53651c",
    "shape": [
@@ -577,7 +576,7 @@
    "bytes": 384938
   },
   "dfa_candidate": {
-   "file": "gems46-r11-dfa-regime-break-local-2373b213a1b9-zeros.tif",
+   "file": "gems46-r11f-dfa-regime-break-local-2373b213a1b9-zeros.tif",
    "sha256": "132a6b82835f70555191c750b6e1992354a45d9a1f3c3ad0fed0ebbf67b385f6",
    "pixel_sha256": "2373b213a1b90b27cb5e9aaed1a5b1851c962c1e9d0131860aa4b52711fac010",
    "shape": [
@@ -653,120 +652,5 @@
   "seconds": 178.0
  },
  "decided_mass": 44090,
- "generated_utc_pass2": "2026-10-06T16:38:40.798243+00:00",
- "submission_name": "GEMSDOE46-R11-00e049b51218",
- "pass3_stratified_audit": {
-  "why": "Pass 1/Pass 2 gated on the un-stratified off-catalogue SGMC truth. The parallel H47 session measured (registry/h47.json -> ladder) that this instrument INVERTS the three known live orderings and that only the stratified version (truth = SGMC pixels more than d0 px from every catalogue pixel, catalogue masked) reproduces all three. Pass 3 re-scores the candidate on the stratified instrument before any claim is made about it.",
-  "script": "scripts/audit_r11_on_stratified.py",
-  "evidence": "evidence/r11-stratified-audit.json",
-  "instruments": {
-   "sgmc_stratified_d0_3": {
-    "truth_px": 62122,
-    "domain_px": 5106385,
-    "truth_blocks": 130,
-    "emissions": {
-     "incumbent-0.2778": {
-      "dti": 0.095386,
-      "T_credit": 5517.636703,
-      "emitted_px": 37654,
-      "hit_fraction": 0.121209,
-      "mean_credit_per_dot": 0.064621
-     },
-     "r11-shipped-44090": {
-      "dti": 0.16616,
-      "T_credit": 9934.40037,
-      "emitted_px": 44090,
-      "hit_fraction": 0.150828,
-      "mean_credit_per_dot": 0.081023
-     },
-     "r11-fused-reemitted-37654": {
-      "dti": 0.143287,
-      "T_credit": 8352.740853,
-      "emitted_px": 37654,
-      "hit_fraction": 0.150794,
-      "mean_credit_per_dot": 0.080382
-     },
-     "uniform-random-37654": {
-      "dti": 0.06921,
-      "T_credit": 3995.339511,
-      "emitted_px": 37654,
-      "hit_fraction": 0.075955,
-      "mean_credit_per_dot": 0.039743
-     }
-    },
-    "auc_over_incumbent_dots": 0.523188,
-    "paired_vs_incumbent": {
-     "r11-fused-reemitted-37654": {
-      "blocks": 130,
-      "mean_delta": 0.033477,
-      "t": 3.691819,
-      "p": 0.000327
-     },
-     "r11-shipped-44090": {
-      "blocks": 130,
-      "mean_delta": 0.050308,
-      "t": 5.157802,
-      "p": 1e-06
-     }
-    }
-   },
-   "sgmc_stratified_d0_5": {
-    "truth_px": 56822,
-    "domain_px": 5106385,
-    "truth_blocks": 127,
-    "emissions": {
-     "incumbent-0.2778": {
-      "dti": 0.088516,
-      "T_credit": 4737.498977,
-      "emitted_px": 37654,
-      "hit_fraction": 0.105009,
-      "mean_credit_per_dot": 0.05507
-     },
-     "r11-shipped-44090": {
-      "dti": 0.16619,
-      "T_credit": 9213.651292,
-      "emitted_px": 44090,
-      "hit_fraction": 0.143389,
-      "mean_credit_per_dot": 0.076883
-     },
-     "r11-fused-reemitted-37654": {
-      "dti": 0.138771,
-      "T_credit": 7487.483942,
-      "emitted_px": 37654,
-      "hit_fraction": 0.132629,
-      "mean_credit_per_dot": 0.070401
-     },
-     "uniform-random-37654": {
-      "dti": 0.068352,
-      "T_credit": 3653.118331,
-      "emitted_px": 37654,
-      "hit_fraction": 0.069289,
-      "mean_credit_per_dot": 0.036327
-     }
-    },
-    "auc_over_incumbent_dots": 0.506899,
-    "paired_vs_incumbent": {
-     "r11-fused-reemitted-37654": {
-      "blocks": 127,
-      "mean_delta": 0.038375,
-      "t": 4.305764,
-      "p": 3.3e-05
-     },
-     "r11-shipped-44090": {
-      "blocks": 127,
-      "mean_delta": 0.064763,
-      "t": 6.765887,
-      "p": 0.0
-     }
-    }
-   }
-  },
-  "reading": "On the live-order-calibrated instrument (d0=5 px) the shipped candidate scores 0.16619 against the incumbent file's 0.08852, hit fraction 14.3% vs 10.5%, mean kernel credit per dot 0.0769 vs 0.0551; a uniform-random control at the same mass scores 0.06835. Paired over the 127 truth-bearing 16x16 blocks the shipped candidate is +0.06476 (t = +6.77) and the same-field emission at the matched mass 37,654 is +0.03837 (t = +4.31). The d0=3 px instrument agrees (0.16616 vs 0.09539).",
-  "but": "The AUC of the R11 field over the incumbent's OWN dots is 0.507 -- chance. The advantage is therefore not pruning the incumbent's dead mass (the H47 route, which failed); it is the placement of new dots. The instrument's truth is a 1:50k-1:1M compilation ~4x denser than the inferred hidden set, so this is a screen, not a score forecast."
- },
- "gate_instruments": [
-  "sgmc_offcatalogue_unstratified (preregistered, Pass 1/2)",
-  "sgmc_stratified_d0_3 (live-order calibrated, Pass 3)",
-  "sgmc_stratified_d0_5 (live-order calibrated, Pass 3)"
- ]
+ "generated_utc_pass2": "2026-10-06T16:38:40.798243+00:00"
 }

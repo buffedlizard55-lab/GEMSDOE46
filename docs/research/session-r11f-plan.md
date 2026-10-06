@@ -1,7 +1,7 @@
-# Session R11 preregistration — 2026-10-06
+# Session R11F preregistration — 2026-10-06
 
-**Written before any R11 field was computed or any blocked-proxy score was inspected.**
-Everything below is a *hypothesis* until the receipts in `registry/r11.json` say otherwise.
+**Written before any R11F field was computed or any blocked-proxy score was inspected.**
+Everything below is a *hypothesis* until the receipts in `registry/r11f.json` say otherwise.
 No competition slot is spent by this session; no portal credentials were used.
 
 ## 0. What the previous session left open
@@ -9,7 +9,7 @@ No competition slot is spent by this session; no portal credentials were used.
 R10 (H46-1, DFA slope crossover) was built, audited, and **held**: it failed the preregistered
 blocked-proxy improvement gate against the incumbent (mean block DTI 0.0617 vs 0.1033). Its stated
 most likely failure mode was *localization mismatch*: a 51 km DFA window was asked to place 100 m
-dots. R11 therefore treats localization as a first-class requirement for any DFA arm, and adds a
+dots. R11F therefore treats localization as a first-class requirement for any DFA arm, and adds a
 second, independent evidence family that the competition's own 19-band stack does not contain.
 
 ## 1. Verified facts this session starts from (each re-measured, not inherited)
@@ -112,7 +112,7 @@ should be caught, how it differs from everything already implemented, expected D
 ## 4. What the metric algebra says the emission must do
 
 `DTI = T/(0.2N + 0.8G)`, so a unit-mass dot is worth emitting **iff its expected kernel credit
-exceeds `0.2·DTI`** (≈ 0.056 at DTI 0.28). R11 therefore replaces the previous
+exceeds `0.2·DTI`** (≈ 0.056 at DTI 0.28). R11F therefore replaces the previous
 "blur-field + fixed-budget + Chebyshev spacing" emitter with an expected-credit submodular
 optimiser that (a) ranks by *marginal* credit — a dot that duplicates the coverage of its neighbour
 is rejected — and (b) stops exactly at the break-even rule. This is a change to the emission, not
