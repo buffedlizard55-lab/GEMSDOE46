@@ -14,20 +14,19 @@
 <nav class="site"><div class="wrap">
   <a href="index.html" aria-current="page">Executive summary</a>
   <a href="how-to-submit.html">How to submit</a>
-  <a href="hypotheses.html">Geological hypotheses</a>
-  <a href="analysis.html">Analysis &amp; evidence</a>
-  <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/SOURCES.md">Sources</a>
-  <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/IRREGULARITIES.md">Irregularities</a>
+  <a href="submission-analysis.html">Submission analysis</a>
+  <a href="submission-hypotheses.html">Hypothesis test</a>
+  <a href="research-overview.html">Research layer</a>
+  <a href="analysis.html">Score analysis (research)</a>
+  <a href="hypotheses.html">Hypotheses (research)</a>
+  <a href="guide.html">Guide (research)</a>
+  <a href="sources.html">Sources</a>
 </div></nav>
 
 <main>
 <h1>Executive summary</h1>
-<p class="lede">A single, unique, slot-ready GeoTIFF produced from the official competition
-rasters, whose operating point is <b>certified by split conformal prediction</b> rather than chosen
-by eye — with the confidence level, the certified floor and the metric's own density bound printed
-next to it.</p>
 
-<div class="card download">
+<div class="card download" id="submission-download">
   <h2 style="margin-top:0;border:0;padding:0">⬇️ Download the submission file</h2>
   <p><a class="big" href="SUBMISSION-GEMSDOE46-r8-conformal.tif" download>Download SUBMISSION-GEMSDOE46-r8-conformal.tif</a>
   <span class="alt">(single-band float32 GeoTIFF, 250 KB, EPSG:32611, 100 m, values in [0,&nbsp;1])</span></p>
@@ -38,7 +37,16 @@ next to it.</p>
     <li><b>Fallback (same dots, NaN outside the survey bounds exactly like <span class="mono">sample_submission.tif</span>):</b> <a href="gemsdoe46-h46a-r8-conformal-nan.tif">gemsdoe46-h46a-r8-conformal-nan.tif</a></li>
     <li><b>Step-by-step upload instructions:</b> <a href="how-to-submit.html">How to submit</a></li>
   </ul>
+  <p class="small" style="margin:10px 0 0"><b>Last verified 2026-10-06</b> — the file was generated
+  that day by <span class="mono">scripts/make_submission.py</span> from the hash-verified official
+  rasters and audited by re-reading the written bytes. Both encodings contain the same 39,108 dots;
+  this page does not poll or mirror the leaderboard.</p>
 </div>
+<div class="hero"><p class="lede">A single, unique, slot-ready GeoTIFF produced from the official competition
+rasters, whose operating point is <b>certified by split conformal prediction</b> rather than chosen
+by eye — with the confidence level, the certified floor and the metric's own density bound printed
+next to it.</p>
+
 
 <h2>The submission in numbers</h2>
 <div class="grid">
@@ -85,7 +93,7 @@ exceeds <span class="mono">0.2 × (current score)</span>. The 0.2778 submission 
 family sequence (0.1922 @ 121k → 0.2477 @ 60k → 0.2600 @ 44k → 0.2708 @ 40k → 0.2778 @ 38k dots) is
 monotone in <b>mass removed</b>, not in model quality.
 Full derivation and the exact reproduction of the 0.2600 row from its own reported dot count:
-<a href="analysis.html">Analysis &amp; evidence</a>.</p>
+<a href="submission-analysis.html">Analysis &amp; evidence</a>.</p>
 
 <h2>Limitations, stated up front</h2>
 <ul class="tight">
@@ -98,7 +106,7 @@ Full derivation and the exact reproduction of the 0.2600 row from its own report
       assumed anywhere (the hypothesis test uses rank and median-relative transforms only).</li>
   <li>The model is a histogram gradient-boosted classifier on hand-built multi-scale features, not a
       deep network: no GPU and 4 GB of RAM in the build environment. The deep-model direction is ranked
-      in <a href="hypotheses.html">Geological hypotheses</a>.</li>
+      in <a href="submission-hypotheses.html">Geological hypotheses</a>.</li>
 </ul>
 <p class="small">Every flag, every defect found and fixed, and every claim that is <i>not</i> verified:
 <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/IRREGULARITIES.md">docs/IRREGULARITIES.md</a>.

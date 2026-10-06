@@ -1,6 +1,29 @@
+# --- submission layer -------------------------------------------------------
 cache/
 data/*.tif
 !data/.gitkeep
+
+# --- research layer (PR #1) -------------------------------------------------
+data/inbox/*
+data/raw/*
+data/processed/*
+!data/**/README.md
+!data/**/.gitkeep
+submissions/*.tif
+submissions/*.tiff
+submissions/*.json
+submissions/archive/*
+.env
+.env.*
+!.env.example
+
+# --- build/test artefacts ---------------------------------------------------
 __pycache__/
-*.pyc
+*.py[cod]
 .pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.venv/
+venv/

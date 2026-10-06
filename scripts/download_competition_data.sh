@@ -1,40 +1,36 @@
 #!/usr/bin/env bash
-# Fetch the three official competition rasters into data/.
-#
-# WHY THERE IS NO HARD-CODED URL IN THIS FILE
-# ------------------------------------------
-# The competition data tab (https://www.drivendata.org/competitions/306/competition-doe-gems/data/)
-# serves the files behind a signed-in session, and the URLs are session-specific and change.
-# Hard-coding a guessed URL here would be fabrication, so this script instead accepts the exact
-# URLs you see on that page (right-click -> "Copy link address" on each file) and then verifies
-# every download against the sha256 pins recorded when the project owner first obtained them.
-#
-# Usage
-# -----
-#   export DD_URL_TRAINING_FEATURES='https://...'   # copy from the data tab (signed in)
-#   export DD_URL_LABELS='https://...'
-#   export DD_URL_SAMPLE_SUBMISSION='https://...'
-#   bash scripts/download_competition_data.sh
-#
-#   # or, if the files are already downloaded in a browser:
-#   python scripts/prepare_data.py --from-dir ~/Downloads
 set -euo pipefail
 
-cd "$(dirname "$0")/.."
-mkdir -p data
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
-need() { # name, env var
-  if [[ -z "${2:-}" ]]; then
-    echo "missing $2 (copy the link from https://www.drivendata.org/competitions/306/competition-doe-gems/data/ while signed in)" >&2
+# Deliberately offline: DrivenData is login-gated and its Terms prohibit
+# unauthorized automated monitoring/copying. The user downloads an archive
+# through the official participant portal and places it in data/inbox/.
+if [[ -n "${GEMS_DATA_ARCHIVE:-}" ]]; then
+  archive="$GEMS_DATA_ARCHIVE"
+else
+  shopt -s nullglob
+  archives=(data/inbox/*.zip data/inbox/*.ZIP)
+  shopt -u nullglob
+  if (( ${#archives[@]} == 0 )); then
+    cat >&2 <<'EOF'
+No local competition ZIP found. No network request was made.
+
+1. Enroll/sign in at the official DOE GEMS competition page.
+2. Download the data archive through the authorized Data page.
+3. Place the ZIP in this repository's data/inbox/ directory, then rerun this script.
+
+Official page: https://www.drivendata.org/competitions/306/competition-doe-gems/data/
+EOF
     exit 2
   fi
-  echo "==> $1"
-  curl -fL --retry 3 --retry-delay 2 -o "data/$1" "$2"
-}
+  if (( ${#archives[@]} > 1 )); then
+    printf 'Found %d ZIP files; set GEMS_DATA_ARCHIVE to the intended path.\n' "${#archives[@]}" >&2
+    printf '  %s\n' "${archives[@]}" >&2
+    exit 2
+  fi
+  archive="${archives[0]}"
+fi
 
-need training_features.tif "${DD_URL_TRAINING_FEATURES:-}"
-need labels.tif            "${DD_URL_LABELS:-}"
-need sample_submission.tif "${DD_URL_SAMPLE_SUBMISSION:-}"
-
-echo "==> verifying sha256 pins"
-python3 scripts/prepare_data.py
+python3 scripts/import_competition_archive.py --archive "$archive" --destination data/raw
