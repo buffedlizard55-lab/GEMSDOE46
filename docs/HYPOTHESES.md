@@ -17,7 +17,7 @@ arm**, so no submission slot was spent on it. The shipped file therefore remains
 > combinations already inside `training_features.tif`). `docs/research/hypotheses.md` numbers
 > external-data hypotheses **H46-1–H46-4** (OPERA InSAR, groundwater heads, ASTER, Landsat).
 > `registry/hypotheses.json` is the machine register for shipped/blocked structural arms **H46-N**
-> plus this session's **H46-R11-N**. Quote the file name with any identifier; a bare "H46-1" is
+> plus this session's **H46-R11F-1..4**. Quote the file name with any identifier; a bare "H46-1" is
 > ambiguous (IR-46-14).
 
 ## The ranking
@@ -192,10 +192,10 @@ in Pass 1's own mass rule and gate — see `docs/research/r11-review.md`).
 
 | id | candidate | verdict |
 | --- | --- | --- |
-| H46-R11-1 | GeoDAWN radiometric compositional contrast (K, Th/K, U/K, U/Th — absent from the official 19 bands) | part of the **shipped R11 primary**; fused proxy gate passed; not ablated separately |
-| H46-R11-2 | 1 m lidar scarp matched detector (12 channels, coherence-weighted) | part of the **shipped R11 primary**; not ablated separately |
-| H46-R11-3 | local DFA scaling-regime break, re-localised (the brief's hypothesis) | **NOT CONFIRMED**: 0.08973 mean blocked proxy DTI at matched mass vs 0.09130 for the incumbent file and 0.17061 for the primary; artefact published anyway (max |r| 0.1406 with prior files) |
-| H46-R11-4 | dual-physics strike agreement | **not run**: shares its evidence with the potential-field family already inside the primary; recorded rather than dropped silently |
+| H46-R11F-1 | GeoDAWN radiometric compositional contrast (K, Th/K, U/K, U/Th — absent from the official 19 bands) | part of the **shipped R11 primary**; fused proxy gate passed; not ablated separately |
+| H46-R11F-2 | 1 m lidar scarp matched detector (12 channels, coherence-weighted) | part of the **shipped R11 primary**; not ablated separately |
+| H46-R11F-3 | local DFA scaling-regime break, re-localised (the brief's hypothesis) | **NOT CONFIRMED** on both instruments; the fourth DFA implementation to fail (IR-46-16): 0.08973 mean blocked proxy DTI at matched mass vs 0.09130 for the incumbent file and 0.17061 for the primary; artefact published anyway (max |r| 0.1406 with prior files) |
+| H46-R11F-4 | dual-physics strike agreement | **not run**: shares its evidence with the potential-field family already inside the primary; recorded rather than dropped silently |
 
 Two facts about the official data were measured here and are worth carrying forward: the official
 19-band stack contains **no magnetic curvature band at all** (band 6, labelled "tilt angle or total

@@ -94,7 +94,7 @@ be called a new hypothesis. Measured on the common domain, smoothed:
   that population has. The families were fixed by physical reasoning *before* the gate, and the
   weights were preregistered rather than fitted, but this is not a guarantee.
 * Band 6 of the official stack is a radiometric total count, not the magnetic curvature the data
-  dictionary claims (IR-46-13); any prior reading of that band as a tilt/curvature transform in this
+  dictionary claims (IR-46-14); any prior reading of that band as a tilt/curvature transform in this
   repository is wrong.
 * Correlation is a redundancy diagnostic on this domain, not proof of independence.
 

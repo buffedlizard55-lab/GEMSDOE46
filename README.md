@@ -1,9 +1,11 @@
 # GEMSDOE46 — auditable fault-discovery experiments
 
+Four parallel arms live in this repository. **One is the current candidate**: the R11F fusion arm.
+
 ## Download the TIF
 
-**[Download `gems46-r11-scarp-radiometric-fusion-00e049b51218-zeros.tif`](docs/r11/gems46-r11-scarp-radiometric-fusion-00e049b51218-zeros.tif)** · [full machine-readable
-receipt](docs/r11/receipt.json) · [step-by-step submission guide](https://buffedlizard55-lab.github.io/GEMSDOE46/docs/executive-summary.html)
+**[Download `gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif`](docs/r11f/gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif)** · [full machine-readable
+receipt](docs/r11f/receipt.json) · [step-by-step submission guide](https://buffedlizard55-lab.github.io/GEMSDOE46/docs/executive-summary.html)
 
 **PROXY GATE PASSED — NOT SUBMITTED.** A unique, format-audited, all-finite single-band float32
 GeoTIFF: 44,090 unit dots, zero outside the scored footprint, sha256
@@ -15,24 +17,34 @@ user's decision.**
 
 | Measured result (all proxy, not organizer scores) | Value |
 |---|---:|
-| R11 candidate on the live-order-calibrated stratified-SGMC instrument (d0 = 5 px) | **0.16619** |
+| R11F candidate on the live-order-calibrated stratified-SGMC instrument (d0 = 5 px) | **0.16619** |
 | Live-scored 0.2778 incumbent file, same instrument | 0.08852 |
 | Uniform-random control, same mass | 0.06835 |
 | Paired over 127 truth-bearing blocks | +0.06476 (t = +6.77) |
 | Same field re-emitted at the matched mass 37,654 | +0.03837 (t = +4.31) |
 | Dots within 300 m of truth (candidate vs incumbent) | 14.3 % vs 10.5 % |
 
-The advantage is **new placement, not pruning**: the R11 field's AUC over the incumbent's *own* dots
-is 0.507 — chance — so it wins by putting dots where the incumbent has
-none. The candidate is explicitly *not* claimed as a new hypothesis: its maximum |correlation| with
-prior shipped files is 0.3779, above the 0.2 ceiling.
+The advantage is **new placement, not pruning**: the R11F field's AUC over the incumbent's *own*
+dots is 0.507 — chance — so it wins by putting dots where the incumbent
+has none. The candidate is explicitly *not* claimed as a new hypothesis: its maximum |correlation|
+with prior shipped files is 0.3779, above the 0.2 ceiling.
 
 - [Active site](https://buffedlizard55-lab.github.io/GEMSDOE46/) ·
-  [scientific review, defects found and limitations](docs/research/r11-review.md) ·
-  [preregistration](docs/research/session-r11-plan.md) ·
+  [R11F review, defects found and limitations](docs/research/r11f-review.md) ·
+  [preregistration](docs/research/session-r11f-plan.md) ·
   [flagged irregularities](https://buffedlizard55-lab.github.io/GEMSDOE46/docs/irregularities.html)
-- The DFA regime-break arm asked for by the standing brief is **not confirmed** on either instrument;
-  its artefact is published beside the primary and never folded into it.
+
+### The other three arms, kept as published negatives
+
+| arm | what it tested | verdict |
+|---|---|---|
+| **R11 (A/C/D)** `registry/r11.json` | windowed-DFA boundaries; tilt zero-crossings; matched-filter contacts | A stopped for **futility** at synthetics (4.4 km mislocalization); C **suspended**; D **HOLD** (blocked DTI 0.0610 vs 0.1007 for the best comparator, correlation gate 0.543). [TIF](docs/r11/gems46-r11d-matchedfilter-5caba5cc4ffc-zeros.tif) · [review](docs/research/r11-review.md) |
+| **H47-1** `registry/h47.json` | catalogue-supervised lineament detector (LightGBM over 55 features) | **HOLD_DO_NOT_SUBMIT**: 0.053242 vs the incumbent's 0.088516 on the same stratified instrument R11F passes; AUC over the incumbent's dots 0.497. [TIF](docs/downloads/h47/gemsdoe47-h47-1-catalogue-supervised-lineament-37654-20261006T180000Z-h47a-zeros.tif) · [review](docs/research/h47-review.md) |
+| **R10** `registry/r10.json` | 51 km DFA slope crossover | **HOLD**: 0.0617 vs 0.1033, paired −0.0416. [TIF](docs/r10/gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif) |
+
+The DFA regime-break detector asked for by the standing brief has now failed in four independent
+implementations (R10, H46-1, R11-A, R11F's re-localised variant) — see `docs/HYPOTHESES.md` and
+IR-46-16.
 
 ## The standing question: why did 0.2778 score highest, and is more reachable?
 

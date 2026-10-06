@@ -97,7 +97,7 @@ brute force (<code>tests/test_optemit.py</code>).</li>
 suppressed and linear ones survive.</li>
 <li><b>GeoDAWN K/Th/U compositional contrast.</b> The official 19-band stack contains only the
 radiometric <i>total count</i> (band 6, labelled "tilt angle or total curvature" -- measured
-+0.997 correlation with the contractor TC grid, filed as IR-46-13). The ratio grids
++0.997 correlation with the contractor TC grid, filed as IR-46-14). The ratio grids
 (DOI 10.5066/P93LGLVQ) are used here as a lithological-contrast lineament family.</li>
 <li><b>The re-localised DFA regime-break detector</b> asked for by the standing brief: 12.8 km
 windows over 0.4–3.2 km scales, 800 m placement granularity, requiring both scale ranges to leave
@@ -113,6 +113,13 @@ stratified instrument. The other arms are published with their failures:</p>
 0.0617 vs 0.1033 for the best comparator, paired −0.0416. Artefact:
 <a href="r10/gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif" download>the R10 TIF</a> ·
 <a href="r10/receipt.json">receipt</a>.</li>
+<li><b>R11 arms A/C/D (parallel session, <code>registry/r11.json</code>)</b> —
+<code>HOLD</code>: windowed-DFA boundaries stopped for futility at synthetics (4.4 km
+mislocalisation), tilt zero-crossings suspended, and the matched-filter contact emission held at
+blocked DTI 0.0610 vs 0.1007 for the best comparator. Artefacts:
+<a href="r11/gems46-r11d-matchedfilter-5caba5cc4ffc-zeros.tif" download>the R11-D TIF</a> ·
+<a href="r11/receipt.json">receipt</a> ·
+<a href="research/r11-review.md">review</a>.</li>
 <li><b>H47-1 (catalogue-supervised lineament detector)</b> — <code>HOLD_DO_NOT_SUBMIT</code>: on the
 same d0 = 5 px instrument and the same matched mass it scores 0.053242 against the incumbent's
 0.088516 (paired t −5.48 over 127 blocks; AUC over the incumbent's dots 0.497). Its honest
@@ -155,7 +162,7 @@ which is why the corrected rule pushes the mass up rather than down.</p>
 <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">official board →</a></p></section>
 
 <section><h2>Limitations and flagged irregularities</h2><ul><li>Pass 3 was run after the gate, not preregistered; it is reported because it is the only instrument in this repository known to reproduce the three live orderings, and it is stronger evidence than the preregistered gate rather than weaker. It is still not an organizer score.</li><li>The gate compares two emission rules on the SGMC off-catalogue proxy, which this repository has already flagged as a weak instrument (group measurement: Spearman ~ +0.31 with 11 live scores); a pass is permission to consider a slot, not a score forecast.</li><li>The corrected transfer multiplies a proxy credit ratio by a factor fitted once at the incumbent&#x27;s owner-reported live score; it is a model, not a forecast, and it is reported next to the uncorrected Pass-1 model rather than replacing it.</li><li>The mass rule was corrected after seeing that the preregistered rule was degenerate; the Pass-1 numbers are preserved unedited in pass1_as_executed so the correction is auditable.</li><li>Lidar coverage is 75 % of the footprint; outside it the field rests on coarser evidence.</li><li>Correlation is a redundancy diagnostic on the common domain, not proof of independence.</li><li>No organizer receipt exists for any file in this repository.</li></ul>
-<p>Also flagged: band 6 is a radiometric total count, not a magnetic curvature (IR-46-13); the
+<p>Also flagged: band 6 is a radiometric total count, not a magnetic curvature (IR-46-14); the
 0.2778 attribution is owner-reported, not an organizer receipt (IR-46-01); the 0.3195 in the session
 brief is now the #7 board value and 0.3345 is #2 (IR-46-12); the sandbox cannot reach any external
 data host except GitHub and PyPI, so no new external dataset entered this experiment (IR-46-06).</p></section><section id="how-to"><h2>Exactly how to submit, click by click</h2>

@@ -29,7 +29,35 @@
 6. **Reporting style** — state what was measured, what was assumed, and what is owner-reported.
    Label negative results as negative results; they are the most useful output of this project.
 
-## R11 session handoff (2026-10-06) — supersedes H47 guidance for the active site
+## R11F session handoff (2026-10-06) — the active candidate
+
+Read `registry/r11f.json`, `docs/research/r11f-review.md` and `docs/research/session-r11f-plan.md`
+before touching an artifact.
+
+* **Active site builder:** `scripts/build_r11f_site.py` (writes `index.html`, `docs/index.html`,
+  `docs/executive-summary.html` from `registry/r11f.json`; CI runs it and diffs the three pages).
+  `build_r11_site.py`, `build_h47_site.py`, `build_r10_site.py` and `build_site.py` are historical —
+  they write the same three pages from older receipts and would overwrite the active site.
+  `scripts/build_irregularities_page.py` renders `docs/irregularities.html` from
+  `registry/irregularities.json`; it is diffed by CI too.
+* **R11F status: `PROXY_GATE_PASSED_NOT_SUBMITTED`.** On the stratified-SGMC instrument that
+  reproduces the three known live orderings (d0 = 5 px, 127 truth-bearing blocks) the candidate
+  scores 0.16619 against the live-scored 0.2778 file's 0.08852, random control 0.06835; paired
+  +0.06476, t = +6.77 (matched-mass re-emission +0.03837, t = +4.31). **No slot used; submission is
+  the user's decision.**
+* **The win is placement, not pruning.** The R11F field's AUC over the incumbent's own dots is
+  0.507 — chance. Do not re-run thinning experiments: the metric's algebra (`DTI = T/(0.2N + 0.8G)`)
+  says a dot is worth emitting exactly when its marginal kernel credit beats `0.2·DTI`, and that is
+  what `src/gems46/optemit.py` implements (brute-force checked in `tests/test_optemit.py`).
+* **New information is the lever.** Two families absent from the official stack matter: 1 m lidar
+  terrain descriptors (mirrored) and the GeoDAWN K/Th/U/ratio grids (DOI 10.5066/P93LGLVQ). Official
+  band 6 is the radiometric *total count* despite its label (IR-46-14).
+* **Four DFA implementations have failed** (R10, H46-1, R11-A, R11F re-localised). Treat the DFA
+  regime-break idea as falsified unless a genuinely new statistic and a new instrument appear.
+* **Never merge main's R11 arms into R11F's names or vice versa:** `registry/r11.json` (A/C/D) and
+  `registry/r11f.json` (fusion) are different experiments with different instruments.
+
+## R11 (arms A/C/D) session handoff (2026-10-06) — historical, superseded by the R11F handoff above
 
 Read `registry/r11.json`, `docs/research/r11-review.md` and `docs/research/session-r11-plan.md`
 before touching an artifact.
@@ -51,7 +79,7 @@ before touching an artifact.
   replaced by it; the un-stratified version *inverts* the live order.
 * **What actually moved the needle:** new evidence families (mirrored 1 m lidar terrain descriptors
   and the GeoDAWN K/Th/U/ratio grids — the official stack has only the radiometric total count,
-  IR-46-13) plus an emitter whose accept rule is the metric's own marginal break-even
+  IR-46-14) plus an emitter whose accept rule is the metric's own marginal break-even
   (`src/gems46/optemit.py`). Pruning the incumbent's dots does not work: the R11 field's AUC over
   the incumbent's own dots is 0.507.
 * **Negative results stay published:** the brief's DFA regime-break arm (R11/H46-R11-3) and the

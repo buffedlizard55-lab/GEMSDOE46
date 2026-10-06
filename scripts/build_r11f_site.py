@@ -210,7 +210,7 @@ brute force (<code>tests/test_optemit.py</code>).</li>
 suppressed and linear ones survive.</li>
 <li><b>GeoDAWN K/Th/U compositional contrast.</b> The official 19-band stack contains only the
 radiometric <i>total count</i> (band 6, labelled "tilt angle or total curvature" -- measured
-+0.997 correlation with the contractor TC grid, filed as IR-46-13). The ratio grids
++0.997 correlation with the contractor TC grid, filed as IR-46-14). The ratio grids
 (DOI 10.5066/P93LGLVQ) are used here as a lithological-contrast lineament family.</li>
 <li><b>The re-localised DFA regime-break detector</b> asked for by the standing brief: 12.8 km
 windows over 0.4–3.2 km scales, 800 m placement granularity, requiring both scale ranges to leave
@@ -226,6 +226,13 @@ stratified instrument. The other arms are published with their failures:</p>
 0.0617 vs 0.1033 for the best comparator, paired −0.0416. Artefact:
 <a href="{d_gems}r10/gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif" download>the R10 TIF</a> ·
 <a href="{d_gems}r10/receipt.json">receipt</a>.</li>
+<li><b>R11 arms A/C/D (parallel session, <code>registry/r11.json</code>)</b> —
+<code>HOLD</code>: windowed-DFA boundaries stopped for futility at synthetics (4.4 km
+mislocalisation), tilt zero-crossings suspended, and the matched-filter contact emission held at
+blocked DTI 0.0610 vs 0.1007 for the best comparator. Artefacts:
+<a href="{d_gems}r11/gems46-r11d-matchedfilter-5caba5cc4ffc-zeros.tif" download>the R11-D TIF</a> ·
+<a href="{d_gems}r11/receipt.json">receipt</a> ·
+<a href="{d_res}r11-review.md">review</a>.</li>
 <li><b>H47-1 (catalogue-supervised lineament detector)</b> — <code>HOLD_DO_NOT_SUBMIT</code>: on the
 same d0 = 5 px instrument and the same matched mass it scores 0.053242 against the incumbent's
 0.088516 (paired t −5.48 over 127 blocks; AUC over the incumbent's dots 0.497). Its honest
@@ -268,7 +275,7 @@ which is why the corrected rule pushes the mass up rather than down.</p>
 <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">official board →</a></p></section>
 
 <section><h2>Limitations and flagged irregularities</h2><ul>{lims}</ul>
-<p>Also flagged: band 6 is a radiometric total count, not a magnetic curvature (IR-46-13); the
+<p>Also flagged: band 6 is a radiometric total count, not a magnetic curvature (IR-46-14); the
 0.2778 attribution is owner-reported, not an organizer receipt (IR-46-01); the 0.3195 in the session
 brief is now the #7 board value and 0.3345 is #2 (IR-46-12); the sandbox cannot reach any external
 data host except GitHub and PyPI, so no new external dataset entered this experiment (IR-46-06).</p></section>'''

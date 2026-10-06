@@ -194,13 +194,13 @@
    "title": "Radiometric compositional-contrast lineaments (GeoDAWN K, Th/K, U/K, U/Th) (TESTED: part of the R11 primary)",
    "layers": [
     "GeoDAWN contractor radiometric grids K/Th/U/TC and the ratio grids ThK/UK/UTh (DOI 10.5066/P93LGLVQ, ScienceBase 657e1d85d34e23d3533209f7)",
-    "official band 6 used only as a cross-check: measured +0.997 with the contractor total count, i.e. it is NOT a magnetic curvature (IR-46-13)"
+    "official band 6 used only as a cross-check: measured +0.997 with the contractor total count, i.e. it is NOT a magnetic curvature (IR-46-14)"
    ],
    "physical_signature": "horizontal gradient of the K and Th/K grids: a compositional (lithological) edge, not an amplitude and not a curvature",
    "why_off_catalogue": "the USGS Quaternary compilation requires evidence of Quaternary surface rupture; a fault that juxtaposes different radiometric source lithologies but has no young scarp, or is buried, is absent from it while still being structurally real",
    "differs_from": "no arm in this repository or in the inspected GEMSDOE record used the K/Th/U ratio grids as a lineament family; the group's earlier radiometric arm used grids as model features (0.0286). The band-6 correction is new to the repo.",
    "expected": "medium",
-   "status": "TESTED 2026-10-06 as part of the R11 fusion; the fused proxy gate passed (registry/r11.json pass2); per-family ablation was not run, so the family's own contribution is not isolated - recorded as a limitation, not a claim"
+   "status": "TESTED 2026-10-06 as part of the R11 fusion; the fused proxy gate passed (registry/r11.json pass2); per-family ablation was not run, so the family's own contribution is not isolated - recorded as a limitation, not a claim; not ablated separately. Pass 3 (stratified SGMC, d0=5 px) scores the shipped field at 0.16619 vs the live-scored 0.2778 incumbent file at 0.08852 and the random control at 0.06835, paired +0.06476 (t +6.77, 127 blocks); the win is new placement, not pruning (AUC over the incumbent own dots 0.507)."
   },
   {
    "id": "H46-R11F-2",
@@ -213,7 +213,7 @@
    "why_off_catalogue": "1 m lidar resolves scarps that the 1:50 k-1:1 M compilation never contained; the competition itself ships the DEM link list, so lidar-derived evidence is expected to matter",
    "differs_from": "the only shipped lidar arm (7GEMSDOE lidarscarp-ridge-top2pct, 0.1461) thresholded a single channel; this uses the channel combination with an orientation-consistency filter and the metric-optimal emitter",
    "expected": "medium-high (75 % lidar coverage caps it)",
-   "status": "TESTED 2026-10-06 as part of the R11 fusion; the fused proxy gate passed; not ablated separately"
+   "status": "TESTED 2026-10-06 as part of the R11 fusion; the fused proxy gate passed; not ablated separately. Pass 3 (stratified SGMC, d0=5 px) scores the shipped field at 0.16619 vs the live-scored 0.2778 incumbent file at 0.08852 and the random control at 0.06835, paired +0.06476 (t +6.77, 127 blocks); the win is new placement, not pruning (AUC over the incumbent own dots 0.507)."
   },
   {
    "id": "H46-R11F-3",
@@ -226,7 +226,7 @@
    "why_off_catalogue": "a change of magnetic/gravity roughness can be produced by juxtaposed lithologies or hydrothermal magnetite destruction without a sharp amplitude edge, which a surface-morphology catalogue under-records",
    "differs_from": "R10/H46-1 used 512-sample (51 km) windows over 0.8-12.8 km scales with a different emitter; this is 128 px over 0.4-3.2 km at 800 m placement granularity",
    "expected": "low-medium (R10 was negative)",
-   "status": "TESTED 2026-10-06: mean blocked proxy DTI 0.08973 at matched mass 44,090 vs the incumbent file's 0.09130 and the R11 primary's 0.17061 - NOT CONFIRMED. Its artefact and correlations (max |r| 0.1406, below the 0.2 novelty ceiling) are published in docs/r11/."
+   "status": "TESTED 2026-10-06: mean blocked proxy DTI 0.08973 at matched mass 44,090 vs the incumbent file's 0.09130 and the R11 primary's 0.17061 - NOT CONFIRMED. Also fails the live-order-calibrated stratified instrument, where the DFA field is a separate published artefact; four independent DFA implementations (R10, H46-1, R11-A, R11F) have now failed (IR-46-16)."
   },
   {
    "id": "H46-R11F-4",
