@@ -1,5 +1,5 @@
 {
- "name": "gems46-h46-1-dfa-regime-break-20261006T094846Z",
+ "name": "gems46-h46-1-dfa-regime-break-20261006T101243Z",
  "note": "H46-1 pure DFA scaling-exponent-break detection on magnetic+gravity transects (new hypothesis; near-zero correlation with all prior submissions)",
  "method": {
   "budget": 37654,
@@ -48,9 +48,9 @@
  },
  "emitted_px": 37654,
  "sha256_values": "de25e8d0eadba8a94ab9dcb41550525fd2d8b497e3a9503af91863887bbeed16",
- "file": "gems46-h46-1-dfa-regime-break-20261006T094846Z.tif",
+ "file": "gems46-h46-1-dfa-regime-break-20261006T101243Z.tif",
  "audit": {
-  "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-1-dfa-regime-break-20261006T094846Z.tif",
+  "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-1-dfa-regime-break-20261006T101243Z.tif",
   "count": 1,
   "dtype": "float32",
   "crs": "EPSG:32611",
@@ -82,9 +82,9 @@
   "nan_outside_footprint": true,
   "ok": true
  },
- "zeros_variant": "gems46-h46-1-dfa-regime-break-20261006T094846Z-zeros.tif",
+ "zeros_variant": "gems46-h46-1-dfa-regime-break-20261006T101243Z-zeros.tif",
  "zeros_audit": {
-  "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-1-dfa-regime-break-20261006T094846Z-zeros.tif",
+  "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-1-dfa-regime-break-20261006T101243Z-zeros.tif",
   "count": 1,
   "dtype": "float32",
   "crs": "EPSG:32611",
@@ -116,6 +116,6 @@
   "nan_outside_footprint": true,
   "ok": false
  },
- "zip": "gems46-h46-1-dfa-regime-break-20261006T094846Z.zip",
+ "zip": "gems46-h46-1-dfa-regime-break-20261006T101243Z.zip",
  "bytes": 316319
 }

@@ -1,7 +1,7 @@
 {
- "emission_model": {
+ "ledger_fit_attempt": {
   "n": 14,
-  "note": "DTI_i = c*N_i/(0.2*N_i + 0.8*G) fitted by least squares; the credit per emitted pixel c is assumed common to the files in the group's ledger (all are thinned variants of a few related fields). Provenance: owner-reported scores.",
+  "note": "A single-credit fit DTI_i = c*N_i/(0.2*N_i + 0.8*G) over the whole ledger DEGENERATES (the optimiser drives G to its lower bound and R^2 < 0): the ledger mixes files of different field quality, so emitted mass and credit per pixel are confounded and G is not identifiable this way. The identifying information is inside one family, and that calibration lives in registry/emission_model.json (built by scripts/build_submission.py from the 0.2600 and 0.2778 members). Provenance of the ledger: owner-reported scores.",
   "credit_per_px": 0.037195861110330915,
   "hidden_truth_px": 100.00000000000001,
   "rmse": 0.07290768936770461,
@@ -97,7 +97,7 @@
   "H46-1:mag_abs": {
    "matched_emission_mean_dti": 0.02944758846407102,
    "emitted_px": 37654,
-   "seconds": 12.8,
+   "seconds": 13.0,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.026496835486676272,
@@ -169,7 +169,7 @@
   "H46-1:grav_abs": {
    "matched_emission_mean_dti": 0.029605845621396037,
    "emitted_px": 37654,
-   "seconds": 12.8,
+   "seconds": 13.0,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.02965167170005971,
@@ -241,7 +241,7 @@
   "H46-1:both_abs": {
    "matched_emission_mean_dti": 0.030032822820853757,
    "emitted_px": 37654,
-   "seconds": 13.9,
+   "seconds": 14.4,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.02945206684261398,
@@ -313,7 +313,7 @@
   "H46-1:any_abs": {
    "matched_emission_mean_dti": 0.029145978029396717,
    "emitted_px": 37654,
-   "seconds": 13.2,
+   "seconds": 13.3,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.025689731154031396,
@@ -385,7 +385,7 @@
   "H46-1:mag_bnd": {
    "matched_emission_mean_dti": 0.027059124576563044,
    "emitted_px": 37654,
-   "seconds": 12.7,
+   "seconds": 12.9,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.02152113836043717,
@@ -457,7 +457,7 @@
   "H46-1:grav_bnd": {
    "matched_emission_mean_dti": 0.027673745142019028,
    "emitted_px": 37654,
-   "seconds": 12.4,
+   "seconds": 12.9,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.022916716714671707,
@@ -529,7 +529,7 @@
   "H46-1:both_bnd": {
    "matched_emission_mean_dti": 0.026872227585570438,
    "emitted_px": 37654,
-   "seconds": 12.4,
+   "seconds": 12.6,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.021795130178850923,
@@ -601,7 +601,7 @@
   "H46-1:any_bnd": {
    "matched_emission_mean_dti": 0.02575178590556872,
    "emitted_px": 37654,
-   "seconds": 12.6,
+   "seconds": 13.2,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.018724182651013666,
@@ -673,7 +673,7 @@
   "H46-1:joint": {
    "matched_emission_mean_dti": 0.029133932116014758,
    "emitted_px": 37654,
-   "seconds": 13.1,
+   "seconds": 13.0,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.028502292426192153,
@@ -745,7 +745,7 @@
   "H46-1res:tmi": {
    "matched_emission_mean_dti": 0.0315304532180118,
    "emitted_px": 37654,
-   "seconds": 12.6,
+   "seconds": 12.8,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.0278929772498832,
@@ -817,7 +817,7 @@
   "H46-1res:rtp": {
    "matched_emission_mean_dti": 0.031192802781313166,
    "emitted_px": 37654,
-   "seconds": 12.9,
+   "seconds": 13.1,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.028533793299983377,
@@ -889,7 +889,7 @@
   "H46-1res:iso_grav_anom": {
    "matched_emission_mean_dti": 0.030672648725396944,
    "emitted_px": 37654,
-   "seconds": 12.8,
+   "seconds": 12.4,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.02979798508942973,
@@ -961,7 +961,7 @@
   "H46-1res:mag_anom": {
    "matched_emission_mean_dti": 0.0319236599429494,
    "emitted_px": 37654,
-   "seconds": 13.1,
+   "seconds": 12.6,
    "instrument_detail": {
     "cat-block-0": {
      "dti": 0.033402422019473174,
@@ -2906,5 +2906,5 @@
    }
   }
  },
- "seconds": 764.0
+ "seconds": 787.2
 }

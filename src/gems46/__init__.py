@@ -6,7 +6,6 @@ grid        : GeoTIFF I/O against the official template (CRS/shape/transform con
 metric      : the organiser's Distance-Weighted Tversky Index (DTI), transcribed from page 967.
 dfa         : detrended fluctuation analysis (Peng et al. 1994) - 1-D reference + vectorised
               sliding-window scaling-exponent estimator used along raster transects.
-fields      : loading/normalising the 19 official feature bands.
 detector    : the H46 detector - local DFA scaling-exponent breaks along magnetic and gravity
               transects, background-relative robust z-scores, regime-boundary transform.
 emission    : metric-derived emission (mass budget, spacing, greedy maximum coverage).

@@ -1,5 +1,5 @@
 {
- "name": "gems46-h46-2-dfa-corroborated-20261006T094846Z",
+ "name": "gems46-h46-2-dfa-corroborated-20261006T101243Z",
  "note": "H46-2 structural corroboration emission with a 12% DFA-regime-break hedge (best validated against the off-catalogue proxy truth at matched emitted mass)",
  "method": {
   "budget": 37654,
@@ -48,9 +48,9 @@
  },
  "emitted_px": 37654,
  "sha256_values": "740c37da9381b5f6b6315a1835d1ed61947193eabdb3e60a067b9418ed03b726",
- "file": "gems46-h46-2-dfa-corroborated-20261006T094846Z.tif",
+ "file": "gems46-h46-2-dfa-corroborated-20261006T101243Z.tif",
  "audit": {
-  "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-2-dfa-corroborated-20261006T094846Z.tif",
+  "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-2-dfa-corroborated-20261006T101243Z.tif",
   "count": 1,
   "dtype": "float32",
   "crs": "EPSG:32611",
@@ -82,9 +82,9 @@
   "nan_outside_footprint": true,
   "ok": true
  },
- "zeros_variant": "gems46-h46-2-dfa-corroborated-20261006T094846Z-zeros.tif",
+ "zeros_variant": "gems46-h46-2-dfa-corroborated-20261006T101243Z-zeros.tif",
  "zeros_audit": {
-  "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-2-dfa-corroborated-20261006T094846Z-zeros.tif",
+  "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-2-dfa-corroborated-20261006T101243Z-zeros.tif",
   "count": 1,
   "dtype": "float32",
   "crs": "EPSG:32611",
@@ -116,6 +116,6 @@
   "nan_outside_footprint": true,
   "ok": false
  },
- "zip": "gems46-h46-2-dfa-corroborated-20261006T094846Z.zip",
+ "zip": "gems46-h46-2-dfa-corroborated-20261006T101243Z.zip",
  "bytes": 330473
 }

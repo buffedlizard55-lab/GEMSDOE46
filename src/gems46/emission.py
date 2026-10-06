@@ -29,9 +29,6 @@ from __future__ import annotations
 import numpy as np
 from scipy import ndimage
 
-from .metric import ALPHA
-
-
 def dti_of_prefix(credits: np.ndarray, truth_px: float, n: int | None = None) -> float:
     """DTI of the top-``n`` emission under the stated model.
 
