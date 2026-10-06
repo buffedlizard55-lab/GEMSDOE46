@@ -55,3 +55,7 @@ Low correlation is evidence of non-redundancy on the chosen mask, not proof of g
 5. CPU execution succeeded; a GPU is not required for this detector. The prior statement that data placement is the only blocker to winning/training is misleading: data are now restored, but scientific validation and generalization remain unsolved. No neural-network training or automatic competition submission was performed.
 6. Input hashes establish consistency with public family mirrors, not authentication by the organizer. The all-finite export avoids NaN/sentinel range failures, but portal acceptance has not been tested. Official format text mentions null/NaN outside bounds; this file exactly matches raster bounds and uses zero outside the template footprint.
 7. Do not claim a continuously verified live feed: official board numbers are timestamped observations. Automated monitoring must respect site terms; the active page links directly to the live board and labels its cached snapshot date.
+
+### Clean-checkout CI review
+
+The first CI run correctly exposed a setup omission: two pre-existing integration tests need the ignored template and labels rasters. Reproduced in a clean `git archive` checkout (73 passed, 2 failed due to missing inputs). CI now restores and hash-checks the actual inputs before running the full suite and artifact audit; no test was skipped or weakened to hide the failure.
