@@ -92,11 +92,18 @@
       "id": "IR-46-12",
       "severity": "medium",
       "title": "Leaderboard snapshot updated again",
-      "detail": "Official board retrieved 2026-10-06 in this session: #1 xiaofanhu 0.3774, #2 alexoktaba 0.3345, #3 nchuzhoy 0.3262, #7 DARD 0.3195, #13 extradr19 0.2778, #16 smrtdoog5 0.2708, #20 SDCF9 0.2600. The 0.3345 quoted as the leader earlier the same day and the 0.3195 quoted in the session brief are both stale. No public row carries a file name or hash, so the file-to-score mapping inside this family remains owner-reported (IR-46-01).",
-      "status": "flagged; dated observation, not a live feed"
+      "detail": "Official page retrieved 2026-10-06 now shows xiaofanhu 0.3774. Prior 0.3345 and user 0.3195 are stale. No continuous feed is claimed.",
+      "status": "current site updated"
     },
     {
       "id": "IR-46-13",
+      "severity": "medium",
+      "title": "R11 session: all three arms negative; R11-D TIF held on both gates",
+      "detail": "R11-A windowed-DFA boundaries stopped for futility at synthetics (4.4 km mislocalization on locked step). R11-C tilt zero-crossings suspended at synthetics (not robust to grid noise, 6 iterations). R11-D matched-filter contacts ran locked: mean block DTI 0.06098743 vs 0.10067412 best comparator; max |correlation| 0.5431 vs smoothed RTP curvature. Unique TIF published for research; no competition slot used.",
+      "status": "HOLD_DO_NOT_SUBMIT"
+    },
+    {
+      "id": "IR-46-14",
       "severity": "high",
       "title": "Official band 6 ('tc') is the GeoDAWN radiometric total count, not a magnetic curvature",
       "detail": "The official GeoTIFF band description for band 6 reads 'tc - Tilt angle or total curvature - magnetic field derivative for edge detection'. Measured in this checkout on the hash-pinned rasters: band 6 correlates +0.997 with the GeoDAWN contractor 'TC' (total count) radiometric channel, +0.915 with Th, +0.881 with K and +0.715 with U (ScienceBase item 657e1d85d34e23d3533209f7, DOI 10.5066/P93LGLVQ), while its correlation with the magnetic bands is |r| <= 0.001. Band 6 is also undefined (-3.4028234663852886e38) exactly where the radiometric survey has no data, on a subset of the footprint where the magnetic bands are defined.",
@@ -104,7 +111,7 @@
       "status": "flagged; measured, not organizer-confirmed"
     },
     {
-      "id": "IR-46-14",
+      "id": "IR-46-15",
       "severity": "low",
       "title": "Three hypothesis registers and two irregularity tracks collide by id",
       "detail": "docs/HYPOTHESES.md (H1-H5), docs/research/hypotheses.md (H46-1-H46-4) and registry/hypotheses.json (H46-N, H46-R11-N) use overlapping identifiers for different hypotheses; this registry and docs/IRREGULARITIES.md likewise both use IR-46-NN for different, historically numbered lists. A bare identifier is therefore ambiguous.",
@@ -112,7 +119,7 @@
       "status": "flagged; documented, not merged"
     },
     {
-      "id": "IR-46-15",
+      "id": "IR-46-16",
       "severity": "medium",
       "title": "R11's first gate was unmatched and its mass rule degenerate (fixed in Pass 2)",
       "detail": "Pass 1 of experiment R11 executed the preregistered rule and produced a gate comparing a 10,000-dot candidate against the incumbent file at its own 37,654-dot mass, contradicting the preregistration's 'matched emitted mass' clause. The mass rule itself was degenerate: it transferred a flat proxy credit ratio, so its predicted DTI fell monotonically with emitted mass and the max-min choice collapsed to the smallest grid point (its printed projection, 0.687, is impossible and is what exposed the bug).",
