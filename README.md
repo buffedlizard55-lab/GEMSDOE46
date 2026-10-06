@@ -35,7 +35,12 @@ against the metric's own ceiling."* Everything downstream of the three data file
 
 ```bash
 python -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
-bash   scripts/download_competition_data.sh   # or: python scripts/prepare_data.py --from-dir ~/Downloads
+bash   scripts/download_competition_data.sh   # research layer: import a locally obtained archive
+                                              #   (offline; no network request is ever made)
+python scripts/prepare_data.py                # verify the three rasters: hashes, geometry, labels
+                                              #   (or --from-dir ~/Downloads to place loose .tif files;
+                                              #    scripts/download_competition_data_urls.sh is the
+                                              #    URL-based variant for a signed-in session)
 python scripts/run_pipeline.py                # hash-verify data -> 24-block sweep -> R1-R4 selection
 python scripts/make_submission.py             # rules pick the arm -> writes + audits the GeoTIFF
 python -m pytest tests -q                     # metric transcription + audit checks
