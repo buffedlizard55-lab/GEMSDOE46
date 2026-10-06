@@ -1,99 +1,106 @@
 {
-  "schema_version": 1,
-  "created_utc": "2026-10-06",
-  "policy": "Anything that could not be verified from an official source or from bytes on disk is listed here rather than being silently repeated.",
-  "irregularities": [
-    {
-      "id": "IR-46-01",
-      "severity": "high",
-      "title": "The 0.2778 attribution to h33-h33-2-b2 is contested",
-      "detail": "The session prompt attributes 0.2778 to gemsdoe32-h33-h33-2-b2. The live official leaderboard (retrieved 2026-10-06) does show 0.2778, but attached to participant 'extradr19' at rank 13, with no public file name or hash. The GEMSDOE32 site itself labels that artifact UNSCORED and gives 0.2747 as a model projection. The mapping file->score is therefore owner-reported, not an organiser receipt.",
-      "effect_on_this_repository": "The live-score calibration in registry/emission_model.json uses 0.2600 and 0.2778 as two members of one family. If the 0.2778 score does not belong to this family, the derived hidden-truth size (~14,087 px) shifts. The emission budget is therefore also anchored to the *measured* emitted mass of the best-known file (37,654 px) rather than to the fit alone.",
-      "status": "flagged, not resolvable without a submission receipt"
-    },
-    {
-      "id": "IR-46-02",
-      "severity": "medium",
-      "title": "All historical scores in this project are owner-reported",
-      "detail": "Every score in registry/prior_results.csv comes from the session prompt or from the group's own pages. Only extradr19 0.2778, smrtdoog5 0.2708 and SDCF9 0.2600 could be cross-checked as *existing* values on the live public board, and none of them is linked there to a file.",
-      "effect_on_this_repository": "Model fits on that ledger are labelled owner-reported and are not used as the sole basis for any decision.",
-      "status": "flagged"
-    },
-    {
-      "id": "IR-46-03",
-      "severity": "medium",
-      "title": "The provided sample_submission.tif is not the 'total fault absence' file the page describes",
-      "detail": "Page 967 says 'A sample submission that predicts total fault absence is provided'. The file restored here (sha256 2176d08e...) has 60,988 pixels equal to 1 and it is byte-identical to the catalogue raster (labels.tif), sha256 7ba308cc....",
-      "effect_on_this_repository": "The file is used only as the grid/footprint template (5,167,373 finite pixels), which is exactly what page 967 asks for ('use this as a template to ensure that your submission is correctly formatted'). The footprint convention was verified against it rather than assumed.",
-      "status": "flagged"
-    },
-    {
-      "id": "IR-46-04",
-      "severity": "medium",
-      "title": "Spatially blocked catalogue holdout is an inverted/worthless instrument for this competition",
-      "detail": "Measured here: at matched emitted mass, the file that scored 0.2600 live beats the file that scored 0.2778 live by 0.0659 vs 0.0330 on the held-out-catalogue blocks; the ordering is reversed versus the live board. The reason is structural: the organiser masks known faults, so emitting mass near them is neutral live but is *rewarded* by an instrument whose truth is the catalogue itself. The group independently measured Spearman +0.087 between this instrument and 11 live scores.",
-      "effect_on_this_repository": "Instrument A is reported but is never used for a decision. Decisions use the off-catalogue SGMC proxy (Spearman +0.31 on the same 11 files, group measurement) plus the live-anchored emitted-mass rule.",
-      "status": "flagged, instrument discarded"
-    },
-    {
-      "id": "IR-46-05",
-      "severity": "high",
-      "title": "The published DFA result does not transfer directly to a spatial grid",
-      "detail": "Varotsos et al. (2009) report a *time-lag* crossover in magnetic/electric field series (random at short lags, alpha ~ 0.9 at long lags). The session prompt frames this as the exponent shifting from ~0.5 to ~0.9-1.0 'right at the transition associated with the rupture process'. Applying DFA along raster transects to test for a *spatial* regime change is this project's adaptation, not the published result.",
-      "effect_on_this_repository": "H46-1 is presented as a new hypothesis with a literature-informed prior, not as a replication. Measured here, the median local exponent of the official potential-field bands is 1.00-1.95, i.e. the background regime of this dataset is not 0.5; the detector therefore tests *breaks relative to the local background*, never an absolute 0.5 threshold.",
-      "status": "flagged, hypothesis scope limited accordingly"
-    },
-    {
-      "id": "IR-46-06",
-      "severity": "medium",
-      "title": "This sandbox cannot reach most external data hosts",
-      "detail": "Only github.com and pypi.org were reachable. drivendata.org, dropbox.com, gdr.openei.org, docs.nlr.gov and earthquake.usgs.gov returned connection errors (openssl SSL_ERROR_SYSCALL / no route). The official pages quoted here were retrieved through the agent's web-fetch tool, not from the sandbox shell.",
-      "effect_on_this_repository": "No new external dataset could be downloaded and added in this session. The one external raster used (USGS SGMC traces) was restored from the group's public, hash-pinned mirror. Any hypothesis that needs new external data is listed as blocked with the specific source named (see hypotheses H46-3/H46-5).",
-      "status": "flagged, environment limitation"
-    },
-    {
-      "id": "IR-46-07",
-      "severity": "low",
-      "title": "The 'emitted size predicts the score' relationship is confounded",
-      "detail": "Across the group's 15 recorded (score, emitted-mass) pairs, emitted mass alone has Spearman -0.907 with the live score (their measurement, recomputed shape here). But those files are not independent: they are thinned/derived variants of a few related fields, and the metric algebra says size is only optimal at the point where the marginal pixel's realised credit falls below 0.2*DTI.",
-      "effect_on_this_repository": "Size is treated as an emission *decision under a model* (src/gems46/emission.py) with the live-validated operating point as an anchor, not as a causal law.",
-      "status": "flagged"
-    },
-    {
-      "id": "IR-46-08",
-      "severity": "low",
-      "title": "0.3195 in the prompt is stale",
-      "detail": "The prompt states 0.3195 is the highest score. On 2026-10-06 the public board reads 0.3345 (#1 alexoktaba), 0.3262 (#2), 0.3222 (#3), 0.3218 (#4), 0.3195 (#5).",
-      "effect_on_this_repository": "All gap calculations in docs/ use 0.3345 as the target and state the retrieval date.",
-      "status": "flagged, numbers updated"
-    },
-    {
-      "id": "IR-46-09",
-      "severity": "high",
-      "title": "Legacy DFA center displacement",
-      "detail": "alpha_map used center//stride but labeled cells j*stride+window//2. Corrected subtraction and regression test. Archived DFA bytes predate this fix. R10 uses a separate exact-window estimator.",
-      "status": "fixed in code; old derived evidence superseded for reproducibility"
-    },
-    {
-      "id": "IR-46-10",
-      "severity": "high",
-      "title": "Unsupported causal and independence claims in former README",
-      "detail": "Hidden truth count not identified; M=T is an assumption; low Pearson correlation does not prove independence. R10 scientific review withdraws those claims.",
-      "status": "active README corrected; old pages archived"
-    },
-    {
-      "id": "IR-46-11",
-      "severity": "medium",
-      "title": "R10 failed blocked proxy gate",
-      "detail": "Unique DFA crossover file: mean block DTI 0.06169359 versus 0.10328873 best tested comparator. No competition slot used.",
-      "status": "HOLD_DO_NOT_SUBMIT"
-    },
-    {
-      "id": "IR-46-12",
-      "severity": "medium",
-      "title": "Leaderboard snapshot updated again",
-      "detail": "Official page retrieved 2026-10-06 now shows xiaofanhu 0.3774. Prior 0.3345 and user 0.3195 are stale. No continuous feed is claimed.",
-      "status": "current site updated"
-    }
-  ]
+ "schema_version": 1,
+ "created_utc": "2026-10-06",
+ "policy": "Anything that could not be verified from an official source or from bytes on disk is listed here rather than being silently repeated.",
+ "irregularities": [
+  {
+   "id": "IR-46-01",
+   "severity": "high",
+   "title": "The 0.2778 attribution to h33-h33-2-b2 is contested",
+   "detail": "The session prompt attributes 0.2778 to gemsdoe32-h33-h33-2-b2. The live official leaderboard (retrieved 2026-10-06) does show 0.2778, but attached to participant 'extradr19' at rank 13, with no public file name or hash. The GEMSDOE32 site itself labels that artifact UNSCORED and gives 0.2747 as a model projection. The mapping file->score is therefore owner-reported, not an organiser receipt.",
+   "effect_on_this_repository": "The live-score calibration in registry/emission_model.json uses 0.2600 and 0.2778 as two members of one family. If the 0.2778 score does not belong to this family, the derived hidden-truth size (~14,087 px) shifts. The emission budget is therefore also anchored to the *measured* emitted mass of the best-known file (37,654 px) rather than to the fit alone.",
+   "status": "flagged, not resolvable without a submission receipt"
+  },
+  {
+   "id": "IR-46-02",
+   "severity": "medium",
+   "title": "All historical scores in this project are owner-reported",
+   "detail": "Every score in registry/prior_results.csv comes from the session prompt or from the group's own pages. Only extradr19 0.2778, smrtdoog5 0.2708 and SDCF9 0.2600 could be cross-checked as *existing* values on the live public board, and none of them is linked there to a file.",
+   "effect_on_this_repository": "Model fits on that ledger are labelled owner-reported and are not used as the sole basis for any decision.",
+   "status": "flagged"
+  },
+  {
+   "id": "IR-46-03",
+   "severity": "medium",
+   "title": "The provided sample_submission.tif is not the 'total fault absence' file the page describes",
+   "detail": "Page 967 says 'A sample submission that predicts total fault absence is provided'. The file restored here (sha256 2176d08e...) has 60,988 pixels equal to 1 and it is byte-identical to the catalogue raster (labels.tif), sha256 7ba308cc....",
+   "effect_on_this_repository": "The file is used only as the grid/footprint template (5,167,373 finite pixels), which is exactly what page 967 asks for ('use this as a template to ensure that your submission is correctly formatted'). The footprint convention was verified against it rather than assumed.",
+   "status": "flagged"
+  },
+  {
+   "id": "IR-46-04",
+   "severity": "medium",
+   "title": "Spatially blocked catalogue holdout is an inverted/worthless instrument for this competition",
+   "detail": "Measured here: at matched emitted mass, the file that scored 0.2600 live beats the file that scored 0.2778 live by 0.0659 vs 0.0330 on the held-out-catalogue blocks; the ordering is reversed versus the live board. The reason is structural: the organiser masks known faults, so emitting mass near them is neutral live but is *rewarded* by an instrument whose truth is the catalogue itself. The group independently measured Spearman +0.087 between this instrument and 11 live scores.",
+   "effect_on_this_repository": "Instrument A is reported but is never used for a decision. Decisions use the off-catalogue SGMC proxy (Spearman +0.31 on the same 11 files, group measurement) plus the live-anchored emitted-mass rule.",
+   "status": "flagged, instrument discarded"
+  },
+  {
+   "id": "IR-46-05",
+   "severity": "high",
+   "title": "The published DFA result does not transfer directly to a spatial grid",
+   "detail": "Varotsos et al. (2009) report a *time-lag* crossover in magnetic/electric field series (random at short lags, alpha ~ 0.9 at long lags). The session prompt frames this as the exponent shifting from ~0.5 to ~0.9-1.0 'right at the transition associated with the rupture process'. Applying DFA along raster transects to test for a *spatial* regime change is this project's adaptation, not the published result.",
+   "effect_on_this_repository": "H46-1 is presented as a new hypothesis with a literature-informed prior, not as a replication. Measured here, the median local exponent of the official potential-field bands is 1.00-1.95, i.e. the background regime of this dataset is not 0.5; the detector therefore tests *breaks relative to the local background*, never an absolute 0.5 threshold.",
+   "status": "flagged, hypothesis scope limited accordingly"
+  },
+  {
+   "id": "IR-46-06",
+   "severity": "medium",
+   "title": "This sandbox cannot reach most external data hosts",
+   "detail": "Only github.com and pypi.org were reachable. drivendata.org, dropbox.com, gdr.openei.org, docs.nlr.gov and earthquake.usgs.gov returned connection errors (openssl SSL_ERROR_SYSCALL / no route). The official pages quoted here were retrieved through the agent's web-fetch tool, not from the sandbox shell.",
+   "effect_on_this_repository": "No new external dataset could be downloaded and added in this session. The one external raster used (USGS SGMC traces) was restored from the group's public, hash-pinned mirror. Any hypothesis that needs new external data is listed as blocked with the specific source named (see hypotheses H46-3/H46-5).",
+   "status": "flagged, environment limitation"
+  },
+  {
+   "id": "IR-46-07",
+   "severity": "low",
+   "title": "The 'emitted size predicts the score' relationship is confounded",
+   "detail": "Across the group's 15 recorded (score, emitted-mass) pairs, emitted mass alone has Spearman -0.907 with the live score (their measurement, recomputed shape here). But those files are not independent: they are thinned/derived variants of a few related fields, and the metric algebra says size is only optimal at the point where the marginal pixel's realised credit falls below 0.2*DTI.",
+   "effect_on_this_repository": "Size is treated as an emission *decision under a model* (src/gems46/emission.py) with the live-validated operating point as an anchor, not as a causal law.",
+   "status": "flagged"
+  },
+  {
+   "id": "IR-46-08",
+   "severity": "low",
+   "title": "0.3195 in the prompt is stale",
+   "detail": "The prompt states 0.3195 is the highest score. On 2026-10-06 the public board reads 0.3345 (#1 alexoktaba), 0.3262 (#2), 0.3222 (#3), 0.3218 (#4), 0.3195 (#5).",
+   "effect_on_this_repository": "All gap calculations in docs/ use 0.3345 as the target and state the retrieval date.",
+   "status": "flagged, numbers updated"
+  },
+  {
+   "id": "IR-46-09",
+   "severity": "high",
+   "title": "Legacy DFA center displacement",
+   "detail": "alpha_map used center//stride but labeled cells j*stride+window//2. Corrected subtraction and regression test. Archived DFA bytes predate this fix. R10 uses a separate exact-window estimator.",
+   "status": "fixed in code; old derived evidence superseded for reproducibility"
+  },
+  {
+   "id": "IR-46-10",
+   "severity": "high",
+   "title": "Unsupported causal and independence claims in former README",
+   "detail": "Hidden truth count not identified; M=T is an assumption; low Pearson correlation does not prove independence. R10 scientific review withdraws those claims.",
+   "status": "active README corrected; old pages archived"
+  },
+  {
+   "id": "IR-46-11",
+   "severity": "medium",
+   "title": "R10 failed blocked proxy gate",
+   "detail": "Unique DFA crossover file: mean block DTI 0.06169359 versus 0.10328873 best tested comparator. No competition slot used.",
+   "status": "HOLD_DO_NOT_SUBMIT"
+  },
+  {
+   "id": "IR-46-12",
+   "severity": "medium",
+   "title": "Leaderboard snapshot updated again",
+   "detail": "Official page retrieved 2026-10-06 now shows xiaofanhu 0.3774. Prior 0.3345 and user 0.3195 are stale. No continuous feed is claimed.",
+   "status": "current site updated"
+  },
+  {
+   "id": "IR-46-13",
+   "severity": "medium",
+   "title": "R11 session: all three arms negative; R11-D TIF held on both gates",
+   "detail": "R11-A windowed-DFA boundaries stopped for futility at synthetics (4.4 km mislocalization on locked step). R11-C tilt zero-crossings suspended at synthetics (not robust to grid noise, 6 iterations). R11-D matched-filter contacts ran locked: mean block DTI 0.06098743 vs 0.10067412 best comparator; max |correlation| 0.5431 vs smoothed RTP curvature. Unique TIF published for research; no competition slot used.",
+   "status": "HOLD_DO_NOT_SUBMIT"
+  }
+ ]
 }

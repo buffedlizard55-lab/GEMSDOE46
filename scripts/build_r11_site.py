@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+"""Publish R11 receipts without turning a failed gate into a submission recommendation."""
+from pathlib import Path
+import html
+import json
+ROOT=Path(__file__).resolve().parents[1]
+R=json.loads((ROOT/'registry/r11.json').read_text())
+E=html.escape
+CSS='''*{box-sizing:border-box}body{margin:0;background:#f3f5f4;color:#172b29;font:16px/1.65 system-ui,sans-serif}main{max-width:1060px;margin:auto;padding:32px 24px}header{background:#143f38;color:white;padding:18px 24px}header div{max-width:1012px;margin:auto;display:flex;justify-content:space-between;gap:20px}header a{color:#c5ecdb}h1{font-size:clamp(30px,5vw,48px);line-height:1.15;letter-spacing:-1.5px}h2{font-size:23px}a{color:#096b59}section{background:white;border:1px solid #d6dfdb;border-radius:12px;padding:24px;margin:22px 0}.label{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase}.warning{border-left:5px solid #c88115;background:#fff9ea}.button{display:inline-block;background:#126b56;color:white;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:700;margin:12px 12px 8px 0}.muted{color:#526c66}code{overflow-wrap:anywhere;background:#edf3f0;padding:3px;font-size:13px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px}.cards div{border:1px solid #d6dfdb;border-radius:8px;padding:18px}.cards strong{display:block;font-size:28px}table{border-collapse:collapse;width:100%;font-size:14px}td,th{text-align:left;border-bottom:1px solid #dde5e0;padding:12px 8px}.scroll{overflow-x:auto}footer{padding:20px 0;font-size:13px;color:#526c66}img{width:100%;height:auto;border-radius:8px}li{margin-bottom:8px}pre{overflow:auto;background:#edf3f0;padding:16px}'''
+
+
+def render(prefix, guide=False):
+    d=prefix+'r11/'; research=prefix+'research/'
+    status='Proxy gate passed — not submitted' if R['gate_passed'] else 'HOLD — do not submit this candidate'
+    rows=''.join(f'<tr><td>{E(n)}</td><td>{v:.5f}</td></tr>' for n,v in R['mean_block_dti'].items())
+    content=f'''<p class="label">GEMSDOE46 / Experiment R11-D / 06 October 2026</p>
+<h1>A sharper contact test.<br>An honest submission gate.</h1>
+<p class="muted">RTP magnetic and gravity step-template correlation · dual-physics coincidence · independently generated GeoTIFF</p>
+<section class="warning"><b>{status}</b><p>The new file is unique among the inspected rasters and passes format checks, but it lost every tested spatially blocked proxy comparison and failed the low-correlation gate. No weekly slot was used. Download for research and review, not as a proven improvement. Two sibling arms (windowed-DFA boundaries, tilt zero-crossings) were stopped or suspended at the synthetic stage before production.</p></section>
+<section id="submission-download"><p class="label">Submission file / ready to download</p><h2>R11-D · Magnetic–gravity matched-filter contacts</h2>
+<a class="button" download href="{d}{E(R['file'])}">Download unique .TIF</a><a href="{prefix}executive-summary.html">Executive summary &amp; submission instructions →</a>
+<p><code>{E(R['file'])}</code></p><div class="cards"><div><strong>[0, 1]</strong>Every value finite</div><div><strong>{R['audit']['positive']:,}</strong>Predicted pixels</div><div><strong>EPSG:32611</strong>100 m · float32 · one band</div></div>
+<p><b>Submission name:</b> GEMSDOE46-R11D-MATCHEDFILTER-{R['audit']['pixel_sha256'][:12]}</p>
+<p><b>Short comment:</b> <code>{E(R['note'])}</code></p>
+<p><a href="{d}receipt.json">Download full validation receipt</a> · <a href="{research}r11-review.md">Scientific review and limitations</a> · <a href="{research}session-r11-plan.md">Preregistered plan, amendments and session arms</a></p>
+<p class="muted">SHA-256: <code>{R['audit']['sha256']}</code><br>3730 rows × 3292 columns; transform equals restored template; no nodata tag; zero outside footprint. Portal acceptance is not claimed.</p></section>
+<section id="validation"><h2>Validation—not a leaderboard forecast</h2><div class="cards"><div><strong>{R['mean_block_dti']['R11-D']:.5f}</strong>R11-D mean blocked DTI</div><div><strong>{R['mean_block_dti'][R['best_comparator']]:.5f}</strong>Best tested comparison</div><div><strong>{R['max_absolute_correlation']:.4f}</strong>Maximum |field correlation|</div></div>
+<div class="scroll"><table><tr><th>Fixed emission rule / proxy comparison</th><th>Mean block DTI</th></tr>{rows}</table></div>
+<p>Paired difference: <b>{R['paired_delta']:+.5f}</b>. Descriptive block-bootstrap 95% interval: [{R['paired_bootstrap_95'][0]:+.5f}, {R['paired_bootstrap_95'][1]:+.5f}]. {len(R['folds'])} evaluable blocks on a 4×4 tiling; matched mass and exclusions. Two further truth-bearing blocks have no R11-D emission capacity and independently fail the coverage gate.</p>
+<p>SGMC is a reused, imperfect off-catalogue proxy, not hidden competition truth. Comparator fields are re-emitted within each block. Low correlation does not establish geological independence; here the field anti-correlates with smoothed RTP curvature (−0.54 Spearman), failing distinctness.</p></section>
+<section><h2>Why this is not another edge detector</h2><p>Each grid cell is scored by the Pearson correlation of its 25-cell neighbourhood with a zero-mean step template at four strike angles (0/45/90/135°), floored at |r| ≥ 0.8 — the Bonferroni family-wise 5% significance level over the footprint — and combined as the geometric mean of RTP magnetics and isostatic gravity. Correlation is fully amplitude-invariant, so weak-contrast contacts match as well as strong ones; no gradient magnitude or curvature enters the ranking.</p><p>Post-hoc diagnosis: the step template also matches smooth regional gradients (ramps), so 71% of the footprint passed the floor and the emission ranked the top 1% of a saturated field. The synthetic fixtures' flat background never tested ramp rejection. That failure is documented, not repaired, in this locked run.</p></section>
+<section><h2>What the 0.2778 result does—and does not—tell us</h2><p>The owner's GEMSDOE32 attribution is not linked to a file by the official board. GEMSDOE32's own page still labels the file unscored. Sparse thinning can reduce false-positive cost without sacrificing much coverage, but the old README's inferred hidden-label counts and guaranteed causal explanation were not justified.</p><p>The exact identity is <code>DTI = T / [0.2(T+S−M)+0.8G]</code>, not unconditionally <code>T/(0.2S+0.8G)</code>. Better localization, coverage or precision could improve performance; this matched-filter experiment did not.</p>
+<p><b>Leaderboard snapshot:</b> 0.3774 (xiaofanhu), retrieved 2026-10-06. This is not a live feed. <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Check the current official leaderboard →</a></p></section>'''
+    if guide:
+        content+=f'''<section><h2>Exactly how to prepare and submit</h2><ol><li><b>Respect the gate:</b> this R11-D candidate failed; do not upload it to a weekly scoring slot. These instructions describe the process once a later candidate passes.</li><li>Download the <a download href="{d}{E(R['file'])}">GeoTIFF</a>, not an HTML page or JSON receipt. Keep the .tif extension.</li><li>Check its SHA-256 against the receipt. Values are finite float32 in [0,1], one band, CRS/shape/transform match the template. Do not open and re-save in an editor that changes the grid.</li><li>Sign in to <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">DrivenData GEMS</a>, confirm eligibility and rules, and open New submission.</li><li>Choose the .tif under File to submit. Paste the short comment shown above into Note. Review format errors before using another slot.</li><li>Once an authorized, validated candidate is submitted, retain the organizer receipt, score, exact file hash and note. Do not infer file-to-score identity from a public participant score alone.</li></ol><p>Never repair a range error by blindly clipping a corrupted raster. Check for inherited negative nodata sentinels, NaNs, wrong dtype or unintended resampling. R11-D's file was re-opened and checked cell-by-cell for range and finiteness.</p><h3>Rebuild locally (CPU)</h3><pre>python -m venv .venv\n.venv/bin/pip install -r requirements.txt\nbash scripts/restore_competition_data.sh\n.venv/bin/python scripts/run_r11d.py\n.venv/bin/python scripts/build_r11_site.py\n.venv/bin/python -m pytest</pre><p>The static site serves a precomputed audited file; generation runs in the repository, not in your browser. Hidden labels and authorized organizer submission access are unavailable to this pipeline. The run also reads the repository-mirrored survey-block audit raster.</p></section>'''
+    content+=f'''<section><h2>Evidence and manual review</h2><ul>
+<li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Official task, metric and GeoTIFF requirements</a> — faults indicative of geothermal resources; not direct vent labels.</li>
+<li><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">September 2026 official prize rules</a> — eligibility and submission governance.</li>
+<li><a href="https://doi.org/10.1103/PhysRevE.49.1685">Peng et al. 1994, Physical Review E 49, 1685</a> — DFA methodology; basis of the stopped R11-A arm.</li>
+<li><a href="https://doi.org/10.1063/1.3130931">Varotsos et al. 2009, Chaos 19, 023114</a> — time-lag scaling, not validated spatial gravity-fault detection.</li>
+<li><a href="https://www.usgs.gov/publications/state-geologic-map-compilation-sgmc-geodatabase-conterminous-united-states">USGS SGMC</a> — provenance of proxy; coarse source-map scales.</li>
+<li><a href="https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html">GEMSDOE32 comparator</a> — owner methodology, not official score authentication.</li>
+</ul><p>Mirror hashes establish reproducibility, not organizer authentication. See <a href="{d}receipt.json">input hashes and all measured comparisons</a>. Universal novelty across every family site is not claimed.</p></section>
+<footer><b>Maximize P(Win):</b> protect submission slots from failed ideas. <b>Own the Outcome:</b> publish negative results and fix our own bugs.<br>Generated from registry/r11.json. <a href="https://github.com/buffedlizard55-lab/GEMSDOE46">Source repository</a> · Historical pages remain archived and may contain superseded claims.</footer>'''
+    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GEMSDOE46 — R11-D matched-filter research submission</title><style>{CSS}</style></head><body><header><div><b>GEMS / DISCOVERY LAB</b><a href="{prefix}executive-summary.html">Submission guide</a></div></header><main>{content}</main></body></html>'
+
+(ROOT/'index.html').write_text(render('docs/'))
+(ROOT/'docs/index.html').write_text(render(''))
+(ROOT/'docs/executive-summary.html').write_text(render('',True))
+print('Built root page, docs page and executive summary from R11 receipt')
+
+# Keep historical evidence reachable, but never leave stale recommendations unqualified.
+import os
+active={ROOT/'docs/index.html',ROOT/'docs/executive-summary.html'}
+for page in (ROOT/'docs').rglob('*.html'):
+    if page in active:
+        continue
+    text=page.read_text()
+    marker='<!-- R11 archive notice -->'
+    if marker in text or '<!-- R10 archive notice -->' in text or 'Archived H46 experiment:' in text:
+        continue
+    link=os.path.relpath(ROOT/'docs/index.html',page.parent)
+    notice=(f'{marker}<aside style="padding:18px;background:#fff0c8;color:#382a0b;'
+            f'font:16px/1.5 system-ui"><b>Historical experiment — not a current recommendation.</b> '
+            f'<a href="{link}">Current audited download, corrections and submission gate →</a></aside>')
+    import re
+    text=re.sub(r'(<body\b[^>]*>)',lambda m:m.group(1)+notice,text,count=1)
+    page.write_text(text)

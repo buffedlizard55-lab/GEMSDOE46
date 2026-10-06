@@ -68,9 +68,9 @@ def test_homepage_puts_the_verified_download_first() -> None:
     import json
     home = (SITE / "index.html").read_text(encoding="utf-8")
     assert home.index('id="submission-download"') < home.index('id="validation"')
-    receipt = json.loads((ROOT / "registry/r10.json").read_text())
+    receipt = json.loads((ROOT / "registry/r11.json").read_text())
     assert receipt["file"] in home
-    assert (SITE / "r10" / receipt["file"]).is_file()
+    assert (SITE / "r11" / receipt["file"]).is_file()
     assert all(receipt["audit"]["checks"].values())
     assert receipt["audit"]["positive"] == 37654
     assert "do not submit" in home
