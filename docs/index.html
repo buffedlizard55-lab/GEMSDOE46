@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Research-first DOE GEMS fault-mapping project. Current status, score attribution, hypotheses, and a gated submission guide.">
+  <title>GEMS46 — Evidence before upload</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="GEMS46 home">
+        <span class="brand-mark" aria-hidden="true">46</span>
+        <span class="brand-copy"><strong>GEMS · DOE</strong><span>Fault-mapping research</span></span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="index.html" aria-current="page">Overview</a>
+        <a href="hypotheses.html">Hypotheses</a>
+        <a href="analysis.html">Score analysis</a>
+        <a href="sources.html">Sources</a>
+        <a class="nav-cta" href="guide.html">Submission guide</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section-sm" id="submission-download" aria-labelledby="download-title">
+      <div class="container">
+        <div class="download-gate">
+          <div class="gate-icon" aria-hidden="true">↓</div>
+          <div>
+            <p class="card-label">Submission file · first stop</p>
+            <h3 id="download-title">No validated GeoTIFF is available to download.</h3>
+            <p id="download-reason">Competition inputs are login-gated and no spatial holdout has been run. A blank or synthetic TIF would be misleading and will not be published.</p>
+          </div>
+          <button class="button button-disabled" type="button" disabled aria-describedby="download-reason">Download unavailable</button>
+        </div>
+      </div>
+    </section>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="status-line"><span class="status-dot" aria-hidden="true"></span>Research only · no validated file</div>
+          <p class="eyebrow">GEMSDOE46 · snapshot 06 Oct 2026</p>
+          <h1>Fault targets aren't guesses.<br><em>Evidence comes first.</em></h1>
+          <p class="lead">A science-led DOE GEMS fault-mapping project: register a distinct geological hypothesis, validate it on spatially held-out labels, then—and only then—consider a submission slot.</p>
+          <div class="button-row">
+            <a class="button" href="guide.html">Read the upload guide <span aria-hidden="true">→</span></a>
+            <a class="button button-secondary" href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener noreferrer">Open official live board ↗</a>
+          </div>
+        </div>
+        <figure class="hero-art" aria-label="Illustration of a concealed fault and surface observations">
+          <svg viewBox="0 0 460 300" role="img" aria-labelledby="fault-title fault-desc">
+            <title id="fault-title">Conceptual concealed-fault cross section</title>
+            <desc id="fault-desc">A fault plane beneath basin fill, with surface observations shown as independent evidence layers. This is a concept illustration, not a study-area map.</desc>
+            <defs>
+              <linearGradient id="basin" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#e7d7b6"/>
+                <stop offset="1" stop-color="#d0bd96"/>
+              </linearGradient>
+              <linearGradient id="rock" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#78988b"/>
+                <stop offset="1" stop-color="#365c50"/>
+              </linearGradient>
+            </defs>
+            <path d="M35 82 C105 58 143 95 210 76 C286 55 342 92 424 65 L424 246 L35 246 Z" fill="url(#basin)" opacity=".85"/>
+            <path d="M35 174 L201 115 L271 132 L424 91 L424 246 L35 246 Z" fill="url(#rock)" opacity=".9"/>
+            <path d="M228 105 L189 246" fill="none" stroke="#f8f3e8" stroke-width="9" stroke-dasharray="4 7"/>
+            <path d="M228 105 L189 246" fill="none" stroke="#a65718" stroke-width="3"/>
+            <path d="M176 99 C190 88 205 91 219 101 M241 96 C257 87 271 92 284 103" fill="none" stroke="#0b6c62" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="116" cy="92" r="7" fill="#0b6c62"/>
+            <circle cx="331" cy="80" r="7" fill="#0b6c62"/>
+            <path d="M116 101 L116 138 M331 89 L331 122" stroke="#0b6c62" stroke-width="2" stroke-dasharray="4 5"/>
+            <path d="M46 248 H417" stroke="#182622" stroke-width="2" opacity=".55"/>
+            <text x="46" y="67" fill="#53645d" font-size="12" font-family="system-ui">surface observations</text>
+            <text x="241" y="187" fill="#f4f5f0" font-size="12" font-family="system-ui">concealed structure?</text>
+            <text x="242" y="206" fill="#d9e8e1" font-size="10" font-family="system-ui">hypothesis · not a mapped fault</text>
+          </svg>
+          <figcaption class="hero-art-caption">Concept only · no challenge raster shown</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="score-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">A dated comparison, not a feed</p>
+            <h2 id="score-title">The board moved past 0.3195.</h2>
+            <p>Official public-board observations reviewed on 2026-10-06. Open DrivenData for current ranks; this page does not poll or mirror the leaderboard.</p>
+          </div>
+          <a href="analysis.html">Read the score attribution →</a>
+        </div>
+        <div class="card-grid">
+          <article class="card card-accent">
+            <p class="card-label">Public leader · 06 Oct 2026</p>
+            <span class="metric-value">0.3345</span>
+            <p class="metric-context">Observed at the top of the official board. Public entry: alexoktaba.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">Earlier cited benchmark</p>
+            <span class="metric-value">0.3195</span>
+            <p class="metric-context">DARD appeared fifth in the dated public-board review—not first.</p>
+          </article>
+          <article class="card card-warn">
+            <p class="card-label">H33 attribution</p>
+            <span class="metric-value">0.2778?</span>
+            <p class="metric-context">Unverified for H33. The matching official row was `extradr19`; no public evidence links that entry to H33.</p>
+          </article>
+        </div>
+        <p class="small" style="margin-top:16px">Snapshot is historical and attributed to the official board. DrivenData's Terms of Use prohibit unauthorized automated monitoring/copying and manual monitoring/copying; see <a href="sources.html#leaderboard-terms">the terms note</a>.</p>
+      </div>
+    </section>
+
+    <section class="section" style="background:#eaf1ed" aria-labelledby="hypothesis-title">
+      <div class="container split">
+        <div>
+          <p class="eyebrow">First-ranked experiment</p>
+          <h2 id="hypothesis-title">Can deformation outline a buried fault?</h2>
+          <p class="lead">H46-1 tests OPERA DISP-S1 line-of-sight displacement gradients: persistent, quality-screened steps may mark active structures or groundwater barriers beneath valley fill.</p>
+          <p>The official NASA catalogue returned OPERA products intersecting parts of the broad study rectangle, including a central-area 2025 granule. A separate Copernicus OData query returned S1A-only products and did not establish a repeat-pass pair. Scene files, full-grid coverage, and holdout behavior remain unverified.</p>
+          <a class="button button-secondary" href="hypotheses.html">See all four ranked hypotheses</a>
+        </div>
+        <aside class="card card-dark">
+          <p class="card-label">Gate status</p>
+          <h3>Catalogue check passed.<br>Model gate is still closed.</h3>
+          <p class="small">No authorized labels, feature raster, sample grid, or current holdout-best artifact is in this checkout. A data record is not model validation.</p>
+          <hr class="rule" style="background:rgba(255,255,255,.18)">
+          <p class="small"><strong>Next:</strong> obtain challenge files through the enrolled participant portal, establish the current holdout best, and validate without spending a weekly slot.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="charter-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Project charter</p>
+            <h2 id="charter-title">Maximize P(Win) · Own the Outcome</h2>
+            <p>Prefer independent evidence and measurable out-of-fold gains. Publish provenance, negative results, limitations, and reproducible format checks—not confident guesses.</p>
+          </div>
+          <a href="https://github.com/buffedlizard55-lab/GEMSDOE46" target="_blank" rel="noopener noreferrer">Open the durable README charter ↗</a>
+        </div>
+        <div class="card-grid two">
+          <article class="card">
+            <p class="card-label">Measure before upload</p>
+            <h3>Spatial holdout first</h3>
+            <p>A candidate must beat the current project holdout best on the same blocked folds, with matched prediction mass and positive improvement in at least three of four blocks.</p>
+          </article>
+          <article class="card">
+            <p class="card-label">Make claims auditable</p>
+            <h3>No placeholder rasters</h3>
+            <p>Any eventual file must be a new single-band float32 GeoTIFF, exactly aligned to the official 100 m EPSG:32611 grid, within [0,1] in-footprint, and independently checked.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-wrap">
+      <div>
+        <div class="footer-brand">GEMSDOE46 · Research snapshot 2026-10-06</div>
+        <p>Research infrastructure only. No competition inputs, holdout score, validated prediction, or downloadable submission are present.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="guide.html">Upload guide</a>
+        <a href="hypotheses.html">Hypotheses</a>
+        <a href="analysis.html">Score analysis</a>
+        <a href="sources.html">Sources & limits</a>
+        <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener noreferrer">Official leaderboard ↗</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

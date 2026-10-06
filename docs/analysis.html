@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Evidence-based review of the reported H33 0.2778 score and comparison with the official DOE GEMS leaderboard.">
+  <title>Score attribution — GEMS46</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="GEMS46 home"><span class="brand-mark" aria-hidden="true">46</span><span class="brand-copy"><strong>GEMS · DOE</strong><span>Fault-mapping research</span></span></a>
+      <nav class="site-nav" aria-label="Main navigation"><a href="index.html">Overview</a><a href="hypotheses.html">Hypotheses</a><a href="analysis.html" aria-current="page">Score analysis</a><a href="sources.html">Sources</a><a class="nav-cta" href="guide.html">Submission guide</a></nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Attribution review · 06 Oct 2026</p>
+        <h1>0.2778 exists on the board.<br>It is not verified as H33.</h1>
+        <p class="lead">The official leaderboard's matching row belongs to `extradr19`. The inspected <a href="https://buffedlizard55-lab.github.io/GEMSDOE32/docs/hypotheses.html" target="_blank" rel="noopener noreferrer">GEMSDOE32 owner-maintained page ↗</a> says the H33 artifact is “UNSCORED” and calls 0.2747 a model projection. No primary evidence links H33 to that public row.</p>
+      </div>
+    </section>
+
+    <section class="section-sm">
+      <div class="container">
+        <div class="card-grid">
+          <article class="card card-accent"><p class="card-label">Public leader · dated review</p><span class="metric-value">0.3345</span><p class="metric-context">Observed for alexoktaba on 2026-10-06.</p></article>
+          <article class="card"><p class="card-label">Earlier cited target</p><span class="metric-value">0.3195</span><p class="metric-context">DARD appeared fifth in that same point-in-time review.</p></article>
+          <article class="card card-warn"><p class="card-label">Matching 0.2778 row</p><span class="metric-value">#13</span><p class="metric-context">Participant shown: `extradr19`. No H33 attribution evidence found.</p></article>
+        </div>
+        <p class="small" style="margin-top:17px">These are historical observations, not a live feed. <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener noreferrer">Open the official leaderboard ↗</a></p>
+      </div>
+    </section>
+
+    <section class="section" style="background:#eaf1ed" aria-labelledby="evidence-title">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">What the evidence says</p><h2 id="evidence-title">Separate the three kinds of score.</h2><p>Organizer scores, local projections, and an unverified artifact attribution are not interchangeable.</p></div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Claim</th><th>Status</th><th>Responsible reading</th></tr></thead>
+            <tbody>
+              <tr><td><strong>H33/H33-2-B2 = 0.2778</strong></td><td><span class="pill red">Unverified</span></td><td>The same number appears for `extradr19`; no artifact link or receipt identifies H33.</td></tr>
+              <tr><td><strong>H33-2-B2 “UNSCORED”</strong></td><td><span class="pill warn">Owner-reported</span></td><td>The inspected GEMSDOE32 page states this; it is not an organizer score receipt, but conflicts with the attribution claim.</td></tr>
+              <tr><td><strong>H33 projection = 0.2747</strong></td><td><span class="pill muted">Not organizer-scored</span></td><td>The same owner-maintained page describes 0.2747 as a model projection, not as a public leaderboard result.</td></tr>
+              <tr><td><strong>0.3195 was the highest</strong></td><td><span class="pill red">Outdated</span></td><td>On the reviewed date 0.3195 was fifth; the observed public leader was 0.3345.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="metric-title">
+      <div class="container split">
+        <div class="prose">
+          <p class="eyebrow">How the metric behaves</p>
+          <h2 id="metric-title">A sparse edit can help—sometimes.</h2>
+          <p>The official task uses a distance-weighted Tversky score with a triangular 300 m support, `alpha=0.2`, and `beta=0.8`. In simplified notation consistent with the published definition, each labeled fault pixel receives its maximum prediction credit from nearby pixels:</p>
+          <p class="card mono">credit(g) = maxₓ p(x) · max(0, 1 − distance(x,g) / 300 m)</p>
+          <p>True-positive credit sums those values; the false-negative term sums the remaining credit; predicted mass receives a distance-weighted false-positive cost. The published coefficients weight false negatives more heavily than false positives, but that does not reveal why any named entry scored as it did.</p>
+          <p>Because per-truth credit uses a maximum, redundant probability mass near an already-covered label may add little TP credit. Removing probability far from evaluation labels may reduce false-positive cost. Conversely, deleting a prediction within 300 m of a withheld fault can remove useful credit. An existing fault catalogue is not the hidden answer, and catalogue exclusion is not itself a reward.</p>
+        </div>
+        <aside class="card card-dark">
+          <p class="card-label">What we can infer</p>
+          <h3>Metric mechanism ≠ causal attribution.</h3>
+          <p class="small">If H33 were an over-dense map and a pruning edit removed low-value mass, a higher DTI would be plausible. But we do not know that H33 received 0.2778, which artifact was uploaded, or why `extradr19` earned 0.2778.</p>
+          <p class="small">No causal explanation is justified without the organizer receipt and exact submitted raster.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" style="background:#f7f8f4" aria-labelledby="delta-title">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Arithmetic only</p><h2 id="delta-title">If the 0.2778 attribution were later confirmed…</h2><p>It would still sit below the current public targets observed in this dated review.</p></div></div>
+        <div class="card-grid two">
+          <article class="card"><p class="card-label">Compared with 0.3195</p><span class="metric-value">−0.0417</span><p class="metric-context">0.2778 is 0.0417 lower. The subtraction does not validate the H33 score.</p></article>
+          <article class="card"><p class="card-label">Compared with 0.3345</p><span class="metric-value">−0.0567</span><p class="metric-context">0.2778 is 0.0567 lower. The official board was not a holdout baseline.</p></article>
+        </div>
+        <p class="small" style="margin-top:18px">Full evidence trail, caveats, and official links: <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/arena/61460a10-gemsdoe46/docs/research/score-analysis.md" target="_blank" rel="noopener noreferrer">dated research note ↗</a>. Terms warning: this is not a mirrored or automatically updated leaderboard.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-wrap"><div><div class="footer-brand">GEMSDOE46 · Score attribution</div><p>Current checkout has no competition rasters, candidate outputs, holdout score, or submission TIFF.</p></div><nav class="footer-links" aria-label="Footer navigation"><a href="index.html">Overview</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="guide.html">Upload guide</a></nav></div></footer>
+</body>
+</html>

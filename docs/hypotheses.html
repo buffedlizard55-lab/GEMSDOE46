@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Four ranked, testable geological hypotheses for DOE GEMS fault mapping, with physical signals, novelty, official data sources, and validation gates.">
+  <title>Ranked hypotheses — GEMS46</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="GEMS46 home"><span class="brand-mark" aria-hidden="true">46</span><span class="brand-copy"><strong>GEMS · DOE</strong><span>Fault-mapping research</span></span></a>
+      <nav class="site-nav" aria-label="Main navigation"><a href="index.html">Overview</a><a href="hypotheses.html" aria-current="page">Hypotheses</a><a href="analysis.html">Score analysis</a><a href="sources.html">Sources</a><a class="nav-cta" href="guide.html">Submission guide</a></nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Preregistered before candidate implementation · 06 Oct 2026</p>
+        <h1>Four fault hypotheses.<br>None scored yet.</h1>
+        <p class="lead">Ranked by qualitative, novelty-adjusted DTI upside and implementation cost. These are research priorities—not numeric score predictions. No challenge labels, feature raster, sample grid, holdout-best artifact, or model is present.</p>
+      </div>
+    </section>
+
+    <section class="section-sm">
+      <div class="container">
+        <div class="callout warn">
+          <h3>Important ranking caveat</h3>
+          <p>The first-ranked experiment is OPERA DISP-S1 because it offers a distinct, fault-specific deformation signal with official catalogue evidence in the broad study area. That does not mean the expected gain is high or guaranteed. The ASTER idea may have similar raw scientific potential, but is discounted until the prior `conj_alteration_mag` experiment is audited; it cannot yet be certified as untried.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="register-title">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">Shortlist</p><h2 id="register-title">Ranked research register</h2><p>Every candidate must be converted into a frozen signal and compared against the current holdout best before any weekly upload.</p></div>
+          <span class="pill warn">No candidate implementation</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Rank</th><th>Hypothesis & layers</th><th>Physical signal / why uncatalogued faults may show it</th><th>Novelty and data availability</th><th>DTI upside / cost</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="rank-cell">01</td>
+                <td><strong>H46-1 · OPERA DISP-S1</strong><br><span class="small">30 m LOS displacement/time series, documented quality/uncertainty layers, companion radar geometry; local gradient and temporal residual features.</span></td>
+                <td>Persistent, coherent linear LOS-rate/displacement step across repeated observations. A buried fault may compartmentalize groundwater or localize deformation beneath basin fill without a visible scarp. Mask pumping, mining, landslides, atmosphere, layover, and seasonal loads.</td>
+                <td>No InSAR gradient candidate appears in the inspected prior register or current checkout; prior repositories are not exhaustively audited. NASA CMR returned overlapping OPERA granules for part of the broad rectangle, including a central-area 2025 product. The separate Copernicus OData query returned S1A-only products and did not establish a repeat-pass pair or raw-SLC feasibility. No imagery payload or full-grid quality check.</td>
+                <td><span class="pill">Medium, conditional</span><br><span class="small">Medium–high effort: ~4–8 engineering days using preprocessed DISP-S1; longer if raw-SLC processing is needed.</span></td>
+              </tr>
+              <tr>
+                <td class="rank-cell">02</td>
+                <td><strong>H46-2 · Groundwater-head boundaries</strong><br><span class="small">USGS field water-level measurements, well/aquifer/depth/datum metadata, repeat-date residuals.</span></td>
+                <td>Persistent head discontinuity or compartment boundary supported by several comparable wells. Fault cores may impede groundwater while damage zones transmit it; hidden faults can affect hydraulic communication under alluvium.</td>
+                <td>Inspected prior work mentions thermal/geochemical observations, not datum-aware head discontinuities; novelty remains provisional. Modern USGS field-measurement API returned groundwater records in the broad rectangle. Dates, datums, aquifers, and density are uneven; one sample query does not prove a continuous field.</td>
+                <td><span class="pill muted">Low–medium</span><br><span class="small">High effort: ~3–6 days for datum/aquifer/seasonal controls; more if coverage is sparse.</span></td>
+              </tr>
+              <tr>
+                <td class="rank-cell">03</td>
+                <td><strong>H46-3 · ASTER alteration corridors</strong><br><span class="small">USGS hydrothermal alteration classes: silica-rich, propylitic, argillic, phyllic; test corridor continuity and class transitions.</span></td>
+                <td>Long-lived fault-fed fluids can alter exposed rock. Connected alteration may outline a fluid pathway where no mapped scarp exists; map edges may instead follow lithology, exposure, vegetation, mining, or registration errors.</td>
+                <td>Official USGS CC0 western-U.S. map exists, plus a central/southern Basin-and-Range map. Coverage overlap and observation dates still need checking. **Possible duplicate:** prior notes include `tso1-conj_alteration_mag`, so this is conditional until that code/layer is audited. ASTER SWIR acquired after April 2008 is unusable.</td>
+                <td><span class="pill muted">Low–medium now; medium only if distinct</span><br><span class="small">Low–medium effort: ~1–3 days to ingest, rasterize, inspect dates/quality, and audit overlap.</span></td>
+              </tr>
+              <tr>
+                <td class="rank-cell">04</td>
+                <td><strong>H46-4 · Landsat surface-temperature residuals</strong><br><span class="small">Collection 2 ST_B10 plus QA, reflectance-derived vegetation/land cover, and topographic controls.</span></td>
+                <td>Seasonally repeated, corrected surface-temperature corridors may indicate fault-controlled upflow/discharge. Remove weather, slope/aspect, elevation, vegetation, emissivity, mining, irrigation, and cloud effects; do not use a raw temperature threshold as a fault trace.</td>
+                <td>USGS products are public/free; exact clear-scene density over the competition grid was not checked. Prior `thermal-pop`/GDR work creates a conceptual-overlap check. Thermal sampling is coarser than the 30 m delivered grid, so regridding is not added physical resolution.</td>
+                <td><span class="pill muted">Low</span><br><span class="small">Medium effort: ~3–6 days for scene/QA selection and robust temporal controls.</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small" style="margin-top:14px">No numerical ΔDTI is claimed. These estimates are ordinal and unmeasured; full method definitions, sources, and caveats are recorded in <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/arena/61460a10-gemsdoe46/docs/research/hypotheses.md" target="_blank" rel="noopener noreferrer">the detailed research register ↗</a>.</p>
+      </div>
+    </section>
+
+    <section class="section" style="background:#eaf1ed" aria-labelledby="gate-title">
+      <div class="container split">
+        <div>
+          <p class="eyebrow">Validation gate</p>
+          <h2 id="gate-title">Catalogue records are not a holdout win.</h2>
+          <p>H46-1 is first to test, not first to upload. The NASA metadata check establishes that OPERA scenes exist in overlapping portions of the area. It does not establish complete grid coverage, sufficient coherent pixels, absence of pumping artifacts, or a positive DTI delta.</p>
+          <p>Each run must compare against the current project holdout best on four contiguous spatial blocks with a 300 m label embargo. The candidate must improve overall and in at least three blocks, using comparable prediction mass.</p>
+        </div>
+        <aside class="card card-dark">
+          <p class="card-label">Current gate</p>
+          <h3>Blocked before data/model.</h3>
+          <p class="small">The official competition data page redirects unauthenticated visitors to login. No labels, sample grid, current holdout best, or candidate rasters exist here.</p>
+          <a href="guide.html">See the authorized data and upload steps →</a>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-wrap"><div><div class="footer-brand">GEMSDOE46 · Hypothesis register</div><p>Scientific candidates are hypotheses until they beat a spatially blocked baseline.</p></div><nav class="footer-links" aria-label="Footer navigation"><a href="index.html">Overview</a><a href="analysis.html">Score analysis</a><a href="sources.html">Sources</a><a href="guide.html">Submission guide</a></nav></div></footer>
+</body>
+</html>
