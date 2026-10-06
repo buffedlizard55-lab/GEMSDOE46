@@ -1,0 +1,214 @@
+{
+  "instrument": "off-catalogue SGMC proxy, matched mass 37,654, min_dist 3, smooth 1.85, catalogue exclusion 2 iterations",
+  "budget": 37654,
+  "rows": [
+    {
+      "field": "NEW_lidar_downface_max",
+      "emitted": 37654,
+      "dti": 0.14448,
+      "tp": 8918.3,
+      "precision_300m": 0.1504,
+      "mean_k": 0.0809
+    },
+    {
+      "field": "NEW_lidar_step_max",
+      "emitted": 37654,
+      "dti": 0.14436,
+      "tp": 8910.6,
+      "precision_300m": 0.1502,
+      "mean_k": 0.0807
+    },
+    {
+      "field": "NEW_lidar_lappos_max",
+      "emitted": 37654,
+      "dti": 0.14422,
+      "tp": 8901.1,
+      "precision_300m": 0.1505,
+      "mean_k": 0.0814
+    },
+    {
+      "field": "NEW_lidar_cross_max",
+      "emitted": 37654,
+      "dti": 0.14368,
+      "tp": 8867.0,
+      "precision_300m": 0.1524,
+      "mean_k": 0.0813
+    },
+    {
+      "field": "NEW_lidar_upface_max",
+      "emitted": 37654,
+      "dti": 0.14239,
+      "tp": 8786.7,
+      "precision_300m": 0.1483,
+      "mean_k": 0.0801
+    },
+    {
+      "field": "NEW_lidar_lapneg_max",
+      "emitted": 37654,
+      "dti": 0.14182,
+      "tp": 8751.3,
+      "precision_300m": 0.1464,
+      "mean_k": 0.0794
+    },
+    {
+      "field": "NEW_lidar_ex_max",
+      "emitted": 37654,
+      "dti": 0.14115,
+      "tp": 8708.3,
+      "precision_300m": 0.1463,
+      "mean_k": 0.0794
+    },
+    {
+      "field": "NEW_ext_ThK_grad_s2",
+      "emitted": 37654,
+      "dti": 0.11215,
+      "tp": 6891.7,
+      "precision_300m": 0.1184,
+      "mean_k": 0.0639
+    },
+    {
+      "field": "NEW_rad_TC_grad_s2",
+      "emitted": 37654,
+      "dti": 0.11152,
+      "tp": 6852.8,
+      "precision_300m": 0.1158,
+      "mean_k": 0.0629
+    },
+    {
+      "field": "NEW_rad_Th_grad_s2",
+      "emitted": 37654,
+      "dti": 0.11016,
+      "tp": 6768.2,
+      "precision_300m": 0.115,
+      "mean_k": 0.0623
+    },
+    {
+      "field": "CMP_shallow_x_ThK",
+      "emitted": 37654,
+      "dti": 0.10793,
+      "tp": 6630.0,
+      "precision_300m": 0.1106,
+      "mean_k": 0.0598
+    },
+    {
+      "field": "NEW_rad_K_grad_s2",
+      "emitted": 37654,
+      "dti": 0.10632,
+      "tp": 6528.6,
+      "precision_300m": 0.1117,
+      "mean_k": 0.0598
+    },
+    {
+      "field": "NEW_ext_UTh_grad_s2",
+      "emitted": 37654,
+      "dti": 0.10555,
+      "tp": 6480.4,
+      "precision_300m": 0.1133,
+      "mean_k": 0.0601
+    },
+    {
+      "field": "NEW_ext_UK_grad_s2",
+      "emitted": 37654,
+      "dti": 0.10108,
+      "tp": 6202.5,
+      "precision_300m": 0.1065,
+      "mean_k": 0.0573
+    },
+    {
+      "field": "CMP_mag_x_rad_x_lidar",
+      "emitted": 37654,
+      "dti": 0.10079,
+      "tp": 6183.8,
+      "precision_300m": 0.1088,
+      "mean_k": 0.0577
+    },
+    {
+      "field": "CMP_mag_x_lidar",
+      "emitted": 37654,
+      "dti": 0.09966,
+      "tp": 6113.4,
+      "precision_300m": 0.1093,
+      "mean_k": 0.0572
+    },
+    {
+      "field": "NEW_shallow_src_abs",
+      "emitted": 37654,
+      "dti": 0.09505,
+      "tp": 5828.7,
+      "precision_300m": 0.0961,
+      "mean_k": 0.0523
+    },
+    {
+      "field": "NEW_shallow_src_grad",
+      "emitted": 37654,
+      "dti": 0.09153,
+      "tp": 5609.2,
+      "precision_300m": 0.0975,
+      "mean_k": 0.0522
+    },
+    {
+      "field": "CMP_mag_x_radTC",
+      "emitted": 37654,
+      "dti": 0.09003,
+      "tp": 5515.2,
+      "precision_300m": 0.0978,
+      "mean_k": 0.0521
+    },
+    {
+      "field": "CMP_mag_x_ThK",
+      "emitted": 37654,
+      "dti": 0.08952,
+      "tp": 5483.8,
+      "precision_300m": 0.0992,
+      "mean_k": 0.0519
+    },
+    {
+      "field": "NEW_rad_U_grad_s2",
+      "emitted": 37654,
+      "dti": 0.0824,
+      "tp": 5043.8,
+      "precision_300m": 0.0869,
+      "mean_k": 0.0466
+    },
+    {
+      "field": "REF_tmi_hg_band3",
+      "emitted": 37654,
+      "dti": 0.07948,
+      "tp": 4861.9,
+      "precision_300m": 0.0904,
+      "mean_k": 0.0468
+    },
+    {
+      "field": "REF_rtp_grad_s1.5",
+      "emitted": 37654,
+      "dti": 0.07908,
+      "tp": 4837.2,
+      "precision_300m": 0.0891,
+      "mean_k": 0.0465
+    },
+    {
+      "field": "NEW_up150_grad_s2",
+      "emitted": 37654,
+      "dti": 0.07878,
+      "tp": 4819.3,
+      "precision_300m": 0.0877,
+      "mean_k": 0.0459
+    },
+    {
+      "field": "NEW_lidar_coh100",
+      "emitted": 37654,
+      "dti": 0.04659,
+      "tp": 2838.1,
+      "precision_300m": 0.0534,
+      "mean_k": 0.027
+    },
+    {
+      "field": "REF_grav_grad_s2",
+      "emitted": 37654,
+      "dti": 0.04615,
+      "tp": 2811.0,
+      "precision_300m": 0.0517,
+      "mean_k": 0.027
+    }
+  ]
+}

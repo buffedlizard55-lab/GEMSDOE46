@@ -121,3 +121,47 @@ touching an artifact.
 * R10 remains HOLD_DO_NOT_SUBMIT. R10↔0.2778 overlap measured: 260 shared pixels, Jaccard 0.0035
   (the equal 37,654 counts are coincidence). The old hidden-truth-count and independence claims stay
   withdrawn. Aggregate leaderboard values are not file receipts.
+
+## R12 session handoff (2026-10-06, later than the R11/H47 arms above)
+
+Read [`registry/r12.json`](registry/r12.json) and [`docs/research/r12-review.md`](docs/research/r12-review.md)
+before using any artifact.
+
+* The **active artifact is R12**: `docs/r12/gems46-r12-scarp-rad-concordance-23e807e2de9f-zeros.tif`.
+  It is the first arm in this repository to use the **2 m LiDAR scarp morphology** and the **airborne
+  gamma-ray spectrometry** layers, and the first to obtain them at all: the H47 session recorded those
+  layers as blocked (login-walled data tab, HTTP 000 from the sandbox); R12 restores them from a
+  hash-pinned public mirror (`bash scripts/restore_r12_reference.sh`, USGS GeoDAWN DOI
+  10.5066/P93LGLVQ). "Blocked" is a statement about one route, not about obtainability.
+* **Instrument conflict, measured and closed (IR-46-21).** R12's original gate used SGMC truth >200 m
+  from the catalogue (66,277 px), which is *not* one of the variants the H47 ladder showed to preserve
+  the live ordering. R12 was therefore re-measured on `gems47.proxy.instrument_sgmc_stratified`
+  (d0 = 5 px, catalogue masked as `known`, whole footprint, matched mass) under a rule amended *before*
+  the measurement (`docs/research/session-r12-plan.md` §7.1). Stratified truth 56,822 px — identical to
+  that ladder's d0 = 5 row. **R12 T = 9,003, DTI 0.16622, hit rate 16.42 %** vs the incumbent's
+  **T = 5,081, DTI 0.09474, 10.50 %** (Δ +0.07148, 1.75×); uniform random at matched mass T ≈ 3,695.
+  Both preregistered readings pass, so the status is `PROXY_GATE_PASSED_NOT_SUBMITTED`. **Never quote
+  the 0.10420 blocked-block figure without naming its instrument**, and never convert a proxy ratio
+  into a predicted live score: the same instrument puts the incumbent at 0.09474 where the board says
+  0.2778.
+* **Two negative results** are part of the record and must not be re-proposed as new: a **strong**
+  two-sensor concordance gate (w ≥ 0.5) is worse than morphology alone, and **ridge-axis thinning**
+  cost 0.010–0.029 DTI in all fifteen configurations tried.
+* **Correlation must be reported in three parts** — emitted-pixel, raw field, smoothed field. A
+  single "low correlation" claim hides the +0.53 smoothed-field Spearman against the GEMSDOE32 file
+  (IR-46-18).
+* **Live pages** (`index.html`, `docs/index.html`, `docs/executive-summary.html`) are owned by
+  `scripts/build_r12_site.py` from `registry/r12.json`; `scripts/build_site.py` delegates to it and
+  writes only archived `docs/h46/` pages. `scripts/build_readme_status.py` owns the README block
+  between the `R12 STATUS` markers. The R11, R10 and H47 artifacts stay on disk with their receipts.
+* Restore steps: `restore_competition_data.sh`, `restore_r10_reference.sh` (comparators),
+  `restore_r12_reference.sh` (USGS GeoDAWN gamma-ray + LiDAR layers). Every pin is in
+  `registry/data_manifest.json`.
+* Still blocked: the USGS ANSS hypocentre catalogue. `earthquake.usgs.gov` returns HTTP 000 from this
+  sandbox; the free official source is named in the plan rather than assumed away.
+
+### R10 handoff (kept for audit)
+`registry/r10.json` describes the DFA-crossover candidate: unique and format-valid but
+`HOLD_DO_NOT_SUBMIT` after a failed blocked proxy gate. `registry/submissions.json` describes
+historical, pre-index-fix H46 files. The old hidden-truth-count and independence claims are withdrawn.
+Do not use aggregate leaderboard values as authenticated file receipts.

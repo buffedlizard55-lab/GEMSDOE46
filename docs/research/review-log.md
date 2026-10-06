@@ -45,3 +45,20 @@
 5. Audit all known prior submission TIFs and the possible ASTER overlap before claiming global uniqueness/novelty. Build and publish a unique TIFF only after the actual holdout gate and independent format validation pass.
 6. Confirm the official deadline discrepancy with organizers, use only the live official board for any later score check, and update the site snapshot only through a permitted/manual process.
 7. Create the PR from this fixed Arena branch and merge only if repository access and checks permit. No commit, push, PR, or merge has been made at the time this review log was written.
+
+## 2026-10-06 · R11 (this session)
+
+* Restored and hash-verified all four organiser/proxy rasters plus three previously unused USGS
+  GeoDAWN layers (gamma-ray K/Th/U/TC, contractor Th-K-U ratios and 150 m up-continued TMI, and 12
+  channels of 2 m LiDAR scarp morphology). Verified that no prior arm in this repository used them.
+* Preregistered five hypotheses before implementing (`session-r11-plan.md`), with the USGS ANSS
+  hypocentre arm marked BLOCKED after re-measuring that `earthquake.usgs.gov` is unreachable here.
+* Exploratory whole-domain screen (`evidence/r11_layer_screen.json`): LiDAR morphology 0.141–0.145,
+  gamma-ray 0.106–0.112, magnetic gradient 0.079, gravity gradient 0.046, naive composites 0.090–0.108.
+* Built `src/gems46/concordance.py` with 12 unit tests; found and fixed a constant-channel tie-break
+  bug in the rank transform.
+* Locked 6×6 experiment: froze w = 0.25, fallback q = 0.90, no thinning on odd blocks; R11 then beat
+  every comparator on even blocks (0.10420 vs 0.09368, bootstrap [+0.00140, +0.02121]).
+* Falsified in the open: a strong concordance gate and ridge-axis thinning.
+* Fixed a block-slicing bug, the over-strict inherited gate (both readings now reported), and the
+  two-builders-one-page conflict (IR-46-12).

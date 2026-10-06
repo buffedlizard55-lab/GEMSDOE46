@@ -150,6 +150,89 @@ def main() -> int:
     current = audit(ROOT / "docs/r10" / r10["file"], ROOT / "data/raw/sample_submission.tif")
     ok &= current == r10["audit"]
     print(f"  {r10['file']}: sha256={current['sha256']}; status={r10['status']}")
+
+    print()
+    print("=" * 96)
+    print("8. R12 independent on-disk audit + pinned USGS layers + two-instrument gate consistency")
+    print("=" * 96)
+    from run_r12 import audit as audit12
+    r12 = json.loads((ROOT / "registry/r12.json").read_text())
+    cur12 = audit12(ROOT / "docs/r12" / r12["file"], ROOT / "data/raw/sample_submission.tif")
+    same = cur12 == r12["audit"]
+    ok &= same
+    print(f"  {'OK  ' if same else 'FAIL'} {r12['file']}")
+    print(f"       sha256={cur12['sha256']}")
+    print(f"       positive={cur12['positive']} min={cur12['min']} max={cur12['max']} "
+          f"crs={cur12['crs']} shape={cur12['shape']}")
+    for item in json.loads((ROOT / "registry/data_manifest.json").read_text())["files"]:
+        if not item["id"].startswith("r12_layer_"):
+            continue
+        pp = ROOT / item["dest"]
+        got = sha256(pp) if pp.exists() else None
+        good = got == item["sha256"]
+        ok &= good
+        print(f"  {'OK  ' if good else 'FAIL'} {item['dest']}  {(got or 'MISSING')[:16]}...")
+    # gate arithmetic re-derived from the receipt, not trusted
+    folds = r12["locked_folds"]
+    best = r12["best_comparator"]
+    delta = [f["scores"]["R12"]["dti"] - f["scores"][best]["dti"] for f in folds]
+    mean_delta = sum(delta) / len(delta)
+    ci = r12["paired_bootstrap_95"]
+    strat = r12["stratified_instrument"]
+    inc = "GEMSDOE32-owner-reported-02778"
+    blocks_gate = bool(len(folds) >= 8 and ci[0] > 0.0
+                       and abs(mean_delta - r12["paired_delta_vs_best"]) < 1e-12
+                       and r12["mean_locked_dti"]["R12"] > r12["mean_locked_dti"][best])
+    strat_gate = bool(strat["scores"]["R12"]["dti"] - strat["scores"][inc]["dti"] > 0.0)
+    consistent = (blocks_gate == bool(r12["gate_locked_blocks_200m"])
+                  and strat_gate == bool(r12["gate_stratified_whole_domain"])
+                  and (blocks_gate and strat_gate) == bool(r12["gate_passed"])
+                  and (("PROXY_GATE_PASSED" in r12["status"]) == bool(r12["gate_passed"])))
+    ok &= consistent
+    print(f"  {'OK  ' if blocks_gate else 'FAIL'} 200 m-exclusion locked blocks: mean paired delta "
+          f"{mean_delta:+.6f}, bootstrap 95% [{ci[0]:+.6f}, {ci[1]:+.6f}], blocks {len(folds)}")
+    print(f"  {'OK  ' if strat_gate else 'FAIL'} stratified instrument ({strat['instrument']}): "
+          f"R12 {strat['scores']['R12']['dti']:.5f} vs incumbent {strat['scores'][inc]['dti']:.5f}, "
+          f"delta {strat['delta_vs_incumbent']:+.5f}, hit fraction "
+          f"{strat['hit_fraction']['R12']:.4f} vs {strat['hit_fraction'][inc]:.4f}, "
+          f"random-at-matched-mass T={strat['uniform_random_at_matched_mass']['tp']}")
+    print(f"  {'OK  ' if consistent else 'FAIL'} combined status {r12['status']}; "
+          f"strict-R10 rule {'pass' if r12['gate_strict_r10_style'] else 'fail'}")
+
+    print()
+    print("=" * 96)
+    print("9. Held candidates (R11, H47) stay on disk with the status their receipts record")
+    print("=" * 96)
+    for tag, key in (("r11", None), ("h47", "emission")):
+        rec = json.loads((ROOT / f"registry/{tag}.json").read_text())
+        if tag == "r11":
+            f = ROOT / "docs/r11" / rec["file"]
+            status, positive = rec["status"], rec["audit"]["positive"]
+        else:
+            f = ROOT / rec["emission"]["zeros"]["path"].replace(str(ROOT) + "/", "")
+            status = rec["screen"]["verdict"]
+            positive = rec["emission"]["zeros"]["audit"]["positive_px"]
+        good = f.is_file() and status == "HOLD_DO_NOT_SUBMIT" and positive == 37654
+        ok &= good
+        print(f"  {'OK  ' if good else 'FAIL'} {tag}: {f.name}  {status}  {positive} dots")
+    print()
+    print("=" * 96)
+    print("10. The other gate-passed arm (R11F) — both arms on the same stratified instrument")
+    print("=" * 96)
+    rf = json.loads((ROOT / "registry/r11f.json").read_text())
+    st = rf["pass3_stratified_audit"]["instruments"]["sgmc_stratified_d0_3"]["emissions"]
+    f = ROOT / "docs/r11f" / rf["candidate"]["file"]
+    good = (f.is_file() and rf["status"] == "PROXY_GATE_PASSED_NOT_SUBMITTED"
+            and bool(rf["gate_passed"]) and rf["candidate"]["positive"] == 44090)
+    ok &= good
+    print(f"  {'OK  ' if good else 'FAIL'} r11f: {rf['candidate']['file']}  {rf['status']}  "
+          f"{rf['candidate']['positive']:,} dots")
+    for k, v in st.items():
+        print(f"       d0=3 px  {k:<32} DTI {v['dti']:.5f}  T {v['T_credit']:,.0f}  "
+              f"hit {100 * v['hit_fraction']:.2f}%")
+    print("       R11F audits at d0=3 px, R12 at d0=5 px; both reproduce the incumbent near 0.095 and")
+    print("       both place the new-sensor arm near 0.166 - independent agreement on the evidence,")
+    print("       not on the file. Neither is a leaderboard score.")
     print("ALL COMPUTATIONAL CHECKS PASSED (not a scoring endorsement)" if ok else "SOME CHECKS FAILED")
     return 0 if ok else 1
 

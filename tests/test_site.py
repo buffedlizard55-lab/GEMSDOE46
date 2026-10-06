@@ -87,6 +87,26 @@ def test_homepage_puts_the_verified_download_first() -> None:
         assert "do not submit" in home
 
 
+def test_r12_candidate_page_is_published_with_its_own_receipt() -> None:
+    """R12 passed its own two-instrument gate; it stays fully published beside the active arm."""
+    import json
+    receipt = json.loads((ROOT / "registry/r12.json").read_text())
+    page = (SITE / "r12" / "index.html").read_text(encoding="utf-8")
+    assert (SITE / "r12" / receipt["file"]).is_file()
+    assert receipt["file"] in page
+    assert receipt["audit"]["sha256"] in page
+    assert receipt["note"] in page
+    assert all(receipt["audit"]["checks"].values())
+    assert receipt["audit"]["positive"] == 37654
+    # both preregistered instruments must be visible, and the status must match the receipt
+    assert "stratified" in page.lower()
+    assert ("Proxy gate PASSED" in page) is bool(receipt["gate_passed"])
+    assert bool(receipt["gate_locked_blocks_200m"]) is bool(receipt["gate_locked_blocks_200m"])
+    assert bool(receipt["gate_stratified_whole_domain"]) is (
+        receipt["stratified_instrument"]["delta_vs_incumbent"] > 0)
+    assert "no leaderboard score" in page.lower()
+
+
 def test_r10_receipt_is_archived_unchanged() -> None:
     """The failed R10 arm stays on disk with its own receipt (published negative result)."""
     import json
@@ -94,6 +114,18 @@ def test_r10_receipt_is_archived_unchanged() -> None:
     assert (SITE / "r10" / receipt["file"]).is_file()
     assert json.loads((SITE / "r10" / "receipt.json").read_text())["file"] == receipt["file"]
     assert not receipt["gate_passed"]
+    assert receipt["audit"]["positive"] == 37654
+    review = (ROOT / "docs/research/r10-review.md").read_text(encoding="utf-8")
+    assert "HOLD" in review
+
+
+def test_r11_receipt_is_archived_unchanged() -> None:
+    """The R11 matched-filter arm stays on disk with its own receipt (published negative result)."""
+    import json
+    receipt = json.loads((ROOT / "registry/r11.json").read_text())
+    assert (SITE / "r11" / receipt["file"]).is_file()
+    assert json.loads((SITE / "r11" / "receipt.json").read_text())["file"] == receipt["file"]
+    assert receipt["status"] == "HOLD_DO_NOT_SUBMIT"
     assert receipt["audit"]["positive"] == 37654
 
 

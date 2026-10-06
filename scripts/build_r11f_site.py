@@ -119,6 +119,12 @@ def render(prefix: str, guide: bool = False) -> str:
 <h2>R11F · primary candidate</h2>
 <a class="button" download href="{d}{E(cand['file'])}">Download the unique .TIF</a>
 <a class="button alt" href="{prefix}executive-summary.html">How to submit it, step by step →</a>
+<a class="button alt" href="{prefix}r12/index.html">Second gate-passed candidate: R12 →</a>
+<p class="muted">A second, independently implemented arm (R12) also passed its own preregistered gate on
+the same stratified instrument and is published in full at
+<a href="{prefix}r12/index.html"><code>docs/r12/</code></a>. Two arms built on the same two evidence
+families reached the same magnitude independently; pick one file per weekly slot and record its hash
+with the score.</p>
 <p><code>{E(cand['file'])}</code><br>sha256 <code>{E(cand['sha256'])}</code></p>
 <div class="cards"><div><strong>[0, 1]</strong>every cell finite, no nodata tag</div>
 <div><strong>{cand['positive']:,}</strong>predicted pixels (unit dots)</div>

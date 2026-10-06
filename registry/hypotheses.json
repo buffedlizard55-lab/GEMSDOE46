@@ -240,8 +240,77 @@
    "differs_from": "earlier corroboration arms took geometric means of transform magnitudes; none required strike agreement",
    "expected": "low-medium",
    "status": "NOT RUN: dropped before execution because it shares its evidence with the potential-field family already in the primary, and the session's compute budget was spent on the arms that were preregistered as separately testable. Recorded so the register is honest about what was not done."
+  },
+  {
+   "id": "H46-R12-A",
+   "rank": 0,
+   "title": "2 m LiDAR scarp morphology with mild airborne gamma-ray reweighting and a quantile-capped radiometric fallback (SHIPPED, gate passed)",
+   "layers": [
+    "external USGS GeoDAWN/3DEP 2 m LiDAR scarp morphology channels downface_max, upface_max, step_max, lappos_max (restored, hash-pinned)",
+    "external USGS GeoDAWN airborne gamma-ray spectrometry Th/K, TC, Th gradients (DOI 10.5066/P93LGLVQ)",
+    "labels.tif only as the fixed 200 m organiser-masked exclusion zone"
+   ],
+   "physical_signature": "an ORIENTED slope break (downslope vs upslope band-passed 2 m gradient) corroborated by a break in the top 0.3-0.5 m sampled by gamma rays; neither is an amplitude or curvature maximum of a potential field",
+   "why_off_catalogue": "the published catalogue is a Quaternary-fault compilation mapped from surface expression; traces with subtle morphology but a regolith contrast, or buried under alluvium, are under-recorded, and the fixed catalogue exclusion removes the already-mapped population",
+   "differs_from_repo": "gamma-ray spectrometry had never been used by any arm in this repository, nor had the LiDAR morphology product; no prior arm had a coverage-aware fallback for the 24.87% of the emittable domain with no LiDAR. A sibling site used a LiDAR ridge alone (7GEMSDOE, owner-reported 0.1461), so novelty is claimed for this repository plus pixel-level distinctness, not universally.",
+   "expected_dti": "locked-block mean 0.10420 vs 0.09368 for the best comparator (its own LiDAR-only component) and 0.06781 for the restored GEMSDOE32 file; pooled 0.13912; all-blocks full-budget 0.15586. Paired delta +0.01052, bootstrap 95% [+0.00140, +0.02121].",
+   "cost": "low (CPU only, ~3 min end to end)",
+   "validation_status": "VALIDATED on a locked 6x6 even-parity block set that was never used for selection; preregistered gate PASSED; R10's stricter no-skipped-block rule FAILS (3 blocks dropped where a gapped comparator could emit nothing) and is reported",
+   "data_status": "no new download needed; USGS layers restored from the group's hash-pinned public mirror of ScienceBase item 657e1d85d34e23d3533209f7"
+  },
+  {
+   "id": "H46-R12-B",
+   "rank": 6,
+   "title": "Ridge-axis thinning before emission (FALSIFIED on the selection blocks)",
+   "layers": [
+    "same field as H46-R11-A"
+   ],
+   "physical_signature": "structure-tensor orientation then non-maximum suppression perpendicular to strike, to collapse a 3-5 px response band onto a one-pixel axis",
+   "why_off_catalogue": "instrument-level, not geological: at fixed emitted mass DTI rises only through coverage T, and a dot on the trace axis earns k=1 instead of ~0.67",
+   "differs_from_repo": "no axis-thinning operator existed in src/; every prior arm emits from a smoothed field",
+   "expected_dti": "MEASURED NEGATIVE: thinning cost 0.010-0.029 DTI in all 15 configurations where it was tried (0.11387-0.12989 vs 0.12769-0.15292 unthinned)",
+   "cost": "low",
+   "validation_status": "FALSIFIED as implemented; the underlying localisation argument is untested and belongs to a future sub-pixel across-strike fit",
+   "data_status": "no external data needed"
+  },
+  {
+   "id": "H46-R12-C",
+   "rank": 7,
+   "title": "Truth-mass-matched proxy instrument and budget re-derivation (IMPLEMENTED as a sensitivity, budget unchanged)",
+   "layers": [
+    "none new; changes the validation instrument"
+   ],
+   "physical_signature": "the off-catalogue proxy holds 66,277 truth pixels against a live-anchored hidden-truth estimate of ~14,089, which biases the optimal emitted mass upward; re-measuring on a component-wise thinned copy (14,034 px, seeded) removes that bias",
+   "why_off_catalogue": "n/a - instrument, not detector",
+   "differs_from_repo": "all prior proxy work used unmatched truth mass",
+   "expected_dti": "measured 0.05787 (0.40x) / 0.07997 (0.67x) / 0.09847 (1.00x) / 0.10898 (1.50x): the shipped mass of 37,654 is still on the rising part of the curve, so the budget was NOT reduced",
+   "cost": "low",
+   "validation_status": "IMPLEMENTED and reported; it contradicts a naive reading of the family's mass-vs-score correlation (IR-46-07), which is driven by files with orders of magnitude more mass",
+   "data_status": "no external data needed"
+  },
+  {
+   "id": "H46-R12-E",
+   "rank": 8,
+   "title": "Hypocentre lineaments from the USGS ANSS catalogue (STILL BLOCKED)",
+   "layers": [
+    "external: USGS FDSN event service, M>=1.5, 1900-present, footprint -120.04..-116.14 E / 37.33..40.73 N (Walker Lane)"
+   ],
+   "physical_signature": "alignment of precisely located hypocentres into strike-parallel lineaments - a fault-activity signature independent of rock properties and topography",
+   "why_off_catalogue": "an active fault with no Quaternary surface trace still produces microseismicity; the competition's own seismic bands are smoothed at 100 km",
+   "differs_from_repo": "no arm here has used raw hypocentres",
+   "expected_dti": "unknown - not estimable without the catalogue",
+   "cost": "medium",
+   "validation_status": "BLOCKED, no slot spent",
+   "data_status": "https://earthquake.usgs.gov/fdsnws/event/1/query is free and needs no key; it returns HTTP 000 from this sandbox (re-measured 2026-10-06). The agent's web tool reaches the service, but ~10^4 CSV rows cannot be transferred reproducibly that way. Run scripts/fetch_earthquake_catalog.sh on an unrestricted machine."
   }
  ],
  "generated_utc": "2026-10-06",
- "register_note": "Identifiers in this file are H46-N and H46-R11F-N. Two other registers use overlapping numbers: docs/HYPOTHESES.md (H1-H5, the brief's in-repo feature hypotheses) and docs/research/hypotheses.md (H46-1-H46-4, external-data hypotheses). Quote the file name with any id. H47-N entries were added by the parallel H47 session and are carried here unchanged."
+ "register_note": "Identifiers in this file are H46-N and H46-R11F-N. Two other registers use overlapping numbers: docs/HYPOTHESES.md (H1-H5, the brief's in-repo feature hypotheses) and docs/research/hypotheses.md (H46-1-H46-4, external-data hypotheses). Quote the file name with any id. H47-N entries were added by the parallel H47 session and are carried here unchanged.",
+ "leaderboard_snapshot": {
+  "retrieved_utc": "2026-10-06T16:06Z",
+  "leader_public": 0.3774,
+  "leader_participant": "xiaofanhu",
+  "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+  "note": "Dated observation, not a live feed. The public board attributes scores to participants, not files (IR-46-01)."
+ }
 }

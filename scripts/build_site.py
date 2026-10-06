@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the GitHub Pages site from registry/*.json so the pages cannot drift from the receipts.
 
-Default: delegates to build_r10_site.py for the active site.
+Default: delegates to build_r11f_site.py for the active site.
 Historical rebuild (requires old derived stats): --legacy-h46 ->  docs/h46/{index,executive-summary,hypotheses,validation,
 research,sources,irregularities}.html + docs/h46/assets/style.css + docs/h46/downloads/*.png
 """
@@ -85,7 +85,7 @@ def page(title: str, body: str, active: str) -> str:
 <title>{html.escape(title)} - GEMSDOE46</title>
 <link rel="stylesheet" href="assets/style.css"></head>
 <body>
-<aside style="padding:20px;background:#ffe3a3;color:#241800"><b>Archived H46 experiment:</b> recommendations and claims may be superseded. <a href="../index.html">Read the current R10 audit and submission gate.</a></aside>
+<aside style="padding:20px;background:#ffe3a3;color:#241800"><b>Archived H46 experiment:</b> recommendations and claims may be superseded. <a href="../index.html">Read the current audited download, measurements and submission gate.</a></aside>
 <header><div class="wrap"><span class="brand">GEMSDOE46 &middot; DOE GEMS Prize</span><nav>{nav}</nav></div></header>
 <main class="wrap">{body}</main>
 <footer class="wrap">Every number on this site is regenerated from <code>registry/*.json</code> by
@@ -94,6 +94,12 @@ Retrieved 2026-10-06 UTC.</footer>
 {CORE_VALUES}
 </body></html>
 """
+
+
+def g(d: dict, k: str, default: str = "\u2014") -> str:
+    """Archived pages must survive registry entries written by later sessions."""
+    v = d.get(k, default)
+    return v if isinstance(v, str) else str(v)
 
 
 def esc(x) -> str:
@@ -118,20 +124,30 @@ def main() -> int:
     h1f, h2f = files[h1_tag], files[h2_tag]
     inst = sub["instrument_results"]
     sweep = sub.get("hedge_sweep", {}).get("hedge_sweep_proxy_dti", {})
+    snap = hyp.get("leaderboard_snapshot", {})
     dist = sub["distinctness"]
-    stats = json.loads((ROOT / "data" / "derived" / "dfa_stats.json").read_text())
+    # dfa_stats.json is a git-ignored derived artifact (scripts/build_dfa_field.py).  The archived
+    # H46 pages must still regenerate in a clean checkout, so it is optional.
+    stats_path = ROOT / "data" / "derived" / "dfa_stats.json"
+    stats = json.loads(stats_path.read_text()) if stats_path.exists() else {"bands": {}}
 
     # ------------------------------------------------------------------ overview
     dfa_rows = "".join(
         f"<tr><td><code>{k}</code></td><td>{v['alpha_median_row']:.3f}</td>"
         f"<td>{v['alpha_iqr_row']:.3f}</td><td>{v['absz_p99']:.2f}</td></tr>"
         for k, v in stats["bands"].items() if k.endswith("_raw"))
+    if not dfa_rows:
+        dfa_rows = ("<tr><td colspan='4'>not regenerated in this checkout &mdash; run "
+                    "<code>scripts/build_dfa_field.py</code> (needs the restored rasters)</td></tr>")
     ov = CORE_VALUES + f"""
 <h1>A unique submission for the DOE GEMS Prize Challenge &mdash; and an honest account of what it can and cannot do</h1>
 <p class="dim">Competition 306, GeoDAWN region, northwestern Great Basin, Nevada.
 Task: predict geological faults, scored by a distance-weighted Tversky index on faults that are
-<em>not</em> in the published USGS/INGENIOUS catalogue. Target on 2026-10-06:
-<strong>0.3345</strong> (public #1). Our best prior family: <strong>0.2778</strong> (owner-reported).</p>
+<em>not</em> in the published USGS/INGENIOUS catalogue. Public #1 on
+{esc(snap.get("retrieved_utc", "unknown date"))}:
+<strong>{esc(snap.get("leader_public", "unknown"))}</strong>
+({esc(snap.get("leader_participant", ""))}). Our best prior family:
+<strong>0.2778</strong> (owner-reported).</p>
 
 <div class="download">
  <h2>1 &middot; Download the submission file</h2>
@@ -179,9 +195,9 @@ Task: predict geological faults, scored by a distance-weighted Tversky index on 
 <h2>The five hypotheses ranked, and what happened to each</h2>
 <table><tr><th>#</th><th>Hypothesis</th><th>Expected DTI</th><th>Cost</th><th>Status</th></tr>
 """ + "".join(
-        f"<tr><td>{h['rank']}</td><td><strong>{esc(h['id'])}</strong> &mdash; {esc(h['title'])}</td>"
-        f"<td>{esc(h['expected_dti'])}</td><td>{esc(h['cost'])}</td>"
-        f"<td>{esc(h['validation_status'])}</td></tr>" for h in hyp["hypotheses"]) + f"""
+        f"<tr><td>{g(h, 'rank')}</td><td><strong>{esc(g(h, 'id'))}</strong> &mdash; {esc(g(h, 'title'))}</td>"
+        f"<td>{esc(h.get('expected_dti', '—'))}</td><td>{esc(h.get('cost', '—'))}</td>"
+        f"<td>{esc(g(h, 'validation_status'))}</td></tr>" for h in hyp["hypotheses"]) + f"""
 </table>
 <p class="dim"><a href="hypotheses.html">Full table with layers, physical signature, why it should be
 off-catalogue, and how each differs from everything already in this repository &rarr;</a></p>
@@ -194,6 +210,9 @@ never for an absolute threshold. Full discussion in <a href="research.html">Rese
 <table><tr><th>band</th><th>median &alpha;</th><th>IQR</th><th>p99 of |z|</th></tr>{dfa_rows}</table>
 <p><img src="downloads/preview_h46_2.png" alt="Emission preview"></p>
 """
+    # DOCS is docs/h46 (the archive).  The live pages are docs/index.html and
+    # docs/executive-summary.html, written by scripts/build_r11f_site.py, which this script
+    # delegates to in its default mode.
     (DOCS / "index.html").write_text(page("Overview", ov, "index.html"))
 
     # ------------------------------------------------------------------ executive summary
@@ -310,15 +329,15 @@ public HTTP call from an unrestricted machine).</p>
     rows = ""
     for h in hyp["hypotheses"]:
         rows += f"""<div class="panel">
-<h3>{h['rank']}. {esc(h['id'])} &mdash; {esc(h['title'])}</h3>
-<p><span class="tag">layers</span></p><ul>{''.join(f'<li><code>{esc(x)}</code></li>' for x in h['layers'])}</ul>
-<p><span class="tag">physical signature</span> {esc(h['physical_signature'])}</p>
-<p><span class="tag">why off-catalogue</span> {esc(h['why_off_catalogue'])}</p>
-<p><span class="tag">differs from everything already in the repository</span> {esc(h['differs_from_repo'])}</p>
-<p><span class="tag">expected DTI</span> {esc(h['expected_dti'])}</p>
-<p><span class="tag">implementation cost</span> {esc(h['cost'])}</p>
-<p><span class="tag">validation</span> {esc(h['validation_status'])}</p>
-<p><span class="tag">data</span> {esc(h['data_status'])}</p>
+<h3>{g(h, 'rank')}. {esc(g(h, 'id'))} &mdash; {esc(g(h, 'title'))}</h3>
+<p><span class="tag">layers</span></p><ul>{''.join(f'<li><code>{esc(x)}</code></li>' for x in g(h, 'layers'))}</ul>
+<p><span class="tag">physical signature</span> {esc(g(h, 'physical_signature'))}</p>
+<p><span class="tag">why off-catalogue</span> {esc(g(h, 'why_off_catalogue'))}</p>
+<p><span class="tag">differs from everything already in the repository</span> {esc(g(h, 'differs_from_repo'))}</p>
+<p><span class="tag">expected DTI</span> {esc(h.get('expected_dti', '—'))}</p>
+<p><span class="tag">implementation cost</span> {esc(g(h, 'cost'))}</p>
+<p><span class="tag">validation</span> {esc(g(h, 'validation_status'))}</p>
+<p><span class="tag">data</span> {esc(g(h, 'data_status'))}</p>
 </div>"""
     hy = f"""
 <h1>Five candidate hypotheses, ranked</h1>
@@ -525,11 +544,12 @@ to this grid, restored from the group's public mirror</td></tr></table>
     # ------------------------------------------------------------------ irregularities
     ir = "<h1>Irregularities and unresolved issues</h1>"
     for i in irr["irregularities"]:
-        cls = {"high": "bad", "medium": "warn", "low": "dim"}[i["severity"]]
-        ir += (f"<div class='panel'><h3>{esc(i['id'])} <span class='{cls}'>[{esc(i['severity'])}]</span> "
-               f"{esc(i['title'])}</h3><p>{esc(i['detail'])}</p>"
-               f"<p><span class='tag'>effect here</span> {esc(i['effect_on_this_repository'])}</p>"
-               f"<p class='dim'>{esc(i['status'])}</p></div>")
+        cls = {"high": "bad", "medium": "warn", "low": "dim"}.get(
+        str(i.get("severity", "medium")).lower(), "dim")
+        ir += (f"<div class='panel'><h3>{esc(g(i, 'id'))} <span class='{cls}'>[{esc(g(i, 'severity'))}]</span> "
+               f"{esc(g(i, 'title'))}</h3><p>{esc(g(i, 'detail'))}</p>"
+               f"<p><span class='tag'>effect here</span> {esc(g(i, 'effect_on_this_repository'))}</p>"
+               f"<p class='dim'>{esc(g(i, 'status'))}</p></div>")
     (DOCS / "irregularities.html").write_text(page("Irregularities", ir, "irregularities.html"))
 
     # ------------------------------------------------------------------ preview image
@@ -563,4 +583,4 @@ if __name__ == "__main__":
     if "--legacy-h46" in sys.argv:
         raise SystemExit(main())
     import runpy
-    runpy.run_path(str(ROOT / "scripts" / "build_r10_site.py"), run_name="__main__")
+    runpy.run_path(str(ROOT / "scripts" / "build_r11f_site.py"), run_name="__main__")

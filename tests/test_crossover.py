@@ -97,3 +97,10 @@ def test_active_site_local_links():
             assert 'do not submit' in text, page
         else:
             assert receipt['status'] in text or 'Proxy gate passed' in text, page
+
+    # the second gate-passed candidate keeps its own page and its own receipt on disk
+    r12 = json.loads((root / 'registry/r12.json').read_text())
+    r12page = (root / 'docs/r12/index.html').read_text()
+    assert r12['file'] in r12page
+    assert r12['audit']['sha256'] in r12page
+    assert ('Proxy gate PASSED' in r12page) == bool(r12['gate_passed'])
