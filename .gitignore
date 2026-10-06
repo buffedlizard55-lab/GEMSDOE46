@@ -1,0 +1,6 @@
+cache/
+data/*.tif
+!data/.gitkeep
+__pycache__/
+*.pyc
+.pytest_cache/

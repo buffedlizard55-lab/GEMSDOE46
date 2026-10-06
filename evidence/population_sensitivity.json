@@ -1,0 +1,107 @@
+{
+  "pop_full": {
+    "ratio": 1.0,
+    "rule_R3R4_choice": 8.0,
+    "rule_R3R4_certified_floor": 0.06361131257936005,
+    "rule_R3R4_admissible": [
+      8.0,
+      10.0,
+      12.0,
+      14.0,
+      16.0,
+      20.0
+    ],
+    "score_only_choice": 4.0,
+    "shortlist": [
+      4.0,
+      3.0,
+      5.0
+    ],
+    "certified_floor_at_score_only_choice": 0.12582571550883972,
+    "selection_mean_at_score_only_choice": 0.15383786317772397
+  },
+  "pop_r0.5": {
+    "ratio": 0.5,
+    "rule_R3R4_choice": 8.0,
+    "rule_R3R4_certified_floor": 0.054980778194356345,
+    "rule_R3R4_admissible": [
+      8.0,
+      10.0,
+      12.0,
+      14.0,
+      16.0,
+      20.0
+    ],
+    "score_only_choice": 5.0,
+    "shortlist": [
+      4.0,
+      5.0,
+      3.0
+    ],
+    "certified_floor_at_score_only_choice": 0.07592662805841319,
+    "selection_mean_at_score_only_choice": 0.10178545004186156
+  },
+  "pop_r0.25": {
+    "ratio": 0.25,
+    "rule_R3R4_choice": 8.0,
+    "rule_R3R4_certified_floor": 0.041470377101798794,
+    "rule_R3R4_admissible": [
+      8.0,
+      10.0,
+      12.0,
+      14.0,
+      16.0,
+      20.0
+    ],
+    "score_only_choice": 6.0,
+    "shortlist": [
+      5.0,
+      4.0,
+      6.0
+    ],
+    "certified_floor_at_score_only_choice": 0.046717753700951825,
+    "selection_mean_at_score_only_choice": 0.06213809595349629
+  },
+  "pop_thin": {
+    "ratio": 0.1296,
+    "rule_R3R4_choice": 8.0,
+    "rule_R3R4_certified_floor": 0.0283061854482312,
+    "rule_R3R4_admissible": [
+      8.0,
+      10.0,
+      12.0,
+      14.0,
+      16.0,
+      20.0
+    ],
+    "score_only_choice": 6.0,
+    "shortlist": [
+      5.0,
+      4.0,
+      6.0
+    ],
+    "certified_floor_at_score_only_choice": 0.02563841063259903,
+    "selection_mean_at_score_only_choice": 0.039327053592008616
+  },
+  "pop_r0.06": {
+    "ratio": 0.06,
+    "rule_R3R4_choice": 10.0,
+    "rule_R3R4_certified_floor": 0.014699844758651548,
+    "rule_R3R4_admissible": [
+      8.0,
+      10.0,
+      12.0,
+      14.0,
+      16.0,
+      20.0
+    ],
+    "score_only_choice": 8.0,
+    "shortlist": [
+      5.0,
+      8.0,
+      4.0
+    ],
+    "certified_floor_at_score_only_choice": 0.008964828824005039,
+    "selection_mean_at_score_only_choice": 0.021501147420805382
+  }
+}

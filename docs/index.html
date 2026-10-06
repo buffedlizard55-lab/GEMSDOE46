@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GEMSDOE46 — executive summary and submission download</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <b>GEMSDOE46 — split-conformal submission for the DOE GEMS Prize</b>
+  <span class="sub">DrivenData #306 · deadline 3 Dec 2026 23:59 UTC · $300,000 prize</span>
+</div></header>
+<nav class="site"><div class="wrap">
+  <a href="index.html" aria-current="page">Executive summary</a>
+  <a href="how-to-submit.html">How to submit</a>
+  <a href="hypotheses.html">Geological hypotheses</a>
+  <a href="analysis.html">Analysis &amp; evidence</a>
+  <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/SOURCES.md">Sources</a>
+  <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/IRREGULARITIES.md">Irregularities</a>
+</div></nav>
+
+<main>
+<h1>Executive summary</h1>
+<p class="lede">A single, unique, slot-ready GeoTIFF produced from the official competition
+rasters, whose operating point is <b>certified by split conformal prediction</b> rather than chosen
+by eye — with the confidence level, the certified floor and the metric's own density bound printed
+next to it.</p>
+
+<div class="card download">
+  <h2 style="margin-top:0;border:0;padding:0">⬇️ Download the submission file</h2>
+  <p><a class="big" href="SUBMISSION-GEMSDOE46-r8-conformal.tif" download>Download SUBMISSION-GEMSDOE46-r8-conformal.tif</a>
+  <span class="alt">(single-band float32 GeoTIFF, 250 KB, EPSG:32611, 100 m, values in [0,&nbsp;1])</span></p>
+  <ul class="tight small">
+    <li><b>Name:</b> <span class="mono">gemsdoe46-h46a-r8-conformal</span></li>
+    <li><b>Note (paste into the form's Note field):</b> <a href="downloads/NOTE-gemsdoe46-h46a-r8-conformal.txt">downloads/NOTE-gemsdoe46-h46a-r8-conformal.txt</a></li>
+    <li><b>Format audit of that exact file:</b> <a href="downloads/checks-gemsdoe46-h46a-r8-conformal-allfinite.json">checks-…-allfinite.json</a> — single band, float32, shape 3730 × 3292, EPSG:32611, transform matches the template, every cell in [0, 1], positives = 39,108</li>
+    <li><b>Fallback (same dots, NaN outside the survey bounds exactly like <span class="mono">sample_submission.tif</span>):</b> <a href="gemsdoe46-h46a-r8-conformal-nan.tif">gemsdoe46-h46a-r8-conformal-nan.tif</a></li>
+    <li><b>Step-by-step upload instructions:</b> <a href="how-to-submit.html">How to submit</a></li>
+  </ul>
+</div>
+
+<h2>The submission in numbers</h2>
+<div class="grid">
+  <div class="kpi"><div class="v">r = 8 px</div><div class="k">chosen spacing (800 m minimum separation between dots)</div></div>
+  <div class="kpi"><div class="v">90.0 %</div><div class="k">conformal confidence (α = 0.1000, 9 exchangeable calibration blocks)</div></div>
+  <div class="kpi"><div class="v">0.0283</div><div class="k">certified floor on the calibration half — a worst-case bound, not the observed score</div></div>
+  <div class="kpi"><div class="v">39,108</div><div class="k">positive cells (0.76 % of the 5,167,373-px surveyed footprint)</div></div>
+  <div class="kpi"><div class="v">0.5588</div><div class="k">analytic ceiling for this density at the declared scored-truth mass |G| = 7,905 px</div></div>
+  <div class="kpi"><div class="v">≤ 86,541</div><div class="k">dots that can still reach 0.3345 with <i>perfect</i> placement — the density rule every arm is checked against</div></div>
+</div>
+
+<h2>Why this is not "we tried a few spacings and this one looked best"</h2>
+<ol>
+  <li><b>Sweep.</b> 24 spatially blocked holdouts (4 × 6 tiles, ≈ 93 × 55 km each). For every block the
+      catalogue pixels inside the block are removed from training and the model must recover exactly
+      those pixels from the 25 physical features; the exact official metric is then evaluated on the
+      block with a halo, so blocking cannot change the metric's own 300 m reach.</li>
+  <li><b>Population matching.</b> The scored truth is the <i>new-fault</i> population, which is far
+      sparser than the catalogue. Every arm is therefore scored against a density-matched subsample of
+      the held-out catalogue (declared ratio 0.1296) as the primary population, with four other ratios
+      swept as a sensitivity screen.</li>
+  <li><b>Split conformal selection.</b> Blocks are split into a selection half and a calibration half by
+      tile parity. The calibration half yields a finite-sample one-sided bound
+      <span class="mono">L(s) = mean_cal(s) − q(s)</span> with <span class="mono">q</span> the
+      <span class="mono">ceil((n+1)(1−α))</span>-th smallest residual (Lei, G'Sell, Rinaldo, Tibshirani
+      &amp; Wasserman, JASA 113(523):1094–1111, 2018). α is set to the smallest value the data can
+      support, <span class="mono">1/(n_cal+1)</span> — asking for more confidence would make the bound
+      infinite.</li>
+  <li><b>Density admissibility (rule R3).</b> The metric collapses in the sparse regime to
+      <span class="mono">DTI = T / (0.2·N + 0.8·|G|)</span>, so a submission with too many dots cannot
+      reach the target <i>even with perfect placement</i>. An arm ships only if its <i>measured</i>
+      full-grid dot count leaves room for 0.3345 at the declared |G|.</li>
+  <li><b>Choice (rule R4).</b> Among admissible arms, the largest certified floor wins. That is
+      r = 8 px. The rules were fixed before the numbers were read, and the eligibility and split rules
+      depend only on the truth mask and the tile index — never on an arm's score.</li>
+</ol>
+
+<h2>Why the previous best (0.2778) scored what it did — and what would beat it</h2>
+<p>The published index is <span class="mono">DTI = TPw / (TPw + 0.2·FPw + 0.8·FNw)</span> with a 300 m
+triangular kernel. In the sparse regime it collapses to <b>a budget</b>,
+<span class="mono">DTI = T / (0.2·N + 0.8·|G|)</span>: adding mass pays only if its kernel credit
+exceeds <span class="mono">0.2 × (current score)</span>. The 0.2778 submission is the family's own
+0.2708 field with every dot within 200 m of the catalogue deleted — 37,654 dots left — and the whole
+family sequence (0.1922 @ 121k → 0.2477 @ 60k → 0.2600 @ 44k → 0.2708 @ 40k → 0.2778 @ 38k dots) is
+monotone in <b>mass removed</b>, not in model quality.
+Full derivation and the exact reproduction of the 0.2600 row from its own reported dot count:
+<a href="analysis.html">Analysis &amp; evidence</a>.</p>
+
+<h2>Limitations, stated up front</h2>
+<ul class="tight">
+  <li>The certified floor <b>0.0283 is a statement about the catalogue-proxy holdout</b>, not a promise
+      about the leaderboard: the scored truth is the new-fault population, which no public data labels.
+      What transfers exactly is the <i>density</i> side of the metric, which is where the algebra is used.</li>
+  <li>No DrivenData account exists in the build environment, so the rasters are the project's own
+      hash-verified copies and the upload itself must be done by the project owner.</li>
+  <li>Band 10 ("distance to earthquake") has an ambiguous unit in the shipped raster; no unit was
+      assumed anywhere (the hypothesis test uses rank and median-relative transforms only).</li>
+  <li>The model is a histogram gradient-boosted classifier on hand-built multi-scale features, not a
+      deep network: no GPU and 4 GB of RAM in the build environment. The deep-model direction is ranked
+      in <a href="hypotheses.html">Geological hypotheses</a>.</li>
+</ul>
+<p class="small">Every flag, every defect found and fixed, and every claim that is <i>not</i> verified:
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/IRREGULARITIES.md">docs/IRREGULARITIES.md</a>.
+Every external claim with its official link:
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/SOURCES.md">docs/SOURCES.md</a>.</p>
+</main>
+<footer>Repository: <a href="https://github.com/buffedlizard55-lab/GEMSDOE46">buffedlizard55-lab/GEMSDOE46</a>.
+Generated by <span class="mono">scripts/run_pipeline.py</span> → <span class="mono">scripts/make_submission.py</span>.
+Scores quoted for other teams are from the public leaderboard; the mechanism analysis is from the project owner's own score history.</footer>
+</body>
+</html>

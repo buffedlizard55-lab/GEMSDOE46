@@ -1,0 +1,204 @@
+{
+  "tag": "gemsdoe46-h46a-r8-conformal",
+  "spacing_px": 8.0,
+  "chosen_by": "pre-declared rules R3 (density admissibility) then R4 (argmax certified split-conformal floor)",
+  "candidate_arms": {
+    "3.0": {
+      "measured_dots_full_footprint": 228115,
+      "sweep_extrapolated_dots_full_footprint": 382812.0,
+      "admissible_at_declared_G": false,
+      "selection_mean": 0.03454415428084234,
+      "calibration_mean": 0.04218278214584932,
+      "conformal_quantile": 0.03183577302805732,
+      "certified_floor": 0.010347009117792003
+    },
+    "4.0": {
+      "measured_dots_full_footprint": 146254,
+      "sweep_extrapolated_dots_full_footprint": 247704.0,
+      "admissible_at_declared_G": false,
+      "selection_mean": 0.04122328051663649,
+      "calibration_mean": 0.05000007956084,
+      "conformal_quantile": 0.03395554934747427,
+      "certified_floor": 0.01604453021336573
+    },
+    "5.0": {
+      "measured_dots_full_footprint": 89653,
+      "sweep_extrapolated_dots_full_footprint": 154872.0,
+      "admissible_at_declared_G": false,
+      "selection_mean": 0.04309630336094656,
+      "calibration_mean": 0.050207642601203105,
+      "conformal_quantile": 0.03276995592962397,
+      "certified_floor": 0.017437686671579133
+    },
+    "6.0": {
+      "measured_dots_full_footprint": 65770,
+      "sweep_extrapolated_dots_full_footprint": 113580.0,
+      "admissible_at_declared_G": true,
+      "selection_mean": 0.039327053592008616,
+      "calibration_mean": 0.0475509708294541,
+      "conformal_quantile": 0.02191256019685507,
+      "certified_floor": 0.02563841063259903
+    },
+    "8.0": {
+      "measured_dots_full_footprint": 39108,
+      "sweep_extrapolated_dots_full_footprint": 67836.0,
+      "admissible_at_declared_G": true,
+      "selection_mean": 0.03638262546660911,
+      "calibration_mean": 0.040080806985831295,
+      "conformal_quantile": 0.011774621537600095,
+      "certified_floor": 0.0283061854482312
+    },
+    "10.0": {
+      "measured_dots_full_footprint": 25346,
+      "sweep_extrapolated_dots_full_footprint": 44760.0,
+      "admissible_at_declared_G": true,
+      "selection_mean": 0.03175929355606484,
+      "calibration_mean": 0.03238143608681149,
+      "conformal_quantile": 0.00843940894297196,
+      "certified_floor": 0.023942027143839528
+    },
+    "12.0": {
+      "measured_dots_full_footprint": 18728,
+      "sweep_extrapolated_dots_full_footprint": 33204.0,
+      "admissible_at_declared_G": true,
+      "selection_mean": 0.026108364354621553,
+      "calibration_mean": 0.029865020926671575,
+      "conformal_quantile": 0.009349748927317592,
+      "certified_floor": 0.020515271999353983
+    },
+    "14.0": {
+      "measured_dots_full_footprint": 13933,
+      "sweep_extrapolated_dots_full_footprint": 24864.0,
+      "admissible_at_declared_G": true,
+      "selection_mean": 0.021461060960290972,
+      "calibration_mean": 0.02541104499653465,
+      "conformal_quantile": 0.011101556974252021,
+      "certified_floor": 0.01430948802228263
+    },
+    "16.0": {
+      "measured_dots_full_footprint": 10941,
+      "sweep_extrapolated_dots_full_footprint": 19656.0,
+      "admissible_at_declared_G": true,
+      "selection_mean": 0.021972505270680207,
+      "calibration_mean": 0.024301768955799632,
+      "conformal_quantile": 0.026819311510194826,
+      "certified_floor": -0.002517542554395194
+    },
+    "20.0": {
+      "measured_dots_full_footprint": 7270,
+      "sweep_extrapolated_dots_full_footprint": 13116.0,
+      "admissible_at_declared_G": true,
+      "selection_mean": 0.01908983586110751,
+      "calibration_mean": 0.02005514486336092,
+      "conformal_quantile": 0.019238905279366593,
+      "certified_floor": 0.0008162395839943284
+    }
+  },
+  "dots": 39108,
+  "footprint_px": 5167373,
+  "footprint_fraction": 0.007568255668789538,
+  "catalogue_proxy": {
+    "DTI": 0.0920423059541246,
+    "TPw": 5268.465851720032,
+    "FPw": 36977.59259033105,
+    "FNw": 55719.53414827997,
+    "G": 60988,
+    "emitted_px": 39108
+  },
+  "declared_G_px": 7905.0,
+  "analytic_ceiling_at_declared_G": 0.5588310145911096,
+  "dots_allowed_for_target_at_declared_G": 86541.43497757846,
+  "prior_shift": NaN,
+  "conformal": {
+    "alpha": 0.1,
+    "confidence": 0.9,
+    "n_calibration": 9,
+    "n_selection": 7,
+    "certified_floor": 0.0283061854482312,
+    "certified_floor_at_chosen": 0.02563841063259903,
+    "split_scheme": "checkerboard (tile parity (i+j)%2)",
+    "eligibility_rule": "block contains >=1 held-out truth pixel",
+    "excluded_tiles": [
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        5
+      ]
+    ]
+  },
+  "submission_note": "GEMSDOE46 gemsdoe46-h46a-r8-conformal | split-conformal spacing r=8 px (800 m minimum separation), certified floor 0.0283 at 90.0% confidence (alpha=0.1000; n_cal=9 exchangeable spatial blocks; Lei et al. 2018 split conformal) | 39,108 dots | declared |G|=7905 px -> analytic ceiling 0.5588 | DTI on the catalogue proxy 0.0920 | geology: multi-scale L2 curvature + official tilt-angle edge layer; no feature uses distance to any known fault",
+  "files": {
+    "allfinite": {
+      "file": "gemsdoe46-h46a-r8-conformal-allfinite.tif",
+      "bytes": 250676,
+      "sha256": "68063ac544a2132ffc20419f8dd814bb92b1d0d90877c14e2383c5d3859f5f42",
+      "positives": 39108,
+      "nan_pixels": 0,
+      "min": 0.0,
+      "max": 1.0,
+      "expected_dots": 39108,
+      "checks": {
+        "single_band": true,
+        "dtype_float32": true,
+        "shape_3730x3292": true,
+        "crs_epsg_32611": true,
+        "transform_matches_template": true,
+        "unique_positive_values_are_1": true,
+        "portal_range_0_1_all_cells": true,
+        "all_cells_finite": true,
+        "range_0_1_on_finite_cells": true
+      },
+      "all_checks_passed": true
+    },
+    "nan": {
+      "file": "gemsdoe46-h46a-r8-conformal-nan.tif",
+      "bytes": 381534,
+      "sha256": "1647e7657e4ba34bba1a659580e8b84f84f20306ae8fa6cc5b9d59e768369bd6",
+      "positives": 39108,
+      "nan_pixels": 7111787,
+      "min": 0.0,
+      "max": 1.0,
+      "expected_dots": 39108,
+      "checks": {
+        "single_band": true,
+        "dtype_float32": true,
+        "shape_3730x3292": true,
+        "crs_epsg_32611": true,
+        "transform_matches_template": true,
+        "unique_positive_values_are_1": true,
+        "portal_range_0_1_all_cells": true,
+        "nan_outside_footprint_only": true,
+        "all_finite_inside_footprint": true,
+        "range_0_1_on_finite_cells": true
+      },
+      "all_checks_passed": true
+    }
+  }
+}
