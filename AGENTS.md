@@ -24,10 +24,72 @@
    ```
    python3 -m pytest tests -q          # metric vs published example + brute force; DFA calibration
    python3 scripts/verify_all.py       # adds pinned hashes + a full format audit of the shipped TIFs
-   python3 scripts/build_site.py       # site must regenerate without error and every local link resolve
+   python3 scripts/build_h47_site.py   # active site must regenerate byte-identically (CI diffs it)
    ```
 6. **Reporting style** — state what was measured, what was assumed, and what is owner-reported.
    Label negative results as negative results; they are the most useful output of this project.
 
-## R10 session handoff (supersedes older recommendations)
-Read `registry/r10.json` and `docs/research/r10-review.md` before using any artifact. R10 is unique and format-valid but **HOLD_DO_NOT_SUBMIT** after a failed blocked proxy gate. Run `scripts/build_r10_site.py` for the active site; `build_site.py` builds archived H46 pages only. Existing `registry/submissions.json` describes historical, pre-index-fix files. The old hidden-truth-count and independence claims are withdrawn. Do not use aggregate leaderboard values as authenticated file receipts.
+## R11 session handoff (2026-10-06) — supersedes H47 guidance for the active site
+
+Read `registry/r11.json`, `docs/research/r11-review.md` and `docs/research/session-r11-plan.md`
+before touching an artifact.
+
+* **Active site builder:** `scripts/build_r11_site.py` (writes `index.html`, `docs/index.html`,
+  `docs/executive-summary.html` from `registry/r11.json`; CI runs it and diffs the three pages).
+  `scripts/build_h47_site.py`, `scripts/build_r10_site.py` and `scripts/build_site.py` are historical
+  — they write the same three pages from older receipts and would overwrite the active site.
+  `scripts/build_irregularities_page.py` renders `docs/irregularities.html` from
+  `registry/irregularities.json`; it is also diffed by CI.
+* **R11 candidate status: `PROXY_GATE_PASSED_NOT_SUBMITTED`** (`registry/r11.json → status`). It is
+  unique, format-audited (all-finite, min 0, max 1, zeros outside the footprint) and, on the
+  stratified-SGMC instrument that reproduces the three known live orderings, it beats the
+  live-scored 0.2778 file 0.16619 vs 0.08852 with the random control at 0.06835 (paired +0.06476,
+  t = +6.77, 127 blocks). **No slot has been used; submission is the user's decision.**
+* **Do not describe any proxy number as a score forecast.** The stratified instrument's truth is a
+  1:50k–1:1M compilation ~4× denser than the inferred hidden set and is not the competition's label
+  set. The preregistered gate (un-stratified SGMC) is published beside the Pass 3 instrument, not
+  replaced by it; the un-stratified version *inverts* the live order.
+* **What actually moved the needle:** new evidence families (mirrored 1 m lidar terrain descriptors
+  and the GeoDAWN K/Th/U/ratio grids — the official stack has only the radiometric total count,
+  IR-46-13) plus an emitter whose accept rule is the metric's own marginal break-even
+  (`src/gems46/optemit.py`). Pruning the incumbent's dots does not work: the R11 field's AUC over
+  the incumbent's own dots is 0.507.
+* **Negative results stay published:** the brief's DFA regime-break arm (R11/H46-R11-3) and the
+  earlier R10 crossover both fail their gates; H47-1 (catalogue-supervised lineament detector) is
+  `HOLD_DO_NOT_SUBMIT` on the same instrument R11 passes.
+
+## H47 session handoff (2026-10-06) — historical, superseded by the R11 handoff above
+
+Read `registry/h47.json`, `docs/research/h47-review.md` and `docs/research/h47-hypotheses.md` before
+touching an artifact.
+
+* **Active site builder:** `scripts/build_h47_site.py` (writes `index.html`, `docs/index.html`,
+  `docs/executive-summary.html` from `registry/h47.json`; CI runs it and diffs the three pages).
+  `scripts/build_r10_site.py` and `scripts/build_site.py` are historical — running them overwrites
+  the active pages.
+* **H47-1 status: HOLD_DO_NOT_SUBMIT** (`registry/h47.json → screen.verdict`). The shipped
+  full-field emission at matched mass (37,654 dots) scores 0.053242 against the incumbent's 0.088516
+  on the stratified instrument (delta −0.035274, paired t −5.48 over 127 blocks, ranking AUC over
+  the incumbent's own dots 0.497). The artifact is unique and format-audited and is published for
+  inspection only. **Do not spend the weekly slot on it.**
+* **Format rule measured from the files that actually have live scores:** the three family files
+  (0.2600/0.2708/0.2778) are all-finite single-band float32, min 0, max 1, zeros outside the
+  footprint, no nodata sentinel. Ship that shape (the `-zeros` twin); the NaN-outside twin matches
+  the template's footprint but NaN fails a naive `0 <= v <= 1` check — that is the historical
+  "Predicted values must be in range [0, 1]" portal error. Both twins are audited by
+  `scripts/verify_all.py` §5b.
+* **The three live-scored family files are ONE dot set** (exact nesting C ⊂ B ⊂ A, identical
+  37,654-pixel core beyond 200 m of the catalogue). The whole 0.26→0.28 progression is removal of
+  near-catalogue dead mass. Any new arm must win by placement of new dots, not by re-thinning.
+* **Instrument rule** (`registry/h47.json → ladder`): the catalogue-in-block holdout and the
+  un-stratified SGMC truth **invert** the live order; only SGMC truth stratified at ≥3 px (module
+  default 5 px = 500 m) reproduces 0.2600 < 0.2708 < 0.2778. A uniform-random emission at matched
+  mass scores T ≈ 4,140 ± 70, so the instrument's useful range is ±20% of chance — screen only.
+* **Falsified:** along-strike continuation of catalogue tips (H47-2: 12–16% hit rate vs a 30.5%
+  random base rate); catalogue-supervised detection as a route to new faults (H47-1: ranking AUC
+  0.497 over the incumbent's dots, flat hit-rate 12.1% → 9.4% from 5k to 120k dots).
+* **Blocked, named, not faked:** 1 m lidar/3DEP–GeoDAWN scarps (competition data tab login-walled;
+  sciencebase/usgs/s3 hosts return HTTP 000 here) and the raw USGS earthquake catalogue.
+* R10 remains HOLD_DO_NOT_SUBMIT. R10↔0.2778 overlap measured: 260 shared pixels, Jaccard 0.0035
+  (the equal 37,654 counts are coincidence). The old hidden-truth-count and independence claims stay
+  withdrawn. Aggregate leaderboard values are not file receipts.

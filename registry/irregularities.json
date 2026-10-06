@@ -118,6 +118,27 @@
       "detail": "Pass 1 of experiment R11 executed the preregistered rule and produced a gate comparing a 10,000-dot candidate against the incumbent file at its own 37,654-dot mass, contradicting the preregistration's 'matched emitted mass' clause. The mass rule itself was degenerate: it transferred a flat proxy credit ratio, so its predicted DTI fell monotonically with emitted mass and the max-min choice collapsed to the smallest grid point (its printed projection, 0.687, is impossible and is what exposed the bug).",
       "effect_on_this_repository": "Pass 2 (scripts/refine_r11_mass.py) replaced the transfer with a measured one, re-selected the mass (44,090), re-ran the gate at that matched mass, and preserved Pass 1's numbers unedited in registry/r11.json under pass1_as_executed. Both gates are published; the correction is auditable.",
       "status": "fixed in Pass 2; both versions recorded"
+    },
+    {
+      "id": "IR-47-01",
+      "severity": "medium",
+      "title": "H47-1 detector failed its pre-registered screen",
+      "detail": "Shipped full-field emission at matched mass (37,654 dots) scores 0.053242 against the incumbent's 0.088516 on the stratified-SGMC instrument (delta -0.035274, paired t -5.48 over 127 blocks); the field ranks the incumbent's own dots at AUC 0.497 (chance) and its emission hit-rate is flat from 5k to 120k dots (12.1% -> 9.4%). The out-of-fold mixture is +0.005093 but not significant (t 0.64). No competition slot was used.",
+      "status": "HOLD_DO_NOT_SUBMIT - artifact published for inspection"
+    },
+    {
+      "id": "IR-47-02",
+      "severity": "low",
+      "title": "R10 and the 0.2778 file share exactly 37,654 pixels but are not the same file",
+      "detail": "Per-pixel overlap measured: 260 shared pixels, Jaccard 0.0035. The identical pixel counts are a coincidence; the previous session's unresolved independence question is closed.",
+      "status": "resolved, documented"
+    },
+    {
+      "id": "IR-47-03",
+      "severity": "medium",
+      "title": "The family's three live-scored files are one dot set with different near-catalogue extras",
+      "detail": "Measured: C (37,654 px, 0.2778) is an exact subset of B (40,199 px, 0.2708), which is an exact subset of A (44,090 px, 0.2600); all three share the identical 37,654-pixel d_cat>2 px core. The entire 0.2600->0.2778 progression is the removal of dots within 200 m of the published catalogue. Any new arm must therefore win on placement of new dots, not on re-thinning this set.",
+      "status": "documented in docs/research/h47-review.md"
     }
   ],
   "updated_utc": "2026-10-06"

@@ -68,6 +68,7 @@ def render(prefix: str, guide: bool = False) -> str:
     label, cls, blurb = STATUS.get(st, STATUS["HOLD_DO_NOT_SUBMIT"])
     cand, dfa = R["candidate"], R["dfa_candidate"]
     d, res = prefix + "r11/", prefix + "research/"
+    d_gems, d_res = prefix, prefix + "research/"
     name = R.get("submission_name", "GEMSDOE46-R11")
     means = P2["blocked_means"]
     gate_re, gate_sh = P2["gate_vs_reemitted"], P2["gate_vs_shipped"]
@@ -87,6 +88,25 @@ def render(prefix: str, guide: bool = False) -> str:
     dfa_corr = "".join(f"<tr><td>{E(k)}</td><td>{f(v['pearson_smoothed'], 4)}</td>"
                        f"<td>{f(v.get('jaccard'), 4)}</td></tr>" for k, v in P2["correlations_dfa"].items())
     lims = "".join(f"<li>{E(x)}</li>" for x in R["limitations"])
+    p3 = R.get("pass3_stratified_audit", {})
+    p3i = p3.get("instruments", {})
+    p3_rows = []
+    for nm in ("incumbent-0.2778", "r11-shipped-44090", "r11-fused-reemitted-37654",
+               "uniform-random-37654"):
+        cells = []
+        for key in ("sgmc_stratified_d0_3", "sgmc_stratified_d0_5"):
+            r = p3i.get(key, {}).get("emissions", {}).get(nm)
+            cells.append(f(r["dti"], 5) if r else "--")
+        r5 = p3i.get("sgmc_stratified_d0_5", {}).get("emissions", {}).get(nm)
+        if r5:
+            p3_rows.append(f"<tr><td>{E(nm)}</td><td>{cells[0]}</td><td>{cells[1]}</td>"
+                           f"<td>{r5['T_credit']:,.1f}</td><td>{r5['hit_fraction'] * 100:.1f} %</td>"
+                           f"<td>{r5['mean_credit_per_dot']:.4f}</td></tr>")
+    p3_table = "".join(p3_rows)
+    p3_paired = p3i.get("sgmc_stratified_d0_5", {}).get("paired_vs_incumbent", {})
+    p3_sh = p3_paired.get("r11-shipped-44090", {})
+    p3_re = p3_paired.get("r11-fused-reemitted-37654", {})
+    p3_auc = p3i.get("sgmc_stratified_d0_5", {}).get("auc_over_incumbent_dots")
     p1_gate = ("PASS" if P1["gate_passed"] else "FAIL")
     folds = len(P2["gate_vs_shipped"].get("ci95") and P2.get("blocked_means", {}) and
                 R.get("blocked_folds", []) or []) or len(R["blocked_folds"])
@@ -124,10 +144,34 @@ seeded block bootstrap 95% interval [{gate_sh['ci95'][0]:+.5f}, {gate_sh['ci95']
 {gate_sh['blocks_improved']}/{gate_sh['n_blocks']} blocks improved.
 Against the same-mass re-emission of the incumbent field: <b>{gate_re['mean_delta']:+.5f}</b>,
 [{gate_re['ci95'][0]:+.5f}, {gate_re['ci95'][1]:+.5f}], {gate_re['blocks_improved']}/{gate_re['n_blocks']} blocks.</p>
-<p><b>Both intervals exclude zero, and that is the whole claim.</b> The proxy is the SGMC
+<p><b>Both intervals exclude zero.</b> The proxy is the SGMC
 state-geology compilation -- a reused, imperfect instrument whose family the group measured at
 Spearman ≈ +0.31 against 11 live leaderboard scores. A pass is permission to consider one weekly
 slot, not an estimate of the leaderboard.</p></section>
+
+<section id="stratified"><h2>Pass 3 -- the instrument that actually reproduces the live order</h2>
+<p>The gate above ran on the <i>un-stratified</i> off-catalogue SGMC truth. A parallel session on this
+repository measured (<code>registry/h47.json → ladder</code>) that this instrument <b>inverts</b> the
+three known live orderings (0.2600 / 0.2708 / 0.2778) and that only the <i>stratified</i> version --
+truth = SGMC fault pixels more than <code>d0</code> pixels from every catalogue pixel, with the
+catalogue masked -- reproduces all three. So the candidate was re-scored on it
+(<code>scripts/audit_r11_on_stratified.py</code>, receipt <code>evidence/r11-stratified-audit.json</code>) <i>before</i>
+anything was claimed about it:</p>
+<div class="scroll"><table><tr><th>emission</th><th>DTI, d0 = 3 px</th><th>DTI, d0 = 5 px</th>
+<th>covered credit T</th><th>dots within 300 m of truth</th><th>mean credit per dot</th></tr>{p3_table}</table></div>
+<p>On the d0 = 5 px instrument the shipped candidate scores <b>{f(p3i.get('sgmc_stratified_d0_5', {}).get('emissions', {}).get('r11-shipped-44090', {}).get('dti'), 5)}</b>
+against the incumbent file's {f(p3i.get('sgmc_stratified_d0_5', {}).get('emissions', {}).get('incumbent-0.2778', {}).get('dti'), 5)},
+with a uniform-random control at the same mass at {f(p3i.get('sgmc_stratified_d0_5', {}).get('emissions', {}).get('uniform-random-37654', {}).get('dti'), 5)}.
+Paired over the {p3_sh.get('blocks', '--')} truth-bearing blocks: shipped <b>{p3_sh.get('mean_delta', 0):+.5f}</b>
+(t = {p3_sh.get('t', 0):+.2f}); the same field re-emitted at the matched mass 37,654
+<b>{p3_re.get('mean_delta', 0):+.5f}</b> (t = {p3_re.get('t', 0):+.2f}). The d0 = 3 px instrument agrees.
+<b>The advantage is new placement, not pruning:</b> the R11 field's AUC over the incumbent's
+<i>own</i> dots is {f(p3_auc, 4)} -- chance -- so the candidate wins by putting dots where the
+incumbent has none, exactly the route the H47 arm failed to take.</p>
+<p class="muted">Still a screen, not a score forecast: this truth is a 1:50k–1:1M compilation roughly
+4× denser than the inferred hidden set, and it is not the competition's label set. Pass 3 was run
+after the gate rather than preregistered; it is reported because it is the strongest instrument
+available here, and the preregistered gate is published beside it, not instead of it.</p></section>
 
 <section id="pass2"><h2>What Pass 2 corrected, and why you can check it</h2>
 <p>The experiment ran once, exactly as preregistered. Re-reading the receipt found two defects, both
@@ -173,6 +217,29 @@ windows over 0.4–3.2 km scales, 800 m placement granularity, requiring both sc
 their own background regime. Its artefact and correlations are published whether or not it wins --
 and on this proxy it does not win ({means['R11-dfa-local']:.5f} vs {means['R11-fused']:.5f}).</li>
 </ol></section>
+
+<section id="other-arms"><h2>The other arms in this repository, and their real status</h2>
+<p>R11 is the first arm here whose candidate field beats the live-scored incumbent file on the
+stratified instrument. The other arms are published with their failures:</p>
+<ul>
+<li><b>R10 (DFA crossover, 0.8-12.8 km)</b> — <code>HOLD_DO_NOT_SUBMIT</code>: blocked proxy mean
+0.0617 vs 0.1033 for the best comparator, paired −0.0416. Artefact:
+<a href="{d_gems}r10/gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif" download>the R10 TIF</a> ·
+<a href="{d_gems}r10/receipt.json">receipt</a>.</li>
+<li><b>H47-1 (catalogue-supervised lineament detector)</b> — <code>HOLD_DO_NOT_SUBMIT</code>: on the
+same d0 = 5 px instrument and the same matched mass it scores 0.053242 against the incumbent's
+0.088516 (paired t −5.48 over 127 blocks; AUC over the incumbent's dots 0.497). Its honest
+conclusion — <i>it cannot win by pruning or by learning the published catalogue alone</i> — is what
+led to the R11 placement route. Artefacts:
+<a href="{d_gems}downloads/h47/gemsdoe47-h47-1-catalogue-supervised-lineament-37654-20261006T180000Z-h47a-zeros.tif" download>the H47 TIF</a> ·
+<a href="{d_gems}h47/receipt.json">receipt</a> ·
+<a href="{d_res}h47-review.md">review</a>.</li>
+<li><b>R11 DFA regime-break (the standing brief's hypothesis)</b> — <b>not confirmed</b> on either
+instrument; published as a separate artefact above rather than folded into the primary.</li>
+</ul>
+<p class="muted">Nothing here is an organizer score. The three live-scored family files
+(0.2600 / 0.2708 / 0.2778) are owner-reported, and the board attributes scores to participants, not
+files (IR-46-01).</p></section>
 
 <section id="correlation"><h2>Is the primary a new hypothesis?</h2>
 <p>Preregistration rule: a candidate whose maximum |correlation| with prior shipped files exceeds 0.2

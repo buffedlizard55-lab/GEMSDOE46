@@ -93,6 +93,102 @@
    "data_status": "available in-repo mirror: data/external/gdr_wellspring_in_footprint.csv (restored); original free and official at gdr.openei.org/submissions/1391"
   },
   {
+   "id": "H47-1",
+   "rank": 1,
+   "title": "Catalogue-supervised multi-scale oriented-lineament detector with metric-algebraic dashed emission (IMPLEMENTED, SCREEN FAILED -> HOLD_DO_NOT_SUBMIT)",
+   "layers": [
+    "19 official bands; 55 features: |grad| at sigma 1/2/4, Laplacian, structure-tensor coherence, 4-px high-pass on 8 principal bands + raw/context channels",
+    "labels.tif as supervision (positives) and, beyond 500 m, as hard negatives; no external data"
+   ],
+   "physical_signature": "a learned joint multi-scale lineament descriptor over magnetic, gravity, topographic, conductivity and seismicity context bands",
+   "why_off_catalogue": "the catalogue under-records weakly expressed structures; a joint descriptor is the classical criterion for a fault with no clean surface trace",
+   "differs_from_repo": "no prior GEMSDOE46 arm trains on the catalogue; family detectors exist (GEMSDOE32 HGB harness, GEMSDOE36 U-Net), so the claim was the feature stack plus the metric-algebraic emission rule",
+   "measured_outcome": {
+    "cv_auc_blocked_catalogue": 0.5685,
+    "matched_mass_stratified_sgmc_d0_5_ship_field": {
+     "delta_vs_incumbent_0.2778": -0.035274,
+     "paired_t_127_blocks": -5.48,
+     "auc_over_incumbent_dots": 0.497,
+     "hit_fraction": 0.0634
+    },
+    "matched_mass_stratified_sgmc_d0_5_oof_field": {
+     "delta_vs_incumbent_0.2778": 0.005093,
+     "paired_t": 0.64,
+     "auc_over_incumbent_dots": 0.5645
+    },
+    "uniform_random_T_at_same_mass": 4140.2
+   },
+   "status": "HOLD_DO_NOT_SUBMIT - artifact published for inspection, no slot spent",
+   "evidence": [
+    "registry/h47.json -> screen",
+    "docs/research/h47-review.md"
+   ]
+  },
+  {
+   "id": "H47-2",
+   "rank": 2,
+   "title": "Along-strike continuation of catalogue fault tips",
+   "layers": [
+    "labels.tif endpoints only (no official band used)"
+   ],
+   "physical_signature": "catalogue trace geometry alone: tip position plus local PCA strike",
+   "why_off_catalogue": "relay ramps and tip zones beyond a mapped trace end are faults the compilation did not extend",
+   "differs_from_repo": "family H18-3a used catalogue-tip density and H33-5 uses the detector's own ridge field; this tested the pure geometric projection",
+   "measured_outcome": {
+    "endpoints": 4898,
+    "P_hit_within_500m_of_off_catalogue_SGMC": {
+     "L_5px": 0.152,
+     "L_10px": 0.159,
+     "L_20px": 0.126,
+     "L_30px": 0.124,
+     "L_40px": 0.118
+    },
+    "unconditional_random_base_rate": 0.305
+   },
+   "status": "FALSIFIED (below the random base rate)"
+  },
+  {
+   "id": "H47-3",
+   "rank": 3,
+   "title": "Explicit 1 m lidar scarp channels / 3DEP-GeoDAWN tiles",
+   "layers": [
+    "USGS 3DEP / GeoDAWN hillshade and DEM-derived scarp metrics at 1 m, resampled to 100 m"
+   ],
+   "physical_signature": "fresh fault scarps resolved only below the 100 m grid of the official bands",
+   "why_off_catalogue": "surface ruptures younger than the compilation, visible only in lidar",
+   "differs_from_repo": "family H33-C used lidar scarplet chains from a different lidar source; this would add the official 3DEP product",
+   "external_source": {
+    "name": "USGS 3DEP / GeoDAWN sciencebase item",
+    "url": "https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7"
+   },
+   "obtainability": "NOT VERIFIED - competition data tab is login-walled and sciencebase/usgs/s3 hosts return HTTP 000 from this sandbox",
+   "status": "BLOCKED, source named"
+  },
+  {
+   "id": "H47-4",
+   "rank": 4,
+   "title": "Cross-physics rank product without supervision",
+   "layers": [
+    "official bands 1-19, rank-normalised per physics family"
+   ],
+   "physical_signature": "agreement of independent physics at a location, with no learned weights",
+   "why_off_catalogue": "a fault that perturbs several fields should survive a rank product even where no single field is decisive",
+   "differs_from_repo": "close to H46-2 (geometric-mean corroboration) and family H33-A, so it is a re-parameterisation, not a new mechanism",
+   "status": "NOT RUN - superseded by the H47-1 failure and the 'already taken' table"
+  },
+  {
+   "id": "H47-5",
+   "rank": 5,
+   "title": "Collar/budget engineering on the incumbent geometry",
+   "layers": [
+    "previous submission bytes only"
+   ],
+   "physical_signature": "none - metric-space optimisation",
+   "why_off_catalogue": "n/a",
+   "differs_from_repo": "the 200 m collar is already live-validated by H33-2-B2; the open question is dead-dot identification, which H47-1 measured at chance (AUC 0.497 over the incumbent's own dots)",
+   "status": "NOT RUN - one measured blocker"
+  },
+  {
    "id": "H46-R11-1",
    "rank": 1,
    "title": "Radiometric compositional-contrast lineaments (GeoDAWN K, Th/K, U/K, U/Th) (TESTED: part of the R11 primary)",
@@ -147,5 +243,5 @@
   }
  ],
  "generated_utc": "2026-10-06",
- "register_note": "Identifiers in this file are H46-N and H46-R11-N. Two other registers use overlapping numbers: docs/HYPOTHESES.md (H1-H5, the brief's in-repo feature hypotheses) and docs/research/hypotheses.md (H46-1-H46-4, external-data hypotheses). Quote the file name with any id."
+ "register_note": "Identifiers in this file are H46-N and H46-R11-N. Two other registers use overlapping numbers: docs/HYPOTHESES.md (H1-H5, the brief's in-repo feature hypotheses) and docs/research/hypotheses.md (H46-1-H46-4, external-data hypotheses). Quote the file name with any id. H47-N entries were added by the parallel H47 session and are carried here unchanged."
 }
