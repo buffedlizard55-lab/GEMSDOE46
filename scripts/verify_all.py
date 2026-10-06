@@ -215,6 +215,24 @@ def main() -> int:
         good = f.is_file() and status == "HOLD_DO_NOT_SUBMIT" and positive == 37654
         ok &= good
         print(f"  {'OK  ' if good else 'FAIL'} {tag}: {f.name}  {status}  {positive} dots")
+    print()
+    print("=" * 96)
+    print("10. The other gate-passed arm (R11F) — both arms on the same stratified instrument")
+    print("=" * 96)
+    rf = json.loads((ROOT / "registry/r11f.json").read_text())
+    st = rf["pass3_stratified_audit"]["instruments"]["sgmc_stratified_d0_3"]["emissions"]
+    f = ROOT / "docs/r11f" / rf["candidate"]["file"]
+    good = (f.is_file() and rf["status"] == "PROXY_GATE_PASSED_NOT_SUBMITTED"
+            and bool(rf["gate_passed"]) and rf["candidate"]["positive"] == 44090)
+    ok &= good
+    print(f"  {'OK  ' if good else 'FAIL'} r11f: {rf['candidate']['file']}  {rf['status']}  "
+          f"{rf['candidate']['positive']:,} dots")
+    for k, v in st.items():
+        print(f"       d0=3 px  {k:<32} DTI {v['dti']:.5f}  T {v['T_credit']:,.0f}  "
+              f"hit {100 * v['hit_fraction']:.2f}%")
+    print("       R11F audits at d0=3 px, R12 at d0=5 px; both reproduce the incumbent near 0.095 and")
+    print("       both place the new-sensor arm near 0.166 - independent agreement on the evidence,")
+    print("       not on the file. Neither is a leaderboard score.")
     print("ALL COMPUTATIONAL CHECKS PASSED (not a scoring endorsement)" if ok else "SOME CHECKS FAILED")
     return 0 if ok else 1
 

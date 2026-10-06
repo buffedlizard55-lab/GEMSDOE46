@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the GitHub Pages site from registry/*.json so the pages cannot drift from the receipts.
 
-Default: delegates to build_r12_site.py for the active site.
+Default: delegates to build_r11f_site.py for the active site.
 Historical rebuild (requires old derived stats): --legacy-h46 ->  docs/h46/{index,executive-summary,hypotheses,validation,
 research,sources,irregularities}.html + docs/h46/assets/style.css + docs/h46/downloads/*.png
 """
@@ -211,7 +211,7 @@ never for an absolute threshold. Full discussion in <a href="research.html">Rese
 <p><img src="downloads/preview_h46_2.png" alt="Emission preview"></p>
 """
     # DOCS is docs/h46 (the archive).  The live pages are docs/index.html and
-    # docs/executive-summary.html, written by scripts/build_r12_site.py, which this script
+    # docs/executive-summary.html, written by scripts/build_r11f_site.py, which this script
     # delegates to in its default mode.
     (DOCS / "index.html").write_text(page("Overview", ov, "index.html"))
 
@@ -583,4 +583,4 @@ if __name__ == "__main__":
     if "--legacy-h46" in sys.argv:
         raise SystemExit(main())
     import runpy
-    runpy.run_path(str(ROOT / "scripts" / "build_r12_site.py"), run_name="__main__")
+    runpy.run_path(str(ROOT / "scripts" / "build_r11f_site.py"), run_name="__main__")

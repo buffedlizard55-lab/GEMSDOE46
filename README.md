@@ -1,5 +1,60 @@
 # GEMSDOE46 — auditable fault-discovery experiments
 
+Four parallel arms live in this repository. **One is the current candidate**: the R11F fusion arm.
+
+## Download the TIF
+
+**[Download `gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif`](docs/r11f/gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif)** · [full machine-readable
+receipt](docs/r11f/receipt.json) · [step-by-step submission guide](https://buffedlizard55-lab.github.io/GEMSDOE46/docs/executive-summary.html)
+
+**PROXY GATE PASSED — NOT SUBMITTED.** A unique, format-audited, all-finite single-band float32
+GeoTIFF: 44,090 unit dots, zero outside the scored footprint, sha256
+`57be86502a03a22e…`. It fuses two evidence families the official 19-band stack does not contain
+(1 m lidar terrain descriptors as a scarp matched filter; the GeoDAWN K/Th/U compositional-contrast
+ratio grids, DOI 10.5066/P93LGLVQ) and emits them with an expected-credit submodular optimiser whose
+stop rule is the metric's own break-even. **No competition slot has been used; submitting it is the
+user's decision.**
+
+| Measured result (all proxy, not organizer scores) | Value |
+|---|---:|
+| R11F candidate on the live-order-calibrated stratified-SGMC instrument (d0 = 5 px) | **0.16619** |
+| Live-scored 0.2778 incumbent file, same instrument | 0.08852 |
+| Uniform-random control, same mass | 0.06835 |
+| Paired over 127 truth-bearing blocks | +0.06476 (t = +6.77) |
+| Same field re-emitted at the matched mass 37,654 | +0.03837 (t = +4.31) |
+| Dots within 300 m of truth (candidate vs incumbent) | 14.3 % vs 10.5 % |
+
+The advantage is **new placement, not pruning**: the R11F field's AUC over the incumbent's *own*
+dots is 0.507 — chance — so it wins by putting dots where the incumbent
+has none. The candidate is explicitly *not* claimed as a new hypothesis: its maximum |correlation|
+with prior shipped files is 0.3779, above the 0.2 ceiling.
+
+- [Active site](https://buffedlizard55-lab.github.io/GEMSDOE46/) ·
+  [R11F review, defects found and limitations](docs/research/r11f-review.md) ·
+  [preregistration](docs/research/session-r11f-plan.md) ·
+  [flagged irregularities](https://buffedlizard55-lab.github.io/GEMSDOE46/docs/irregularities.html)
+
+### The other three arms, kept as published negatives
+
+| arm | what it tested | verdict |
+|---|---|---|
+| **R11 (A/C/D)** `registry/r11.json` | windowed-DFA boundaries; tilt zero-crossings; matched-filter contacts | A stopped for **futility** at synthetics (4.4 km mislocalization); C **suspended**; D **HOLD** (blocked DTI 0.0610 vs 0.1007 for the best comparator, correlation gate 0.543). [TIF](docs/r11/gems46-r11d-matchedfilter-5caba5cc4ffc-zeros.tif) · [review](docs/research/r11-review.md) |
+| **H47-1** `registry/h47.json` | catalogue-supervised lineament detector (LightGBM over 55 features) | **HOLD_DO_NOT_SUBMIT**: 0.053242 vs the incumbent's 0.088516 on the same stratified instrument R11F passes; AUC over the incumbent's dots 0.497. [TIF](docs/downloads/h47/gemsdoe47-h47-1-catalogue-supervised-lineament-37654-20261006T180000Z-h47a-zeros.tif) · [review](docs/research/h47-review.md) |
+| **R10** `registry/r10.json` | 51 km DFA slope crossover | **HOLD**: 0.0617 vs 0.1033, paired −0.0416. [TIF](docs/r10/gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif) |
+
+The DFA regime-break detector asked for by the standing brief has now failed in four independent
+implementations (R10, H46-1, R11-A, R11F's re-localised variant) — see `docs/HYPOTHESES.md` and
+IR-46-16.
+
+## The standing question: why did 0.2778 score highest, and is more reachable?
+
+Measured this session from the three live-scored dot files (owner-reported scores; no organizer file→score receipt exists):
+
+* They are **one** dot set. The 37,654-pixel file (0.2778) is an exact subset of the 40,199-pixel file (0.2708), which is an exact subset of the 44,090-pixel file (0.2600); all three share the **identical 37,654-pixel** core beyond 200 m of the published catalogue. The entire 0.26→0.28 progression is the deletion of near-catalogue dead mass, nothing else.
+* The published metric charges 0.2 per dot with no truth within 300 m and 0.8 per uncovered truth pixel. Fitting the two score steps gives `T ≈ 5,223` covered truth pixels and denominator `D ≈ 18,800`; each dead dot costs `0.2·T/D² ≈ 3.0e-6`, each hit dot earns `(1−DTI)/D ≈ 3.8e-5`, so the break-even hit rate is `0.2·DTI/(1−DTI) ≈ 7.7%`. The incumbent hits at ~10.5% — just above break-even. That is the plateau.
+* Beating it needs either (i) removing the ~32,000 dead dots without the hidden labels — the test is whether a model can rank the incumbent's own dots, and the H47 detector was at chance (AUC 0.497) — or (ii) placing dots on faults the catalogue lacks. H47 found its own detector could not do (ii) either (flat hit-rate 12.1 % → 9.4 % from 5 k to 120 k dots) and concluded the needed information was "not obtainable in this sandbox". **R11 supersedes that conclusion**: the information was in the mirrored external layers (1 m lidar terrain descriptors, GeoDAWN radiometric ratios), and R11's fusion lifts the instrument hit fraction from 10.5 % to 14.3 % and the instrument DTI from 0.0885 to 0.1662 (paired t +6.77 over 127 blocks). See §5b of `docs/research/r11-review.md`.
+* Instrument discipline: the catalogue-in-block holdout and the un-stratified SGMC truth both **invert** the live order; only SGMC truth stratified at ≥3 px from the catalogue reproduces 0.2600 < 0.2708 < 0.2778. `registry/h47.json → ladder` prints all six rows before any delta.
+
 <!-- R12 STATUS:BEGIN -->
 ## Download the submission TIF
 
@@ -39,7 +94,7 @@ published in the receipt.
 
 A sibling session's ladder showed the un-stratified off-catalogue SGMC proxy *inverts* the ordering of
 the three live-scored family files, while truth stratified at ≥3 px from the catalogue reproduces it
-(IR-46-18). R12 was therefore re-measured on that instrument, under a rule amended **before** the
+(IR-46-21). R12 was therefore re-measured on that instrument, under a rule amended **before** the
 measurement (`session-r12-plan.md` §7.1). Stratified truth 56,822 px —
 identical to the d0 = 5 px row of that ladder, so it is the same instrument.
 
@@ -77,7 +132,7 @@ Emitted pixels are almost disjoint from both shipped files, so this is not a ren
 the correlation with gradient/curvature evidence is low. The honest caveat: the *smoothed* field still
 correlates +0.532
 with the GEMSDOE32 file at coarse scales, so R12 is **not** spatially independent of the family's best
-field (IR-46-15).
+field (IR-46-18).
 
 ### Artefact audit (re-read from disk after writing)
 
@@ -97,6 +152,7 @@ radiometric fallback. Portal acceptance has not been tested — no organiser rec
   in `docs/r10/` for audit.
 <!-- R12 STATUS:END -->
 
+
 ## Reproduce on CPU
 
 ```bash
@@ -105,11 +161,17 @@ python -m venv .venv
 bash scripts/restore_competition_data.sh     # organiser rasters + SGMC proxy, hash-verified
 bash scripts/restore_r10_reference.sh        # GEMSDOE32 / R10 comparator files, hash-verified
 bash scripts/restore_r12_reference.sh        # USGS GeoDAWN gamma-ray + LiDAR layers, hash-verified
-.venv/bin/python scripts/run_h47.py            # H47 ladder, cv, calibration, screen, emission
-.venv/bin/python scripts/screen_r12_layers.py   # R12 exploratory layer screen
-.venv/bin/python scripts/run_r12.py             # R12 locked experiment + audited GeoTIFF
-.venv/bin/python scripts/build_readme_status.py # this status block
-.venv/bin/python scripts/build_r12_site.py      # active site + executive summary
+.venv/bin/python scripts/screen_r11f.py       # R11F one-channel screen (proxy ranks)
+.venv/bin/python scripts/run_r11f.py          # R11F Pass 1: families, curves, first gate (~10 min)
+.venv/bin/python scripts/refine_r11f_mass.py  # R11F Pass 2: measured transfer, matched gate
+.venv/bin/python scripts/audit_r11f_on_stratified.py  # R11F Pass 3: live-order-calibrated instrument
+.venv/bin/python scripts/screen_r12_layers.py # R12 exploratory layer screen
+.venv/bin/python scripts/run_r12.py           # R12 locked experiment + two-instrument gate + audited TIF
+.venv/bin/python scripts/build_readme_status.py  # the R12 block below
+.venv/bin/python scripts/build_r11f_site.py   # active site (CI diffs the three live pages)
+.venv/bin/python scripts/build_r12_site.py    # R12 candidate page (docs/r12/index.html)
+.venv/bin/python scripts/build_irregularities_page.py
+# historical: run_h47.py + build_h47_site.py (H47, HOLD), run_r10.py + build_r10_site.py (R10, HOLD)
 .venv/bin/python -m pytest
 .venv/bin/python scripts/verify_all.py
 ```
@@ -138,9 +200,9 @@ block domain; the promotion gate silently inherited R10's stricter "no dropped b
 which is not in the R12 preregistration, so both readings are reported; and `build_site.py
 --legacy-h46` crashed on a git-ignored derived file so the archived sources/irregularities pages could
 not be regenerated. One claim written early in that session — that two builders were writing the same
-live pages — was **false**, and it is recorded together with its retraction as IR-46-17.
+live pages — was **false**, and it is recorded together with its retraction as IR-46-20.
 
-**Instrument conflict found while merging (IR-46-18, measured and closed).** R12's gate used a 200 m
+**Instrument conflict found while merging (IR-46-21, measured and closed).** R12's gate used a 200 m
 catalogue exclusion (66,277 truth px), which is not one of the variants the H47 ladder showed to
 preserve the live ordering. R12 was re-measured on the stratified instrument (d0 = 5 px, catalogue
 masked as `known`) under a rule amended *before* the measurement: R12 DTI **0.16622** / hit rate

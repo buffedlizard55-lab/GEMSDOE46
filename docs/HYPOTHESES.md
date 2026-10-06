@@ -12,6 +12,14 @@ arm**, so no submission slot was spent on it. The shipped file therefore remains
 
 ---
 
+> **Register map (added 2026-10-06).** Three hypothesis registers exist and their identifiers
+> overlap numerically. *This* file numbers the brief's in-repo feature hypotheses **H1–H5** (band
+> combinations already inside `training_features.tif`). `docs/research/hypotheses.md` numbers
+> external-data hypotheses **H46-1–H46-4** (OPERA InSAR, groundwater heads, ASTER, Landsat).
+> `registry/hypotheses.json` is the machine register for shipped/blocked structural arms **H46-N**
+> plus this session's **H46-R11F-1..4**. Quote the file name with any identifier; a bare "H46-1" is
+> ambiguous (IR-46-14).
+
 ## The ranking
 
 | rank | hypothesis | layers | expected DTI gain | cost | status |
@@ -172,3 +180,25 @@ it, so a mechanism-aware proximity field has **not** been tested); an independen
 map to score against (i.e. exactly what the private test labels are); or a deep model that can use the
 release field and the structural stack jointly rather than through hand-built products. Until then the
 honest statement is the one above: +0.0005 DTI, p = 1.00, not shipped.
+
+---
+
+## R11 — what this session tested instead (2026-10-06)
+
+The brief's DFA hypothesis and three further candidates were preregistered in
+`docs/research/session-r11-plan.md` **before** any field was computed, and executed as
+`scripts/run_r11.py` (Pass 1) plus `scripts/refine_r11_mass.py` (Pass 2, which corrected two defects
+in Pass 1's own mass rule and gate — see `docs/research/r11-review.md`).
+
+| id | candidate | verdict |
+| --- | --- | --- |
+| H46-R11F-1 | GeoDAWN radiometric compositional contrast (K, Th/K, U/K, U/Th — absent from the official 19 bands) | part of the **shipped R11 primary**; fused proxy gate passed; not ablated separately |
+| H46-R11F-2 | 1 m lidar scarp matched detector (12 channels, coherence-weighted) | part of the **shipped R11 primary**; not ablated separately |
+| H46-R11F-3 | local DFA scaling-regime break, re-localised (the brief's hypothesis) | **NOT CONFIRMED** on both instruments; the fourth DFA implementation to fail (IR-46-16): 0.08973 mean blocked proxy DTI at matched mass vs 0.09130 for the incumbent file and 0.17061 for the primary; artefact published anyway (max |r| 0.1406 with prior files) |
+| H46-R11F-4 | dual-physics strike agreement | **not run**: shares its evidence with the potential-field family already inside the primary; recorded rather than dropped silently |
+
+Two facts about the official data were measured here and are worth carrying forward: the official
+19-band stack contains **no magnetic curvature band at all** (band 6, labelled "tilt angle or total
+curvature", correlates +0.997 with the GeoDAWN radiometric total count — IR-46-13), and the K/Th/U
+and ratio grids are therefore genuinely new information (DOI 10.5066/P93LGLVQ). Any hypothesis in
+the H2–H5 table above that names band 6 as a curvature layer should be re-specified before it is run.

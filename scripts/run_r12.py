@@ -400,7 +400,7 @@ def main() -> None:
     coeff = [c for c in coeff if np.isfinite(c)]
     shipped_coeff = [c for c in shipped_coeff if np.isfinite(c)]
 
-    # ---- stratified-instrument re-measurement (session-r12-plan.md §7.1, IR-46-18) ----
+    # ---- stratified-instrument re-measurement (session-r12-plan.md §7.1, IR-46-21) ----
     # The H47 ladder measured six instrument variants against the three live-scored family files and
     # found the un-stratified off-catalogue SGMC proxy INVERTS that ordering; only truth stratified
     # at >=3 px (default 5 px = 500 m), with the catalogue masked as `known`, reproduces
@@ -492,7 +492,7 @@ def main() -> None:
             "Strong two-sensor concordance was falsified on the selection blocks (w=1 scores below w=0); only a mild reweighting (w=0.25) survived. Ridge-axis thinning was falsified outright.",
             "The smoothed-field correlation with the restored GEMSDOE32 file is not negligible, so R12 is not spatially independent of the family's best field at coarse scales even though the emitted pixels are almost disjoint.",
             "Three locked blocks were dropped from the matched-mass comparison because a gapped comparator could emit nothing there; the all-blocks robustness view keeps them.",
-            "The locked-block gate ran on a 200 m catalogue exclusion, an instrument variant the H47 ladder never validated against the known live ordering; the stratified re-measurement is in stratified_instrument and decides the status together with it (IR-46-18).",
+            "The locked-block gate ran on a 200 m catalogue exclusion, an instrument variant the H47 ladder never validated against the known live ordering; the stratified re-measurement is in stratified_instrument and decides the status together with it (IR-46-21).",
         ])
     (out / "receipt.json").write_text(json.dumps(result, indent=2) + "\n")
     (ROOT / "registry/r12.json").write_text(json.dumps(result, indent=2) + "\n")

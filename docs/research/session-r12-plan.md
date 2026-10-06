@@ -188,7 +188,7 @@ family files (0.2600 / 0.2708 / 0.2778) on six instrument variants and found tha
 §7 above fixed the exclusion at 2 dilations (200 m) — a variant that has never been checked against
 the live ordering. A gate that passes on an instrument which can invert the known ranking is not
 evidence of improvement, so §7 alone is not sufficient. The following rule is added **before** R12's
-stratified score is computed (IR-46-18):
+stratified score is computed (IR-46-21):
 
 > **Two-instrument promotion rule.** R12 is `PROXY_GATE_PASSED_NOT_SUBMITTED` only if **both**
 > readings agree:

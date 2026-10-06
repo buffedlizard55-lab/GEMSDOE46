@@ -1,0 +1,656 @@
+{
+ "experiment": "H46-R11F",
+ "generated_utc": "2026-10-06T16:31:54.662874+00:00",
+ "status": "PROXY_GATE_PASSED_NOT_SUBMITTED",
+ "decision_rule": {
+  "rule": "max-min over G of rho*T_incumbent_live/(0.2N+0.8G), rho = proxy credit ratio",
+  "per_G": {
+   "7905.0": {
+    "mass": 10000,
+    "predicted_dti": 0.68733,
+    "rho": 1.4865
+   },
+   "14089.0": {
+    "mass": 10000,
+    "predicted_dti": 0.58505,
+    "rho": 1.4865
+   }
+  },
+  "chosen_mass": 10000
+ },
+ "target_mass_assumption": 10000.0,
+ "mass_ceiling_rationale": "the family's highest-scored file emitted 37,654 px; 44,090 px is the largest mass the family ever scored at 0.26",
+ "candidate": {
+  "file": "gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif",
+  "sha256": "57be86502a03a22eb755f04204cb090b49ba4b89158662a728ca2e34b1d37f95",
+  "pixel_sha256": "00e049b51218e29db08570b4317c10ebf1f05218c48e4dbbe14997774a53651c",
+  "shape": [
+   3730,
+   3292
+  ],
+  "crs": "EPSG:32611",
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "count": 1,
+  "dtype": "float32",
+  "nodata": null,
+  "min": 0.0,
+  "max": 1.0,
+  "positive": 44090,
+  "all_finite": true,
+  "in_range": true,
+  "bytes": 384938
+ },
+ "dfa_candidate": {
+  "file": "gems46-r11f-dfa-regime-break-local-2373b213a1b9-zeros.tif",
+  "sha256": "132a6b82835f70555191c750b6e1992354a45d9a1f3c3ad0fed0ebbf67b385f6",
+  "pixel_sha256": "2373b213a1b90b27cb5e9aaed1a5b1851c962c1e9d0131860aa4b52711fac010",
+  "shape": [
+   3730,
+   3292
+  ],
+  "crs": "EPSG:32611",
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "count": 1,
+  "dtype": "float32",
+  "nodata": null,
+  "min": 0.0,
+  "max": 1.0,
+  "positive": 44090,
+  "all_finite": true,
+  "in_range": true,
+  "bytes": 374535
+ },
+ "emissions": {
+  "dfa": {
+   "accepted": 44090
+  },
+  "r11f_fused": {
+   "accepted": 44090,
+   "stopped": "budget"
+  }
+ },
+ "proxy_curves": {
+  "R11F-fused": {
+   "10000": {
+    "accepted": 10000,
+    "proxy_credit": 2902.332,
+    "proxy_dti": 0.052383,
+    "proxy_credit_per_dot": 0.2902
+   },
+   "20000": {
+    "accepted": 20000,
+    "proxy_credit": 5444.401,
+    "proxy_dti": 0.094293,
+    "proxy_credit_per_dot": 0.2722
+   },
+   "30000": {
+    "accepted": 30000,
+    "proxy_credit": 7547.146,
+    "proxy_dti": 0.125766,
+    "proxy_credit_per_dot": 0.2516
+   },
+   "37654": {
+    "accepted": 37654,
+    "proxy_credit": 9147.686,
+    "proxy_dti": 0.148159,
+    "proxy_credit_per_dot": 0.2429
+   },
+   "44090": {
+    "accepted": 44090,
+    "proxy_credit": 10295.586,
+    "proxy_dti": 0.163008,
+    "proxy_credit_per_dot": 0.2335
+   }
+  },
+  "R11F-dfa-local": {
+   "10000": {
+    "accepted": 10000,
+    "proxy_credit": 1561.759,
+    "proxy_dti": 0.028279,
+    "proxy_credit_per_dot": 0.1562
+   },
+   "20000": {
+    "accepted": 20000,
+    "proxy_credit": 3058.495,
+    "proxy_dti": 0.053264,
+    "proxy_credit_per_dot": 0.1529
+   },
+   "30000": {
+    "accepted": 30000,
+    "proxy_credit": 4375.636,
+    "proxy_dti": 0.073428,
+    "proxy_credit_per_dot": 0.1459
+   },
+   "37654": {
+    "accepted": 37654,
+    "proxy_credit": 5381.903,
+    "proxy_dti": 0.087869,
+    "proxy_credit_per_dot": 0.1429
+   },
+   "44090": {
+    "accepted": 44090,
+    "proxy_credit": 6207.002,
+    "proxy_dti": 0.099095,
+    "proxy_credit_per_dot": 0.1408
+   }
+  },
+  "incumbent-field": {
+   "10000": {
+    "accepted": 10000,
+    "proxy_credit": 1952.448,
+    "proxy_dti": 0.035326,
+    "proxy_credit_per_dot": 0.1952
+   },
+   "20000": {
+    "accepted": 20000,
+    "proxy_credit": 3569.306,
+    "proxy_dti": 0.062117,
+    "proxy_credit_per_dot": 0.1785
+   },
+   "30000": {
+    "accepted": 30000,
+    "proxy_credit": 5032.111,
+    "proxy_dti": 0.084402,
+    "proxy_credit_per_dot": 0.1677
+   },
+   "37654": {
+    "accepted": 37654,
+    "proxy_credit": 6005.348,
+    "proxy_dti": 0.098064,
+    "proxy_credit_per_dot": 0.1595
+   },
+   "44090": {
+    "accepted": 44090,
+    "proxy_credit": 6657.741,
+    "proxy_dti": 0.106409,
+    "proxy_credit_per_dot": 0.151
+   }
+  }
+ },
+ "blocked_folds": [
+  {
+   "block": 0,
+   "mass": 992,
+   "truth": 6707,
+   "dti": {
+    "R11F-fused": 0.02439848607360708,
+    "incumbent-as-shipped": 0.10019546700262638,
+    "incumbent-reemitted": 0.03727825706094875,
+    "R11F-dfa-local": 0.027999714854551386
+   }
+  },
+  {
+   "block": 1,
+   "mass": 1491,
+   "truth": 6074,
+   "dti": {
+    "R11F-fused": 0.06401827632509435,
+    "incumbent-as-shipped": 0.09039975606026956,
+    "incumbent-reemitted": 0.029162018878772806,
+    "R11F-dfa-local": 0.019516706932623785
+   }
+  },
+  {
+   "block": 2,
+   "mass": 1275,
+   "truth": 10172,
+   "dti": {
+    "R11F-fused": 0.06464664725233138,
+    "incumbent-as-shipped": 0.097868666254917,
+    "incumbent-reemitted": 0.028218932935355844,
+    "R11F-dfa-local": 0.017246720261342472
+   }
+  },
+  {
+   "block": 3,
+   "mass": 1237,
+   "truth": 13365,
+   "dti": {
+    "R11F-fused": 0.009791782490626372,
+    "incumbent-as-shipped": 0.11290883239200326,
+    "incumbent-reemitted": 0.04567152043902285,
+    "R11F-dfa-local": 0.04093425491936685
+   }
+  },
+  {
+   "block": 4,
+   "mass": 766,
+   "truth": 6224,
+   "dti": {
+    "R11F-fused": 0.013984809745091387,
+    "incumbent-as-shipped": 0.13478264619916994,
+    "incumbent-reemitted": 0.04799198530289271,
+    "R11F-dfa-local": 0.02253620875108451
+   }
+  },
+  {
+   "block": 5,
+   "mass": 1420,
+   "truth": 5674,
+   "dti": {
+    "R11F-fused": 0.049720898511228226,
+    "incumbent-as-shipped": 0.0937751414481979,
+    "incumbent-reemitted": 0.03299993206392308,
+    "R11F-dfa-local": 0.03500734443859316
+   }
+  },
+  {
+   "block": 6,
+   "mass": 131,
+   "truth": 713,
+   "dti": {
+    "R11F-fused": 0.111348116790182,
+    "incumbent-as-shipped": 0.03538957197953152,
+    "incumbent-reemitted": 0.007083168773178523,
+    "R11F-dfa-local": 0.002692607229593668
+   }
+  },
+  {
+   "block": 9,
+   "mass": 831,
+   "truth": 1774,
+   "dti": {
+    "R11F-fused": 0.12578301103736625,
+    "incumbent-as-shipped": 0.10781492399455772,
+    "incumbent-reemitted": 0.052671956028411654,
+    "R11F-dfa-local": 0.010155455996833778
+   }
+  },
+  {
+   "block": 10,
+   "mass": 565,
+   "truth": 2491,
+   "dti": {
+    "R11F-fused": 0.06768148389015284,
+    "incumbent-as-shipped": 0.07208951386221489,
+    "incumbent-reemitted": 0.02615781261309479,
+    "R11F-dfa-local": 0.026749478988355356
+   }
+  },
+  {
+   "block": 13,
+   "mass": 224,
+   "truth": 876,
+   "dti": {
+    "R11F-fused": 0.06894963099914199,
+    "incumbent-as-shipped": 0.132971334650911,
+    "incumbent-reemitted": 0.06009200924489362,
+    "R11F-dfa-local": 0.024618741326550456
+   }
+  },
+  {
+   "block": 14,
+   "mass": 946,
+   "truth": 11440,
+   "dti": {
+    "R11F-fused": 0.09683288429850853,
+    "incumbent-as-shipped": 0.07568482741893394,
+    "incumbent-reemitted": 0.024485588395192506,
+    "R11F-dfa-local": 0.03386539504619992
+   }
+  }
+ ],
+ "blocked_means": {
+  "R11F-fused": 0.17061172498171337,
+  "incumbent-as-shipped": 0.09129801973025739,
+  "incumbent-reemitted": 0.10224101744540004,
+  "R11F-dfa-local": 0.08972749013324673
+ },
+ "best_comparator": "incumbent-as-shipped",
+ "paired_delta": 0.07931370525145595,
+ "paired_bootstrap_95": [
+  0.02718984723303375,
+  0.1269406054012576
+ ],
+ "gate_passed": true,
+ "correlations_primary": {
+  "GEMSDOE32-02778": {
+   "pearson_smoothed": 0.316129750184673,
+   "jaccard": 0.009459359332164291
+  },
+  "R10-dfa-crossover": {
+   "pearson_smoothed": -0.04900512012016754,
+   "jaccard": 0.0036958363518043292
+  },
+  "H46-2-structural-DFA": {
+   "pearson_smoothed": 0.3778707271057876,
+   "jaccard": 0.00955909596146721
+  },
+  "H46-1-pure-DFA": {
+   "pearson_smoothed": 0.00960455964337481,
+   "jaccard": 0.004620981221118868
+  },
+  "R8-conformal": {
+   "pearson_smoothed": 0.15114648485876236,
+   "jaccard": 0.00451559934318555
+  }
+ },
+ "max_abs_correlation_primary": 0.3778707271057876,
+ "correlations_dfa": {
+  "GEMSDOE32-02778": {
+   "pearson_smoothed": 0.1202173257739504,
+   "jaccard": 0.004658022491243164
+  },
+  "R10-dfa-crossover": {
+   "pearson_smoothed": 0.10881177116968443,
+   "jaccard": 0.005646798302269791
+  },
+  "H46-2-structural-DFA": {
+   "pearson_smoothed": 0.07526482004791873,
+   "jaccard": 0.004645675097706659
+  },
+  "H46-1-pure-DFA": {
+   "pearson_smoothed": 0.07940146915170493,
+   "jaccard": 0.004349428676741615
+  },
+  "R8-conformal": {
+   "pearson_smoothed": 0.14056664600802193,
+   "jaccard": 0.004067052051025211
+  }
+ },
+ "max_abs_correlation_dfa": 0.14056664600802193,
+ "new_hypothesis_claim": {
+  "dfa": "the localized regime-break statistic is new in this repository; its correlation with the prior gradient/curvature files is reported above",
+  "primary": "fusion of the lidar scarp stack and the GeoDAWN K/Th ratio grids with a metric-optimal emitter; it shares evidence with prior topographic arms and is NOT claimed as a new hypothesis"
+ },
+ "input_hashes": {
+  "data/raw/training_features.tif": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+  "data/raw/labels.tif": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+  "data/raw/sample_submission.tif": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+  "data/external/sgmc_faults_100m_u8.tif": "643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0",
+  "gdr_wellspring::gdr_wellspring_in_footprint.csv": "122718e65bdf55aab0ee12ad20d80062f0deb1de957225a61ad880dd5dc196ea",
+  "lidar_scarp_features::lidar_scarp_features_u8.tif": "d580bb8bdcdb941e32fefb8b38044bc5bf04e199bf2e83498c3576e6fc465568",
+  "geodawn_rad::geodawn_rad_u8.tif": "c22420f75999030d7cc65c9e31e50d232ea6158423bca051613a18a8b20ba682",
+  "geodawn_extensions::geodawn_extensions_u8.tif": "a35a9c6d2a14786f4dab85481ee59769213072f5dab5b2535ea82ae4d9bb7d9b"
+ },
+ "environment": {
+  "seconds": 662.9
+ },
+ "note": "Primary: 1 m-lidar scarp matched filter + GeoDAWN K/Th compositional contrast + topographic and potential-field lineaments, emitted by an expected-credit submodular optimiser under the published metric. Research candidate; proxy-gated.",
+ "limitations": [
+  "The gate compares two emission rules on the SGMC off-catalogue proxy, which this repository has already flagged as a weak instrument (group measurement: Spearman ~ +0.31 with 11 live scores); a pass is permission to consider a slot, not a score forecast.",
+  "The corrected transfer multiplies a proxy credit ratio by a factor fitted once at the incumbent's owner-reported live score; it is a model, not a forecast, and it is reported next to the uncorrected Pass-1 model rather than replacing it.",
+  "The mass rule was corrected after seeing that the preregistered rule was degenerate; the Pass-1 numbers are preserved unedited in pass1_as_executed so the correction is auditable.",
+  "Lidar coverage is 75 % of the footprint; outside it the field rests on coarser evidence.",
+  "Correlation is a redundancy diagnostic on the common domain, not proof of independence.",
+  "No organizer receipt exists for any file in this repository."
+ ],
+ "pass1_as_executed": {
+  "status": "HOLD_DO_NOT_SUBMIT",
+  "gate_passed": false,
+  "chosen_mass": 10000,
+  "blocked_means": {
+   "R11F-fused": 0.06337782067393913,
+   "incumbent-as-shipped": 0.095807334660303,
+   "incumbent-reemitted": 0.03561938015778974,
+   "R11F-dfa-local": 0.023756602613190483
+  },
+  "paired_delta": -0.032429513986363886,
+  "paired_bootstrap_95": [
+   -0.06436248153667817,
+   0.0007800689987308689
+  ],
+  "candidate": {
+   "file": "gems46-r11f-scarp-radiometric-fusion-7882fbcf5ff8-zeros.tif",
+   "sha256": "802e35db1743dbf5cac4d92da6a69c1f0d1fd044db64ac397d2a1eb3abd06ab0",
+   "pixel_sha256": "7882fbcf5ff82bd59559b28a8bf99439f2f3ccfab1d16025b492e01eb8072c47",
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs": "EPSG:32611",
+   "transform": [
+    100.0,
+    0.0,
+    243350.0,
+    0.0,
+    -100.0,
+    4508550.0
+   ],
+   "count": 1,
+   "dtype": "float32",
+   "nodata": null,
+   "min": 0.0,
+   "max": 1.0,
+   "positive": 10000,
+   "all_finite": true,
+   "in_range": true,
+   "bytes": 228774
+  },
+  "dfa_candidate": {
+   "file": "gems46-r11f-dfa-regime-break-local-63f5cdd58768-zeros.tif",
+   "sha256": "ba1ab182861d0361575d21803d1a6229a37d89b96df84abb414f7de7baa7e73c",
+   "pixel_sha256": "63f5cdd58768d8aad106faf092e9176c9176d2bb7003283635ff754b1c4c61ad",
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs": "EPSG:32611",
+   "transform": [
+    100.0,
+    0.0,
+    243350.0,
+    0.0,
+    -100.0,
+    4508550.0
+   ],
+   "count": 1,
+   "dtype": "float32",
+   "nodata": null,
+   "min": 0.0,
+   "max": 1.0,
+   "positive": 10000,
+   "all_finite": true,
+   "in_range": true,
+   "bytes": 222073
+  },
+  "note": "the Pass-1 gate is kept here unedited; the decision below uses the matched-mass gate."
+ },
+ "pass2": {
+  "reason": "Pass 1's mass rule was degenerate (it collapsed to the smallest grid point) and its gate admitted a comparator at a different emitted mass, contradicting the preregistration's 'matched emitted mass' clause.",
+  "corrected_transfer": {
+   "rule": "candidate live credit = factor(G) x candidate proxy credit at the same mass; factor measured once at the incumbent file's own operating point",
+   "incumbent_as_shipped_proxy_credit": 5518.384977490206,
+   "incumbent_as_shipped_proxy_dti": 0.09460301559647288,
+   "factor": {
+    "7905.0": 0.69746193056478,
+    "14089.0": 0.946508012997589
+   },
+   "predicted_dti": {
+    "7905.0": {
+     "10000": {
+      "proxy_credit": 2902.332,
+      "predicted_dti": 0.24318429599470676
+     },
+     "20000": {
+      "proxy_credit": 5444.401,
+      "predicted_dti": 0.3678092243538182
+     },
+     "30000": {
+      "proxy_credit": 7547.146,
+      "predicted_dti": 0.42712163416214355
+     },
+     "37654": {
+      "proxy_credit": 9147.686,
+      "predicted_dti": 0.46050197316167757
+     },
+     "44090": {
+      "proxy_credit": 10295.586,
+      "predicted_dti": 0.4742292489668288
+     }
+    },
+    "14089.0": {
+     "10000": {
+      "proxy_credit": 2902.332,
+      "predicted_dti": 0.20699563674568375
+     },
+     "20000": {
+      "proxy_credit": 5444.401,
+      "predicted_dti": 0.3374436306558808
+     },
+     "30000": {
+      "proxy_credit": 7547.146,
+      "predicted_dti": 0.4136038123733557
+     },
+     "37654": {
+      "proxy_credit": 9147.686,
+      "predicted_dti": 0.4605019731616776
+     },
+     "44090": {
+      "proxy_credit": 10295.586,
+      "predicted_dti": 0.485079278791878
+     }
+    }
+   },
+   "per_G_optimum": {
+    "7905.0": 44090,
+    "14089.0": 44090
+   }
+  },
+  "matched_mass": 44090,
+  "gate_vs_reemitted": {
+   "mean_delta": 0.0683707075363133,
+   "ci95": [
+    0.016184003057828387,
+    0.11658394527167484
+   ],
+   "blocks_improved": 8,
+   "n_blocks": 11,
+   "passed": true
+  },
+  "gate_vs_shipped": {
+   "mean_delta": 0.07931370525145595,
+   "ci95": [
+    0.02718984723303375,
+    0.1269406054012576
+   ],
+   "blocks_improved": 8,
+   "n_blocks": 11,
+   "passed": true
+  },
+  "blocked_means": {
+   "R11F-fused": 0.17061172498171337,
+   "incumbent-as-shipped": 0.09129801973025739,
+   "incumbent-reemitted": 0.10224101744540004,
+   "R11F-dfa-local": 0.08972749013324673
+  },
+  "candidate": {
+   "file": "gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif",
+   "sha256": "57be86502a03a22eb755f04204cb090b49ba4b89158662a728ca2e34b1d37f95",
+   "pixel_sha256": "00e049b51218e29db08570b4317c10ebf1f05218c48e4dbbe14997774a53651c",
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs": "EPSG:32611",
+   "transform": [
+    100.0,
+    0.0,
+    243350.0,
+    0.0,
+    -100.0,
+    4508550.0
+   ],
+   "count": 1,
+   "dtype": "float32",
+   "nodata": null,
+   "min": 0.0,
+   "max": 1.0,
+   "positive": 44090,
+   "all_finite": true,
+   "in_range": true,
+   "bytes": 384938
+  },
+  "dfa_candidate": {
+   "file": "gems46-r11f-dfa-regime-break-local-2373b213a1b9-zeros.tif",
+   "sha256": "132a6b82835f70555191c750b6e1992354a45d9a1f3c3ad0fed0ebbf67b385f6",
+   "pixel_sha256": "2373b213a1b90b27cb5e9aaed1a5b1851c962c1e9d0131860aa4b52711fac010",
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs": "EPSG:32611",
+   "transform": [
+    100.0,
+    0.0,
+    243350.0,
+    0.0,
+    -100.0,
+    4508550.0
+   ],
+   "count": 1,
+   "dtype": "float32",
+   "nodata": null,
+   "min": 0.0,
+   "max": 1.0,
+   "positive": 44090,
+   "all_finite": true,
+   "in_range": true,
+   "bytes": 374535
+  },
+  "correlations_primary": {
+   "GEMSDOE32-02778": {
+    "pearson_smoothed": 0.316129750184673,
+    "jaccard": 0.009459359332164291
+   },
+   "R10-dfa-crossover": {
+    "pearson_smoothed": -0.04900512012016754,
+    "jaccard": 0.0036958363518043292
+   },
+   "H46-2-structural-DFA": {
+    "pearson_smoothed": 0.3778707271057876,
+    "jaccard": 0.00955909596146721
+   },
+   "H46-1-pure-DFA": {
+    "pearson_smoothed": 0.00960455964337481,
+    "jaccard": 0.004620981221118868
+   },
+   "R8-conformal": {
+    "pearson_smoothed": 0.15114648485876236,
+    "jaccard": 0.00451559934318555
+   }
+  },
+  "max_abs_correlation_primary": 0.3778707271057876,
+  "correlations_dfa": {
+   "GEMSDOE32-02778": {
+    "pearson_smoothed": 0.1202173257739504,
+    "jaccard": 0.004658022491243164
+   },
+   "R10-dfa-crossover": {
+    "pearson_smoothed": 0.10881177116968443,
+    "jaccard": 0.005646798302269791
+   },
+   "H46-2-structural-DFA": {
+    "pearson_smoothed": 0.07526482004791873,
+    "jaccard": 0.004645675097706659
+   },
+   "H46-1-pure-DFA": {
+    "pearson_smoothed": 0.07940146915170493,
+    "jaccard": 0.004349428676741615
+   },
+   "R8-conformal": {
+    "pearson_smoothed": 0.14056664600802193,
+    "jaccard": 0.004067052051025211
+   }
+  },
+  "max_abs_correlation_dfa": 0.14056664600802193,
+  "gate_passed": true,
+  "seconds": 178.0
+ },
+ "decided_mass": 44090,
+ "generated_utc_pass2": "2026-10-06T16:38:40.798243+00:00"
+}

@@ -1,5 +1,10 @@
 # Preregistered geological hypothesis register
 
+**Register map (added 2026-10-06).** This file numbers *external-data* hypotheses **H46-1–H46-4**.
+`docs/HYPOTHESES.md` numbers the brief's in-repo feature hypotheses **H1–H5**, and
+`registry/hypotheses.json` is the machine register (**H46-N** shipped/blocked arms plus this
+session's **H46-R11-N**). The identifiers overlap numerically; quote the file name with any id.
+
 **Snapshot date:** 2026-10-06 (UTC)
 **Status:** hypotheses only; no competition label/raster has been accessed, no candidate was implemented, and no DTI improvement has been measured.
 **Scope:** rank 3–5 candidate signals before model implementation. Rankings are qualitative research priorities, **not numerical score forecasts**.

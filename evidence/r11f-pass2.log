@@ -1,0 +1,32 @@
+incumbent-as-shipped: proxy credit 5518.4  proxy DTI 0.094603
+corrected transfer -> per-G optimum: {7905.0: (44090, 0.47423), 14089.0: (44090, 0.48508)} -> mass 44090
+emitting at matched mass 44090 …
+blocked means: {'R11F-fused': 0.17061, 'incumbent-as-shipped': 0.0913, 'incumbent-reemitted': 0.10224, 'R11F-dfa-local': 0.08973}
+matched-mass gate: {
+ "incumbent-reemitted": {
+  "mean_delta": 0.0683707075363133,
+  "ci95": [
+   0.016184003057828387,
+   0.11658394527167484
+  ],
+  "blocks_improved": 8,
+  "n_blocks": 11,
+  "passed": true
+ },
+ "incumbent-as-shipped": {
+  "mean_delta": 0.07931370525145595,
+  "ci95": [
+   0.02718984723303375,
+   0.1269406054012576
+  ],
+  "blocks_improved": 8,
+  "n_blocks": 11,
+  "passed": true
+ }
+}
+removed superseded artefact gems46-r11f-dfa-regime-break-local-63f5cdd58768-zeros.tif
+removed superseded artefact gems46-r11f-scarp-radiometric-fusion-7882fbcf5ff8-zeros.tif
+
+status PROXY_GATE_PASSED_NOT_SUBMITTED  mass 44090  gate True
+candidate gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif  sha256 57be86502a03a22e…  (44090 dots)
+dfa       gems46-r11f-dfa-regime-break-local-2373b213a1b9-zeros.tif  (44090 dots)

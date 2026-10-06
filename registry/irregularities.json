@@ -96,6 +96,37 @@
    "status": "current site updated"
   },
   {
+   "id": "IR-46-13",
+   "severity": "medium",
+   "title": "R11 session: all three arms negative; R11-D TIF held on both gates",
+   "detail": "R11-A windowed-DFA boundaries stopped for futility at synthetics (4.4 km mislocalization on locked step). R11-C tilt zero-crossings suspended at synthetics (not robust to grid noise, 6 iterations). R11-D matched-filter contacts ran locked: mean block DTI 0.06098743 vs 0.10067412 best comparator; max |correlation| 0.5431 vs smoothed RTP curvature. Unique TIF published for research; no competition slot used.",
+   "status": "HOLD_DO_NOT_SUBMIT"
+  },
+  {
+   "id": "IR-46-14",
+   "severity": "high",
+   "title": "Official band 6 ('tc') is the GeoDAWN radiometric total count, not a magnetic curvature",
+   "detail": "The official GeoTIFF band description for band 6 reads 'tc - Tilt angle or total curvature - magnetic field derivative for edge detection'. Measured in this checkout on the hash-pinned rasters: band 6 correlates +0.997 with the GeoDAWN contractor 'TC' (total count) radiometric channel, +0.915 with Th, +0.881 with K and +0.715 with U (ScienceBase item 657e1d85d34e23d3533209f7, DOI 10.5066/P93LGLVQ), while its correlation with the magnetic bands is |r| <= 0.001. Band 6 is also undefined (-3.4028234663852886e38) exactly where the radiometric survey has no data, on a subset of the footprint where the magnetic bands are defined.",
+   "effect_on_this_repository": "Any transform that reads band 6 as a magnetic curvature or tilt angle is reading a radiometric count. The R11 radiometric family treats the K/Th/U grids on their own terms and uses band 6 only as a cross-check. Prior arms that consumed band 6 as 'tc = curvature' are not silently reinterpreted.",
+   "status": "flagged; measured, not organizer-confirmed"
+  },
+  {
+   "id": "IR-46-15",
+   "severity": "low",
+   "title": "Three hypothesis registers and two irregularity tracks collide by id",
+   "detail": "docs/HYPOTHESES.md (H1-H5), docs/research/hypotheses.md (H46-1-H46-4) and registry/hypotheses.json (H46-N, H46-R11-N) use overlapping identifiers for different hypotheses; this registry and docs/IRREGULARITIES.md likewise both use IR-46-NN for different, historically numbered lists. A bare identifier is therefore ambiguous.",
+   "effect_on_this_repository": "Every identifier quoted in a decision document must carry its file name. The register map is declared in each file's header; the registers are not merged in this session.",
+   "status": "flagged; documented, not merged"
+  },
+  {
+   "id": "IR-46-16",
+   "severity": "medium",
+   "title": "R11's first gate was unmatched and its mass rule degenerate (fixed in Pass 2)",
+   "detail": "Pass 1 of experiment R11 executed the preregistered rule and produced a gate comparing a 10,000-dot candidate against the incumbent file at its own 37,654-dot mass, contradicting the preregistration's 'matched emitted mass' clause. The mass rule itself was degenerate: it transferred a flat proxy credit ratio, so its predicted DTI fell monotonically with emitted mass and the max-min choice collapsed to the smallest grid point (its printed projection, 0.687, is impossible and is what exposed the bug).",
+   "effect_on_this_repository": "Pass 2 (scripts/refine_r11_mass.py) replaced the transfer with a measured one, re-selected the mass (44,090), re-ran the gate at that matched mass, and preserved Pass 1's numbers unedited in registry/r11.json under pass1_as_executed. Both gates are published; the correction is auditable.",
+   "status": "fixed in Pass 2; both versions recorded"
+  },
+  {
    "id": "IR-47-01",
    "severity": "medium",
    "title": "H47-1 detector failed its pre-registered screen",
@@ -117,51 +148,50 @@
    "status": "documented in docs/research/h47-review.md"
   },
   {
-   "id": "IR-46-13",
-   "severity": "medium",
-   "title": "R11 session: all three arms negative; R11-D TIF held on both gates",
-   "detail": "R11-A windowed-DFA boundaries stopped for futility at synthetics (4.4 km mislocalization on locked step). R11-C tilt zero-crossings suspended at synthetics (not robust to grid noise, 6 iterations). R11-D matched-filter contacts ran locked: mean block DTI 0.06098743 vs 0.10067412 best comparator; max |correlation| 0.5431 vs smoothed RTP curvature. Unique TIF published for research; no competition slot used.",
-   "status": "HOLD_DO_NOT_SUBMIT"
-  },
-  {
-   "id": "IR-46-18",
+   "id": "IR-46-21",
    "severity": "HIGH",
    "status": "CLOSED_MEASURED",
    "title": "R12's gate used an off-catalogue instrument whose exclusion buffer was never validated against the known live ordering",
    "detail": "The H47 session measured three live-scored family files (0.2600 / 0.2708 / 0.2778) on six instrument variants and found that the plain off-catalogue SGMC proxy at a 0-px exclusion is INVERTED (it ranks the worst live file highest) and that even the 3/5/10-px variants separate the three by only ~0.001 DTI; only the stratified variant (truth >500 m from every catalogue pixel, catalogue masked) preserves all three orderings. The R12 gate (docs/research/r12-review.md) used SGMC lines >200 m from the catalogue (66,277 truth px), which had never been checked against the live ordering when the gate was read. R12's 'gate PASSED' therefore cannot be quoted as a promotion decision until the same candidate is re-measured on the instrument that reproduces the live ordering. MEASURED 2026-10-06: R12 was re-run on gems47.proxy.instrument_sgmc_stratified at d0=5 px (500 m) with the catalogue masked as known, whole footprint, matched mass 37,654. Stratified truth 56,822 px - identical to the d0=5 row of the H47 ladder, which confirms the same instrument was used. Results: R12 T=9,003, DTI 0.16622, hit rate 16.42%; LiDAR-only component 0.15506; radiometric-only 0.09638; GEMSDOE32 incumbent T=5,080, DTI 0.09474, hit rate 10.50%; RTP gradient 0.07519; R10 0.06787; uniform random at matched mass T=3,695, DTI 0.06912. Delta vs the incumbent +0.07148, i.e. R12 is 1.75x the incumbent on the one instrument that reproduces the known live ordering, and 2.4x the random baseline - outside the +/-20%-of-chance range in which every previously measured 'plausible geology' field sat.",
-   "effect_on_this_repository": "Both readings are published side by side in registry/r12.json (gate_locked_blocks_200m, gate_stratified_whole_domain) and the promotion rule now requires both (docs/research/session-r12-plan.md section 7.1, written before the stratified score was computed). Neither number may be quoted without naming its instrument. What is still NOT known: whether the 1.75x ratio transfers to the live metric - the incumbent's stratified 0.09474 corresponds to a live 0.2778, so absolute proxy values are not scores and only an organiser receipt can settle it."
+   "effect_on_this_repository": "Both readings are published side by side in registry/r12.json (gate_locked_blocks_200m, gate_stratified_whole_domain) and the promotion rule now requires both (docs/research/session-r12-plan.md section 7.1, written before the stratified score was computed). Neither number may be quoted without naming its instrument. What is still NOT known: whether the 1.75x ratio transfers to the live metric - the incumbent's stratified 0.09474 corresponds to a live 0.2778, so absolute proxy values are not scores and only an organiser receipt can settle it.",
+   "renumbered_from": "IR-46-18 (this branch's numbering before the merge; renumbered because IR-46-21 was free and main already used the old id)"
   },
   {
-   "id": "IR-46-14",
+   "id": "IR-46-17",
    "severity": "low",
    "title": "0.3195 in the prompt is stale",
    "detail": "The prompt states 0.3195 is the highest score. On 2026-10-06 the public board reads 0.3345 (#1 alexoktaba), 0.3262 (#2), 0.3222 (#3), 0.3218 (#4), 0.3195 (#5).",
    "effect_on_this_repository": "All gap calculations in docs/ use 0.3345 as the target and state the retrieval date.",
-   "status": "flagged, numbers updated"
+   "status": "flagged, numbers updated",
+   "renumbered_from": "IR-46-14 (this branch's numbering before the merge; renumbered because IR-46-17 was free and main already used the old id)"
   },
   {
-   "id": "IR-46-15",
+   "id": "IR-46-18",
    "severity": "high",
    "title": "Legacy DFA center displacement",
    "detail": "alpha_map used center//stride but labeled cells j*stride+window//2. Corrected subtraction and regression test. Archived DFA bytes predate this fix. R10 uses a separate exact-window estimator.",
    "status": "fixed in code; old derived evidence superseded for reproducibility",
-   "effect_on_this_repository": "Recorded so the site and the review can quote the exact measurement instead of a single 'low correlation' summary. No decision in this repository rests on the unqualified claim."
+   "effect_on_this_repository": "Recorded so the site and the review can quote the exact measurement instead of a single 'low correlation' summary. No decision in this repository rests on the unqualified claim.",
+   "renumbered_from": "IR-46-15 (this branch's numbering before the merge; renumbered because IR-46-18 was free and main already used the old id)"
   },
   {
-   "id": "IR-46-16",
+   "id": "IR-46-19",
    "severity": "high",
    "title": "Unsupported causal and independence claims in former README",
    "detail": "Hidden truth count not identified; M=T is an assumption; low Pearson correlation does not prove independence. R10 scientific review withdraws those claims.",
    "status": "active README corrected; old pages archived",
-   "effect_on_this_repository": "Recorded so the site and the review can quote the exact measurement instead of a single 'low correlation' summary. No decision in this repository rests on the unqualified claim."
+   "effect_on_this_repository": "Recorded so the site and the review can quote the exact measurement instead of a single 'low correlation' summary. No decision in this repository rests on the unqualified claim.",
+   "renumbered_from": "IR-46-16 (this branch's numbering before the merge; renumbered because IR-46-19 was free and main already used the old id)"
   },
   {
-   "id": "IR-46-17",
+   "id": "IR-46-20",
    "severity": "medium",
    "title": "The archived-page builder could not run in a clean checkout; and build_site.py delegated the LIVE pages to the previous session's builder",
    "detail": "CORRECTION of an earlier claim made during this session: it was first recorded here that two builders wrote the same two live pages. That is false \u2014 verified against the committed file: scripts/build_site.py defines DOCS = ROOT/'docs'/'h46', so its --legacy-h46 mode only ever wrote docs/h46/*. Two real defects were found instead. (1) scripts/build_site.py in DEFAULT mode delegates via runpy to scripts/build_r10_site.py, so running it regenerated the live pages from the R10 receipt. (2) scripts/build_site.py --legacy-h46 raised FileNotFoundError on data/derived/dfa_stats.json, which is git-ignored and produced by scripts/build_dfa_field.py, so the archived pages (including the sources and irregularities pages) could not be regenerated in a clean checkout.",
    "status": "current site updated",
-   "effect_on_this_repository": "Both fixed: the delegation now targets scripts/build_r11_site.py, and the DFA statistics table is optional with an explicit 'not regenerated in this checkout' row. The false claim is preserved here rather than deleted, because a retracted claim that leaves no trace is how errors get repeated."
+   "effect_on_this_repository": "Both fixed: the delegation now targets scripts/build_r11_site.py, and the DFA statistics table is optional with an explicit 'not regenerated in this checkout' row. The false claim is preserved here rather than deleted, because a retracted claim that leaves no trace is how errors get repeated.",
+   "renumbered_from": "IR-46-17 (this branch's numbering before the merge; renumbered because IR-46-20 was free and main already used the old id)"
   }
- ]
+ ],
+ "updated_utc": "2026-10-06"
 }

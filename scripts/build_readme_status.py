@@ -69,7 +69,7 @@ published in the receipt.
 
 A sibling session's ladder showed the un-stratified off-catalogue SGMC proxy *inverts* the ordering of
 the three live-scored family files, while truth stratified at ≥3 px from the catalogue reproduces it
-(IR-46-18). R12 was therefore re-measured on that instrument, under a rule amended **before** the
+(IR-46-21). R12 was therefore re-measured on that instrument, under a rule amended **before** the
 measurement (`session-r12-plan.md` §7.1). Stratified truth {R["stratified_instrument"]["truth_px"]:,} px —
 identical to the d0 = 5 px row of that ladder, so it is the same instrument.
 
@@ -102,7 +102,7 @@ Emitted pixels are almost disjoint from both shipped files, so this is not a ren
 the correlation with gradient/curvature evidence is low. The honest caveat: the *smoothed* field still
 correlates {R["comparisons"]["GEMSDOE32-owner-reported-02778"]["field_vs_smoothed_submission"]["spearman"]:+.3f}
 with the GEMSDOE32 file at coarse scales, so R12 is **not** spatially independent of the family's best
-field (IR-46-15).
+field (IR-46-18).
 
 ### Artefact audit (re-read from disk after writing)
 

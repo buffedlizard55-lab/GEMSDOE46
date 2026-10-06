@@ -213,7 +213,7 @@ the three live-scored family files (0.2600 / 0.2708 / 0.2778) on six instrument 
 that the un-stratified off-catalogue SGMC proxy **inverts** that ordering, while SGMC truth stratified
 at ≥3 px from the catalogue (default 5 px = 500 m), with the catalogue masked as `known` exactly as the
 organiser confirmed for the live scorer, reproduces 0.2600 < 0.2708 < 0.2778. §3 above used a 200 m
-exclusion — a variant that ladder never validated (IR-46-18). The rule that decides the status was
+exclusion — a variant that ladder never validated (IR-46-21). The rule that decides the status was
 amended to require **both** instruments *before* this measurement was computed
 (`session-r12-plan.md` §7.1).
 
