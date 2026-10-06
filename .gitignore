@@ -2,16 +2,22 @@
 data/raw/
 data/derived/
 data/external/*.tif
+data/*.tif
 .mirror/
+
 # Local archives / loose files a user drops in for the offline importer
 *.zip
 !docs/**/*.zip
+
 # Python
 __pycache__/
 *.pyc
+*.egg-info/
+src/*.egg-info/
 .pytest_cache/
 .venv/
 .venv*/
+
 # OS / editors
 .DS_Store
 *.swp

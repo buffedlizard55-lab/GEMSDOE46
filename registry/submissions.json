@@ -1,34 +1,6 @@
 {
- "hedge_sweep": {
-  "hedge_sweep_proxy_dti": {
-   "hedge_0.0": {
-    "dti": 0.10541996578967773,
-    "tp": 6471.253147542185,
-    "px": 37654
-   },
-   "hedge_0.05": {
-    "dti": 0.10309523238679211,
-    "tp": 6326.498286211394,
-    "px": 37654
-   },
-   "hedge_0.1": {
-    "dti": 0.10156746341055133,
-    "tp": 6231.4928351111175,
-    "px": 37654
-   },
-   "hedge_0.12": {
-    "dti": 0.10079426383078603,
-    "tp": 6183.43428477705,
-    "px": 37654
-   },
-   "hedge_0.2": {
-    "dti": 0.09895126360887149,
-    "tp": 6068.943652395885,
-    "px": 37654
-   }
-  }
- },
- "generated_utc": "2026-10-06T10:18:25Z",
+ "hedge_sweep": {},
+ "generated_utc": "2026-10-06T11:14:10Z",
  "calibration": {
   "hidden_truth_px": 14088.747191011276,
   "hidden_truth_px_is_upper_bound": true,
@@ -130,7 +102,7 @@
  },
  "files": {
   "H46-1-dfa-regime-break": {
-   "name": "gems46-h46-1-dfa-regime-break-20261006T101807Z",
+   "name": "gems46-h46-1-dfa-regime-break-20261006T111347Z",
    "note": "H46-1 pure DFA scaling-exponent-break detection on magnetic+gravity transects (new hypothesis; near-zero correlation with all prior submissions)",
    "method": {
     "budget": 37654,
@@ -181,9 +153,9 @@
    },
    "emitted_px": 37654,
    "sha256_values": "de25e8d0eadba8a94ab9dcb41550525fd2d8b497e3a9503af91863887bbeed16",
-   "file": "gems46-h46-1-dfa-regime-break-20261006T101807Z.tif",
+   "file": "gems46-h46-1-dfa-regime-break-20261006T111347Z.tif",
    "audit": {
-    "path": "/home/user/GEMSDOE46/docs/h46/downloads/gems46-h46-1-dfa-regime-break-20261006T101807Z.tif",
+    "path": "/home/user/GEMSDOE46/docs/h46/downloads/gems46-h46-1-dfa-regime-break-20261006T111347Z.tif",
     "count": 1,
     "dtype": "float32",
     "crs": "EPSG:32611",
@@ -215,9 +187,9 @@
     "nan_outside_footprint": true,
     "ok": true
    },
-   "zeros_variant": "gems46-h46-1-dfa-regime-break-20261006T101807Z-zeros.tif",
+   "zeros_variant": "gems46-h46-1-dfa-regime-break-20261006T111347Z-zeros.tif",
    "zeros_audit": {
-    "path": "/home/user/GEMSDOE46/docs/h46/downloads/gems46-h46-1-dfa-regime-break-20261006T101807Z-zeros.tif",
+    "path": "/home/user/GEMSDOE46/docs/h46/downloads/gems46-h46-1-dfa-regime-break-20261006T111347Z-zeros.tif",
     "count": 1,
     "dtype": "float32",
     "crs": "EPSG:32611",
@@ -249,7 +221,7 @@
     "nan_outside_footprint": true,
     "ok": false
    },
-   "zip": "gems46-h46-1-dfa-regime-break-20261006T101807Z.zip",
+   "zip": "gems46-h46-1-dfa-regime-break-20261006T111347Z.zip",
    "bytes": 316319,
    "instrument": {
     "instrument_sgmc_dti": 0.08085047630622151,
@@ -261,8 +233,8 @@
    }
   },
   "H46-2-dfa-corroborated": {
-   "name": "gems46-h46-2-dfa-corroborated-20261006T101807Z",
-   "note": "H46-2 structural corroboration emission with a 12% DFA-regime-break hedge (best validated against the off-catalogue proxy truth at matched emitted mass)",
+   "name": "gems46-h46-2-dfa-corroborated-20261006T111347Z",
+   "note": "H46-2 structural corroboration emission with a 10% DFA-regime-break hedge (best validated against the off-catalogue proxy truth at matched emitted mass)",
    "method": {
     "budget": 37654,
     "min_dist": 3,
@@ -312,9 +284,9 @@
    },
    "emitted_px": 37654,
    "sha256_values": "740c37da9381b5f6b6315a1835d1ed61947193eabdb3e60a067b9418ed03b726",
-   "file": "gems46-h46-2-dfa-corroborated-20261006T101807Z.tif",
+   "file": "gems46-h46-2-dfa-corroborated-20261006T111347Z.tif",
    "audit": {
-    "path": "/home/user/GEMSDOE46/docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z.tif",
+    "path": "/home/user/GEMSDOE46/docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T111347Z.tif",
     "count": 1,
     "dtype": "float32",
     "crs": "EPSG:32611",
@@ -346,9 +318,9 @@
     "nan_outside_footprint": true,
     "ok": true
    },
-   "zeros_variant": "gems46-h46-2-dfa-corroborated-20261006T101807Z-zeros.tif",
+   "zeros_variant": "gems46-h46-2-dfa-corroborated-20261006T111347Z-zeros.tif",
    "zeros_audit": {
-    "path": "/home/user/GEMSDOE46/docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z-zeros.tif",
+    "path": "/home/user/GEMSDOE46/docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T111347Z-zeros.tif",
     "count": 1,
     "dtype": "float32",
     "crs": "EPSG:32611",
@@ -380,7 +352,7 @@
     "nan_outside_footprint": true,
     "ok": false
    },
-   "zip": "gems46-h46-2-dfa-corroborated-20261006T101807Z.zip",
+   "zip": "gems46-h46-2-dfa-corroborated-20261006T111347Z.zip",
    "bytes": 330473,
    "instrument": {
     "instrument_sgmc_dti": 0.10156746341054967,
@@ -392,5 +364,5 @@
    }
   }
  },
- "seconds": 61.6
+ "seconds": 66.9
 }

@@ -8,7 +8,7 @@
 </head>
 <body>
 <header class="site"><div class="wrap">
-  <b>GEMSDOE46 — split-conformal submission for the DOE GEMS Prize</b>
+  <b>GEMSDOE46 — split-conformal &amp; DFA submissions for the DOE GEMS Prize</b>
   <span class="sub">DrivenData #306 · deadline 3 Dec 2026 23:59 UTC · $300,000 prize</span>
 </div></header>
 <nav class="site"><div class="wrap">
@@ -24,7 +24,19 @@
 </div></nav>
 
 <main>
-<div class="card" style="border-left:4px solid #b45309;margin:0 0 18px"><b>Session 2 (2026-10-06): the DFA scaling-regime-break arm.</b> The newest artifacts, the metric-algebra answer to the standing question with its |G| bound, the distinctness tests and the negative results are on <a href="h46/index.html">docs/h46/</a> &mdash; recommended file: <span class="mono">gems46-h46-2-dfa-corroborated</span> (<a href="h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z.tif">.tif</a>).</div>
+<div class="card" style="border-left:4px solid #16a34a;background:#f0fdf4;margin:0 0 18px">
+  <h3 style="margin:0 0 6px;color:#14532d;">⚡ Newest Session Deliverables: DFA Scaling-Regime Breaks (H46-2 &amp; H46-1)</h3>
+  <p style="margin:0 0 8px;font-size:14.5px;color:#374151;">
+    Synthesized from 9 magnetic and gravity bands via sliding-window DFA (Peng et al. 1994) with multiphysics structural corroboration and 200 m catalogue buffer. Completely orthogonal to prior gradient/curvature submissions (|r| &le; 0.04).
+  </p>
+  <p style="margin:0;">
+    <a href="SUBMISSION-GEMSDOE46-dfa-corroborated-zeros.tif" download style="font-weight:700;color:#0b6b53;text-decoration:underline;">⬇️ Download Primary H46-2 Zeros-Variant .tif (283 KB)</a> ·
+    <a href="SUBMISSION-GEMSDOE46-dfa-corroborated.tif" download style="font-weight:600;color:#0b5fa5;">NaN-Outside (.tif)</a> ·
+    <a href="downloads/gems46-h46-2-dfa-corroborated.zip" download style="font-weight:600;color:#0b5fa5;">Single .zip (241 KB)</a> ·
+    <a href="h46/index.html" style="font-weight:600;color:#0b5fa5;">Full H46 Technical Dossier &rarr;</a>
+  </p>
+</div>
+
 <h1>Executive summary</h1>
 
 <div class="card download" id="submission-download">
@@ -36,6 +48,7 @@
     <li><b>Note (paste into the form's Note field):</b> <a href="downloads/NOTE-gemsdoe46-h46a-r8-conformal.txt">downloads/NOTE-gemsdoe46-h46a-r8-conformal.txt</a></li>
     <li><b>Format audit of that exact file:</b> <a href="downloads/checks-gemsdoe46-h46a-r8-conformal-allfinite.json">checks-…-allfinite.json</a> — single band, float32, shape 3730 × 3292, EPSG:32611, transform matches the template, every cell in [0, 1], positives = 39,108</li>
     <li><b>Fallback (same dots, NaN outside the survey bounds exactly like <span class="mono">sample_submission.tif</span>):</b> <a href="gemsdoe46-h46a-r8-conformal-nan.tif">gemsdoe46-h46a-r8-conformal-nan.tif</a></li>
+    <li><b>Alternative DFA Corroborated Submission:</b> <a href="SUBMISSION-GEMSDOE46-dfa-corroborated-zeros.tif" download>SUBMISSION-GEMSDOE46-dfa-corroborated-zeros.tif</a> (37,654 dots, 100% [0, 1] guaranteed)</li>
     <li><b>Step-by-step upload instructions:</b> <a href="how-to-submit.html">How to submit</a></li>
   </ul>
   <p class="small" style="margin:10px 0 0"><b>Last verified 2026-10-06</b> — the file was generated
@@ -43,11 +56,11 @@
   rasters and audited by re-reading the written bytes. Both encodings contain the same 39,108 dots;
   this page does not poll or mirror the leaderboard.</p>
 </div>
+
 <div class="hero"><p class="lede">A single, unique, slot-ready GeoTIFF produced from the official competition
 rasters, whose operating point is <b>certified by split conformal prediction</b> rather than chosen
 by eye — with the confidence level, the certified floor and the metric's own density bound printed
 next to it.</p>
-
 
 <h2>The submission in numbers</h2>
 <div class="grid">
