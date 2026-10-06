@@ -1,8 +1,6 @@
-# Runtime dependencies of GEMSDOE46.
-# Verified with Python 3.11 on a 4 GB / 2-CPU CPU-only box.
-numpy>=1.24
-scipy>=1.10
-scikit-learn>=1.3
+numpy>=1.26
+scipy>=1.11
 rasterio>=1.3
-pyproj>=3.5
-pytest>=7.4
+pandas>=2.0
+matplotlib>=3.8
+pytest>=8.0

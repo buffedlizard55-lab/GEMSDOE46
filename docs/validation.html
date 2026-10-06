@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Validation - GEMSDOE46</title>
+<link rel="stylesheet" href="assets/style.css"></head>
+<body>
+<header><div class="wrap"><span class="brand">GEMSDOE46 &middot; DOE GEMS Prize</span><nav><a href="index.html">Overview</a><a href="executive-summary.html">Executive summary &amp; how to submit</a><a href="hypotheses.html">Hypotheses</a><a href="validation.html" class='active'>Validation</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav></div></header>
+<main class="wrap">
+<h1>Validation</h1>
+<p class="dim">Protocol: compare fields <em>at matched emitted mass and identical exclusion rules</em>.
+Every number below is produced by <code>scripts/validate_candidates.py</code> and
+<code>scripts/build_submission.py</code> and stored in <code>registry/</code>.</p>
+
+<h2>Instruments used, and their measured worth</h2>
+<table>
+<tr><th>instrument</th><th>truth it hides</th><th>verdict</th></tr>
+<tr><td>A. spatially blocked catalogue holdout (9 blocks)</td><td>published catalogue faults inside a block,
+with the rest of the catalogue masked</td><td class="bad">rejected: it ranks the 0.2600 file (0.0659)
+above the 0.2778 file (0.0330), the opposite of the live board, and the group's own measurement puts
+its Spearman against 11 live scores at +0.09</td></tr>
+<tr><td>B. off-catalogue USGS SGMC traces (main instrument)</td><td>83,593 rasterised SGMC fault pixels,
+of which 66,277 survive after removing pixels that coincide with the published catalogue</td>
+<td class="warn">used for relative comparisons only; group measurement of Spearman vs 11 live scores +0.31.
+It does rank the two scored prior files correctly (0.1058 for the 0.2778 file vs 0.1037 for the 0.2600
+file)</td></tr>
+<tr><td>C. live-score algebra</td><td>nothing: it uses the published metric plus owner-reported scores
+</td><td class="ok">used to set the emitted mass and to state what a higher score would require</td></tr>
+</table>
+
+<h2>Distinctness of the shipped artifacts (the criterion for calling H46-1 a new hypothesis)</h2>
+<table><tr><th>compared against</th><th>H46-1 (DFA) smoothed Pearson</th><th>H46-2 smoothed Pearson</th></tr>
+<tr><td>d2.8(0.2600) <span class='dim'>(prior submission)</span></td><td class='ok'>-0.012</td><td>0.319</td></tr><tr><td>h33-2-b2(0.2778) <span class='dim'>(prior submission)</span></td><td class='ok'>-0.009</td><td>0.306</td></tr><tr><td>h32d(unscored) <span class='dim'>(prior submission)</span></td><td class='ok'>-0.012</td><td>0.364</td></tr><tr><td>tmi_grad <span class='dim'>(gradient/curvature transform of the same bands)</span></td><td class='ok'>-0.011</td><td>0.752</td></tr><tr><td>iso_grav_anom_grad <span class='dim'>(gradient/curvature transform of the same bands)</span></td><td class='ok'>-0.007</td><td>0.028</td></tr><tr><td>det_elev_grad <span class='dim'>(gradient/curvature transform of the same bands)</span></td><td class='ok'>-0.001</td><td>0.513</td></tr><tr><td>det_elev_lap <span class='dim'>(gradient/curvature transform of the same bands)</span></td><td class='ok'>-0.011</td><td>0.500</td></tr><tr><td>tc_raw <span class='dim'>(gradient/curvature transform of the same bands)</span></td><td class='ok'>0.041</td><td>-0.234</td></tr><tr><td>iso_grav_anom_hg_raw <span class='dim'>(gradient/curvature transform of the same bands)</span></td><td class='ok'>0.024</td><td>0.047</td></tr><tr><td>tmi_hg_raw <span class='dim'>(gradient/curvature transform of the same bands)</span></td><td class='ok'>0.002</td><td>0.750</td></tr>
+</table>
+<p>Jaccard overlap between the H46-1 emission and the 0.2778 incumbent emission:
+<strong>0.0037</strong> (276 shared pixels of 37,654). Conclusion: H46-1 is a different hypothesis,
+not a relabelled edge detector &mdash; and H46-2 is honestly a fusion whose main term <em>is</em> an
+edge construct (0.75 correlation with the total-magnetic-intensity gradient), which is why it is not
+described as a new hypothesis anywhere on this site.</p>
+
+<h2>Hedge sweep: what it costs to carry the new hypothesis inside the scored file</h2>
+<table><tr><th>DFA share of budget</th><th>proxy DTI</th><th>credit (px)</th><th>emitted px</th></tr>
+<tr><td>0%</td><td>0.1054</td><td>6471</td><td>37,654</td></tr><tr><td>5%</td><td>0.1031</td><td>6326</td><td>37,654</td></tr><tr><td>10%</td><td>0.1016</td><td>6231</td><td>37,654</td></tr><tr><td>12%</td><td>0.1008</td><td>6183</td><td>37,654</td></tr><tr><td>20%</td><td>0.0990</td><td>6069</td><td>37,654</td></tr>
+<tr><td class="dim">best prior files, same rules</td><td class="dim">0.0991</td><td class="dim">&mdash;</td><td class="dim">37,654</td></tr>
+</table>
+<p>10% is the shipped choice: still ahead of the prior files on the proxy, and 3,765 pixels of the
+emission carry predictions that no gradient-based field would make.</p>
+
+<h2>Emission parameters, and why they are what they are</h2>
+<table>
+<tr><td>emitted mass</td><td><strong>37,654 px</strong> (= the measured mass of the highest-scoring prior
+file; the model in <code>src/gems46/emission.py</code> puts the optimum for this credit curve between
+~37k and ~45k px)</td></tr>
+<tr><td>minimum dot separation</td><td><strong>3 px</strong> (300 m): below the kernel radius, two dots can
+only earn credit for the same truth pixel, and the metric takes the maximum, so the second dot pays the
+0.2 tax for nothing</td></tr>
+<tr><td>ranking filter</td><td>each field blurred at &sigma; = 1.85 px, the matched filter for partial
+credit under the triangular kernel</td></tr>
+<tr><td>catalogue exclusion</td><td><strong>200 m buffer</strong> (2 px) around every published fault
+pixel, because the organiser masks that population (thread 11516)</td></tr>
+<tr><td>values</td><td>exactly 0.0 / 1.0: with <code>p &rarr; &lambda;p</code> the metric is increasing in
+&lambda;, so unit mass is optimal on any chosen support</td></tr>
+</table>
+
+<h2>What would falsify the shipped choice</h2>
+<ul>
+ <li>A live score below 0.27 for H46-2 would say the proxy instrument is worse than its +0.31 Spearman
+     suggests and that the structural field here is weaker than the prior family.</li>
+ <li>A live score above 0.30 would say the geometric-mean corroboration found something the prior
+     family missed.</li>
+ <li>Either way the DFA artifact's live score tests the new hypothesis directly and is the number worth
+     recording first.</li>
+</ul>
+</main>
+<footer class="wrap">Every number on this site is regenerated from <code>registry/*.json</code> by
+<code>scripts/build_site.py</code>. Scores marked <em>owner-reported</em> are not organiser receipts.
+Retrieved 2026-10-06 UTC.</footer>
+</body></html>

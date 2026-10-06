@@ -1,0 +1,43 @@
+{
+ "schema_version": 1,
+ "note": "Every hash below was recomputed in this checkout from the restored bytes (2026-10-06). Pins prove mirror consistency, not organiser authentication.",
+ "files": [
+  {
+   "id": "training_features",
+   "dest": "data/raw/training_features.tif",
+   "mirror": "github.com/buffedlizard55-lab/GEMSDOE data/bridge/gems-geodawn-numerical-features.tif.part-000..004 (reassembled)",
+   "official_source": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/ (login-walled)",
+   "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+   "bytes": 418912844,
+   "verified_here": true,
+   "properties": "19 float32 bands, 3730x3292, EPSG:32611, 100 m, origin (243350, 4508550), nodata -3.4028234663852886e38"
+  },
+  {
+   "id": "labels",
+   "dest": "data/raw/labels.tif",
+   "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/bridge/labels.tif",
+   "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+   "bytes": 425830,
+   "verified_here": true,
+   "properties": "int8, 60,988 positive pixels inside the footprint; byte-identical to the mirror's existing_faults.tif"
+  },
+  {
+   "id": "sample_submission",
+   "dest": "data/raw/sample_submission.tif",
+   "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/bridge/sample_submission.tif",
+   "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+   "bytes": 1599597,
+   "verified_here": true,
+   "properties": "float32; 5,167,373 finite pixels (the scored footprint used as the template); contains 1s on the catalogue, see IR-46-03"
+  },
+  {
+   "id": "sgmc_faults_100m",
+   "dest": "data/external/sgmc_faults_100m_u8.tif",
+   "mirror": "github.com/buffedlizard55-lab/GEMSDOE24 data/external/derived_sgmc_faults_100m_u8.tif",
+   "overlying_source": "USGS State Geologic Map Compilation fault traces",
+   "sha256": "643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0",
+   "verified_here": true,
+   "properties": "uint8 binary, 83,593 positive pixels inside the footprint; 66,277 remain as off-catalogue proxy truth after removing pixels coincident with the published catalogue"
+  }
+ ]
+}

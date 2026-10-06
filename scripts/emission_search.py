@@ -28,7 +28,7 @@ import rasterio
 ROOT = Path("/home/user/GEMSDOE46")
 sys.path.insert(0, str(ROOT / "src"))
 from gems46 import anchors as A  # noqa: E402
-from gems46 import emission as E  # noqa: E402
+from gems46 import xemission as E  # noqa: E402
 from gems46 import xmetric as M  # noqa: E402
 
 DATA = Path("/tmp/gems46/data")
