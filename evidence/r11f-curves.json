@@ -1,0 +1,98 @@
+{
+ "R11F-fused": {
+  "10000": {
+   "accepted": 10000,
+   "proxy_credit": 2902.332,
+   "proxy_dti": 0.052383,
+   "proxy_credit_per_dot": 0.2902
+  },
+  "20000": {
+   "accepted": 20000,
+   "proxy_credit": 5444.401,
+   "proxy_dti": 0.094293,
+   "proxy_credit_per_dot": 0.2722
+  },
+  "30000": {
+   "accepted": 30000,
+   "proxy_credit": 7547.146,
+   "proxy_dti": 0.125766,
+   "proxy_credit_per_dot": 0.2516
+  },
+  "37654": {
+   "accepted": 37654,
+   "proxy_credit": 9147.686,
+   "proxy_dti": 0.148159,
+   "proxy_credit_per_dot": 0.2429
+  },
+  "44090": {
+   "accepted": 44090,
+   "proxy_credit": 10295.586,
+   "proxy_dti": 0.163008,
+   "proxy_credit_per_dot": 0.2335
+  }
+ },
+ "R11F-dfa-local": {
+  "10000": {
+   "accepted": 10000,
+   "proxy_credit": 1561.759,
+   "proxy_dti": 0.028279,
+   "proxy_credit_per_dot": 0.1562
+  },
+  "20000": {
+   "accepted": 20000,
+   "proxy_credit": 3058.495,
+   "proxy_dti": 0.053264,
+   "proxy_credit_per_dot": 0.1529
+  },
+  "30000": {
+   "accepted": 30000,
+   "proxy_credit": 4375.636,
+   "proxy_dti": 0.073428,
+   "proxy_credit_per_dot": 0.1459
+  },
+  "37654": {
+   "accepted": 37654,
+   "proxy_credit": 5381.903,
+   "proxy_dti": 0.087869,
+   "proxy_credit_per_dot": 0.1429
+  },
+  "44090": {
+   "accepted": 44090,
+   "proxy_credit": 6207.002,
+   "proxy_dti": 0.099095,
+   "proxy_credit_per_dot": 0.1408
+  }
+ },
+ "incumbent-field": {
+  "10000": {
+   "accepted": 10000,
+   "proxy_credit": 1952.448,
+   "proxy_dti": 0.035326,
+   "proxy_credit_per_dot": 0.1952
+  },
+  "20000": {
+   "accepted": 20000,
+   "proxy_credit": 3569.306,
+   "proxy_dti": 0.062117,
+   "proxy_credit_per_dot": 0.1785
+  },
+  "30000": {
+   "accepted": 30000,
+   "proxy_credit": 5032.111,
+   "proxy_dti": 0.084402,
+   "proxy_credit_per_dot": 0.1677
+  },
+  "37654": {
+   "accepted": 37654,
+   "proxy_credit": 6005.348,
+   "proxy_dti": 0.098064,
+   "proxy_credit_per_dot": 0.1595
+  },
+  "44090": {
+   "accepted": 44090,
+   "proxy_credit": 6657.741,
+   "proxy_dti": 0.106409,
+   "proxy_credit_per_dot": 0.151
+  }
+ }
+}

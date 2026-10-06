@@ -1,0 +1,14 @@
+incumbent 37,654 dots | R11F shipped 44,090 dots
+  d0=3.0 incumbent-0.2778             dti=0.095386 T=  5517.64 hit=0.121
+  d0=3.0 r11-shipped-44090            dti=0.166160 T=  9934.40 hit=0.151
+  d0=3.0 r11-fused-reemitted-37654    dti=0.143287 T=  8352.74 hit=0.151
+  d0=3.0 uniform-random-37654         dti=0.069210 T=  3995.34 hit=0.076
+  d0=3.0 r11-fused-reemitted-37654    paired vs incumbent: mean +0.033477 t=+3.69 (130 blocks)
+  d0=3.0 r11-shipped-44090            paired vs incumbent: mean +0.050308 t=+5.16 (130 blocks)
+  d0=5.0 incumbent-0.2778             dti=0.088516 T=  4737.50 hit=0.105
+  d0=5.0 r11-shipped-44090            dti=0.166190 T=  9213.65 hit=0.143
+  d0=5.0 r11-fused-reemitted-37654    dti=0.138771 T=  7487.48 hit=0.133
+  d0=5.0 uniform-random-37654         dti=0.068352 T=  3653.12 hit=0.069
+  d0=5.0 r11-fused-reemitted-37654    paired vs incumbent: mean +0.038375 t=+4.31 (127 blocks)
+  d0=5.0 r11-shipped-44090            paired vs incumbent: mean +0.064763 t=+6.77 (127 blocks)
+wrote evidence/r11f-stratified-audit.json in 128.9s

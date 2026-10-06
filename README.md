@@ -1,26 +1,50 @@
 # GEMSDOE46 — auditable fault-discovery experiments
 
-## Download the newly generated TIF
+Four parallel arms live in this repository. **One is the current candidate**: the R11F fusion arm.
 
-**[Download `gemsdoe47-h47-1-catalogue-supervised-lineament-37654-20261006T180000Z-h47a-zeros.tif`](docs/downloads/h47/gemsdoe47-h47-1-catalogue-supervised-lineament-37654-20261006T180000Z-h47a-zeros.tif)** · [NaN-outside twin](docs/downloads/h47/gemsdoe47-h47-1-catalogue-supervised-lineament-37654-20261006T180000Z-h47a-nan.tif)
+## Download the TIF
 
-**HOLD_DO_NOT_SUBMIT — the pre-registered screen failed, so this file is published for inspection, not as a recommended submission.** It is unique (Jaccard 0.0151 against the live-scored 0.2778 file, 0.0025 against our R10 file), format-perfect, and the first catalogue-supervised arm in this repository — but at matched mass on the only instrument that reproduces all three known live orderings it is **worse** than the incumbent: delta −0.035274, paired t −5.48 over 127 blocks, ranking AUC over the incumbent's dots 0.497 (chance). No competition slot was used.
+**[Download `gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif`](docs/r11f/gems46-r11f-scarp-radiometric-fusion-00e049b51218-zeros.tif)** · [full machine-readable
+receipt](docs/r11f/receipt.json) · [step-by-step submission guide](https://buffedlizard55-lab.github.io/GEMSDOE46/docs/executive-summary.html)
 
-- [Executive summary / exact submission instructions](https://buffedlizard55-lab.github.io/GEMSDOE46/docs/executive-summary.html)
-- [Active site](https://buffedlizard55-lab.github.io/GEMSDOE46/) · [machine-readable receipt](docs/h47/receipt.json)
-- [Scientific review: why the family plateaued at 0.28, and what the screen measured](docs/research/h47-review.md)
-- [Five hypotheses registered before implementation, with their outcomes](docs/research/h47-hypotheses.md)
+**PROXY GATE PASSED — NOT SUBMITTED.** A unique, format-audited, all-finite single-band float32
+GeoTIFF: 44,090 unit dots, zero outside the scored footprint, sha256
+`57be86502a03a22e…`. It fuses two evidence families the official 19-band stack does not contain
+(1 m lidar terrain descriptors as a scarp matched filter; the GeoDAWN K/Th/U compositional-contrast
+ratio grids, DOI 10.5066/P93LGLVQ) and emits them with an expected-credit submodular optimiser whose
+stop rule is the metric's own break-even. **No competition slot has been used; submitting it is the
+user's decision.**
 
-| Current measured result | Value |
+| Measured result (all proxy, not organizer scores) | Value |
 |---|---:|
-| H47-1 shipped field, stratified-SGMC screen at matched mass (37,654 dots) | 0.053242 |
-| Live-scored 0.2778 file on the same instrument and mass | 0.088516 |
-| Delta / paired t (127 truth-bearing blocks) / ranking AUC | −0.035274 / −5.48 / 0.497 |
-| Out-of-fold mixture (not the shipped field) | 0.093609 (+0.005093, t 0.64) |
-| Uniform-random emission at the same mass | T = 4,140 ± 70 |
-| Algorithmic uniqueness vs the 0.2778 file | Jaccard 0.0151 |
+| R11F candidate on the live-order-calibrated stratified-SGMC instrument (d0 = 5 px) | **0.16619** |
+| Live-scored 0.2778 incumbent file, same instrument | 0.08852 |
+| Uniform-random control, same mass | 0.06835 |
+| Paired over 127 truth-bearing blocks | +0.06476 (t = +6.77) |
+| Same field re-emitted at the matched mass 37,654 | +0.03837 (t = +4.31) |
+| Dots within 300 m of truth (candidate vs incumbent) | 14.3 % vs 10.5 % |
 
-These are **not leaderboard scores**. The first catalogue-supervised arm this repository has built is screened and rejected on its own pre-registered condition; the honest answer to "can it beat 0.2778" is *not with this arm, and not with any arm that only learns the published catalogue*.
+The advantage is **new placement, not pruning**: the R11F field's AUC over the incumbent's *own*
+dots is 0.507 — chance — so it wins by putting dots where the incumbent
+has none. The candidate is explicitly *not* claimed as a new hypothesis: its maximum |correlation|
+with prior shipped files is 0.3779, above the 0.2 ceiling.
+
+- [Active site](https://buffedlizard55-lab.github.io/GEMSDOE46/) ·
+  [R11F review, defects found and limitations](docs/research/r11f-review.md) ·
+  [preregistration](docs/research/session-r11f-plan.md) ·
+  [flagged irregularities](https://buffedlizard55-lab.github.io/GEMSDOE46/docs/irregularities.html)
+
+### The other three arms, kept as published negatives
+
+| arm | what it tested | verdict |
+|---|---|---|
+| **R11 (A/C/D)** `registry/r11.json` | windowed-DFA boundaries; tilt zero-crossings; matched-filter contacts | A stopped for **futility** at synthetics (4.4 km mislocalization); C **suspended**; D **HOLD** (blocked DTI 0.0610 vs 0.1007 for the best comparator, correlation gate 0.543). [TIF](docs/r11/gems46-r11d-matchedfilter-5caba5cc4ffc-zeros.tif) · [review](docs/research/r11-review.md) |
+| **H47-1** `registry/h47.json` | catalogue-supervised lineament detector (LightGBM over 55 features) | **HOLD_DO_NOT_SUBMIT**: 0.053242 vs the incumbent's 0.088516 on the same stratified instrument R11F passes; AUC over the incumbent's dots 0.497. [TIF](docs/downloads/h47/gemsdoe47-h47-1-catalogue-supervised-lineament-37654-20261006T180000Z-h47a-zeros.tif) · [review](docs/research/h47-review.md) |
+| **R10** `registry/r10.json` | 51 km DFA slope crossover | **HOLD**: 0.0617 vs 0.1033, paired −0.0416. [TIF](docs/r10/gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif) |
+
+The DFA regime-break detector asked for by the standing brief has now failed in four independent
+implementations (R10, H46-1, R11-A, R11F's re-localised variant) — see `docs/HYPOTHESES.md` and
+IR-46-16.
 
 ## The standing question: why did 0.2778 score highest, and is more reachable?
 
@@ -28,7 +52,7 @@ Measured this session from the three live-scored dot files (owner-reported score
 
 * They are **one** dot set. The 37,654-pixel file (0.2778) is an exact subset of the 40,199-pixel file (0.2708), which is an exact subset of the 44,090-pixel file (0.2600); all three share the **identical 37,654-pixel** core beyond 200 m of the published catalogue. The entire 0.26→0.28 progression is the deletion of near-catalogue dead mass, nothing else.
 * The published metric charges 0.2 per dot with no truth within 300 m and 0.8 per uncovered truth pixel. Fitting the two score steps gives `T ≈ 5,223` covered truth pixels and denominator `D ≈ 18,800`; each dead dot costs `0.2·T/D² ≈ 3.0e-6`, each hit dot earns `(1−DTI)/D ≈ 3.8e-5`, so the break-even hit rate is `0.2·DTI/(1−DTI) ≈ 7.7%`. The incumbent hits at ~10.5% — just above break-even. That is the plateau.
-* Beating it needs either (i) removing the ~32,000 dead dots without the hidden labels — the test is whether a model can rank the incumbent's own dots, and ours is at chance (AUC 0.497) — or (ii) placing dots on faults the catalogue lacks, where our detector's emission hit-rate is flat from 5k to 120k dots (12.1% → 9.4%). The leader's 0.3774 therefore implies an information source not obtainable in this sandbox (lidar/3DEP tiles, or hand-labelled faults under the organizer's allowance), not a better parameter choice.
+* Beating it needs either (i) removing the ~32,000 dead dots without the hidden labels — the test is whether a model can rank the incumbent's own dots, and the H47 detector was at chance (AUC 0.497) — or (ii) placing dots on faults the catalogue lacks. H47 found its own detector could not do (ii) either (flat hit-rate 12.1 % → 9.4 % from 5 k to 120 k dots) and concluded the needed information was "not obtainable in this sandbox". **R11 supersedes that conclusion**: the information was in the mirrored external layers (1 m lidar terrain descriptors, GeoDAWN radiometric ratios), and R11's fusion lifts the instrument hit fraction from 10.5 % to 14.3 % and the instrument DTI from 0.0885 to 0.1662 (paired t +6.77 over 127 blocks). See §5b of `docs/research/r11-review.md`.
 * Instrument discipline: the catalogue-in-block holdout and the un-stratified SGMC truth both **invert** the live order; only SGMC truth stratified at ≥3 px from the catalogue reproduces 0.2600 < 0.2708 < 0.2778. `registry/h47.json → ladder` prints all six rows before any delta.
 
 ## Reproduce on CPU
@@ -37,8 +61,13 @@ Measured this session from the three live-scored dot files (owner-reported score
 python -m venv .venv
 .venv/bin/pip install -r requirements.txt
 bash scripts/restore_competition_data.sh
-.venv/bin/python scripts/run_h47.py            # ladder, cv, calib, full, compare, screen, emit
-.venv/bin/python scripts/build_h47_site.py
+.venv/bin/python scripts/screen_r11.py        # one-channel-at-a-time screen (proxy ranks)
+.venv/bin/python scripts/run_r11.py           # Pass 1: families, curves, first gate (~10 min)
+.venv/bin/python scripts/refine_r11_mass.py   # Pass 2: measured transfer, matched gate
+.venv/bin/python scripts/audit_r11_on_stratified.py  # Pass 3: live-order-calibrated instrument
+.venv/bin/python scripts/build_r11_site.py    # active site (CI diffs the three pages)
+.venv/bin/python scripts/build_irregularities_page.py
+# historical: scripts/run_h47.py + build_h47_site.py (H47, HOLD), run_r10.py + build_r10_site.py (R10, HOLD)
 .venv/bin/python -m pytest
 .venv/bin/python scripts/verify_all.py
 ```

@@ -64,17 +64,27 @@ def test_static_site_has_resolving_local_links_and_safe_external_targets() -> No
 
 
 def test_homepage_puts_the_verified_download_first() -> None:
-    """Active download precedes analysis; format validation is not scientific promotion."""
+    """Active download precedes analysis; format validation is not scientific promotion.
+
+    Reads the current receipt (`registry/r11f.json`) instead of a hard-coded experiment, so this
+    asserts a *contract*: the downloadable file named in the receipt is on the page, exists on disk,
+    passes its own format audit, and the status banner matches `gate_passed`.
+    """
     import json
     home = (SITE / "index.html").read_text(encoding="utf-8")
-    assert home.index('id="submission-download"') < home.index('id="validation"')
-    receipt = json.loads((ROOT / "registry/r11.json").read_text())
-    assert receipt["file"] in home
-    assert (SITE / "r11" / receipt["file"]).is_file()
-    assert all(receipt["audit"]["checks"].values())
-    assert receipt["audit"]["positive"] == 37654
-    assert "do not submit" in home
-    assert not receipt["gate_passed"]
+    assert home.index('id="submission-download"') < home.index('id="gate"')
+    receipt = json.loads((ROOT / "registry/r11f.json").read_text())
+    candidate = receipt["candidate"]
+    assert candidate["file"] in home
+    assert (SITE / "r11f" / candidate["file"]).is_file()
+    assert candidate["all_finite"] and candidate["in_range"] and candidate["nodata"] is None
+    assert candidate["count"] == 1 and candidate["dtype"] == "float32"
+    assert candidate["crs"] == "EPSG:32611" and candidate["shape"] == [3730, 3292]
+    assert candidate["positive"] == receipt["emissions"]["r11f_fused"]["accepted"]
+    if receipt["gate_passed"]:
+        assert "Proxy gate passed" in home
+    else:
+        assert "do not submit" in home
 
 
 def test_r10_receipt_is_archived_unchanged() -> None:
@@ -85,6 +95,29 @@ def test_r10_receipt_is_archived_unchanged() -> None:
     assert json.loads((SITE / "r10" / "receipt.json").read_text())["file"] == receipt["file"]
     assert not receipt["gate_passed"]
     assert receipt["audit"]["positive"] == 37654
+
+
+def test_r11_arms_receipt_is_archived_unchanged() -> None:
+    """The parallel R11 arms (A/C/D) keep their receipt, their held TIF and their review."""
+    import json
+    receipt = json.loads((ROOT / "registry/r11.json").read_text())
+    assert (SITE / "r11" / receipt["file"]).is_file()
+    assert json.loads((SITE / "r11" / "receipt.json").read_text())["file"] == receipt["file"]
+    assert "HOLD" in receipt["status"]
+    assert (ROOT / "docs/research/r11-review.md").is_file()
+
+
+def test_r11f_receipt_and_artefacts_are_archived() -> None:
+    """The R11F fusion arm keeps its receipt, both TIFs and its review."""
+    import json
+    receipt = json.loads((ROOT / "registry/r11f.json").read_text())
+    for key in ("candidate", "dfa_candidate"):
+        blob = receipt[key]
+        assert (SITE / "r11f" / blob["file"]).is_file()
+    assert json.loads((SITE / "r11f" / "receipt.json").read_text())["candidate"]["file"] == \
+        receipt["candidate"]["file"]
+    assert (ROOT / "docs/research/r11f-review.md").is_file()
+    assert (ROOT / "docs/research/session-r11f-plan.md").is_file()
 
 
 def test_h47_receipt_is_archived_unchanged() -> None:
