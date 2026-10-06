@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One-command verification of everything this repository claims.
+"""One-command computational verification (not validation of every scientific claim).
 
 Checks, in order:
   1. the official metric implementation against the published worked example and against an
@@ -106,13 +106,19 @@ def main() -> int:
         ok &= bool(G_ and T_ and abs(G_ - 14089) < 2)
         print(f"  G = {G_:,.0f} px, T(44,090 px emission) = {T_:,.0f} px, "
               f"break-even = {d.get('break_even'):.4f}")
-        print("  reproduced from 0.2600*(0.2*44090 + 0.8G) = 0.2778*(0.2*37654 + 0.8G)")
+        print("  CONDITIONAL MODEL ONLY (not identified hidden truth): reproduced from 0.2600*(0.2*44090 + 0.8G) = 0.2778*(0.2*37654 + 0.8G)")
     else:
         print("  missing registry/emission_model.json")
         ok = False
 
     print()
-    print("ALL CHECKS PASSED" if ok else "SOME CHECKS FAILED")
+    print("7. R10 independent on-disk format audit")
+    from run_r10 import audit
+    r10 = json.loads((ROOT / "registry/r10.json").read_text())
+    current = audit(ROOT / "docs/r10" / r10["file"], ROOT / "data/raw/sample_submission.tif")
+    ok &= current == r10["audit"]
+    print(f"  {r10['file']}: sha256={current['sha256']}; status={r10['status']}")
+    print("ALL COMPUTATIONAL CHECKS PASSED (not a scoring endorsement)" if ok else "SOME CHECKS FAILED")
     return 0 if ok else 1
 
 

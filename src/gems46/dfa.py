@@ -14,9 +14,9 @@ Two implementations are provided so the fast one can be checked against the slow
 ``alpha_reference``  straight transcription of the DFA algorithm (O(N * scales) Python loops over
                      blocks).  Used only in tests and on short series.
 
-``transect_alpha``   vectorised sliding-window DFA for a long 1-D transect.  All scales must divide
-                     the block stride, which lets every window's residuals be assembled from
-                     globally indexed blocks with prefix sums (no per-window Python loop).
+``transect_alpha``   vectorised sliding-window DFA for a long 1-D transect.  Window residuals are assembled from
+                     globally indexed blocks with prefix sums (no per-window Python loop); some
+                     phases cannot fit enough largest-scale blocks and yield NaN.
 
 ``alpha_map``        runs ``transect_alpha`` down every row and across every column of a 2-D band
                      and returns two coarse exponent maps (row-transect and column-transect).
@@ -192,13 +192,13 @@ def alpha_map(band: np.ndarray, valid: np.ndarray, window: int = 128, stride: in
     for i in range(nrows):
         c, a = transect_alpha_runs(band[i], valid[i], window, stride, scales)
         if c.size:
-            cols = c // stride
+            cols = (c - window // 2) // stride
             inb = cols < n_win_r
             row_map[i, cols[inb]] = a[inb].astype(np.float32)
     for j in range(ncols):
         c, a = transect_alpha_runs(band[:, j], valid[:, j], window, stride, scales)
         if c.size:
-            rows = c // stride
+            rows = (c - window // 2) // stride
             inb = rows < n_win_c
             col_map[rows[inb], j] = a[inb].astype(np.float32)
     row_centers = np.arange(n_win_r) * stride + window // 2

@@ -1,0 +1,936 @@
+{
+  "experiment": "H46-R10",
+  "generated_utc": "2026-10-06T15:05:01.166133+00:00",
+  "file": "gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif",
+  "note": "R10 raw RTP/gravity DFA slope crossover, 0.8-12.8 km scales; 37,654 dots; research candidate, proxy-gated, no leaderboard score.",
+  "parameters": {
+    "window": 512,
+    "stride": 16,
+    "scales": [
+      8,
+      16,
+      32,
+      64,
+      96,
+      128
+    ],
+    "bands": [
+      2,
+      13
+    ],
+    "background_cells": 31,
+    "normalization_percentile": 99,
+    "budget": 37654,
+    "min_dist_argument": 3,
+    "smooth_px": 1.85,
+    "catalogue_cross_dilation_iterations": 2,
+    "block_grid": [
+      4,
+      4
+    ],
+    "guard_pixels": 3,
+    "bootstrap_seed": 4610,
+    "correlation_sampling": "every eighth pixel of fixed common-valid mask"
+  },
+  "source_hashes": {
+    "scripts/run_r10.py": "fea606b3024c0f795f61127362e403403f7808d6c00dd03599ded3e8279290a0",
+    "src/gems46/crossover.py": "8460637f3cf03a9d26ef3164d6bbaf2d98e3dbb704c827e774f65853de08b64e",
+    "src/gems46/emission.py": "181c91ae7c55320d75359da04e35921a0248d2267e765767d35e98a41effdae2",
+    "src/gems46/metric.py": "48303433eb302ccdc3a07e87ed67c6c244d4495db3b967d26ce4c00c3a71b584"
+  },
+  "input_hashes": {
+    "data/raw/training_features.tif": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "data/raw/labels.tif": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+    "data/raw/sample_submission.tif": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+    "data/external/sgmc_faults_100m_u8.tif": "643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0"
+  },
+  "audit": {
+    "checks": {
+      "single_band": true,
+      "float32": true,
+      "crs": true,
+      "shape": true,
+      "transform": true,
+      "finite": true,
+      "range": true,
+      "no_nodata": true
+    },
+    "min": 0.0,
+    "max": 1.0,
+    "positive": 37654,
+    "sha256": "c966def73cfb3177af25651c92d32f1f36fc209ad13c49274c125aa06f62f322",
+    "pixel_sha256": "95ba59eb90304f868e2ec3e2c4baae50668cf4f1c835b5fa03fc2f49ffe45659",
+    "bytes": 267192,
+    "shape": [
+      3730,
+      3292
+    ],
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
+  "support_pixels": 2090206,
+  "comparisons": {
+    "GEMSDOE32-owner-reported-02778": {
+      "file": "data/derived/incumbent_02778.tif",
+      "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+      "pixel_identical": false,
+      "candidate_pearson": {
+        "n": 607854,
+        "pearson": 0.001536560436417191,
+        "spearman": 0.0015365604364171884
+      },
+      "field_vs_smoothed_submission": {
+        "n": 246268,
+        "pearson": -0.005381670997736426,
+        "spearman": -0.016406013801204686
+      },
+      "jaccard": 0.003464449419038482
+    },
+    "H46-structural-DFA": {
+      "file": "docs/downloads/gems46-h46-2-dfa-corroborated-zeros.tif",
+      "sha256": "70ebfc9d2e0cabe2543497c6c3536a4ab1b83f9b7f3742e8ac12c4f86f395b97",
+      "pixel_identical": false,
+      "candidate_pearson": {
+        "n": 607854,
+        "pearson": 0.0015885424229282732,
+        "spearman": 0.0015885424229283704
+      },
+      "field_vs_smoothed_submission": {
+        "n": 246268,
+        "pearson": 0.03482389902733918,
+        "spearman": 0.022961333902169565
+      },
+      "jaccard": 0.0038791207326339364
+    },
+    "R8-conformal": {
+      "file": "SUBMISSION-GEMSDOE46-r8-conformal.tif",
+      "sha256": "68063ac544a2132ffc20419f8dd814bb92b1d0d90877c14e2383c5d3859f5f42",
+      "pixel_identical": false,
+      "candidate_pearson": {
+        "n": 607854,
+        "pearson": 0.001186423858316396,
+        "spearman": 0.001186423858316337
+      },
+      "field_vs_smoothed_submission": {
+        "n": 246268,
+        "pearson": 0.033289117951943704,
+        "spearman": 0.04254784133972477
+      },
+      "jaccard": 0.003464188138096919
+    },
+    "R9-conformal": {
+      "file": "docs/r9/downloads/gems46-r9-conformal-s5-20261006T110804Z.tif",
+      "sha256": "2cd0e75b75d1adc8528ace9c0ec0d3d06d9b2dc94c50927f9cbdcc8f9921312e",
+      "pixel_identical": false,
+      "candidate_pearson": {
+        "n": 607854,
+        "pearson": 0.0003176362140898782,
+        "spearman": 0.00031763621408991316
+      },
+      "field_vs_smoothed_submission": {
+        "n": 246268,
+        "pearson": 0.0206084856767623,
+        "spearman": 0.017468667688579048
+      },
+      "jaccard": 0.003946035301018504
+    },
+    "H46-pure-DFA": {
+      "file": "docs/downloads/gems46-h46-1-dfa-regime-break-zeros.tif",
+      "sha256": "e691ce310a503e9b1eddf177f2a984f19e344a652f4547aa1d9499f25d47b772",
+      "pixel_identical": false,
+      "candidate_pearson": {
+        "n": 607854,
+        "pearson": 0.002697283664811252,
+        "spearman": 0.002697283664811215
+      },
+      "field_vs_smoothed_submission": {
+        "n": 246268,
+        "pearson": -0.009387708219590766,
+        "spearman": -0.017639267489991523
+      },
+      "jaccard": 0.004763111899774519
+    },
+    "rtp_gradient": {
+      "raw": {
+        "n": 246268,
+        "pearson": 0.014337440469792432,
+        "spearman": 0.026258526098847913
+      },
+      "smoothed": {
+        "n": 246268,
+        "pearson": 0.025650969815911116,
+        "spearman": 0.05403904104361045
+      }
+    },
+    "rtp_curvature": {
+      "raw": {
+        "n": 246268,
+        "pearson": 0.008460938660087807,
+        "spearman": 0.010448548519980073
+      },
+      "smoothed": {
+        "n": 246268,
+        "pearson": 0.017526786913328738,
+        "spearman": 0.029481144346466145
+      }
+    },
+    "gravity_gradient": {
+      "raw": {
+        "n": 246268,
+        "pearson": 0.030050129552247132,
+        "spearman": 0.010376633401678624
+      },
+      "smoothed": {
+        "n": 246268,
+        "pearson": 0.05517048406297705,
+        "spearman": 0.03393323524742797
+      }
+    },
+    "gravity_curvature": {
+      "raw": {
+        "n": 246268,
+        "pearson": 0.02352641470140943,
+        "spearman": 0.011571267340727965
+      },
+      "smoothed": {
+        "n": 246268,
+        "pearson": 0.042090693554884734,
+        "spearman": 0.02882630608268642
+      }
+    }
+  },
+  "local_pixel_uniqueness": [
+    {
+      "file": "SUBMISSION-GEMSDOE46-dfa-corroborated-zeros.tif",
+      "equal": false
+    },
+    {
+      "file": "SUBMISSION-GEMSDOE46-dfa-corroborated.tif",
+      "equal": false
+    },
+    {
+      "file": "SUBMISSION-GEMSDOE46-r8-conformal.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/SUBMISSION-GEMSDOE46-dfa-corroborated-zeros.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/SUBMISSION-GEMSDOE46-dfa-corroborated.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/SUBMISSION-GEMSDOE46-r8-conformal.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/downloads/gems46-h46-1-dfa-regime-break-zeros.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/downloads/gems46-h46-1-dfa-regime-break.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/downloads/gems46-h46-2-dfa-corroborated-zeros.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/downloads/gems46-h46-2-dfa-corroborated.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/downloads/gems46-ridge-37k-ridge.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/downloads/gemsdoe46-h46a-r8-conformal-allfinite.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/downloads/gemsdoe46-h46a-r8-conformal-nan.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/gemsdoe46-h46a-r8-conformal-nan.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/h46/downloads/gems46-h46-1-dfa-regime-break-20261006T101807Z-zeros.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/h46/downloads/gems46-h46-1-dfa-regime-break-20261006T101807Z.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/h46/downloads/gems46-h46-1-dfa-regime-break-20261006T111347Z-zeros.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/h46/downloads/gems46-h46-1-dfa-regime-break-20261006T111347Z.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z-zeros.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T101807Z.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T111347Z-zeros.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/h46/downloads/gems46-h46-2-dfa-corroborated-20261006T111347Z.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/r9/downloads/gems46-r9-conformal-s5-20261006T110720Z.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/r9/downloads/gems46-r9-conformal-s5-20261006T110751Z.tif",
+      "equal": false
+    },
+    {
+      "file": "docs/r9/downloads/gems46-r9-conformal-s5-20261006T110804Z.tif",
+      "equal": false
+    }
+  ],
+  "folds": [
+    {
+      "block": 0,
+      "emitted_each": 3735,
+      "truth": 6707,
+      "scores": {
+        "R10": {
+          "tp": 353.47437472907234,
+          "fp": 3614.1888828241144,
+          "fn": 6353.525625270928,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 120.81111717588574,
+          "dti": 0.057390284432714565
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 607.3961575364315,
+          "fp": 3504.0896233523513,
+          "fn": 6099.603842463568,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 230.91037664764855,
+          "dti": 0.09815873506073587
+        },
+        "H46-structural-DFA": {
+          "tp": 834.4246734583063,
+          "fp": 3443.791347869741,
+          "fn": 5872.575326541693,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 291.20865213025877,
+          "dti": 0.13412506890681383
+        },
+        "R8-conformal": {
+          "tp": 662.9303941043551,
+          "fp": 3492.2215358942585,
+          "fn": 6044.069605895645,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 242.7784641057415,
+          "dti": 0.10698240056435047
+        },
+        "R9-conformal": {
+          "tp": 154.58643146916324,
+          "fp": 3681.3862391792672,
+          "fn": 6552.4135685308365,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 53.61376082073267,
+          "dti": 0.025206523813711232
+        },
+        "H46-pure-DFA": {
+          "tp": 481.81159280149683,
+          "fp": 3566.0133422065164,
+          "fn": 6225.188407198503,
+          "n_truth": 6707,
+          "s": 3735.0,
+          "m": 168.98665779348374,
+          "dti": 0.07802408418489333
+        }
+      }
+    },
+    {
+      "block": 1,
+      "emitted_each": 5614,
+      "truth": 6074,
+      "scores": {
+        "R10": {
+          "tp": 402.62904492069623,
+          "fp": 5468.302219336021,
+          "fn": 5671.370955079304,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 145.69778066397902,
+          "dti": 0.06673351051084278
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 556.5134379017491,
+          "fp": 5396.250238312154,
+          "fn": 5517.486562098251,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 217.74976168784636,
+          "dti": 0.09198945184316261
+        },
+        "H46-structural-DFA": {
+          "tp": 744.591333279635,
+          "fp": 5343.712244479839,
+          "fn": 5329.408666720365,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 270.2877555201608,
+          "dti": 0.12252894514662072
+        },
+        "R8-conformal": {
+          "tp": 613.3180722631062,
+          "fp": 5384.6017370108375,
+          "fn": 5460.681927736894,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 229.3982629891624,
+          "dti": 0.10122791572110262
+        },
+        "R9-conformal": {
+          "tp": 278.87554296555464,
+          "fp": 5516.26569861688,
+          "fn": 5795.124457034445,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 97.73430138311923,
+          "dti": 0.046338478944117766
+        },
+        "H46-pure-DFA": {
+          "tp": 430.33193542587765,
+          "fp": 5460.40240702927,
+          "fn": 5643.668064574123,
+          "n_truth": 6074,
+          "s": 5614.0,
+          "m": 153.59759297073043,
+          "dti": 0.07127831890390675
+        }
+      }
+    },
+    {
+      "block": 2,
+      "emitted_each": 4801,
+      "truth": 10172,
+      "scores": {
+        "R10": {
+          "tp": 324.9083132191422,
+          "fp": 4681.841355267194,
+          "fn": 9847.091686780857,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 119.15864473280637,
+          "dti": 0.03555203995823415
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 949.5300915756197,
+          "fp": 4446.474085692481,
+          "fn": 9222.46990842438,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 354.52591430751886,
+          "dti": 0.10302165670359566
+        },
+        "H46-structural-DFA": {
+          "tp": 952.4268814516079,
+          "fp": 4461.174250647525,
+          "fn": 9219.573118548393,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 339.8257493524752,
+          "dti": 0.10329650793715695
+        },
+        "R8-conformal": {
+          "tp": 779.1275468733927,
+          "fp": 4519.460112145104,
+          "fn": 9392.872453126607,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 281.5398878548955,
+          "dti": 0.08471247667367554
+        },
+        "R9-conformal": {
+          "tp": 542.3173476277359,
+          "fp": 4611.013756270585,
+          "fn": 9629.682652372265,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 189.98624372941495,
+          "dti": 0.059151570707941144
+        },
+        "H46-pure-DFA": {
+          "tp": 740.6358861773926,
+          "fp": 4536.367956630474,
+          "fn": 9431.364113822607,
+          "n_truth": 10172,
+          "s": 4801.0,
+          "m": 264.6320433695266,
+          "dti": 0.08056519354487111
+        }
+      }
+    },
+    {
+      "block": 3,
+      "emitted_each": 4659,
+      "truth": 13365,
+      "scores": {
+        "R10": {
+          "tp": 1557.3560128742424,
+          "fp": 4149.172573901736,
+          "fn": 11807.643987125757,
+          "n_truth": 13365,
+          "s": 4659.0,
+          "m": 509.82742609826477,
+          "dti": 0.1316078575228586
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 1490.1432963077104,
+          "fp": 4129.526360197555,
+          "fn": 11874.85670369229,
+          "n_truth": 13365,
+          "s": 4659.0,
+          "m": 529.4736398024452,
+          "dti": 0.12611303558156442
+        },
+        "H46-structural-DFA": {
+          "tp": 1017.415820043389,
+          "fp": 4300.637622989699,
+          "fn": 12347.584179956611,
+          "n_truth": 13365,
+          "s": 4659.0,
+          "m": 358.36237701030166,
+          "dti": 0.08654725364709197
+        },
+        "R8-conformal": {
+          "tp": 1151.263889092579,
+          "fp": 4258.123635798145,
+          "fn": 12213.73611090742,
+          "n_truth": 13365,
+          "s": 4659.0,
+          "m": 400.8763642018546,
+          "dti": 0.0977812015290385
+        },
+        "R9-conformal": {
+          "tp": 986.4675803910457,
+          "fp": 4336.515840235105,
+          "fn": 12378.532419608955,
+          "n_truth": 13365,
+          "s": 4659.0,
+          "m": 322.4841597648947,
+          "dti": 0.08390758030535957
+        },
+        "H46-pure-DFA": {
+          "tp": 919.1482240045079,
+          "fp": 4344.933800863612,
+          "fn": 12445.851775995492,
+          "n_truth": 13365,
+          "s": 4659.0,
+          "m": 314.06619913638804,
+          "dti": 0.07825990567338237
+        }
+      }
+    },
+    {
+      "block": 4,
+      "emitted_each": 2884,
+      "truth": 6224,
+      "scores": {
+        "R10": {
+          "tp": 346.9559090371774,
+          "fp": 2756.1492224907674,
+          "fn": 5877.044090962822,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 127.85077750923254,
+          "dti": 0.06195839249277136
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 645.5513384860533,
+          "fp": 2640.993817465516,
+          "fn": 5578.448661513947,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 243.00618253448414,
+          "dti": 0.11453034758104726
+        },
+        "H46-structural-DFA": {
+          "tp": 672.6655304144502,
+          "fp": 2643.296568049049,
+          "fn": 5551.334469585549,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 240.703431950951,
+          "dti": 0.11921636787732785
+        },
+        "R8-conformal": {
+          "tp": 452.82766395756994,
+          "fp": 2715.823924735471,
+          "fn": 5771.17233604243,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 168.1760752645293,
+          "dti": 0.0806758036041197
+        },
+        "R9-conformal": {
+          "tp": 152.45347692174624,
+          "fp": 2821.0179446891398,
+          "fn": 6071.546523078254,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 62.98205531086006,
+          "dti": 0.027351339861347627
+        },
+        "H46-pure-DFA": {
+          "tp": 485.6793628894501,
+          "fp": 2708.7452354096376,
+          "fn": 5738.32063711055,
+          "n_truth": 6224,
+          "s": 2884.0,
+          "m": 175.25476459036256,
+          "dti": 0.08644927405596642
+        }
+      }
+    },
+    {
+      "block": 5,
+      "emitted_each": 5345,
+      "truth": 5674,
+      "scores": {
+        "R10": {
+          "tp": 348.58710038963295,
+          "fp": 5217.830083381022,
+          "fn": 5325.412899610367,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 127.16991661897859,
+          "dti": 0.06166972522607569
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 762.6391292843666,
+          "fp": 5064.5184452023805,
+          "fn": 4911.360870715634,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 280.4815547976193,
+          "dti": 0.13368771099283805
+        },
+        "H46-structural-DFA": {
+          "tp": 655.5060575535063,
+          "fp": 5109.144620008144,
+          "fn": 5018.493942446494,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 235.85537999185624,
+          "dti": 0.11516006169004972
+        },
+        "R8-conformal": {
+          "tp": 441.3298412166002,
+          "fp": 5187.5185657852435,
+          "fn": 5232.6701587833995,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 157.48143421475686,
+          "dti": 0.07790506675887918
+        },
+        "R9-conformal": {
+          "tp": 168.9222730758428,
+          "fp": 5284.7239543190135,
+          "fn": 5505.077726924157,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 60.276045680986336,
+          "dti": 0.03000433321812405
+        },
+        "H46-pure-DFA": {
+          "tp": 402.85374431809475,
+          "fp": 5200.39583431965,
+          "fn": 5271.146255681905,
+          "n_truth": 5674,
+          "s": 5345.0,
+          "m": 144.60416568034992,
+          "dti": 0.07117746058929522
+        }
+      }
+    },
+    {
+      "block": 9,
+      "emitted_each": 3129,
+      "truth": 1774,
+      "scores": {
+        "R10": {
+          "tp": 34.105200840521924,
+          "fp": 3115.8692329563705,
+          "fn": 1739.894799159478,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 13.130767043629657,
+          "dti": 0.016643219764441077
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 218.32396916041813,
+          "fp": 3043.4037698043385,
+          "fn": 1555.676030839582,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 85.59623019566155,
+          "dti": 0.1053918265967734
+        },
+        "H46-structural-DFA": {
+          "tp": 210.22483027151782,
+          "fp": 3050.5298376714154,
+          "fn": 1563.775169728482,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 78.47016232858462,
+          "dti": 0.10149165303785812
+        },
+        "R8-conformal": {
+          "tp": 166.36268758160313,
+          "fp": 3064.922870236513,
+          "fn": 1607.637312418397,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 64.07712976348711,
+          "dti": 0.08054521522142873
+        },
+        "R9-conformal": {
+          "tp": 11.833126301298933,
+          "fp": 3124.6903559372886,
+          "fn": 1762.166873698701,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 4.309644062711508,
+          "dti": 0.005782115390124859
+        },
+        "H46-pure-DFA": {
+          "tp": 99.65979367700257,
+          "fp": 3090.914834658476,
+          "fn": 1674.3402063229973,
+          "n_truth": 1774,
+          "s": 3129.0,
+          "m": 38.085165341523705,
+          "dti": 0.048441681161010816
+        }
+      }
+    },
+    {
+      "block": 10,
+      "emitted_each": 1158,
+      "truth": 2491,
+      "scores": {
+        "R10": {
+          "tp": 36.44323335040801,
+          "fp": 1144.9523040886165,
+          "fn": 2454.556766649592,
+          "n_truth": 2491,
+          "s": 1158.0,
+          "m": 13.047695911383395,
+          "dti": 0.01634900853360182
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 115.66741519097035,
+          "fp": 1114.7530742003967,
+          "fn": 2375.33258480903,
+          "n_truth": 2491,
+          "s": 1158.0,
+          "m": 43.246925799603225,
+          "dti": 0.051662975899705296
+        },
+        "H46-structural-DFA": {
+          "tp": 87.00732123392318,
+          "fp": 1125.8073428213997,
+          "fn": 2403.992678766077,
+          "n_truth": 2491,
+          "s": 1158.0,
+          "m": 32.192657178600335,
+          "dti": 0.03892312964341267
+        },
+        "R8-conformal": {
+          "tp": 85.01577087602857,
+          "fp": 1126.7814626475713,
+          "fn": 2405.9842291239715,
+          "n_truth": 2491,
+          "s": 1158.0,
+          "m": 31.218537352428655,
+          "dti": 0.03803566273597559
+        },
+        "R9-conformal": {
+          "tp": 118.4790397254348,
+          "fp": 1115.6885790981507,
+          "fn": 2372.5209602745654,
+          "n_truth": 2491,
+          "s": 1158.0,
+          "m": 42.3114209018492,
+          "dti": 0.05290108335502332
+        },
+        "H46-pure-DFA": {
+          "tp": 98.71187139479895,
+          "fp": 1121.1629059563568,
+          "fn": 2392.288128605201,
+          "n_truth": 2491,
+          "s": 1158.0,
+          "m": 36.83709404364313,
+          "dti": 0.04413133791280441
+        }
+      }
+    },
+    {
+      "block": 14,
+      "emitted_each": 3561,
+      "truth": 11440,
+      "scores": {
+        "R10": {
+          "tp": 1074.2187947490515,
+          "fp": 3204.718503218738,
+          "fn": 10365.781205250949,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 356.2814967812619,
+          "dti": 0.10733829021510526
+        },
+        "GEMSDOE32-owner-reported-02778": {
+          "tp": 1050.6340639146113,
+          "fp": 3199.156726821292,
+          "fn": 10389.365936085389,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 361.84327317870816,
+          "dti": 0.10504283734267605
+        },
+        "H46-structural-DFA": {
+          "tp": 965.7021922989666,
+          "fp": 3226.0026811716903,
+          "fn": 10474.297807701034,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 334.9973188283099,
+          "dti": 0.0966635868330246
+        },
+        "R8-conformal": {
+          "tp": 908.4623533663998,
+          "fp": 3255.002170413692,
+          "fn": 10531.5376466336,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 305.99782958630783,
+          "dti": 0.0909855077198799
+        },
+        "R9-conformal": {
+          "tp": 657.7764485481016,
+          "fp": 3344.2308341540156,
+          "fn": 10782.223551451898,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 216.76916584598428,
+          "dti": 0.06609223426329575
+        },
+        "H46-pure-DFA": {
+          "tp": 872.5394626403727,
+          "fp": 3268.967205857479,
+          "fn": 10567.460537359628,
+          "n_truth": 11440,
+          "s": 3561.0,
+          "m": 292.03279414252097,
+          "dti": 0.0874261641473751
+        }
+      }
+    }
+  ],
+  "skipped_blocks": [
+    {
+      "block": 6,
+      "reason": "zero shared emission capacity",
+      "counts": {
+        "R10": 0,
+        "GEMSDOE32-owner-reported-02778": 493,
+        "H46-structural-DFA": 493,
+        "R8-conformal": 493,
+        "R9-conformal": 493,
+        "H46-pure-DFA": 493
+      }
+    },
+    {
+      "block": 7,
+      "reason": "no proxy truth or empty domain"
+    },
+    {
+      "block": 8,
+      "reason": "no proxy truth or empty domain"
+    },
+    {
+      "block": 11,
+      "reason": "no proxy truth or empty domain"
+    },
+    {
+      "block": 12,
+      "reason": "no proxy truth or empty domain"
+    },
+    {
+      "block": 13,
+      "reason": "zero shared emission capacity",
+      "counts": {
+        "R10": 0,
+        "GEMSDOE32-owner-reported-02778": 842,
+        "H46-structural-DFA": 842,
+        "R8-conformal": 842,
+        "R9-conformal": 842,
+        "H46-pure-DFA": 842
+      }
+    },
+    {
+      "block": 15,
+      "reason": "no proxy truth or empty domain"
+    }
+  ],
+  "mean_block_dti": {
+    "R10": 0.061693592072960594,
+    "GEMSDOE32-owner-reported-02778": 0.10328873084467763,
+    "H46-structural-DFA": 0.10199473052437294,
+    "R8-conformal": 0.08431680561427225,
+    "R9-conformal": 0.04408169553989392,
+    "H46-pure-DFA": 0.0717503800192784
+  },
+  "best_comparator": "GEMSDOE32-owner-reported-02778",
+  "paired_delta": -0.04159513877171703,
+  "paired_bootstrap_95": [
+    -0.06143257001107105,
+    -0.021998399059993633
+  ],
+  "gate_passed": false,
+  "low_correlation_gate_passed": true,
+  "max_absolute_correlation": 0.05517048406297705,
+  "status": "HOLD_DO_NOT_SUBMIT",
+  "limitations": [
+    "SGMC is an imperfect reused proxy, not hidden competition truth.",
+    "Matched-mass comparator rules re-emit fields within each block; these are not scores of original files.",
+    "Large overlapping DFA windows induce spatial dependence; bootstrap is descriptive, not a causal significance test.",
+    "Correlation cannot establish geological independence or fault discovery.",
+    "Unique against inspected local rasters and restored GEMSDOE32 only; universal uniqueness not verified."
+  ]
+}

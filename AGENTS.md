@@ -28,3 +28,6 @@
    ```
 6. **Reporting style** — state what was measured, what was assumed, and what is owner-reported.
    Label negative results as negative results; they are the most useful output of this project.
+
+## R10 session handoff (supersedes older recommendations)
+Read `registry/r10.json` and `docs/research/r10-review.md` before using any artifact. R10 is unique and format-valid but **HOLD_DO_NOT_SUBMIT** after a failed blocked proxy gate. Run `scripts/build_r10_site.py` for the active site; `build_site.py` builds archived H46 pages only. Existing `registry/submissions.json` describes historical, pre-index-fix files. The old hidden-truth-count and independence claims are withdrawn. Do not use aggregate leaderboard values as authenticated file receipts.

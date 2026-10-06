@@ -21,3 +21,6 @@ src/*.egg-info/
 # OS / editors
 .DS_Store
 *.swp
+
+# Regenerable run logs
+data/*.log

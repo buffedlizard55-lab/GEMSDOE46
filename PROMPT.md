@@ -1,7 +1,7 @@
 # The operating prompt for this project
 
 > **Read this file at the start of every session.** It is the standing brief for GEMSDOE46. It is
-> reproduced here verbatim (only link markup de-duplicated) so that the objective, the constraints and
+> consolidated here (not a verbatim transcript) so that the objective, the constraints and
 > the evidence rules cannot drift between sessions. Then read [`README.md`](README.md) for the current
 > state, [`registry/hypotheses.json`](registry/hypotheses.json) for what is already tried, and
 > [`registry/irregularities.json`](registry/irregularities.json) before repeating any claim.
@@ -165,16 +165,40 @@ provenance is owner-reported — see `registry/irregularities.json`):
 | GEMSDOE25 | dotted-h19-5-d2-8 | 0.2600 |
 | GEMSDOE26 | dilcond-oof-v1 | 0.1223 |
 | GEMSDOE27 | topo-gap-closure-t-v2 | 0.2449 |
-| GEMSDOE28 | h27-4-r1-solo-d2-8 / h32-1 / h36-1 / h38-1 | 0.2708 / 0.2649 / not reported |
-| GEMSDOE29 | efd28-repro / repo-c0-habitat / sgmc-off-catalogue / wormrank / wormsurv / xfit-* | 0.2600 / 0.0041 / not reported |
+| GEMSDOE28 | h27-4-r1-solo-d2-8 / h32-1 / h36-1 / h38-1 | 0.2708 / 0.2649 / 0.2710 / not reported |
+| GEMSDOE29 | efd28-repro / repo-c0-habitat / sgmc-off-catalogue / wormrank / wormsurv / xfit-* | 0.2600 / 0.0041 / 0.0512 / not reported |
 | GEMSDOE30 | d28-poisson300m-offcat-44090 | 0.2600 |
 | GEMSDOE31 | h27-4-solo-d28 | 0.2708 |
 | GEMSDOE32 | h33-h33-2-b2 | 0.2778 (attribution contested) |
 | GEMSDOE33 | h33d-analog-tip-stepover-r30 | 0.2632 |
 | GEMSDOE34 | h34-scatter-q50-arr-matched | 0.0778 |
 | GEMSDOE35 | h35-06 | 0.0418 |
-| GEMSDOE36–44 | anderson-geothermal-pinn, h6-physics-dotted-80k, D-step-3p0, h40-e-disc, GEMSDOE40–44 pages | not reported |
+| GEMSDOE36 | anderson-geothermal-pinn-38854 | 0.2750 |
+| GEMSDOE37 | h6-physics-dotted-80k | 0.1193 |
+| GEMSDOE38 | D-step-3p0-07pct-tipProt | 0.0763 |
+| GEMSDOE39–47, 48GEMSDOE, 49GEMSDOE | listed research sites and candidates | not reported |
 
-The **highest score in that history is the 0.2778 artifact**, and the live public leaderboard on
-2026-10-06 stands at **0.3345**. Beating that is the objective; a relabelled version of anything in
-the table above does not count.
+The supplied family history attributes its highest score, 0.2778, to GEMSDOE32; this is owner-reported. The prompt cites 0.3195 as the leader, while this session observed 0.3774 on the official board. These are dated observations, not a continuous feed. A relabelled version of a prior prediction does not count.
+
+
+## 10. Data and access requirements
+
+The task includes autonomously completing data restoration and preparation, not asking the owner to place files manually. Restore the hash-pinned public mirrors already recorded in `registry/data_manifest.json`; if they are unavailable, the prompt supplies these alternative user-provided links (not official provenance authentication):
+
+- Rules: https://www.dropbox.com/scl/fi/aemhtutjgcp6tr3tint94/GEMS_96647.pdf?rlkey=rek210cj2smnmzb8n0sla1vmd&dl=1
+- Template: https://www.dropbox.com/scl/fi/6rgvnuady818ol8yqgis4/example_submission.tif?rlkey=kbykilvau066xuogoosbf4cq8&dl=1
+- Catalogue: https://www.dropbox.com/scl/fi/t7fyt03qdh9egyme0itwo/existing_faults.tif?rlkey=yiao96uluqdkipf0h5vju71jf&dl=1
+- Features: https://www.dropbox.com/scl/fi/3vz9o0wwavi26xaeoxlwr/gems-geodawn-numerical-features.tif?rlkey=je8d8fepqfbst9lnwsq9rkplu&dl=1
+- DEM links: https://www.dropbox.com/scl/fi/ig0mban712ns1atphgphe/Digital-elevation-model-links-JSON.pdf?rlkey=zm77f1vbtt2if8hlruymptnu3&dl=1
+- Official external-data starting point: https://gdr.openei.org/submissions/1391
+
+The previous-session assertion that data placement is the sole blocker, and a GPU is necessary, must be verified rather than repeated. Disclose unavailable private labels, competition authentication, data licensing and proxy-validation limitations. No secrets should be requested or stored. Any future neural-training pipeline needs its own verified execution; generating a CPU detector is not evidence of having trained a neural model.
+
+## 11. Current session additions (2026-10-06)
+
+- Review all previous work first, preserve the highest-priority unique-TIF requirement, and never present a renamed prediction as a new hypothesis.
+- Complete three passes: implement/test; review and fix; recheck original requirements.
+- Open a pull request from the session branch and merge it to main after checks. Do not automatically use a competition submission slot.
+- Maintain a prominent download and an executive-summary submission guide, unique name, short note, all-finite [0,1] validation, official sources, clearly recorded limitations, and next-session priorities.
+- The full user history now extends through GEMSDOE47, 48GEMSDOE and 49GEMSDOE (the latter entries have no scores supplied). Empty scores are unknown, not zero.
+- The stated 0.3195 leader is historical; link to the live official board and label cached observations with their retrieval date.
