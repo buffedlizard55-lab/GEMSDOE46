@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="GEMSDOE46 — unique, audited GeoTIFF submission for the DOE GEMS Prize (DrivenData #306), with a split-conformal operating point.">
+<title>GEMSDOE46 — download the submission</title>
+<link rel="stylesheet" href="docs/assets/style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <b>GEMSDOE46 — DOE GEMS Prize submission</b>
+  <span class="sub">DrivenData #306 · deadline 3 Dec 2026 23:59 UTC</span>
+</div></header>
+<nav class="site"><div class="wrap">
+  <a href="index.html" aria-current="page">Download</a>
+  <a href="docs/index.html">Executive summary</a>
+  <a href="docs/how-to-submit.html">How to submit</a>
+  <a href="docs/submission-hypotheses.html">Hypothesis test</a>
+  <a href="docs/submission-analysis.html">Submission analysis</a>
+  <a href="docs/research-overview.html">Research layer</a>
+  <a href="docs/sources.html">Sources</a>
+</div></nav>
+<main>
+<h1>Download the submission</h1>
+
+<div class="card download" id="submission-download">
+  <p><a class="big" href="SUBMISSION-GEMSDOE46-r8-conformal.tif" download>Download SUBMISSION-GEMSDOE46-r8-conformal.tif</a>
+  <span class="alt">(single-band float32 GeoTIFF, 250 KB, EPSG:32611, 100 m, every cell in [0,&nbsp;1])</span></p>
+  <ul class="tight small">
+    <li><b>Name:</b> <span class="mono">gemsdoe46-h46a-r8-conformal</span> ·
+        <b>Note to paste in the form:</b>
+        <a href="docs/downloads/NOTE-gemsdoe46-h46a-r8-conformal.txt">NOTE-gemsdoe46-h46a-r8-conformal.txt</a></li>
+    <li><b>Format audit of this exact file:</b>
+        <a href="docs/downloads/checks-gemsdoe46-h46a-r8-conformal-allfinite.json">checks-…-allfinite.json</a>
+        — single band, float32, shape 3730 × 3292, EPSG:32611, transform matches the template,
+        range [0, 1] in every cell, positives = 39,108</li>
+    <li><b>Fallback</b> (identical dots, <span class="mono">NaN</span> outside the survey bounds like
+        <span class="mono">sample_submission.tif</span>):
+        <a href="docs/gemsdoe46-h46a-r8-conformal-nan.tif">gemsdoe46-h46a-r8-conformal-nan.tif</a></li>
+    <li><b>Full instructions:</b> <a href="docs/how-to-submit.html">How to submit</a> ·
+        <b>prose version:</b>
+        <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/SUBMISSION_GUIDE.md">docs/SUBMISSION_GUIDE.md</a></li>
+  </ul>
+  <p class="small" style="margin:10px 0 0"><b>Last verified 2026-10-06.</b> Written by
+  <span class="mono">scripts/make_submission.py</span> from the hash-verified official rasters and
+  audited by re-reading the written bytes. This page does not poll or mirror the leaderboard.</p>
+</div>
+
+<div class="grid">
+  <div class="kpi"><div class="v">r = 8 px</div><div class="k">chosen spacing (800 m minimum separation), certified by split conformal prediction</div></div>
+  <div class="kpi"><div class="v">90.0 %</div><div class="k">conformal confidence (α = 0.1000, 9 exchangeable calibration blocks)</div></div>
+  <div class="kpi"><div class="v">0.0283</div><div class="k">certified floor on the calibration half</div></div>
+  <div class="kpi"><div class="v">39,108</div><div class="k">positive cells of the 5,167,373-px surveyed footprint</div></div>
+  <div class="kpi"><div class="v">≤ 86,541</div><div class="k">dots that can still reach 0.3345 with perfect placement — the density rule the arm passes</div></div>
+  <div class="kpi"><div class="v">0.5588</div><div class="k">analytic ceiling of this emission at the declared |G| = 7,905 px</div></div>
+</div>
+
+<p style="margin-top:18px">The full reasoning — the metric algebra, the 24-block sweep, the R1–R4
+selection rules, the audit trail and the flagged irregularities — is on the
+<a href="docs/index.html">executive summary</a> and
+<a href="docs/submission-analysis.html">analysis</a> pages. The research and validation layer
+(preregistered hypotheses, independent validators, review log) starts at
+<a href="docs/research-overview.html">Research layer</a>.</p>
+</main>
+<footer>Repository: <a href="https://github.com/buffedlizard55-lab/GEMSDOE46">buffedlizard55-lab/GEMSDOE46</a> ·
+site source in <span class="mono">docs/</span> · this page is served from the repository root because
+GitHub Pages is configured at <span class="mono">main:/</span> (see
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/IRREGULARITIES.md">IRREGULARITIES.md</a> IR-46-12).</footer>
+</body>
+</html>

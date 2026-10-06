@@ -190,6 +190,26 @@ conclusion is drawn from public leaderboard numbers (`docs/SCORE_ANALYSIS.md`).
 
 ---
 
+## IR-46-12 — GitHub Pages serves the repository **root**, not `docs/` *(mitigated, cannot be changed from here)*
+
+GitHub Pages for this repository is configured as **branch `main`, path `/`**
+(`gh api repos/buffedlizard55-lab/GEMSDOE46/pages` reports
+`"source": {"branch": "main", "path": "/"}`). The designed site lives in `docs/`, so the site root
+would otherwise show a rendered README instead of the page with the download control.
+
+**Attempted fix.** `PUT /repos/…/pages` with `source[path]=/docs` returns
+`403 Resource not accessible by integration` — the automation token has no Pages-admin scope. This is
+a repository-settings change the project owner can make in one click
+(Settings → Pages → Source → `main` / `docs`), or the owner can leave it as is.
+
+**Mitigation that is live now.** A root `index.html` (plus a root `.nojekyll`) is committed, so the
+site root **is** the download page: the big download button is the first element, with the audit link,
+the exact Note string, both encodings, the six key numbers, and links into the full executive summary,
+analysis, hypothesis test and research-layer pages (all under `/docs/`).
+
+**If the owner flips the setting to `/docs`**, `docs/index.html` becomes the root — it carries the
+same download block first and the same navigation, so nothing else needs to change.
+
 ## IR-46-11 — Score anchors are owner-reported unless marked otherwise *(flagged)*
 
 The score history used in `docs/SCORE_ANALYSIS.md` (0.1922 → 0.2477 → 0.2600 →
