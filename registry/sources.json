@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "note": "Sources used by GEMSDOE46. 'supports' states exactly what was taken from each source. Sources that could not be reached from this sandbox are marked so; nothing in this repository is presented as verified if it could not be checked.",
- "accessed_utc": "2026-10-06",
+ "accessed_utc": "2026-10-06T16:06Z (leaderboard re-retrieved this session)",
  "sources": [
   {
    "id": "S1",
@@ -19,14 +19,16 @@
   },
   {
    "id": "S2",
-   "title": "DrivenData GEMS leaderboard (public, retrieved 2026-10-06)",
+   "title": "DrivenData GEMS leaderboard (public, re-retrieved 2026-10-06T16:06Z by the agent's web tool)",
    "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
    "official": true,
    "reached_from_sandbox": true,
    "supports": [
-    "#1 alexoktaba 0.3345, #2 nchuzhoy 0.3262, #3 kinghorton42 0.3222, #4 Batik Shirt Brothers 0.3218, #5 DARD 0.3195, #6 joeyfezster 0.3163 ... #13 extradr19 0.2778, #16 smrtdoog5 0.2708, #20 SDCF9 0.2600",
-    "the 0.3195 quoted in the session prompt is no longer the leader: on 2026-10-06 the top public score is 0.3345"
-   ]
+    "#1 xiaofanhu 0.3774, #2 alexoktaba 0.3345, #3 nchuzhoy 0.3262, #4 kinghorton42 0.3222, #5 joeyfezster 0.3220, #6 Batik Shirt Brothers 0.3218, #7 DARD 0.3195, #13 extradr19 0.2778, #16 smrtdoog5 0.2708, #20 SDCF9 0.2600",
+    "the 0.3195 quoted in the standing prompt was the #7 value on 2026-10-06, not the leader (IR-46-11)",
+    "the board publishes a participant score only: no file name and no hash, so no file-to-score mapping can be authenticated from it (IR-46-01/02)"
+   ],
+   "retrieved_utc": "2026-10-06T16:06Z"
   },
   {
    "id": "S3",
@@ -46,7 +48,10 @@
    "url": "https://doi.org/10.1103/PhysRevE.49.1685",
    "official": true,
    "reached_from_sandbox": false,
-   "reached_via": ["https://archive.physionet.org/physiotools/dfa/", "https://cran.r-project.org/package=fractal"],
+   "reached_via": [
+    "https://archive.physionet.org/physiotools/dfa/",
+    "https://cran.r-project.org/package=fractal"
+   ],
    "supports": [
     "origin of detrended fluctuation analysis (DFA): integrate the series, split into boxes of length n, remove the local least-squares line in each box, take the RMS fluctuation F(n), and take the slope of log F(n) vs log n as the scaling exponent alpha",
     "the estimator implemented in src/gems46/dfa.py follows this definition exactly (verified against an independent O(N) transcription in tests/test_dfa.py)"
@@ -58,7 +63,11 @@
    "url": "https://doi.org/10.1063/1.3130931",
    "official": true,
    "reached_from_sandbox": false,
-   "reached_via": ["https://pubmed.ncbi.nlm.nih.gov/19566249/", "https://arxiv.org/abs/0904.2465", "https://pubs.aip.org/aip/cha/article/19/2/023114/909537/"],
+   "reached_via": [
+    "https://pubmed.ncbi.nlm.nih.gov/19566249/",
+    "https://arxiv.org/abs/0904.2465",
+    "https://pubs.aip.org/aip/cha/article/19/2/023114/909537/"
+   ],
    "supports": [
     "pre-rupture magnetic field variations appear random at short time lags and become long-range correlated at lags above the mean inter-spike interval, with scaling exponent alpha around 0.9",
     "pre-seismic electric field variations of several hours to days show scale invariance with alpha approximately 1 over about five orders of magnitude",
@@ -71,7 +80,9 @@
    "url": "https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and",
    "official": true,
    "reached_from_sandbox": false,
-   "reached_via": ["DrivenData page 967 (S1) which links it"],
+   "reached_via": [
+    "DrivenData page 967 (S1) which links it"
+   ],
    "supports": [
     "provenance and survey design of the magnetic/radiometric grids whose derivatives appear as the official bands used here",
     "the GeoDAWN study area map the competition uses to define the inference region"
@@ -83,7 +94,9 @@
    "url": "https://www.usgs.gov/publications/state-geologic-map-compilation-sgmc",
    "official": true,
    "reached_from_sandbox": false,
-   "reached_via": ["restored from the group's public mirror GEMSDOE24 data/external/derived_sgmc_faults_100m_u8.tif, sha256 643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0"],
+   "reached_via": [
+    "restored from the group's public mirror GEMSDOE24 data/external/derived_sgmc_faults_100m_u8.tif, sha256 643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0"
+   ],
    "supports": [
     "the off-catalogue proxy truth used as the main validation instrument (83,593 rasterised fault pixels inside the competition footprint; 66,277 after excluding pixels that coincide with the published catalogue)",
     "CAVEAT: the mirror is integrity-pinned locally but was NOT re-downloaded from USGS in this sandbox, and SGMC is a *different* fault population from the private test set (expert-identified new faults). It is a proxy, not ground truth."
@@ -95,7 +108,10 @@
    "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/",
    "official": false,
    "reached_from_sandbox": true,
-   "reached_via": ["https://github.com/buffedlizard55-lab/GEMSDOE (training_features parts)", "https://github.com/buffedlizard55-lab/GEMSDOE24 (labels, sample_submission)"],
+   "reached_via": [
+    "https://github.com/buffedlizard55-lab/GEMSDOE (training_features parts)",
+    "https://github.com/buffedlizard55-lab/GEMSDOE24 (labels, sample_submission)"
+   ],
    "supports": [
     "training_features.tif sha256 4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5 (419 MB, 19 float32 bands) - recomputed here after reassembling the five parts, byte-identical to the pinned hash",
     "labels.tif / existing_faults.tif sha256 7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093 (byte-identical to each other; 60,988 labelled pixels inside the footprint)",
@@ -108,11 +124,25 @@
    "url": "https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html",
    "official": false,
    "reached_from_sandbox": true,
-   "reached_via": ["https://github.com/buffedlizard55-lab/GEMSDOE32"],
+   "reached_via": [
+    "https://github.com/buffedlizard55-lab/GEMSDOE32"
+   ],
    "supports": [
     "owner-reported leaderboard scores and emitted pixel counts for the H19-5 lineage (0.1922 solid 121,131 px; 0.2477 d1.5 60,069 px; 0.2600 d2.8 44,090 px)",
     "the B=2 catalogue-buffer removal rule on the d2.8 base reported as 0.2778 with 37,654 emitted pixels",
     "the claim (not verified here) that the d1.5/d2.8 files are strict pixel subsets of their H19-5 field"
+   ]
+  },
+  {
+   "id": "S10",
+   "title": "USGS FDSN earthquake event web service (ANSS comprehensive catalogue)",
+   "url": "https://earthquake.usgs.gov/fdsnws/event/1/query",
+   "official": true,
+   "reached_from_sandbox": false,
+   "reached_note": "HTTP 000 from the sandbox shell (re-measured 2026-10-06). The agent's own web tool reaches the service: a malformed query returned the service's HTTP 400 usage page, which proves reachability and documents the valid orderby values.",
+   "supports": [
+    "the free, key-less official source named for the BLOCKED hypocentre-lineament hypothesis H46-R11-E",
+    "confirmation that the blocker is this environment's egress, not the source's availability or licensing"
    ]
   }
  ]

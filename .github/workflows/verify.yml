@@ -2,7 +2,7 @@ name: Verify scientific code and downloadable artifact
 on:
   pull_request:
   push:
-    branches: [main, arena/9d8260a3-gemsdoe46]
+    branches: [main, arena/9d8260a3-gemsdoe46, arena/4db1b13a-gemsdoe46]
 permissions:
   contents: read
 jobs:
@@ -15,10 +15,31 @@ jobs:
           python-version: '3.11'
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Restore hash-pinned inputs required by integration tests
-        run: bash scripts/restore_competition_data.sh
+      - name: Restore hash-pinned inputs required by the tests and the R11 experiment
+        run: |
+          bash scripts/restore_competition_data.sh
+          bash scripts/restore_r10_reference.sh
+          bash scripts/restore_r11_reference.sh
       - run: python -m pytest
       - run: python scripts/verify_all.py
-      - run: python scripts/build_r10_site.py
+      - name: Active site is generated from the R11 receipt, not typed by hand
+        run: python scripts/build_r11_site.py
       - name: Generated active site is reproducible
         run: git diff --exit-code -- index.html docs/index.html docs/executive-summary.html
+      - name: Downloadable submission artifact is present and range-valid
+        run: |
+          python - <<'PY'
+          import json, pathlib, rasterio, numpy as np
+          root = pathlib.Path('.')
+          r = json.loads((root / 'registry/r11.json').read_text())
+          p = root / 'docs/r11' / r['file']
+          assert p.is_file(), p
+          with rasterio.open(p) as s, rasterio.open('data/raw/sample_submission.tif') as t:
+              a = s.read(1)
+              assert s.count == 1 and s.dtypes == ('float32',), (s.count, s.dtypes)
+              assert s.crs == t.crs and s.shape == t.shape and s.transform == t.transform
+              assert s.nodata is None
+          assert np.isfinite(a).all() and a.min() >= 0.0 and a.max() <= 1.0
+          assert int((a > 0).sum()) == r['audit']['positive'] == 37654
+          print('submission artifact OK:', p, 'sha256', r['audit']['sha256'][:16], '...')
+          PY

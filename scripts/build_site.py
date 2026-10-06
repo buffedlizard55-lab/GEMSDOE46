@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the GitHub Pages site from registry/*.json so the pages cannot drift from the receipts.
 
-Default: delegates to build_r10_site.py for the active site.
+Default: delegates to build_r11_site.py for the active site.
 Historical rebuild (requires old derived stats): --legacy-h46 ->  docs/h46/{index,executive-summary,hypotheses,validation,
 research,sources,irregularities}.html + docs/h46/assets/style.css + docs/h46/downloads/*.png
 """
@@ -85,7 +85,7 @@ def page(title: str, body: str, active: str) -> str:
 <title>{html.escape(title)} - GEMSDOE46</title>
 <link rel="stylesheet" href="assets/style.css"></head>
 <body>
-<aside style="padding:20px;background:#ffe3a3;color:#241800"><b>Archived H46 experiment:</b> recommendations and claims may be superseded. <a href="../index.html">Read the current R10 audit and submission gate.</a></aside>
+<aside style="padding:20px;background:#ffe3a3;color:#241800"><b>Archived H46 experiment:</b> recommendations and claims may be superseded. <a href="../index.html">Read the current audited download, measurements and submission gate.</a></aside>
 <header><div class="wrap"><span class="brand">GEMSDOE46 &middot; DOE GEMS Prize</span><nav>{nav}</nav></div></header>
 <main class="wrap">{body}</main>
 <footer class="wrap">Every number on this site is regenerated from <code>registry/*.json</code> by
@@ -119,19 +119,28 @@ def main() -> int:
     inst = sub["instrument_results"]
     sweep = sub.get("hedge_sweep", {}).get("hedge_sweep_proxy_dti", {})
     dist = sub["distinctness"]
-    stats = json.loads((ROOT / "data" / "derived" / "dfa_stats.json").read_text())
+    # dfa_stats.json is a git-ignored derived artifact (scripts/build_dfa_field.py).  The archived
+    # H46 pages must still regenerate in a clean checkout, so it is optional.
+    stats_path = ROOT / "data" / "derived" / "dfa_stats.json"
+    stats = json.loads(stats_path.read_text()) if stats_path.exists() else {"bands": {}}
 
     # ------------------------------------------------------------------ overview
     dfa_rows = "".join(
         f"<tr><td><code>{k}</code></td><td>{v['alpha_median_row']:.3f}</td>"
         f"<td>{v['alpha_iqr_row']:.3f}</td><td>{v['absz_p99']:.2f}</td></tr>"
         for k, v in stats["bands"].items() if k.endswith("_raw"))
+    if not dfa_rows:
+        dfa_rows = ("<tr><td colspan='4'>not regenerated in this checkout &mdash; run "
+                    "<code>scripts/build_dfa_field.py</code> (needs the restored rasters)</td></tr>")
     ov = CORE_VALUES + f"""
 <h1>A unique submission for the DOE GEMS Prize Challenge &mdash; and an honest account of what it can and cannot do</h1>
 <p class="dim">Competition 306, GeoDAWN region, northwestern Great Basin, Nevada.
 Task: predict geological faults, scored by a distance-weighted Tversky index on faults that are
-<em>not</em> in the published USGS/INGENIOUS catalogue. Target on 2026-10-06:
-<strong>0.3345</strong> (public #1). Our best prior family: <strong>0.2778</strong> (owner-reported).</p>
+<em>not</em> in the published USGS/INGENIOUS catalogue. Public #1 on
+{esc(hyp.get("current_target", {}).get("retrieved_utc", "unknown date"))}:
+<strong>{esc(hyp.get("current_target", {}).get("leader_public", "unknown"))}</strong>
+({esc(hyp.get("current_target", {}).get("leader_participant", ""))}). Our best prior family:
+<strong>0.2778</strong> (owner-reported).</p>
 
 <div class="download">
  <h2>1 &middot; Download the submission file</h2>
@@ -194,6 +203,9 @@ never for an absolute threshold. Full discussion in <a href="research.html">Rese
 <table><tr><th>band</th><th>median &alpha;</th><th>IQR</th><th>p99 of |z|</th></tr>{dfa_rows}</table>
 <p><img src="downloads/preview_h46_2.png" alt="Emission preview"></p>
 """
+    # DOCS is docs/h46 (the archive).  The live pages are docs/index.html and
+    # docs/executive-summary.html, written by scripts/build_r11_site.py, which this script
+    # delegates to in its default mode.
     (DOCS / "index.html").write_text(page("Overview", ov, "index.html"))
 
     # ------------------------------------------------------------------ executive summary
@@ -563,4 +575,4 @@ if __name__ == "__main__":
     if "--legacy-h46" in sys.argv:
         raise SystemExit(main())
     import runpy
-    runpy.run_path(str(ROOT / "scripts" / "build_r10_site.py"), run_name="__main__")
+    runpy.run_path(str(ROOT / "scripts" / "build_r11_site.py"), run_name="__main__")

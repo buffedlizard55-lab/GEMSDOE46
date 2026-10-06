@@ -77,8 +77,14 @@ def test_active_site_local_links():
                     url=urlparse(value)
                     if not url.scheme and url.path:
                         assert (self.base/unquote(url.path)).is_file(), value
+    import json
+    receipt=json.loads((root/'registry/r11.json').read_text())
     for page in ('index.html','docs/index.html','docs/executive-summary.html'):
         parser=Links(); parser.base=(root/page).parent
         text=(root/page).read_text()
         parser.feed(text)
-        assert 'HOLD' in text and 'do not submit' in text
+        # the active pages must carry the current artefact and its gate outcome, whatever it is
+        assert receipt['file'] in text
+        assert ('Proxy gate PASSED' in text) == bool(receipt['gate_passed'])
+        assert 'No leaderboard score exists for this file' in text
+        assert receipt['audit']['sha256'] in text

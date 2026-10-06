@@ -3,7 +3,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hypotheses - GEMSDOE46</title>
 <link rel="stylesheet" href="assets/style.css"></head>
-<body><!-- R10 archive notice --><aside style="padding:18px;background:#fff0c8;color:#382a0b;font:16px/1.5 system-ui"><b>Historical experiment — not a current recommendation.</b> <a href="../index.html">Current audited download, corrections and submission gate →</a></aside>
+<body>
+<aside style="padding:20px;background:#ffe3a3;color:#241800"><b>Archived H46 experiment:</b> recommendations and claims may be superseded. <a href="../index.html">Read the current audited download, measurements and submission gate.</a></aside>
 <header><div class="wrap"><span class="brand">GEMSDOE46 &middot; DOE GEMS Prize</span><nav><a href="index.html">Overview</a><a href="executive-summary.html">Executive summary &amp; how to submit</a><a href="hypotheses.html" class='active'>Hypotheses</a><a href="validation.html">Validation</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav></div></header>
 <main class="wrap">
 <h1>Five candidate hypotheses, ranked</h1>
@@ -13,6 +14,16 @@ implementation cost. No candidate was given a submission slot without validation
 documented exception, H46-1, which was validated <em>and found negative</em> on the proxy and is
 shipped only as the new-hypothesis artifact, never as the recommended scoring file.</p>
 <div class="panel">
+<h3>0. H46-R11-A &mdash; 2 m LiDAR scarp morphology with mild airborne gamma-ray reweighting and a quantile-capped radiometric fallback (SHIPPED, gate passed)</h3>
+<p><span class="tag">layers</span></p><ul><li><code>external USGS GeoDAWN/3DEP 2 m LiDAR scarp morphology channels downface_max, upface_max, step_max, lappos_max (restored, hash-pinned)</code></li><li><code>external USGS GeoDAWN airborne gamma-ray spectrometry Th/K, TC, Th gradients (DOI 10.5066/P93LGLVQ)</code></li><li><code>labels.tif only as the fixed 200 m organiser-masked exclusion zone</code></li></ul>
+<p><span class="tag">physical signature</span> an ORIENTED slope break (downslope vs upslope band-passed 2 m gradient) corroborated by a break in the top 0.3-0.5 m sampled by gamma rays; neither is an amplitude or curvature maximum of a potential field</p>
+<p><span class="tag">why off-catalogue</span> the published catalogue is a Quaternary-fault compilation mapped from surface expression; traces with subtle morphology but a regolith contrast, or buried under alluvium, are under-recorded, and the fixed catalogue exclusion removes the already-mapped population</p>
+<p><span class="tag">differs from everything already in the repository</span> gamma-ray spectrometry had never been used by any arm in this repository, nor had the LiDAR morphology product; no prior arm had a coverage-aware fallback for the 24.87% of the emittable domain with no LiDAR. A sibling site used a LiDAR ridge alone (7GEMSDOE, owner-reported 0.1461), so novelty is claimed for this repository plus pixel-level distinctness, not universally.</p>
+<p><span class="tag">expected DTI</span> locked-block mean 0.10420 vs 0.09368 for the best comparator (its own LiDAR-only component) and 0.06781 for the restored GEMSDOE32 file; pooled 0.13912; all-blocks full-budget 0.15586. Paired delta +0.01052, bootstrap 95% [+0.00140, +0.02121].</p>
+<p><span class="tag">implementation cost</span> low (CPU only, ~3 min end to end)</p>
+<p><span class="tag">validation</span> VALIDATED on a locked 6x6 even-parity block set that was never used for selection; preregistered gate PASSED; R10&#x27;s stricter no-skipped-block rule FAILS (3 blocks dropped where a gapped comparator could emit nothing) and is reported</p>
+<p><span class="tag">data</span> no new download needed; USGS layers restored from the group&#x27;s hash-pinned public mirror of ScienceBase item 657e1d85d34e23d3533209f7</p>
+</div><div class="panel">
 <h3>1. H46-2 &mdash; DFA-corroborated multiphysics structural emission (SHIPPED, recommended for the scoring slot)</h3>
 <p><span class="tag">layers</span></p><ul><li><code>official bands 1 mag_anom, 2 rtp, 3 tmi_hg, 6 tc, 12 det_elev, 13 iso_grav_anom, 14 tmi, 18 iso_grav_anom_hg (geometric-mean corroboration of 9 edge/curvature transforms)</code></li><li><code>10% of the emitted mass reserved for the H46-1 DFA regime-break field</code></li><li><code>labels.tif only as the organiser-masked exclusion zone (200 m buffer)</code></li></ul>
 <p><span class="tag">physical signature</span> agreement of independent edge/curvature transforms across two physics (potential fields and topography) - a corroboration filter, not a new transform</p>
@@ -62,6 +73,36 @@ shipped only as the new-hypothesis artifact, never as the recommended scoring fi
 <p><span class="tag">implementation cost</span> low</p>
 <p><span class="tag">validation</span> NOT YET VALIDATED (pruning direction untested); the addition direction is falsified by the group&#x27;s own measurement</p>
 <p><span class="tag">data</span> available in-repo mirror: data/external/gdr_wellspring_in_footprint.csv (restored); original free and official at gdr.openei.org/submissions/1391</p>
+</div><div class="panel">
+<h3>6. H46-R11-B &mdash; Ridge-axis thinning before emission (FALSIFIED on the selection blocks)</h3>
+<p><span class="tag">layers</span></p><ul><li><code>same field as H46-R11-A</code></li></ul>
+<p><span class="tag">physical signature</span> structure-tensor orientation then non-maximum suppression perpendicular to strike, to collapse a 3-5 px response band onto a one-pixel axis</p>
+<p><span class="tag">why off-catalogue</span> instrument-level, not geological: at fixed emitted mass DTI rises only through coverage T, and a dot on the trace axis earns k=1 instead of ~0.67</p>
+<p><span class="tag">differs from everything already in the repository</span> no axis-thinning operator existed in src/; every prior arm emits from a smoothed field</p>
+<p><span class="tag">expected DTI</span> MEASURED NEGATIVE: thinning cost 0.010-0.029 DTI in all 15 configurations where it was tried (0.11387-0.12989 vs 0.12769-0.15292 unthinned)</p>
+<p><span class="tag">implementation cost</span> low</p>
+<p><span class="tag">validation</span> FALSIFIED as implemented; the underlying localisation argument is untested and belongs to a future sub-pixel across-strike fit</p>
+<p><span class="tag">data</span> no external data needed</p>
+</div><div class="panel">
+<h3>7. H46-R11-C &mdash; Truth-mass-matched proxy instrument and budget re-derivation (IMPLEMENTED as a sensitivity, budget unchanged)</h3>
+<p><span class="tag">layers</span></p><ul><li><code>none new; changes the validation instrument</code></li></ul>
+<p><span class="tag">physical signature</span> the off-catalogue proxy holds 66,277 truth pixels against a live-anchored hidden-truth estimate of ~14,089, which biases the optimal emitted mass upward; re-measuring on a component-wise thinned copy (14,034 px, seeded) removes that bias</p>
+<p><span class="tag">why off-catalogue</span> n/a - instrument, not detector</p>
+<p><span class="tag">differs from everything already in the repository</span> all prior proxy work used unmatched truth mass</p>
+<p><span class="tag">expected DTI</span> measured 0.05787 (0.40x) / 0.07997 (0.67x) / 0.09847 (1.00x) / 0.10898 (1.50x): the shipped mass of 37,654 is still on the rising part of the curve, so the budget was NOT reduced</p>
+<p><span class="tag">implementation cost</span> low</p>
+<p><span class="tag">validation</span> IMPLEMENTED and reported; it contradicts a naive reading of the family&#x27;s mass-vs-score correlation (IR-46-07), which is driven by files with orders of magnitude more mass</p>
+<p><span class="tag">data</span> no external data needed</p>
+</div><div class="panel">
+<h3>8. H46-R11-E &mdash; Hypocentre lineaments from the USGS ANSS catalogue (STILL BLOCKED)</h3>
+<p><span class="tag">layers</span></p><ul><li><code>external: USGS FDSN event service, M&gt;=1.5, 1900-present, footprint -120.04..-116.14 E / 37.33..40.73 N (Walker Lane)</code></li></ul>
+<p><span class="tag">physical signature</span> alignment of precisely located hypocentres into strike-parallel lineaments - a fault-activity signature independent of rock properties and topography</p>
+<p><span class="tag">why off-catalogue</span> an active fault with no Quaternary surface trace still produces microseismicity; the competition&#x27;s own seismic bands are smoothed at 100 km</p>
+<p><span class="tag">differs from everything already in the repository</span> no arm here has used raw hypocentres</p>
+<p><span class="tag">expected DTI</span> unknown - not estimable without the catalogue</p>
+<p><span class="tag">implementation cost</span> medium</p>
+<p><span class="tag">validation</span> BLOCKED, no slot spent</p>
+<p><span class="tag">data</span> https://earthquake.usgs.gov/fdsnws/event/1/query is free and needs no key; it returns HTTP 000 from this sandbox (re-measured 2026-10-06). The agent&#x27;s web tool reaches the service, but ~10^4 CSV rows cannot be transferred reproducibly that way. Run scripts/fetch_earthquake_catalog.sh on an unrestricted machine.</p>
 </div>
 <h2>What is next, in order</h2>
 <ol>
@@ -85,7 +126,7 @@ Retrieved 2026-10-06 UTC.</footer>
 <div class="card" style="border-left:4px solid #b45309;margin:18px 0">
 <b>How decisions are made here &mdash; the two core values.</b>
 <div><b>Maximize P(Win).</b> Every choice is made against the official metric's own algebra
-(<code>DTI = T/(0.2&middot;S + 0.8&middot;|G|)</code>, marginal rule <code>k &gt; 0.2&middot;DTI</code>), never against a proxy known
+(use the exact metric and state every emission-model assumption), never against a proxy known
 to drift. Where the proxy and the algebra disagree &mdash; they do, see IR-46-04 &mdash; the algebra decides and the
 disagreement is filed.</div>
 <div><b>Own the Outcome.</b> End to end: the shipped bytes are re-read and audited, the estimator is verified

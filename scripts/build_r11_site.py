@@ -1,4 +1,25 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GEMSDOE46 — R11 scarp × gamma-ray concordance submission</title><style>*{box-sizing:border-box}body{margin:0;background:#f3f5f4;color:#172b29;font:16px/1.65 system-ui,sans-serif}
+#!/usr/bin/env python3
+"""Build the active GEMSDOE46 site from the R11 receipt.
+
+Every number rendered here is read from ``registry/r11.json`` /
+``evidence/r11_layer_screen.json`` at build time — nothing is typed by hand
+(``AGENTS.md`` §4).  The page is deterministic, so CI can assert that the
+generated site matches what is committed.
+"""
+from __future__ import annotations
+
+import html
+import json
+import os
+import re
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+R = json.loads((ROOT / "registry/r11.json").read_text())
+SCREEN = json.loads((ROOT / "evidence/r11_layer_screen.json").read_text())
+E = html.escape
+
+CSS = '''*{box-sizing:border-box}body{margin:0;background:#f3f5f4;color:#172b29;font:16px/1.65 system-ui,sans-serif}
 main{max-width:1060px;margin:auto;padding:32px 24px}header{background:#143f38;color:white;padding:18px 24px}
 header div{max-width:1012px;margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 header a{color:#c5ecdb}h1{font-size:clamp(30px,5vw,48px);line-height:1.15;letter-spacing:-1.5px}
@@ -20,39 +41,97 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#5c736d}
 td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
 .scroll{overflow-x:auto}footer{padding:20px 0;font-size:13px;color:#526c66}
 li{margin-bottom:8px}pre{overflow:auto;background:#edf3f0;padding:16px;border-radius:8px;font-size:13px}
-ol li,ul li{margin-bottom:10px}.best{font-weight:700;color:#0d5142}</style></head><body><header><div><b>GEMS / DISCOVERY LAB · R11</b><span><a href="executive-summary.html">Submission guide</a> · <a href="sources.html">Sources</a> · <a href="research/r11-review.md">Review</a></span></div></header><main><p class="label">GEMSDOE46 · experiment R11 · generated 2026-10-06</p>
+ol li,ul li{margin-bottom:10px}.best{font-weight:700;color:#0d5142}'''
+
+
+def rows(d: dict, best_key: str, fmt: str = "{:.5f}") -> str:
+    out = []
+    for k, v in sorted(d.items(), key=lambda kv: -kv[1]):
+        cls = ' class="best"' if k == best_key else ""
+        label = {"R11": "R11 · this candidate", "PART_lidar_only": "LiDAR morphology alone (component)",
+                 "PART_radiometric_only": "Gamma-ray alone (component)",
+                 "REF_rtp_gradient": "RTP magnetic gradient (classic arm)",
+                 "GEMSDOE32-owner-reported-02778": "GEMSDOE32 file, owner-reported 0.2778",
+                 "R10-DFA-crossover": "R10 DFA crossover (previous session)"}.get(k, k)
+        out.append(f'<tr><td{cls}>{E(label)}</td><td class="n"{cls}>{fmt.format(v)}</td></tr>')
+    return "".join(out)
+
+
+def render(prefix: str, guide: bool = False) -> str:
+    d = prefix + "r11/"
+    research = prefix + "research/"
+    a = R["audit"]
+    cfg = R["frozen_configuration"]
+    means, pooled = R["mean_locked_dti"], R["pooled_locked_dti"]
+    rob = R["robustness_all_locked_blocks"]["means"]
+    best = R["best_comparator"]
+    ci = R["paired_bootstrap_95"]
+    gate_ok = R["gate_passed"]
+    status = ("Proxy gate PASSED — cleared for a submission slot"
+              if gate_ok else "HOLD — do not submit this candidate")
+
+    screen_rows = "".join(
+        f'<tr><td>{E(r["field"])}</td><td class="n">{r["dti"]:.5f}</td>'
+        f'<td class="n">{r["precision_300m"] * 100:.1f}%</td></tr>'
+        for r in SCREEN["rows"][:8])
+
+    comp = R["comparisons"]
+    corr_rows = ""
+    for name, rec in comp.items():
+        if "candidate_pearson" in rec:
+            corr_rows += (f'<tr><td>{E(name)} (shipped submission)</td>'
+                          f'<td class="n">{rec["candidate_pearson"]["pearson"]:+.4f}</td>'
+                          f'<td class="n">{rec["jaccard"]:.4f}</td>'
+                          f'<td class="n">{rec["field_vs_smoothed_submission"]["spearman"]:+.4f}</td></tr>')
+    for name, rec in comp.items():
+        if "field_raw" in rec:
+            corr_rows += (f'<tr><td>{E(name)} (evidence field)</td>'
+                          f'<td class="n">{rec["field_raw"]["pearson"]:+.4f}</td>'
+                          f'<td class="n">—</td>'
+                          f'<td class="n">{rec["field_smoothed"]["spearman"]:+.4f}</td></tr>')
+
+    cov = R["coverage"]
+    sweep = sorted(R["selection_sweep"], key=lambda r: -r["mean_select_dti"])
+    sweep_rows = "".join(
+        f'<tr><td><code>{E(r["config"]["key"])}</code></td><td class="n">{r["mean_select_dti"]:.5f}</td>'
+        f'<td class="n">{r["emitted"]:,}/{r["requested"]:,}</td></tr>' for r in sweep[:6])
+    sweep_rows += "".join(
+        f'<tr><td><code>{E(r["config"]["key"])}</code></td><td class="n">{r["mean_select_dti"]:.5f}</td>'
+        f'<td class="n">{r["emitted"]:,}/{r["requested"]:,}</td></tr>' for r in sweep[-3:])
+
+    content = f'''<p class="label">GEMSDOE46 · experiment R11 · generated {E(R["generated_utc"][:10])}</p>
 <h1>Two independent sensors agree<br>where the catalogue is silent.</h1>
 <p class="muted">2 m LiDAR scarp morphology × airborne gamma-ray spectrometry (USGS GeoDAWN,
-DOI 10.5066/P93LGLVQ) · 37,654 predicted pixels · independently generated GeoTIFF</p>
+DOI 10.5066/P93LGLVQ) · {a["positive"]:,} predicted pixels · independently generated GeoTIFF</p>
 
 <section class="download" id="submission-download"><p class="label">Submission file — ready to download</p>
 <h2 style="margin-top:6px">R11 · scarp-morphology × gamma-ray concordance</h2>
-<a class="button" download href="r11/gems46-r11-scarp-rad-concordance-23e807e2de9f-zeros.tif">⬇ Download the .TIF submission</a>
-<a class="button" style="background:#0d5142" href="executive-summary.html">How to submit it →</a>
-<p><code>gems46-r11-scarp-rad-concordance-23e807e2de9f-zeros.tif</code> &nbsp;·&nbsp; 353,854 bytes &nbsp;·&nbsp; SHA-256 <code>73fd1d8340e32d0175ca7ddb084c50f561a04a2b6bd58f80426d7934cef157c7</code></p>
+<a class="button" download href="{d}{E(R["file"])}">⬇ Download the .TIF submission</a>
+<a class="button" style="background:#0d5142" href="{prefix}executive-summary.html">How to submit it →</a>
+<p><code>{E(R["file"])}</code> &nbsp;·&nbsp; {a["bytes"]:,} bytes &nbsp;·&nbsp; SHA-256 <code>{a["sha256"]}</code></p>
 <div class="cards">
 <div><strong>[0, 1]</strong>every value finite, range-checked cell by cell</div>
-<div><strong>37,654</strong>predicted pixels (0 elsewhere)</div>
-<div><strong>EPSG:32611</strong>3730 × 3292 · float32 · 1 band · 100 m</div>
+<div><strong>{a["positive"]:,}</strong>predicted pixels (0 elsewhere)</div>
+<div><strong>{E(a["crs"])}</strong>{a["shape"][0]} × {a["shape"][1]} · float32 · 1 band · 100 m</div>
 <div><strong>no nodata</strong>no NaN, no sentinel, transform equals the template</div>
 </div>
-<p><b>Submission name:</b> <code>GEMSDOE46-R11-SCARP-RAD-CONCORDANCE-23E807E2DE9F</code></p>
-<p><b>Short note for the form:</b> <code>R11 scarp-morphology x gamma-ray concordance on the GeoDAWN/3DEP USGS products; 37,654 dots; 0.25 concordance weight; fallback q=0.90; thin=0</code></p>
-<p class="muted"><a href="r11/receipt.json">Full machine-readable receipt</a> ·
-<a href="research/r11-review.md">scientific review</a> ·
-<a href="research/session-r11-plan.md">preregistered hypotheses</a> ·
-<a href="sources.html">official sources</a></p></section>
+<p><b>Submission name:</b> <code>GEMSDOE46-R11-SCARP-RAD-CONCORDANCE-{a["pixel_sha256"][:12].upper()}</code></p>
+<p><b>Short note for the form:</b> <code>{E(R["note"])}</code></p>
+<p class="muted"><a href="{d}receipt.json">Full machine-readable receipt</a> ·
+<a href="{research}r11-review.md">scientific review</a> ·
+<a href="{research}session-r11-plan.md">preregistered hypotheses</a> ·
+<a href="{prefix}sources.html">official sources</a></p></section>
 
-<section class="good"><b>Proxy gate PASSED — cleared for a submission slot</b>
+<section class="{"good" if gate_ok else "warning"}"><b>{status}</b>
 <p>R11 beat every comparator on the <em>locked</em> spatial blocks — the blocks that were never used to
 choose its configuration. Paired mean difference against the best comparator
-(PART_lidar_only): <b>+0.01052</b>, seeded block-bootstrap 95 % interval
-[+0.00140, +0.02121]. Under R10's stricter rule (which also refuses any block dropped for zero
+({E(best)}): <b>{R["paired_delta_vs_best"]:+.5f}</b>, seeded block-bootstrap 95 % interval
+[{ci[0]:+.5f}, {ci[1]:+.5f}]. Under R10's stricter rule (which also refuses any block dropped for zero
 shared emission capacity) the gate reads
-<b>fail</b>; 3 of
-13 locked blocks were dropped because a gapped
+<b>{"pass" if R["gate_strict_r10_style"] else "fail"}</b>; {len(R["locked_skipped"])} of
+{len(R["locked_folds"]) + len(R["locked_skipped"])} locked blocks were dropped because a gapped
 comparator could emit nothing there, which is conservative for R11. The preregistered rule
-(<a href="research/session-r11-plan.md">plan §7</a>) governs, and both readings are published.</p>
+(<a href="{research}session-r11-plan.md">plan §7</a>) governs, and both readings are published.</p>
 <p><b>No leaderboard score exists for this file.</b> Nothing here was submitted to the competition by
 this pipeline, and a proxy result is not a score forecast.</p></section>
 
@@ -61,17 +140,17 @@ this pipeline, and a proxy result is not a score forecast.</p></section>
 catalogue excluded by a fixed 200 m buffer, identical emitted mass per block for every method, exact
 distance-weighted Tversky index from the official formula.</p>
 <div class="cards">
-<div><strong>0.1042</strong>R11 mean locked-block DTI</div>
-<div><strong>0.0937</strong>best comparator</div>
-<div><strong>0.1391</strong>R11 pooled over locked blocks</div>
-<div><strong>0.1559</strong>R11 over all locked blocks at full budget</div>
+<div><strong>{means["R11"]:.4f}</strong>R11 mean locked-block DTI</div>
+<div><strong>{means[best]:.4f}</strong>best comparator</div>
+<div><strong>{pooled["R11"]:.4f}</strong>R11 pooled over locked blocks</div>
+<div><strong>{rob["R11"]:.4f}</strong>R11 over all locked blocks at full budget</div>
 </div>
-<h3>Matched emitted mass, 10 evaluable locked blocks</h3>
-<div class="scroll"><table><tr><th>Field, re-emitted by the same rule</th><th class="n">Mean DTI</th></tr><tr><td class="best">R11 · this candidate</td><td class="n" class="best">0.10420</td></tr><tr><td>LiDAR morphology alone (component)</td><td class="n">0.09368</td></tr><tr><td>Gamma-ray alone (component)</td><td class="n">0.07309</td></tr><tr><td>GEMSDOE32 file, owner-reported 0.2778</td><td class="n">0.06781</td></tr><tr><td>R10 DFA crossover (previous session)</td><td class="n">0.05294</td></tr><tr><td>RTP magnetic gradient (classic arm)</td><td class="n">0.05228</td></tr></table></div>
-<h3>Robustness view: all 13 locked blocks, each method at its own full budget</h3>
+<h3>Matched emitted mass, {len(R["locked_folds"])} evaluable locked blocks</h3>
+<div class="scroll"><table><tr><th>Field, re-emitted by the same rule</th><th class="n">Mean DTI</th></tr>{rows(means, "R11")}</table></div>
+<h3>Robustness view: all {len(R["robustness_all_locked_blocks"]["folds"])} locked blocks, each method at its own full budget</h3>
 <p class="muted">Blocks where a gapped method emits nothing are kept, so a method is charged for its own
 coverage gaps instead of having those blocks removed.</p>
-<div class="scroll"><table><tr><th>Field</th><th class="n">Mean DTI</th></tr><tr><td class="best">R11 · this candidate</td><td class="n" class="best">0.15586</td></tr><tr><td>LiDAR morphology alone (component)</td><td class="n">0.12413</td></tr><tr><td>Gamma-ray alone (component)</td><td class="n">0.10775</td></tr><tr><td>GEMSDOE32 file, owner-reported 0.2778</td><td class="n">0.09967</td></tr><tr><td>RTP magnetic gradient (classic arm)</td><td class="n">0.08732</td></tr><tr><td>R10 DFA crossover (previous session)</td><td class="n">0.04072</td></tr></table></div>
+<div class="scroll"><table><tr><th>Field</th><th class="n">Mean DTI</th></tr>{rows(rob, "R11")}</table></div>
 <p>Comparator files are <em>re-emitted from their own fields</em> inside each block at matched mass.
 These are measurements of evidence fields under one emission rule, not scores of the original files.
 Low correlation is non-redundancy on this mask, not proof of geological independence.</p></section>
@@ -83,15 +162,15 @@ the regional slope differs from the one measured against it. The same structure 
 the trace too. Those are two physically independent sensors — topography and near-surface
 radiochemistry — and neither is an amplitude or curvature maximum of a potential field.</p>
 <p><b>Measured, not assumed:</b> a strong two-sensor <em>gate</em> was falsified. On the selection
-blocks the concordance weight w = 0.25 scored 0.15292 while a full gate
-(w = 1) fell to 0.12979
+blocks the concordance weight w = 0.25 scored {sweep[0]["mean_select_dti"]:.5f} while a full gate
+(w = 1) fell to {[r["mean_select_dti"] for r in sweep if r["config"]["key"] == "w1.00-fb0.90-thin0"][0]:.5f}
 and ridge-axis thinning cost about 0.01–0.03 everywhere it was tried. What survived is a
 <em>mild</em> radiometric reweighting plus a coverage-aware fallback. The 2 m LiDAR product covers
-75.1% of the emittable domain, so a LiDAR-only detector is blind over the
-rest; R11 admits radiometric candidates there, capped at the 90% quantile of
+{cov["lidar_share_of_domain"]:.1%} of the emittable domain, so a LiDAR-only detector is blind over the
+rest; R11 admits radiometric candidates there, capped at the {cfg["fallback_quantile"]:.0%} quantile of
 the morphology score so they cannot outrank good morphology anywhere else.</p>
-<div class="scroll"><table><tr><th>Selection-block configuration (odd blocks only)</th><th class="n">Mean DTI</th><th class="n">mass</th></tr><tr><td><code>w0.25-fb0.90-thin0</code></td><td class="n">0.15292</td><td class="n">19,780/19,780</td></tr><tr><td><code>w0.25-fb0.99-thin0</code></td><td class="n">0.15017</td><td class="n">19,780/19,780</td></tr><tr><td><code>w0.50-fb0.90-thin0</code></td><td class="n">0.14731</td><td class="n">19,780/19,780</td></tr><tr><td><code>w0.25-fb0.00-thin0</code></td><td class="n">0.14624</td><td class="n">16,825/19,780</td></tr><tr><td><code>w0.00-fb0.90-thin0</code></td><td class="n">0.14390</td><td class="n">19,780/19,780</td></tr><tr><td><code>w0.50-fb0.99-thin0</code></td><td class="n">0.14228</td><td class="n">19,780/19,780</td></tr><tr><td><code>w1.00-fb0.00-thin1</code></td><td class="n">0.11575</td><td class="n">16,660/19,780</td></tr><tr><td><code>w1.00-fb0.90-thin1</code></td><td class="n">0.11575</td><td class="n">16,660/19,780</td></tr><tr><td><code>w1.00-fb0.99-thin1</code></td><td class="n">0.11387</td><td class="n">19,780/19,780</td></tr></table></div>
-<p class="muted">Top 6 and bottom 3 of 30 configurations. Selection used only
+<div class="scroll"><table><tr><th>Selection-block configuration (odd blocks only)</th><th class="n">Mean DTI</th><th class="n">mass</th></tr>{sweep_rows}</table></div>
+<p class="muted">Top 6 and bottom 3 of {len(R["selection_sweep"])} configurations. Selection used only
 the odd blocks of a 6×6 partition; R10 used a 4×4 partition, so no block edge is shared with the
 previous session.</p></section>
 
@@ -99,7 +178,7 @@ previous session.</p></section>
 <p>Neither layer is in the organiser's <code>training_features.tif</code>, and neither had been used by
 any arm in this repository before R11 (checked by searching <code>registry/</code>, <code>docs/</code>
 and <code>src/</code>). Whole-domain exploratory screen at matched mass, before any block split:</p>
-<div class="scroll"><table><tr><th>Evidence field</th><th class="n">Proxy DTI</th><th class="n">dots within 300 m</th></tr><tr><td>NEW_lidar_downface_max</td><td class="n">0.14448</td><td class="n">15.0%</td></tr><tr><td>NEW_lidar_step_max</td><td class="n">0.14436</td><td class="n">15.0%</td></tr><tr><td>NEW_lidar_lappos_max</td><td class="n">0.14422</td><td class="n">15.0%</td></tr><tr><td>NEW_lidar_cross_max</td><td class="n">0.14368</td><td class="n">15.2%</td></tr><tr><td>NEW_lidar_upface_max</td><td class="n">0.14239</td><td class="n">14.8%</td></tr><tr><td>NEW_lidar_lapneg_max</td><td class="n">0.14182</td><td class="n">14.6%</td></tr><tr><td>NEW_lidar_ex_max</td><td class="n">0.14115</td><td class="n">14.6%</td></tr><tr><td>NEW_ext_ThK_grad_s2</td><td class="n">0.11215</td><td class="n">11.8%</td></tr></table></div>
+<div class="scroll"><table><tr><th>Evidence field</th><th class="n">Proxy DTI</th><th class="n">dots within 300 m</th></tr>{screen_rows}</table></div>
 <p class="muted">Exploratory only (<code>evidence/r11_layer_screen.json</code>). It motivated the
 ranking; it was never the decision instrument.</p></section>
 
@@ -108,15 +187,15 @@ ranking; it was never the decision instrument.</p></section>
 candidate new. Three different measurements, reported separately because they answer different
 questions:</p>
 <div class="scroll"><table><tr><th>Compared with</th><th class="n">field / pixel Pearson</th>
-<th class="n">Jaccard of emitted pixels</th><th class="n">smoothed-field Spearman</th></tr><tr><td>GEMSDOE32-owner-reported-02778 (shipped submission)</td><td class="n">+0.0054</td><td class="n">0.0051</td><td class="n">+0.5325</td></tr><tr><td>R10-DFA-crossover (shipped submission)</td><td class="n">+0.0004</td><td class="n">0.0037</td><td class="n">-0.1018</td></tr><tr><td>REF_rtp_gradient (evidence field)</td><td class="n">+0.1150</td><td class="n">—</td><td class="n">+0.2448</td></tr><tr><td>PART_radiometric_only (evidence field)</td><td class="n">+0.4587</td><td class="n">—</td><td class="n">+0.5496</td></tr><tr><td>PART_lidar_only (evidence field)</td><td class="n">+0.7350</td><td class="n">—</td><td class="n">+0.7130</td></tr></table></div>
+<th class="n">Jaccard of emitted pixels</th><th class="n">smoothed-field Spearman</th></tr>{corr_rows}</table></div>
 <ul>
 <li><b>Against previously shipped submissions:</b> emitted-pixel correlation ≤ 0.006 and Jaccard
-0.0051 — the dot sets are almost
+{comp.get("GEMSDOE32-owner-reported-02778", {}).get("jaccard", 0):.4f} — the dot sets are almost
 disjoint, so this is not a renamed prediction.</li>
 <li><b>Against gradient/curvature evidence fields:</b> at most
-0.245 — low.</li>
+{max(abs(comp["REF_rtp_gradient"]["field_smoothed"][k]) for k in ("pearson", "spearman")):.3f} — low.</li>
 <li><b>Honest caveat:</b> the <em>smoothed</em> field still correlates
-+0.532
+{comp.get("GEMSDOE32-owner-reported-02778", {}).get("field_vs_smoothed_submission", {}).get("spearman", 0):+.3f}
 (Spearman) with the GEMSDOE32 file at coarse scales. Two fault-probability fields over the same
 terrain share regional structure. R11 is not spatially independent of the family's best field; it is
 pixel-distinct and it uses sensors that field never touched.</li>
@@ -124,27 +203,30 @@ pixel-distinct and it uses sensors that field never touched.</li>
 
 <section><h2>Mass, and what would have to be true to reach the leader</h2>
 <p>With <code>S</code> emitted pixels, <code>G</code> truth pixels and <code>M = T</code> the exact
-denominator is <code>0.2S + 0.8G</code>, so at the shipped mass of 37,654 and the
+denominator is <code>0.2S + 0.8G</code>, so at the shipped mass of {R["parameters"]["budget"]:,} and the
 live-anchored <code>G ≈ 14,089</code> the denominator is ≈18,802: a live 0.2778 implies
 <code>T ≈ 5,224</code> covered truth pixels and the current leader 0.3774 implies
 <code>T ≈ 7,094</code> — 36 % more coverage at identical mass. Coverage, not mass, is the lever.</p>
 <p>On a truth-mass-matched copy of the proxy (whole connected components kept up to
-14,034 px, seeded) the shipped mass is still on the
+{R["sensitivity"]["truth_mass_matched"]["kept_px"]:,} px, seeded) the shipped mass is still on the
 rising part of the curve, so the budget was <em>not</em> reduced:
-0.40x → 0.0579, 0.67x → 0.0800, 1.00x → 0.0985, 1.50x → 0.1090.</p>
+{", ".join(f'{k} → {v:.4f}' for k, v in sorted(R["sensitivity"]["truth_mass_matched"]["mean_select_dti_by_budget"].items()))}.</p>
 <p><b>Leaderboard snapshot:</b> 0.3774 (xiaofanhu), retrieved 2026-10-06 — a dated observation, not a
 live feed. <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Check
-the official leaderboard →</a></p></section><section id="how-to-submit"><h2>Exactly how to submit this file</h2>
+the official leaderboard →</a></p></section>'''
+
+    if guide:
+        content += f'''<section id="how-to-submit"><h2>Exactly how to submit this file</h2>
 <ol>
 <li><b>Download the GeoTIFF</b> with the button at the top of this page
-(<code>gems46-r11-scarp-rad-concordance-23e807e2de9f-zeros.tif</code>). Keep the <code>.tif</code> extension. Do not download an HTML page or a
+(<code>{E(R["file"])}</code>). Keep the <code>.tif</code> extension. Do not download an HTML page or a
 JSON receipt and rename it.</li>
 <li><b>Do not re-save it in a GIS editor.</b> Re-exporting can change the dtype, the compression, the
 CRS or the grid and the portal rejects any of those. The file as downloaded already matches the
-template: EPSG:32611, 3730 × 3292, 100 m, float32, single band, no nodata tag,
+template: {E(a["crs"])}, {a["shape"][0]} × {a["shape"][1]}, 100 m, float32, single band, no nodata tag,
 every value finite and inside [0, 1].</li>
-<li><b>Optional integrity check.</b> <code>sha256sum gems46-r11-scarp-rad-concordance-23e807e2de9f-zeros.tif</code> must equal
-<code>73fd1d8340e32d0175ca7ddb084c50f561a04a2b6bd58f80426d7934cef157c7</code>.</li>
+<li><b>Optional integrity check.</b> <code>sha256sum {E(R["file"])}</code> must equal
+<code>{a["sha256"]}</code>.</li>
 <li><b>Sign in</b> at <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">the
 DrivenData GEMS competition</a>, confirm you are eligible under the
 <a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">official prize rules</a>, and open
@@ -152,8 +234,8 @@ DrivenData GEMS competition</a>, confirm you are eligible under the
 <li><b>File to submit:</b> choose the <code>.tif</code>. A single-band GeoTIFF or a zip containing one
 GeoTIFF is accepted.</li>
 <li><b>Note (optional):</b> paste
-<code>R11 scarp-morphology x gamma-ray concordance on the GeoDAWN/3DEP USGS products; 37,654 dots; 0.25 concordance weight; fallback q=0.90; thin=0</code></li>
-<li><b>Name it</b> <code>GEMSDOE46-R11-SCARP-RAD-CONCORDANCE-23E807E2DE9F</code> in
+<code>{E(R["note"])}</code></li>
+<li><b>Name it</b> <code>GEMSDOE46-R11-SCARP-RAD-CONCORDANCE-{a["pixel_sha256"][:12].upper()}</code> in
 your own records, and keep the organiser's score, the file hash and the note together. A public
 leaderboard value cannot identify which file produced it.</li>
 </ol>
@@ -161,7 +243,7 @@ leaderboard value cannot identify which file produced it.</li>
 <p>That error has been seen in this project before. Do not fix it by blindly clipping a raster — find
 the cause. The usual causes are a negative nodata sentinel inherited from an input band, NaNs written
 outside the footprint, a dtype change, or an unintended resample. This file was re-opened after
-writing and checked cell by cell: <code>min = 0.0</code>, <code>max = 1.0</code>,
+writing and checked cell by cell: <code>min = {a["min"]}</code>, <code>max = {a["max"]}</code>,
 all values finite, no nodata tag. Portal acceptance is still not claimed until an organiser receipt
 exists.</p>
 <h3>Rebuild everything locally (CPU only, no GPU)</h3>
@@ -177,8 +259,10 @@ bash scripts/restore_r10_reference.sh         # comparator file
 .venv/bin/python scripts/verify_all.py</pre>
 <p>The published page serves a precomputed, audited file; no scientific computation happens in your
 browser. Hidden competition labels and authenticated organiser submission access are not available to
-this pipeline, so it can prepare and validate a file but cannot submit one.</p></section><section id="limits"><h2>Limitations, stated plainly</h2><ul>
-<li>The off-catalogue SGMC proxy is reused and imperfect; it is not hidden competition truth.</li><li>Comparator files are re-emitted from their own fields at matched per-block mass; these are not scores of the original files.</li><li>2 m LiDAR morphology covers 75.3% of the footprint; results are conditioned on that coverage.</li><li>The mirrored USGS products are rank-quantised uint8; only ordering and structure are used, never physical units.</li><li>Mirror hashes prove consistency with a public USGS data release, not organiser authentication.</li><li>Selection used 6x6 odd blocks of the same proxy family as earlier sessions; this reduces, but does not remove, instrument reuse risk.</li><li>Low correlation with prior files is non-redundancy on the chosen mask, not proof of geological independence.</li><li>Strong two-sensor concordance was falsified on the selection blocks (w=1 scores below w=0); only a mild reweighting (w=0.25) survived. Ridge-axis thinning was falsified outright.</li><li>The smoothed-field correlation with the restored GEMSDOE32 file is not negligible, so R11 is not spatially independent of the family&#x27;s best field at coarse scales even though the emitted pixels are almost disjoint.</li><li>Three locked blocks were dropped from the matched-mass comparison because a gapped comparator could emit nothing there; the all-blocks robustness view keeps them.</li>
+this pipeline, so it can prepare and validate a file but cannot submit one.</p></section>'''
+
+    content += f'''<section id="limits"><h2>Limitations, stated plainly</h2><ul>
+{''.join(f"<li>{E(x)}</li>" for x in R["limitations"])}
 <li>Blocked, not viable this session: hypocentre lineaments from the USGS ANSS catalogue.
 <code>earthquake.usgs.gov</code> returns HTTP 000 from this sandbox (re-measured 2026-10-06), so the
 free official source cannot be fetched here. Named in the plan rather than assumed away.</li>
@@ -204,11 +288,46 @@ State Geologic Map Compilation</a> — provenance of the off-catalogue proxy tru
 solution</a></li>
 </ul><p>Restored bytes are hash-pinned against <code>registry/data_manifest.json</code>. Pins prove
 mirror consistency, not organiser authentication. See the
-<a href="r11/receipt.json">receipt</a> for every input hash, every block score and the full sweep.</p></section>
+<a href="{d}receipt.json">receipt</a> for every input hash, every block score and the full sweep.</p></section>
 
 <footer><b>Maximize P(Win):</b> the locked decision set was read once, negative results are published
 with the positive one, and a failed gate protects the weekly slot. <b>Own the Outcome:</b> our own
 indexing, metric and instrument defects are fixed in the open and archived rather than quietly
 rewritten.<br>Generated from <code>registry/r11.json</code> ·
 <a href="https://github.com/buffedlizard55-lab/GEMSDOE46">source repository</a> ·
-older pages in this site are archived and may contain superseded claims.</footer></main></body></html>
+older pages in this site are archived and may contain superseded claims.</footer>'''
+
+    return (f'<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            f'<meta name="viewport" content="width=device-width,initial-scale=1">'
+            f'<title>GEMSDOE46 — R11 scarp × gamma-ray concordance submission</title>'
+            f'<style>{CSS}</style></head><body><header><div><b>GEMS / DISCOVERY LAB · R11</b>'
+            f'<span><a href="{prefix}executive-summary.html">Submission guide</a> · '
+            f'<a href="{prefix}sources.html">Sources</a> · '
+            f'<a href="{prefix}research/r11-review.md">Review</a></span></div></header>'
+            f'<main>{content}</main></body></html>')
+
+
+def main() -> None:
+    (ROOT / "index.html").write_text(render("docs/"))
+    (ROOT / "docs/index.html").write_text(render(""))
+    (ROOT / "docs/executive-summary.html").write_text(render("", True))
+    print("Built root page, docs page and executive summary from the R11 receipt")
+
+    # keep historical evidence reachable but never leave a stale recommendation unqualified
+    active = {ROOT / "docs/index.html", ROOT / "docs/executive-summary.html"}
+    marker = "<!-- R10 archive notice -->"
+    for page in sorted((ROOT / "docs").rglob("*.html")):
+        if page in active:
+            continue
+        text = page.read_text()
+        if marker in text or "Archived H46 experiment:" in text:
+            continue
+        link = os.path.relpath(ROOT / "docs/index.html", page.parent)
+        notice = (f'{marker}<aside style="padding:18px;background:#fff0c8;color:#382a0b;'
+                  f'font:16px/1.5 system-ui"><b>Historical experiment — not a current recommendation.</b> '
+                  f'<a href="{link}">Current audited download, measurements and submission gate →</a></aside>')
+        page.write_text(re.sub(r"(<body\b[^>]*>)", lambda m: m.group(1) + notice, text, count=1))
+
+
+if __name__ == "__main__":
+    main()

@@ -1,57 +1,131 @@
 # GEMSDOE46 — auditable fault-discovery experiments
 
-## Download the newly generated TIF
+<!-- R11 STATUS:BEGIN -->
+## Download the submission TIF
 
-**[Download `gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif`](docs/r10/gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif)**
+**[Download `gems46-r11-scarp-rad-concordance-23e807e2de9f-zeros.tif`](docs/r11/gems46-r11-scarp-rad-concordance-23e807e2de9f-zeros.tif)**
 
-**HOLD — do not submit this candidate to a weekly slot.** It is unique among the inspected files and format-valid, but the fixed DFA-crossover detector failed the spatially blocked proxy improvement gate. No competition submission was made.
+**Status: cleared for a weekly submission slot** under the preregistered rule (R11 beat every comparator on locked spatial blocks
+with a bootstrap interval excluding zero). It carries **no leaderboard score**: nothing in this
+repository submits to the competition, and a proxy measurement is not a score forecast.
 
-- [Executive summary / exact submission instructions](https://buffedlizard55-lab.github.io/GEMSDOE46/docs/executive-summary.html)
-- [Active site](https://buffedlizard55-lab.github.io/GEMSDOE46/) · [machine-readable receipt](docs/r10/receipt.json)
-- [Scientific review, corrected score analysis and next steps](docs/research/r10-review.md)
-- [Four hypotheses registered before implementation](docs/research/session-r10-plan.md)
+- [Executive summary / exact submission steps](https://buffedlizard55-lab.github.io/GEMSDOE46/docs/executive-summary.html)
+- [Active site](https://buffedlizard55-lab.github.io/GEMSDOE46/) · [machine-readable receipt](docs/r11/receipt.json)
+- [Scientific review and next steps](docs/research/r11-review.md)
+- [Five hypotheses preregistered before implementation](docs/research/session-r11-plan.md)
 
-| Current measured result | Value |
-|---|---:|
-| R10 mean blocked SGMC proxy DTI | 0.06169359 |
-| Best tested comparison rule, GEMSDOE32 | 0.10328873 |
-| Paired difference | -0.04159514 |
-| Largest absolute tested field correlation | 0.05517048 |
-| Emitted pixels | 37,654 |
+**Submission name:** `GEMSDOE46-R11-SCARP-RAD-CONCORDANCE-23E807E2DE9F`
+**Short note for the form:** `R11 scarp-morphology x gamma-ray concordance on the GeoDAWN/3DEP USGS products; 37,654 dots; 0.25 concordance weight; fallback q=0.90; thin=0`
 
-These are **not leaderboard scores**. Nine evaluable blocks, matched mass/exclusion, reused imperfect SGMC proxy. Correlation is a redundancy diagnostic, not proof of independent geology. The official board snapshot retrieved 2026-10-06 is **0.3774**, not 0.3195. Historical file-to-score attribution remains owner-reported.
+### What was measured (locked blocks, never used for tuning)
 
-**Submission name:** `GEMSDOE46-R10-DFA-CROSSOVER-95ba59eb9030`
-**Short note:** `R10 raw RTP/gravity DFA slope crossover, 0.8-12.8 km scales; 37,654 dots; research candidate, proxy-gated, no leaderboard score.`
+| Field, re-emitted by the same rule | Mean DTI | Pooled DTI | All locked blocks, full budget |
+|---|---:|---:|---:|
+| R11 | 0.10420 | 0.13912 | 0.15586 |
+| PART_lidar_only | 0.09368 | 0.12467 | 0.12413 |
+| PART_radiometric_only | 0.07309 | 0.09611 | 0.10775 |
+| GEMSDOE32-owner-reported-02778 | 0.06781 | 0.08870 | 0.09967 |
+| R10-DFA-crossover | 0.05294 | 0.07777 | 0.04072 |
+| REF_rtp_gradient | 0.05228 | 0.06926 | 0.08732 |
 
-Format re-read from disk: single band, float32, EPSG:32611, 3730×3292, 100 m, exact template transform, all values finite in [0,1], no nodata sentinel. SHA-256: `c966def73cfb3177af25651c92d32f1f36fc209ad13c49274c125aa06f62f322`. Portal acceptance has not been tested.
+Paired difference vs the best comparator (`PART_lidar_only`): **+0.01052**, seeded
+block-bootstrap 95 % interval **[+0.00140, +0.02121]** over 10 evaluable
+locked blocks; 3 further locked blocks were dropped where a gapped comparator
+could emit nothing, which is conservative for R11. Under R10's stricter rule (no dropped blocks
+allowed) the gate reads **fail**; both readings are
+published in the receipt.
 
-## Reproduce on CPU
+These are **not leaderboard scores**. The instrument is the reused, imperfect off-catalogue USGS SGMC
+proxy at matched emitted mass. The official board snapshot retrieved 2026-10-06 is **0.3774**
+(xiaofanhu), not the 0.3195 quoted in the standing prompt — that is the #7 value on the same date.
+File-to-score attribution for every historical score remains owner-reported.
+
+### Redundancy check required by the standing prompt
+
+| Compared with | Emitted-pixel / raw-field correlation | Jaccard | Smoothed-field Spearman |
+|---|---:|---:|---:|
+| GEMSDOE32 file (owner-reported 0.2778) | +0.0054 | 0.0051 | +0.5325 |
+| R10 DFA crossover file | +0.0004 | 0.0037 | -0.1018 |
+| RTP magnetic gradient field (classic arm) | +0.1150 | — | +0.2448 |
+| LiDAR morphology alone (own component) | +0.7350 | — | +0.7130 |
+
+Emitted pixels are almost disjoint from both shipped files, so this is not a renamed prediction, and
+the correlation with gradient/curvature evidence is low. The honest caveat: the *smoothed* field still
+correlates +0.532
+with the GEMSDOE32 file at coarse scales, so R11 is **not** spatially independent of the family's best
+field (IR-46-09).
+
+### Artefact audit (re-read from disk after writing)
+
+Single band, float32, EPSG:32611, 3730×3292, 100 m, transform equal to the
+template, every value finite and in [0.0, 1.0], no nodata tag, 37,654 positive
+pixels, zero elsewhere. SHA-256 `73fd1d8340e32d0175ca7ddb084c50f561a04a2b6bd58f80426d7934cef157c7`. Frozen configuration: concordance weight
+0.25, radiometric fallback quantile 0.9, thinning False.
+LiDAR covers 75.13% of the emittable domain; the rest is carried by the
+radiometric fallback. Portal acceptance has not been tested — no organiser receipt exists.
+
+### What failed, and is published anyway
+
+* A **strong** two-sensor concordance gate was falsified on the selection blocks (w = 1 scores below
+  morphology alone); only a mild reweighting survived.
+* **Ridge-axis thinning (H46-R11-B)** cost 0.010–0.029 DTI in all fifteen configurations tried.
+* The previous session's **DFA crossover (R10)** remains `HOLD_DO_NOT_SUBMIT`; it is still downloadable
+  in `docs/r10/` for audit.
+<!-- R11 STATUS:END -->
+
+## Reproduce on CPU (no GPU)
 
 ```bash
 python -m venv .venv
 .venv/bin/pip install -r requirements.txt
-bash scripts/restore_competition_data.sh
-bash scripts/restore_r10_reference.sh
-.venv/bin/python scripts/run_r10.py
-.venv/bin/python scripts/build_r10_site.py
+bash scripts/restore_competition_data.sh     # organiser rasters + SGMC proxy, hash-verified
+bash scripts/restore_r11_reference.sh        # USGS GeoDAWN gamma-ray + LiDAR layers, hash-verified
+bash scripts/restore_r10_reference.sh        # GEMSDOE32 comparator file, hash-verified
+.venv/bin/python scripts/screen_r11_layers.py   # exploratory layer screen
+.venv/bin/python scripts/run_r11.py             # locked experiment + audited GeoTIFF
+.venv/bin/python scripts/build_readme_status.py # this status block
+.venv/bin/python scripts/build_r11_site.py      # active site + executive summary
 .venv/bin/python -m pytest
 .venv/bin/python scripts/verify_all.py
 ```
 
-The inputs are hash-pinned public-family mirrors; hashes prove consistency, not organizer authentication. Raw data and derived arrays remain ignored. No GPU is needed. The site serves precomputed audited files, not a browser-side scientific pipeline. No authenticated organizer access or private labels are available. A leaderboard feed is not continuously verified; the site clearly dates its snapshot and links the official board.
+Inputs are hash-pinned public mirrors; the pins prove mirror consistency, not organiser
+authentication. Raw rasters and derived arrays stay git-ignored. The site serves precomputed audited
+files — no scientific computation happens in a browser. No authenticated organiser access and no
+private labels are available, so this pipeline can prepare and validate a file but cannot submit one.
+The leaderboard snapshot is dated and linked, never presented as a live feed.
+
+`scripts/build_site.py --legacy-h46` regenerates the archived H46 pages; it needs
+`data/derived/dfa_stats.json`, which is produced by `scripts/build_dfa_field.py` and is git-ignored, so
+that builder does not run in a clean checkout. The archived pages are committed as they were. This is a
+known reproducibility limitation of the archive, not of the active artefact.
 
 ## Corrections and priorities
 
-The legacy DFA map used a half-window-shifted index; this is fixed with a regression test. New R10 uses a separate, window-local residual estimator. Historical DFA artifacts remain archived and do not silently inherit this correction. An empty-prediction boundary bug in the binary metric and the incomplete SGMC restore path were also fixed.
+Fixed this session, with tests: the rank transform returned an arbitrary tie-broken ramp for a constant
+channel (`tests/test_concordance.py`); a block-slicing bug passed a whole-grid field to a block domain;
+the promotion gate silently inherited R10's stricter "no dropped blocks" condition, which is not in the
+R11 preregistration, so both readings are now reported; and two site builders wrote the same two live
+pages, so the archived H46 overview moved to `docs/h46/` (IR-46-12).
 
-The former README incorrectly treated model-dependent hidden-label counts as measured facts, called low Pearson correlation proof of physical independence, and guaranteed a scoring route that had not been demonstrated. Those claims are withdrawn. The exact denominator is `0.2(T+S−M)+0.8G`; replacing it with `0.2S+0.8G` requires an additional assumption. The [archived README](docs/research/readme-pre-r10.md) is preserved for audit, not recommendations.
+Earlier corrections stand: the legacy DFA half-window index bug, the empty-prediction boundary bug in
+the binary metric, and the withdrawal of the old README's hidden-label counts and independence claims.
+The exact denominator is `0.2(T+S−M)+0.8G`; `0.2S+0.8G` needs `M=T`. The
+[archived README](docs/research/readme-pre-r10.md) is preserved for audit, not recommendations.
 
-Next: lock an unused geographic validation region, test scale/phase robustness and localization before tuning, and obtain real organizer file-to-score receipts where possible. Read the full scientific review before another experiment. Do not tune repeatedly on the same proxy and call it new holdout evidence.
+Next, in order: (1) obtain one organiser receipt by submitting R11 to a weekly slot and record score +
+file hash + note together; (2) improve the radiometric fallback, which carries 24.87 % of the emittable
+domain at a locked DTI of 0.073; (3) test strike-continuity gap closure (H46-R11-D) with the unused
+LiDAR `strike`/`coh100` bands; (4) try sub-pixel across-strike localisation as a new preregistered
+ablation — thinning failed, the localisation argument did not; (5) never re-tune R11 on these blocks.
 
 ## Core values
 
-**Maximize P(Win):** a failed proxy gate is a reason to protect the weekly slot, not conceal the result. **Own the Outcome:** fix our own defects, preserve receipts, publish negative findings and distinguish hypothesis from evidence.
+**Maximize P(Win):** the two parts of the hypothesis that failed are published next to the part that
+worked, the stricter gate is reported beside the preregistered one, and a slot is recommended only
+because a rule written in advance was met. **Own the Outcome:** our own defects are fixed in the open
+with tests, receipts are preserved, negative results are labelled negative, and hypothesis is never
+reported as evidence.
 
 ## Standing operating prompt — read at every session
 

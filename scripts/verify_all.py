@@ -118,6 +118,42 @@ def main() -> int:
     current = audit(ROOT / "docs/r10" / r10["file"], ROOT / "data/raw/sample_submission.tif")
     ok &= current == r10["audit"]
     print(f"  {r10['file']}: sha256={current['sha256']}; status={r10['status']}")
+
+    print()
+    print("=" * 96)
+    print("8. R11 independent on-disk format audit + pinned USGS layers + locked-gate consistency")
+    print("=" * 96)
+    from run_r11 import audit as audit11
+    r11 = json.loads((ROOT / "registry/r11.json").read_text())
+    cur11 = audit11(ROOT / "docs/r11" / r11["file"], ROOT / "data/raw/sample_submission.tif")
+    same = cur11 == r11["audit"]
+    ok &= same
+    print(f"  {'OK  ' if same else 'FAIL'} {r11['file']}")
+    print(f"       sha256={cur11['sha256']}")
+    print(f"       positive={cur11['positive']} min={cur11['min']} max={cur11['max']} "
+          f"crs={cur11['crs']} shape={cur11['shape']}")
+    for item in json.loads((ROOT / "registry/data_manifest.json").read_text())["files"]:
+        if not item["id"].startswith("r11_layer_"):
+            continue
+        p = ROOT / item["dest"]
+        got = sha256(p) if p.exists() else None
+        good = got == item["sha256"]
+        ok &= good
+        print(f"  {'OK  ' if good else 'FAIL'} {item['dest']}  {(got or 'MISSING')[:16]}...")
+    # gate arithmetic re-derived from the receipt, not trusted
+    folds = r11["locked_folds"]
+    best = r11["best_comparator"]
+    delta = [f["scores"]["R11"]["dti"] - f["scores"][best]["dti"] for f in folds]
+    mean_delta = sum(delta) / len(delta)
+    ci = r11["paired_bootstrap_95"]
+    consistent = (abs(mean_delta - r11["paired_delta_vs_best"]) < 1e-12
+                  and bool(ci[0] > 0) == bool(r11["gate_passed"])
+                  and len(folds) >= 8
+                  and r11["mean_locked_dti"]["R11"] > r11["mean_locked_dti"][best])
+    ok &= consistent
+    print(f"  {'OK  ' if consistent else 'FAIL'} gate re-derived: mean paired delta {mean_delta:+.6f}, "
+          f"bootstrap 95% [{ci[0]:+.6f}, {ci[1]:+.6f}], blocks {len(folds)}, "
+          f"status {r11['status']}, strict-R10 rule {'pass' if r11['gate_strict_r10_style'] else 'fail'}")
     print("ALL COMPUTATIONAL CHECKS PASSED (not a scoring endorsement)" if ok else "SOME CHECKS FAILED")
     return 0 if ok else 1
 

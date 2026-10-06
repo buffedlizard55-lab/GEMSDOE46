@@ -68,10 +68,37 @@ def test_homepage_puts_the_verified_download_first() -> None:
     import json
     home = (SITE / "index.html").read_text(encoding="utf-8")
     assert home.index('id="submission-download"') < home.index('id="validation"')
-    receipt = json.loads((ROOT / "registry/r10.json").read_text())
+    receipt = json.loads((ROOT / "registry/r11.json").read_text())
     assert receipt["file"] in home
-    assert (SITE / "r10" / receipt["file"]).is_file()
+    assert (SITE / "r11" / receipt["file"]).is_file()
     assert all(receipt["audit"]["checks"].values())
     assert receipt["audit"]["positive"] == 37654
-    assert "do not submit" in home
-    assert not receipt["gate_passed"]
+    # the gate result and its limits must both be visible on the landing page
+    assert receipt["gate_passed"] is True
+    assert "no leaderboard score" in home.lower()
+    assert receipt["note"] in home
+    assert receipt["audit"]["sha256"] in home
+
+
+def test_executive_summary_explains_how_to_submit() -> None:
+    """The submission guide must exist, name the file and cover the known range error."""
+    import json
+    page = (SITE / "executive-summary.html").read_text(encoding="utf-8")
+    receipt = json.loads((ROOT / "registry/r11.json").read_text())
+    assert 'id="how-to-submit"' in page
+    assert receipt["file"] in page
+    assert receipt["note"] in page
+    assert receipt["audit"]["sha256"] in page
+    assert "Predicted values must be in range [0, 1]" in page
+    assert "New submission" in page
+    assert "https://www.drivendata.org/competitions/306/competition-doe-gems/" in page
+
+
+def test_r10_hold_candidate_is_still_labelled_held() -> None:
+    """A failed gate must stay visible; the new page may not quietly promote it."""
+    import json
+    r10 = json.loads((ROOT / "registry/r10.json").read_text())
+    assert r10["gate_passed"] is False
+    review = (ROOT / "docs/research/r10-review.md").read_text(encoding="utf-8")
+    assert "HOLD" in review
+    assert (SITE / "r10" / r10["file"]).is_file()
