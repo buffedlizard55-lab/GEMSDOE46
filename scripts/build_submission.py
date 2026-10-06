@@ -12,6 +12,11 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+# Make ``src/`` importable when the script is run directly from a checkout, so the
+# command line works without an editable install (``pip install -e .``).  Added during
+# the merge with the submission layer so that the documented commands are copy-pasteable.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+
 import numpy as np
 import rasterio
 

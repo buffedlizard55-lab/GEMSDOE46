@@ -1,0 +1,22 @@
+{
+  "file": "gemsdoe46-h46a-r8-conformal-allfinite.tif",
+  "bytes": 250676,
+  "sha256": "68063ac544a2132ffc20419f8dd814bb92b1d0d90877c14e2383c5d3859f5f42",
+  "positives": 39108,
+  "nan_pixels": 0,
+  "min": 0.0,
+  "max": 1.0,
+  "expected_dots": 39108,
+  "checks": {
+    "single_band": true,
+    "dtype_float32": true,
+    "shape_3730x3292": true,
+    "crs_epsg_32611": true,
+    "transform_matches_template": true,
+    "unique_positive_values_are_1": true,
+    "portal_range_0_1_all_cells": true,
+    "all_cells_finite": true,
+    "range_0_1_on_finite_cells": true
+  },
+  "all_checks_passed": true
+}

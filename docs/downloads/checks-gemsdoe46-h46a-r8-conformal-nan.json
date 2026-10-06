@@ -1,0 +1,23 @@
+{
+  "file": "gemsdoe46-h46a-r8-conformal-nan.tif",
+  "bytes": 381534,
+  "sha256": "1647e7657e4ba34bba1a659580e8b84f84f20306ae8fa6cc5b9d59e768369bd6",
+  "positives": 39108,
+  "nan_pixels": 7111787,
+  "min": 0.0,
+  "max": 1.0,
+  "expected_dots": 39108,
+  "checks": {
+    "single_band": true,
+    "dtype_float32": true,
+    "shape_3730x3292": true,
+    "crs_epsg_32611": true,
+    "transform_matches_template": true,
+    "unique_positive_values_are_1": true,
+    "portal_range_0_1_all_cells": true,
+    "nan_outside_footprint_only": true,
+    "all_finite_inside_footprint": true,
+    "range_0_1_on_finite_cells": true
+  },
+  "all_checks_passed": true
+}

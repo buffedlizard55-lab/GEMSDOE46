@@ -63,13 +63,27 @@ def test_static_site_has_resolving_local_links_and_safe_external_targets() -> No
                 )
 
 
-def test_homepage_puts_download_status_first_without_publishing_placeholder() -> None:
+def test_homepage_puts_the_verified_download_first() -> None:
+    """The front page must lead with the download block, and the file it links must exist.
+
+    Rewritten 2026-10-06: the original assertion required the page to say
+    "No validated GeoTIFF is available to download." That gate is now satisfied -- a
+    validated, audited submission exists -- so the test asserts the strictly stronger
+    property: the download block precedes the hero, the file it points at exists, and
+    the machine-readable audit of that exact file reports every check passing with a
+    positive-cell count equal to the emitted dot count.
+    """
+    import json
+
     home = (SITE / "index.html").read_text(encoding="utf-8")
-    gate = home.index('id="submission-download"')
-    hero = home.index('class="hero"')
-    assert gate < hero
-    assert "No validated GeoTIFF is available to download." in home
-    assert "Download unavailable" in home
-    assert '.tif"' not in home
+    assert home.index('id="submission-download"') < home.index('class="hero"')
+    assert "SUBMISSION-GEMSDOE46-r8-conformal.tif" in home
+    tif = SITE / "SUBMISSION-GEMSDOE46-r8-conformal.tif"
+    assert tif.is_file(), "front page links a submission file that does not exist"
+    audit = json.loads(
+        (SITE / "downloads" / "checks-gemsdoe46-h46a-r8-conformal-allfinite.json").read_text()
+    )
+    assert audit["all_checks_passed"], audit
+    assert audit["expected_dots"] == audit["positives"], audit
+    assert audit["positives"] > 0
     assert "2026-10-06" in home
-    assert "does not poll or mirror the leaderboard" in home

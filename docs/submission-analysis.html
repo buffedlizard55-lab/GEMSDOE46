@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GEMSDOE46 — analysis and evidence</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <b>GEMSDOE46 — analysis and evidence</b>
+  <span class="sub">metric algebra · 24-block sweep · split-conformal selection · audit trail</span>
+</div></header>
+<nav class="site"><div class="wrap">
+  <a href="index.html">Executive summary</a>
+  <a href="how-to-submit.html">How to submit</a>
+  <a href="submission-analysis.html" aria-current="page">Submission analysis</a>
+  <a href="submission-hypotheses.html">Hypothesis test</a>
+  <a href="research-overview.html">Research layer</a>
+  <a href="analysis.html">Score analysis (research)</a>
+  <a href="hypotheses.html">Hypotheses (research)</a>
+  <a href="guide.html">Guide (research)</a>
+  <a href="sources.html">Sources</a>
+</div></nav>
+<main>
+
+<h1>Analysis and evidence</h1>
+<p class="lede">Everything on this page is either read from an organizer page, computed from the
+hash-pinned official rasters, or arithmetic on the metric's own definitions. Numbers that are not
+one of those three things are labelled as assumptions.</p>
+
+<h2>1. The metric, exactly</h2>
+<p class="mono" style="background:#fff;border:1px solid var(--line);padding:12px;border-radius:8px">
+k(d) = max(1 − d/300 m, 0)<br>
+TPw = Σ<sub>g∈G</sub> max<sub>x: d(x,g)≤300 m</sub> p(x)·k(d(x,g))<br>
+FPw = Σ<sub>x: p(x)&gt;0</sub> p(x)·[1 − max<sub>g∈G</sub> k(d(x,g))]<br>
+FNw = Σ<sub>g∈G</sub> [1 − max<sub>x: d(x,g)≤300 m</sub> p(x)·k(d(x,g))]<br>
+DTI = TPw / (TPw + 0.2·FPw + 0.8·FNw + ε)
+</p>
+<p class="small">Read verbatim from
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">the problem
+description</a>. <span class="mono">src/gems46/metric.py</span> transcribes it, and
+<span class="mono">tests/</span> checks the vectorised implementation against literal O(N²) loops and
+against the published worked example (TPw = 3.00, FPw = 1.89, FNw = 2.00 → 0.60).</p>
+
+<h2>2. Two identities that decide the competition</h2>
+<p>For binary truth: <span class="mono">FNw = |G| − TPw</span>. In the sparse regime (no dot is the
+best cover of two truth pixels): <span class="mono">FPw = N − TPw</span> with <span class="mono">N</span>
+the number of unit-mass cells. Substituting, with <span class="mono">T = TPw</span>:</p>
+<p class="mono" style="font-size:15px"><b>DTI = T / (0.2·N + 0.8·|G|)</b> &nbsp;&nbsp;(★)</p>
+<p><b>Cross-check.</b> The sibling family's 0.2600 row reported 44,090 dots and
+<span class="mono">0.0893</span> credit per pixel, i.e. <span class="mono">T = 3,937.2</span>:
+<span class="mono">3937.2 / (0.2·44090 + 0.8·7905) = 0.2600</span> — the published score falls out of the
+identity <i>exactly</i>, from two independently reported numbers. That is the evidence that this is
+the algebra the leaderboard runs.</p>
+<p>Because <span class="mono">T ≤ |G|</span>:</p>
+<p class="mono" style="font-size:15px"><b>DTI ≤ |G| / (0.2·N + 0.8·|G|)</b> &nbsp;&nbsp;(★★)</p>
+
+<table>
+<thead><tr><th>emitted dots N</th><th>20,000</th><th>30,000</th><th>44,090</th><th>60,069</th><th>80,000</th><th>86,541</th><th>100,000</th><th>121,131</th></tr></thead>
+<tbody>
+<tr><td>ceiling (★★) at |G| = 7,905 px</td><td>0.7657</td><td>0.6414</td><td>0.5221</td><td>0.4311</td><td>0.3541</td><td><b>0.3345</b></td><td>0.3003</td><td>0.2588</td></tr>
+<tr><td>credit T needed for 0.3345</td><td>3,453</td><td>4,301</td><td>5,065</td><td>6,134</td><td>7,467</td><td>7,905</td><td>8,805</td><td>10,219</td></tr>
+</tbody></table>
+<p class="small">|G| = 7,905 px is an <b>inferred</b> assumption (the value implied by the 0.2600
+cross-check); the screen is recomputed at |G| ∈ {3,950, 7,905, 15,810} px in
+<span class="mono">evidence/analytic_screen.json</span>. At the pessimistic end the same target allows
+only 43,243 dots.</p>
+
+<h3>What this rules out, immediately</h3>
+<ul class="tight">
+  <li><b>More than 86,541 dots cannot reach 0.3345</b>, however good the field is.</li>
+  <li><b>Scale is a no-op for graded maps.</b> <span class="mono">DTI(λ) = λT/(0.2λN + 0.8|G|)</span> is
+      strictly increasing in λ, so a probabilistic map is dominated by its own thresholded support:
+      the artefact must be 0/1.</li>
+  <li><b>Deleting useless mass is a score move, not a cosmetic one.</b> The family's own sequence —
+      0.1922 @ 121,131 → 0.2477 @ 60,069 → 0.2600 @ 44,090 → 0.2708 @ 40,199 → 0.2778 @ 37,654 — is
+      monotone in mass removed, and 0.2778 is exactly the 0.2708 field with every dot within 2 px of
+      the catalogue deleted.</li>
+</ul>
+
+<h2>3. The 24-block sweep (this repository's own experiment)</h2>
+<p>4 × 6 tiles, ≈ 93 × 55 km each. For each block: train with <b>every catalogue pixel inside the
+block removed</b>, then recover exactly those pixels from the 25 physical features; score with the
+exact metric plus a halo. 8 blocks lie outside the surveyed area and are excluded by rule R1 (they
+contain no held-out truth; every arm scores 0 there). Blocks are split by tile parity into a
+selection half and a calibration half (rule R2), and the calibration half supplies the split-conformal
+quantile at the smallest alpha the data supports, <span class="mono">α = 1/(n_cal+1) = 0.1000</span>.</p>
+
+<table>
+<thead><tr>
+<th>arm (spacing)</th><th>selection mean</th><th>calibration mean</th><th>conformal q</th><th>certified floor L</th>
+<th>dots (sweep extrapolation)</th><th>dots (measured, full grid)</th><th>R3 admissible</th>
+</tr></thead>
+<tbody>
+<tr><td>r = 3 px (300 m)</td><td>0.0345</td><td>0.0422</td><td>0.0318</td><td>0.0103</td><td>382,812</td><td>228,115</td><td>no</td></tr>
+<tr><td>r = 4 px (400 m)</td><td>0.0412</td><td>0.0500</td><td>0.0340</td><td>0.0160</td><td>247,704</td><td>146,254</td><td>no</td></tr>
+<tr><td>r = 5 px (500 m)</td><td>0.0431</td><td>0.0502</td><td>0.0328</td><td>0.0174</td><td>154,872</td><td>89,653</td><td>no</td></tr>
+<tr><td>r = 6 px (600 m)</td><td>0.0393</td><td>0.0476</td><td>0.0219</td><td>0.0256</td><td>113,580</td><td>65,770</td><td>yes (measured) / no (extrapolated)</td></tr>
+<tr class="ship"><td>r = 8 px (800 m) — SHIPPED</td><td>0.0364</td><td>0.0401</td><td>0.0118</td><td><b>0.0283</b></td><td>67,836</td><td><b>39,108</b></td><td><b>yes</b></td></tr>
+<tr><td>r = 10 px (1,000 m)</td><td>0.0318</td><td>0.0324</td><td>0.0084</td><td>0.0239</td><td>44,760</td><td>25,346</td><td>yes</td></tr>
+<tr><td>r = 12 px (1,200 m)</td><td>0.0261</td><td>0.0299</td><td>0.0093</td><td>0.0205</td><td>33,204</td><td>18,728</td><td>yes</td></tr>
+<tr><td>r = 14 px (1,400 m)</td><td>0.0215</td><td>0.0254</td><td>0.0111</td><td>0.0143</td><td>24,864</td><td>13,933</td><td>yes</td></tr>
+<tr><td>r = 16 px (1,600 m)</td><td>0.0220</td><td>0.0243</td><td>0.0268</td><td>−0.0025</td><td>19,656</td><td>10,941</td><td>yes</td></tr>
+<tr><td>r = 20 px (2,000 m)</td><td>0.0191</td><td>0.0201</td><td>0.0192</td><td>0.0008</td><td>13,116</td><td>7,270</td><td>yes</td></tr>
+</tbody></table>
+<p class="small">The primary truth population is <span class="mono">pop_thin</span>: a deterministic
+12.96 % subsample of the held-out catalogue, i.e. density-matched to the scored new-fault population.
+The conformal quantile is the <span class="mono">ceil((n_cal+1)(1−α))</span>-th smallest residual
+<span class="mono">s<sub>j</sub>(s) − mean<sub>cal</sub>(s)</span>, and
+<span class="mono">L = mean<sub>cal</sub> − q</span> is the finite-sample one-sided lower bound; a
+negative L means the calibration half cannot certify the arm at this confidence at all. The two dot
+columns are the sweep's own per-block extrapolation (median per block × 24) and the measured
+full-grid count — the first overestimates the second for two measured reasons
+(cf. <span class="mono">docs/IRREGULARITIES.md</span> IR-46-06).</p>
+
+<h3>Rules, in the order they are applied</h3>
+<ol class="tight">
+  <li><b>R1 eligibility</b> — a block enters iff it holds ≥ 1 held-out truth pixel (truth-mask rule, score-independent).</li>
+  <li><b>R2 split</b> — selection / calibration = tile parity <span class="mono">(i+j)%2</span>, so both halves have comparable fault density and comparable distance to the survey edge.</li>
+  <li><b>R3 admissibility</b> — an arm ships only if its dot count leaves room for 0.3345 under (★★) at the declared |G|: <span class="mono">N ≤ 86,541</span>. Applied to the <b>measured</b> count in the shipped run.</li>
+  <li><b>R4 choice</b> — among admissible arms, the largest certified floor. That is r = 8 px.</li>
+</ol>
+
+<h3>Sensitivity of the shipped decision</h3>
+<table>
+<thead><tr><th>declared scored population</th><th>ratio</th><th>R3+R4 choice</th><th>certified floor at that choice</th><th>score-only choice (ignores the density rule)</th></tr></thead>
+<tbody>
+<tr><td>full catalogue</td><td>1</td><td>r = 8 px</td><td>0.0636</td><td>r = 4 px</td></tr>
+<tr><td>half density</td><td>0.5</td><td>r = 8 px</td><td>0.0550</td><td>r = 5 px</td></tr>
+<tr><td>quarter density</td><td>0.25</td><td>r = 8 px</td><td>0.0415</td><td>r = 6 px</td></tr>
+<tr class="ship"><td>declared primary</td><td>0.1296</td><td><b>r = 8 px</b></td><td><b>0.0283</b></td><td>r = 6 px</td></tr>
+<tr><td>very sparse</td><td>0.06</td><td>r = 10 px</td><td>0.0147</td><td>r = 8 px</td></tr>
+</tbody></table>
+<p class="small">The shipped choice is stable across the realistic range of the declared population and
+moves by one arm only at the extreme sparse end. The score-only column is shown for transparency: it
+is the choice a reader would get by ranking on selection-mean alone and ignoring the density wall —
+which is exactly the mistake the family's own score history records.</p>
+
+<h2>4. What is inside the shipped file</h2>
+<ul class="tight">
+  <li><b>39,108 positive cells</b>, 0.757 % of the 5,167,373-px surveyed footprint, one dot per
+      ≥ 800 m cell after greedy non-maximum suppression on expected metric credit.</li>
+  <li>Ordering is by <b>expected marginal credit</b> <span class="mono">ΔT(x) = Σ<sub>δ</sub> π(x+δ)k(|δ|)</span>,
+      not by probability: ordering by π alone emits several parallel copies of a three-pixel-wide ridge
+      and pays the 0.2-per-dot tax on each. The emitter stops when
+      <span class="mono">ΔT(x) &lt; 0.2 × 0.26</span> — a <i>pre-declared</i> bar, not a tuned one.</li>
+  <li>Model: histogram gradient boosting on 25 hand-built multi-scale features (L2 ridge curvature at
+      three scales on detrended elevation, official tilt-curvature edge band, TMI, RTP, isostatic
+      gravity, gradient/edge and cover proxies). <b>No distance-to-known-fault feature exists in the
+      stack.</b></li>
+  <li>Prior correction: the training sample is stratified (all positives, 3× negatives), so log-odds
+      are re-centred to the population prevalence (train 0.2500 → population 0.01180, shift 3.3290)
+      before the probability field is used by the emitter.</li>
+  <li>Independent re-read audit of the written bytes: single band, float32, 3730 × 3292, EPSG:32611,
+      template transform, unique positive value 1.0, range [0, 1], positives = 39,108 —
+      <a href="downloads/checks-gemsdoe46-h46a-r8-conformal-allfinite.json">checks JSON</a>.</li>
+  <li>DTI on the catalogue proxy: <b>0.0920</b>. This number is reported because it is the only score
+      computable without the private labels, and it is <b>not</b> the certified floor and <b>not</b> a
+      leaderboard prediction: the catalogue is the population the scored task excludes.</li>
+</ul>
+
+<h2>5. Audit trail</h2>
+<p>Two defects were found by re-running the pipeline end to end and are documented with their
+measurements in <a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/IRREGULARITIES.md">IRREGULARITIES.md</a>:</p>
+<ul class="tight">
+  <li><b>IR-46-05</b> — the emitter's candidate-list guard silently truncated emissions (5,596 dots
+      instead of 39,108 at r = 8 px on the full grid). The 24-block sweep was verified <b>bit-identical</b>
+      before and after the fix (per-block DTI and dot counts compared line by line), so the selection
+      evidence is unaffected; the previously produced full-grid file was superseded.</li>
+  <li><b>IR-46-10</b> — the conformal driver was silently using the contiguous split (a positional
+      argument landed in the <code>scheme</code> parameter), and the file auditor contained a vacuous
+      array comparison. Both are fixed; selection now runs through one implementation
+      (<span class="mono">src/gems46/conformal.py</span>) used by both entry points.</li>
+</ul>
+
+<h2>6. Reproduce every number on this page</h2>
+<pre>python scripts/run_pipeline.py            # hash-verify data -> 24-block sweep -> R1-R4 selection
+python scripts/run_pipeline.py --stage post   # re-run only the selection from saved blocks (~1 s)
+python scripts/make_submission.py         # rules pick the arm -> writes + audits the GeoTIFF
+python scripts/hypothesis_release.py      # the H1 geological hypothesis A/B on the same blocks
+python -m pytest tests -q                 # metric transcription + audit checks</pre>
+<p class="small">Evidence files: <span class="mono">evidence/spacing_sweep_raw.json</span> (all 24
+blocks × 10 arms × 5 populations), <span class="mono">evidence/conformal_selection.json</span> (the
+rules, the tables, the ship record), <span class="mono">evidence/population_sensitivity.json</span>,
+<span class="mono">evidence/analytic_screen.json</span>,
+<span class="mono">evidence/submission_gemsdoe46-h46a-r8-conformal.json</span> (measured counts for
+every arm, the note string, both file audits), <span class="mono">evidence/data_provenance.json</span>
+(sha256 of the official rasters).</p>
+</main>
+<footer>Numbers on this page were regenerated from the repository's own evidence files on 2026-10-06.</footer>
+</body>
+</html>

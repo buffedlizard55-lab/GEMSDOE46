@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GEMSDOE46 — geological hypotheses, ranked and tested</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <b>GEMSDOE46 — geological hypotheses</b>
+  <span class="sub">five candidates, ranked by expected DTI gain vs cost · the top one tested on the blocked holdout</span>
+</div></header>
+<nav class="site"><div class="wrap">
+  <a href="index.html">Executive summary</a>
+  <a href="how-to-submit.html">How to submit</a>
+  <a href="submission-analysis.html">Submission analysis</a>
+  <a href="submission-hypotheses.html" aria-current="page">Hypothesis test</a>
+  <a href="research-overview.html">Research layer</a>
+  <a href="analysis.html">Score analysis (research)</a>
+  <a href="hypotheses.html">Hypotheses (research)</a>
+  <a href="guide.html">Guide (research)</a>
+  <a href="sources.html">Sources</a>
+</div></nav>
+<main>
+
+<h1>Five candidate hypotheses, ranked — and the test of the top one</h1>
+<p class="lede">None of the five needs a new external download: every layer named is already inside the
+official <span class="mono">training_features.tif</span>, which is the direct answer to the brief's
+"name the free official source and check it's obtainable" requirement — for these candidates the data
+is already in hand. Full prose version:
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE46/blob/main/docs/HYPOTHESES.md">docs/HYPOTHESES.md</a>.</p>
+
+<table>
+<thead><tr><th>rank</th><th>hypothesis</th><th>official layers</th><th>expected DTI gain</th><th>cost</th><th>status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><b>H1</b> release-controlled new-fault detection (seismicity × structure)</td><td>10, 16 (+ 6, 12, 2, 17)</td><td>medium–high</td><td>low</td><td><b>tested → not confirmed</b></td></tr>
+<tr><td>2</td><td><b>H2</b> curvature-restoration residual (multi-scale structure tensor)</td><td>6, 2, 12, 19</td><td>medium</td><td>medium</td><td>queued (harness ready)</td></tr>
+<tr><td>3</td><td><b>H3</b> lineament-network topology (skeleton graph, missing links, step-overs)</td><td>12, 19, 6, 2, 15</td><td>medium</td><td>high</td><td>queued</td></tr>
+<tr><td>4</td><td><b>H4</b> conductive-clay / cover-thickness coincidence at depocentre margins</td><td>17, 5, 11, 13, 18, 15</td><td>low–medium</td><td>low–medium</td><td>queued</td></tr>
+<tr><td>5</td><td><b>H5</b> residual analytic-signal window anomaly (multi-scale 1VD/HGM)</td><td>1, 2, 3, 9, 14</td><td>low</td><td>low</td><td>queued</td></tr>
+</tbody></table>
+
+<h2>H1 — release-controlled new-fault detection</h2>
+<ul class="tight">
+  <li><b>Signature.</b> Seismicity is a <i>release</i> field: its influence should decay like
+      <span class="mono">exp(−d/λ)</span> from release points, so the feature is a unit-free proximity
+      score (global rank of band 10, and <span class="mono">exp(−d/median d)</span>) <b>multiplied by the
+      structural layers</b>. A tree cannot build that product by itself — and a monotone transform of
+      band 10 alone would add nothing, because tree splits are invariant to monotone transforms of a
+      single column. That is why the hypothesis is the interaction.</li>
+  <li><b>Why a <i>missing</i> fault.</b> A fault already in the compilation is already drawn. What a
+      surface compilation structurally cannot contain is a structure that has ruptured without a mapped
+      scarp: the 2020 Mw 6.5 Monte Cristo Range earthquake produced a <b>28 km surface-rupture zone on
+      largely unmapped parts of the Candelaria fault</b>, incoherent with QFaults (USGS publication
+      70220306; Koehler et al. 2021 SRL). Its epicentre (38.169 °N, 117.850 °W) maps to row/col
+      <b>2836/1822</b>, verified <b>inside</b> the scored footprint.</li>
+  <li><b>How it differs.</b> Band 10 is <b>not in the shipped 25-feature plan at all</b>; band 16 enters
+      only as a plain smoothed value.</li>
+</ul>
+
+<h3>The holdout test (paired, 16 blocks, same arm and seed as the sweep)</h3>
+<table>
+<thead><tr><th>feature set</th><th>mean DTI</th><th>mean Δ vs control</th><th>median Δ</th><th>blocks improved</th><th>sign test</th></tr></thead>
+<tbody>
+<tr><td>A control (shipped 25)</td><td>0.03846</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>B + proximity (3 cols)</td><td>0.03863</td><td>+0.00017</td><td>−0.00150</td><td>5 / 16</td><td>p = 0.21</td></tr>
+<tr><td>C + proximity × structure (4 cols)</td><td>0.03898</td><td>+0.00051</td><td>+0.000003</td><td>8 / 16</td><td>p = 1.00</td></tr>
+</tbody></table>
+<p><b>Verdict: NOT CONFIRMED</b> — a ~1.3 % relative gain in the mean, a median difference of
+essentially zero, and a sign test exactly consistent with chance. The control reproduced the saved
+sweep DTI to 0.0 absolute deviation on all 16 blocks, so the comparison is genuinely paired.
+Per the brief's rule (<i>"do not spend a submission slot on an idea that hasn't beaten the current
+holdout best"</i>) <b>no slot was spent on H1</b>: the shipped file stays on the baseline stack.
+Raw result: <span class="mono">evidence/hypothesis_H1_release.json</span>.</p>
+<p class="small"><b>Descriptive follow-up, not a validation.</b> In the shipped file, 373 dots lie
+within 10 km of the Monte Cristo epicentre — 0.93 % of that box against a global footprint density of
+0.32 % (~2.9× the average local density). With no truth vector for an unmapped fault this is not a
+score, and it is not treated as one.</p>
+
+<h2>The other four, in one line each</h2>
+<ul class="tight">
+  <li><b>H2 curvature-restoration residual.</b> Structure tensor (coherence + orientation) and a
+      local-plane residual on bands 6/2/12/19 — orientation <i>consistency</i> and tilt-invariance, which
+      no shipped feature computes (they are single-scale Hessian ridges only). <i>Source:</i> Lindeberg
+      1998 IJCV 30(2):117–154.</li>
+  <li><b>H3 lineament-network topology.</b> Skeletonise H2's lineaments, then distance-to-endpoint,
+      orientation agreement across gaps, step-over distance and junction density — non-local features
+      that target the links and step-overs where BRIDGE places the highest permeability.
+      <i>Source:</i> BRIDGE final report.</li>
+  <li><b>H4 conductive-clay / cover coincidence.</b> Conductivity high <b>and</b> gravity-gradient margin
+      <b>and</b> thick cover (band 15): the classic hidden-fault signature, absent from the shipped plan
+      because band 17 is used only as a plain smoothed column. <i>Sources:</i> BRIDGE;
+      <a href="https://pangea.stanford.edu/ERE/db/GeoConf/papers/SGW/2026/Adams.pdf">Granite Mountain</a>
+      ("most Great Basin resources are blind, with no surface manifestation").</li>
+  <li><b>H5 residual analytic-signal window anomaly.</b> Analytic-signal amplitude and its windowed
+      residual on the magnetic family — short-wavelength lineaments that survive the regional field.
+      Cheapest to build and the smallest expected gain.</li>
+</ul>
+
+<h2>When H1 would be worth revisiting</h2>
+<p>The negative result is about <i>this</i> construction on <i>this</i> proxy, not about the physics.
+It would be revisited with relocated hypocentres and focal mechanisms (USGS/ANSS ComCat — free and
+public, but unreachable from this sandbox, so a mechanism-aware proximity field has <b>not</b> been
+tested), with an independent non-catalogue fault map to score against, or with a deep model that can
+jointly use the release field and the structural stack instead of hand-built products.</p>
+</main>
+<footer>Test protocol, seeds and hashes are in <span class="mono">scripts/hypothesis_release.py</span>;
+the raw per-block numbers are in <span class="mono">evidence/hypothesis_H1_release.json</span>.</footer>
+</body>
+</html>
