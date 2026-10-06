@@ -179,7 +179,7 @@ about ±20% of a random baseline, and its truth is ~4× denser than the inferred
 <tr><td>uniform random at the same mass</td><td>—</td>
 <td>{sc.get("uniform_random_T", {}).get("mean", "?")}</td><td>—</td><td>—</td><td>—</td><td>0.5</td></tr>
 </table></div>
-<p>The third column of the verdict: the field's ranking of the incumbent's own dots is at chance.
+<p>The last column is the decisive one: the field's ranking of the incumbent's own dots is at chance.
 That is the single number that kills the pruning route (remove the ~32,000 dead dots) and the
 placement route together: <b>a model trained on the catalogue learns the catalogue</b>, and the
 metric's payoff is on the faults the catalogue does not contain.</p>
