@@ -1,0 +1,13 @@
+# Restored competition data (419 MB) and derived arrays: never committed.
+data/raw/
+data/derived/
+data/external/*.tif
+.mirror/
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+# OS / editors
+.DS_Store
+*.swp

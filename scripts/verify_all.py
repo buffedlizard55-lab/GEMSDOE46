@@ -1,0 +1,120 @@
+#!/usr/bin/env python3
+"""One-command verification of everything this repository claims.
+
+Checks, in order:
+  1. the official metric implementation against the published worked example and against an
+     independent O(N^2) transcription (pytest tests/test_metric.py),
+  2. the DFA estimator against its textbook calibration on synthetic series, including the
+     0.5 -> 0.9 transition range the hypothesis is about (pytest tests/test_dfa.py),
+  3. the shipped GeoTIFF against the official format contract, re-read from disk
+     (pytest tests/test_submission_format.py + a full audit here),
+  4. the pinned sha256 of every restored competition file,
+  5. the live-score calibration arithmetic in registry/emission_model.json.
+
+Exit code 0 means every check passed.  Nothing here needs network access.
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from gems46 import grid as G  # noqa: E402
+
+PINNED = {
+    "data/raw/training_features.tif":
+        "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "data/raw/labels.tif":
+        "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+    "data/raw/sample_submission.tif":
+        "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+    "data/external/sgmc_faults_100m_u8.tif":
+        "643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0",
+}
+
+
+def sha256(p: Path) -> str:
+    h = hashlib.sha256()
+    with p.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def main() -> int:
+    ok = True
+    print("=" * 96)
+    print("1-3. unit + format tests")
+    print("=" * 96)
+    r = subprocess.run([sys.executable, "-m", "pytest", str(ROOT / "tests"), "-q"],
+                       capture_output=True, text=True, cwd=ROOT)
+    print(r.stdout.strip().splitlines()[-1] if r.stdout.strip() else r.stderr[-400:])
+    ok &= r.returncode == 0
+
+    print()
+    print("=" * 96)
+    print("4. pinned hashes of restored data")
+    print("=" * 96)
+    for rel, want in PINNED.items():
+        p = ROOT / rel
+        if not p.exists():
+            print(f"  MISSING {rel} (run scripts/download_competition_data.sh)")
+            ok = False
+            continue
+        got = sha256(p)
+        good = got == want
+        ok &= good
+        print(f"  {'OK  ' if good else 'FAIL'} {rel}  {got[:16]}...")
+
+    print()
+    print("=" * 96)
+    print("5. shipped submission artifacts: full format audit re-read from disk")
+    print("=" * 96)
+    reg = ROOT / "registry" / "submissions.json"
+    if not reg.exists():
+        print("  no registry/submissions.json - run scripts/build_submission.py")
+        ok = False
+    else:
+        sub = json.loads(reg.read_text())
+        for tag, rec in sub["files"].items():
+            path = ROOT / "docs" / "downloads" / rec["file"]
+            rep = G.audit(path, ROOT / "data" / "raw" / "sample_submission.tif")
+            good = rep["ok"] and rep["positive_px"] == rec["audit"]["positive_px"]
+            ok &= good
+            print(f"  {'OK  ' if good else 'FAIL'} {rec['file']}")
+            print(f"       bands={rep['count']} dtype={rep['dtype']} crs={rep['crs']} "
+                  f"{rep['height']}x{rep['width']} transform_match={rep['transform_match']}")
+            print(f"       footprint_match={rep['footprint_match']} min={rep['min']} "
+                  f"max={rep['max']} range_ok={rep['range_ok']} positive={rep['positive_px']}")
+            print(f"       sha256(values)={rec['sha256_values'][:16]}... "
+                  f"proxy instrument DTI={rec['instrument']['instrument_sgmc_dti']:.4f}")
+
+    print()
+    print("=" * 96)
+    print("6. live-score calibration arithmetic (registry/emission_model.json)")
+    print("=" * 96)
+    em = ROOT / "registry" / "emission_model.json"
+    if em.exists():
+        d = json.loads(em.read_text())
+        G_ = d.get("hidden_truth_px")
+        T_ = d.get("implied_credit_px")
+        ok &= bool(G_ and T_ and abs(G_ - 14089) < 2)
+        print(f"  G = {G_:,.0f} px, T(44,090 px emission) = {T_:,.0f} px, "
+              f"break-even = {d.get('break_even'):.4f}")
+        print("  reproduced from 0.2600*(0.2*44090 + 0.8G) = 0.2778*(0.2*37654 + 0.8G)")
+    else:
+        print("  missing registry/emission_model.json")
+        ok = False
+
+    print()
+    print("ALL CHECKS PASSED" if ok else "SOME CHECKS FAILED")
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

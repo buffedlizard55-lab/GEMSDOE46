@@ -1,0 +1,96 @@
+{
+ "schema_version": 1,
+ "created_utc": "2026-10-06",
+ "ranking_rule": "expected DTI improvement first (evidence-weighted: off-catalogue proxy at matched emitted mass, plus the live-anchored emitted-mass rule), then implementation cost. Hypotheses that cannot be validated without data this environment cannot obtain are marked BLOCKED with the exact official source named.",
+ "current_target": {
+  "leader_public": 0.3345,
+  "leader_participant": "alexoktaba",
+  "retrieved_utc": "2026-10-06",
+  "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+  "note": "the 0.3195 quoted in the session prompt was the #4/#5 value on 2026-10-04; it is stale"
+ },
+ "hypotheses": [
+  {
+   "id": "H46-2",
+   "rank": 1,
+   "title": "DFA-corroborated multiphysics structural emission (SHIPPED, recommended for the scoring slot)",
+   "layers": [
+    "official bands 1 mag_anom, 2 rtp, 3 tmi_hg, 6 tc, 12 det_elev, 13 iso_grav_anom, 14 tmi, 18 iso_grav_anom_hg (geometric-mean corroboration of 9 edge/curvature transforms)",
+    "10% of the emitted mass reserved for the H46-1 DFA regime-break field",
+    "labels.tif only as the organiser-masked exclusion zone (200 m buffer)"
+   ],
+   "physical_signature": "agreement of independent edge/curvature transforms across two physics (potential fields and topography) - a corroboration filter, not a new transform",
+   "why_off_catalogue": "the corroboration is asymmetric by construction: a location needs most transforms to agree, so a fault with a single strong signature (the catalogue's typical mode: a topographic scarp) is down-weighted relative to one that also perturbs the magnetic and gravity fields. Buried faults under basin fill have magnetic/gravity signatures with little topographic expression.",
+   "differs_from_repo": "built here from the official bands only, with a geometric (not arithmetic) mean and an explicit DFA portfolio slice; no prior submission bytes are used. Correlation with the prior submissions is 0.31-0.36 and with tmi_hg/tmi_grad 0.75, so it is honestly reported as *not* a new hypothesis.",
+   "expected_dti": "proxy 0.1016 vs 0.0991 for the two best prior files at matched mass (37,654 px) and identical buffering; live expectation is anchored to the same operating point as the 0.2708-0.2778 family, i.e. ~0.27-0.29 with no evidence for >0.30",
+   "cost": "low (CPU only, ~60 s)",
+   "validation_status": "VALIDATED on the off-catalogue proxy; hedge trade-off measured (0-20% hedge: 0.1054/0.1031/0.1016/0.1008/0.0990)",
+   "data_status": "no external data needed"
+  },
+  {
+   "id": "H46-1",
+   "rank": 2,
+   "title": "DFA scaling-exponent break along magnetic and gravity transects (SHIPPED as the new hypothesis)",
+   "layers": [
+    "official bands 1 mag_anom, 2 rtp, 14 tmi, 3 tmi_hg, 9 tmi_vg (magnetic group)",
+    "official bands 13 iso_grav_anom, 18 iso_grav_anom_hg, 5 iso_grav_anom_slope, 11 iso_grav_anom_vg (gravity group)",
+    "high-passed variants of tmi / rtp / mag_anom / iso_grav_anom at a 2 km scale"
+   ],
+   "physical_signature": "local DFA exponent of the grid, measured along row and column transects in 12.8 km windows over scales 0.8-6.4 km, compared with its own background (31-window median) through a robust z-score; the transform is |z| (regime break) and |grad z| (regime boundary). Neither the field amplitude nor its gradient is used to form the ranking.",
+   "why_off_catalogue": "a change in scaling regime is produced by a change in the *texture* of the source distribution - juxtaposed lithologies with different magnetic/gravity roughness, or hydrothermal alteration that suppresses magnetite along a fracture corridor - and it can be present where the amplitude contrast is too weak to make a sharp edge. The published catalogue was compiled from surface expression (scarp mapping); nothing in its compilation method targets a scale-invariance statistic.",
+   "differs_from_repo": "no prior arm in any GEMSDOE repository uses a scale-invariance or DFA statistic. Verified distinctness: smoothed Pearson -0.012 vs the 0.2600 file, -0.009 vs the 0.2778 file, -0.012 vs the h32d file, and -0.011/-0.007/-0.001/-0.011 vs the tmi/gravity/detrended-elevation gradient and Laplacian transforms; Jaccard overlap with the incumbent emission 0.0037 (276 shared pixels out of 37,654).",
+   "expected_dti": "proxy 0.0809 vs 0.0991 for the prior files at matched mass: measured to be WORSE on the only available off-catalogue proxy. Reported as a falsifiable negative result at the leaderboard operating point, and shipped as a separate artifact for the Final Prize Round and for expert review, not as the recommended scoring slot.",
+   "cost": "low (CPU only, ~4 min for all 13 band-variant fields)",
+   "validation_status": "VALIDATED (as distinct) and NEGATIVE (as a score improvement) on the proxy instrument",
+   "data_status": "no external data needed"
+  },
+  {
+   "id": "H46-3",
+   "rank": 3,
+   "title": "Hypocentre-lineament detector from the raw USGS earthquake catalogue (BLOCKED: needs one HTTP call from an unrestricted machine)",
+   "layers": [
+    "external: USGS FDSN event web service, CSV export, region 37.5-41.5 N / 121.0-116.5 W, M >= 1.5, 1900-present",
+    "official bands 16 ieq_n100a15 and 10 deq_n100a15 used only as a cross-check (they are 100 km-radius smoothers and carry no 300 m-scale information)"
+   ],
+   "physical_signature": "spatial alignment of precisely located hypocentres into strike-parallel lineaments, projected to the surface, plus focal-mechanism nodal-plane consistency - a *fault-activity* signature rather than a rock-property signature",
+   "why_off_catalogue": "the published label set is a Quaternary fault compilation; an active fault with no Quaternary surface trace (common where basin fill buries the range front, or where slip rates are low) can still generate microseismicity lineaments. The competition's own seismic bands are smoothed at 100 km and cannot express this.",
+   "differs_from_repo": "the group's GEMSDOE32 wrote an equivalent fetch script but never obtained the catalogue; no shipped arm used raw hypocentres. The competition bands are used here only as a control.",
+   "expected_dti": "unknown - cannot be estimated without the catalogue; ranked third because the physical argument is strong and the data are free",
+   "cost": "medium (lineament fitting plus holdout validation)",
+   "validation_status": "BLOCKED - not validated, so per the session rule it must not be given a submission slot yet",
+   "data_status": "VERIFIED OBTAINABLE IN PRINCIPLE: https://earthquake.usgs.gov/fdsnws/event/1/query (free, official, no key). VERIFIED NOT OBTAINABLE HERE: the sandbox returns HTTP 000 for earthquake.usgs.gov (re-measured 2026-10-06). Run scripts/fetch_earthquake_catalog.sh on an unrestricted machine."
+  },
+  {
+   "id": "H46-4",
+   "rank": 4,
+   "title": "Windowed Euler deconvolution (structural index 1) of the isostatic residual gravity and RTP magnetics: depth-discontinuity alignment",
+   "layers": [
+    "official band 13 iso_grav_anom, 2 rtp, 15 depth_to_base_surf, 18/5/11 gravity derivatives",
+    "no external data required"
+   ],
+   "physical_signature": "per-window Euler solutions (source depth and horizontal position) for a contact/step source (SI = 1); a fault produces a *lineament of consistent depth solutions*, which is a different statistic from an edge or curvature maximum",
+   "why_off_catalogue": "Euler depth estimates respond to the depth extent of the source, so they flag basement-involved structures under cover, which the surface-mapped catalogue systematically under-records",
+   "differs_from_repo": "prior arms applied Euler/tilt-depth ideas to magnetics as a scalar ridge (h32-1 'prethin-tip-euler', owner-reported 0.2649); this candidate requires *depth consistency along strike* across two independent potential fields, which no shipped arm tested",
+   "expected_dti": "moderate, unproven: the physics is standard but the group's related single-field variant did not beat its own incumbent",
+   "cost": "medium (moving-window linear solve; CPU only)",
+   "validation_status": "NOT YET VALIDATED - implementation is feasible here, and it is the best next candidate that needs no new data",
+   "data_status": "no external data needed"
+  },
+  {
+   "id": "H46-5",
+   "rank": 5,
+   "title": "Measured-geochemistry and hydrothermal-alteration signatures used as a REMOVAL (pruning) prior",
+   "layers": [
+    "external: GDR wellspring chemistry (gdr.openei.org/submissions/1391, CC BY 4.0, DOI 10.15121/1881483), volcanic vents, Quaternary fault traces - all already restored in the group's mirrors",
+    "official bands 1 mag_anom (magnetic low from magnetite destruction) and 17 cond_surf"
+   ],
+   "physical_signature": "paired magnetic low plus elevated surface conductivity along a conduit, anchored on measured spring temperatures and geothermometer values - a *fluid-pathway* signature",
+   "why_off_catalogue": "a conduit can be hydrologically active while its surface trace is absent or obscured; springs are direct evidence of a connected fracture network, and 15 of the 53 sites above 150 C measured by the group lie more than 3 km from any mapped trace",
+   "differs_from_repo": "the group tested geothermometry as an *addition* arm (H33-1) and reported it falsified (credit per added dot 0.0022-0.0054 against a break-even bar of 0.054). This candidate uses the same data with the opposite sign - to *delete* mass - which is untested.",
+   "expected_dti": "small but positive if the removal rule is right: deleting k pure false-positive pixels at DTI 0.28 raises the score by roughly 0.2k/(0.2S + 0.8G) fractions of the current score",
+   "cost": "low",
+   "validation_status": "NOT YET VALIDATED (pruning direction untested); the addition direction is falsified by the group's own measurement",
+   "data_status": "available in-repo mirror: data/external/gdr_wellspring_in_footprint.csv (restored); original free and official at gdr.openei.org/submissions/1391"
+  }
+ ]
+}

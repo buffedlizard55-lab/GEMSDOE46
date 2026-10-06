@@ -1,0 +1,15 @@
+project,site_url,submission_or_label,official_score,emitted_px,size_provenance,score_provenance,evidence_status
+GEMSDOE24,https://buffedlizard55-lab.github.io/GEMSDOE24/,h25-1-dotted-h19-5-d1-5-20261002,0.2477,60069,owner_ledger,owner_reported,user_prompt_and_owner_ledger
+GEMSDOE27,https://buffedlizard55-lab.github.io/GEMSDOE27/,topo-gap-closure-t-v2-on-d1-5-20261002,0.2449,61328,owner_ledger,owner_reported,user_prompt_and_owner_ledger
+GEMSDOE10,https://buffedlizard55-lab.github.io/GEMSDOE10/,h28-dotted-ridge-20260928,0.1839,69281,owner_ledger,owner_reported,user_prompt_and_owner_ledger
+GEMSDOE19,https://buffedlizard55-lab.github.io/19GEMSDOE/docs/index.html,h19-5-powerlaw-budget-multiline-corroborated-20260930,0.1922,121131,owner_ledger,owner_reported,user_prompt_and_owner_ledger
+GEMSDOE19,https://buffedlizard55-lab.github.io/19GEMSDOE/docs/index.html,h19-4-multiline-corroborated-openness-thermal-pop-20260930,0.1894,123779,owner_ledger,owner_reported,user_prompt_and_owner_ledger
+GEMSDOE16,https://buffedlizard55-lab.github.io/16GEMSDOE/docs/index.html,h16-1-topo-geophys-baseline-ridges-20260930,0.1855,123939,owner_ledger,owner_reported,user_prompt_and_owner_ledger
+GEMSDOE,https://buffedlizard55-lab.github.io/GEMSDOE/docs/index.html,gems-submission-20260925T001403Z-7f00890a,0.1563,172974,owner_ledger,owner_reported,user_prompt_and_owner_ledger
+GEMSDOE10,https://buffedlizard55-lab.github.io/GEMSDOE10/,H25-ctx-ridge-20260927,0.1280,174232,owner_ledger,owner_reported,user_prompt_and_owner_ledger
+GEMSDOE13,https://buffedlizard55-lab.github.io/13GEMSDOE/,20261001_r13-lattice-s5_v2_nan-outside,0.0904,206895,owner_ledger,owner_reported,user_prompt_and_owner_ledger
+GEMSDOE8,https://buffedlizard55-lab.github.io/8GEMSDOE/,Hedge-v2_submission,0.1563,227507,owner_ledger,owner_reported,user_prompt_and_owner_ledger
+GEMSDOE9,https://buffedlizard55-lab.github.io/GEMSDOE9/docs/index.html,2314b599,0.0107,343816,owner_ledger,owner_reported,user_prompt_and_owner_ledger
+GEMSDOE25,https://buffedlizard55-lab.github.io/GEMSDOE25/,dotted-h19-5-d2-8-20261002,0.2600,44090,measured_from_restored_tif,owner_reported,attribution_flagged_see_irregularities
+GEMSDOE32,https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html,h33-h33-2-b2-20261004,0.2778,37654,measured_from_restored_tif,owner_reported,attribution_conflict_site_says_unscored
+GEMSDOE28,https://buffedlizard55-lab.github.io/GEMSDOE28/,h27-4-r1-solo-d2-8-20261003,0.2708,40199,owner_ledger,owner_reported,user_prompt_and_owner_ledger

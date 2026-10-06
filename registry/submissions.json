@@ -1,0 +1,388 @@
+{
+ "hedge_sweep": {
+  "hedge_sweep_proxy_dti": {
+   "hedge_0.0": {
+    "dti": 0.10541996578967773,
+    "tp": 6471.253147542185,
+    "px": 37654
+   },
+   "hedge_0.05": {
+    "dti": 0.10309523238679211,
+    "tp": 6326.498286211394,
+    "px": 37654
+   },
+   "hedge_0.1": {
+    "dti": 0.10156746341055133,
+    "tp": 6231.4928351111175,
+    "px": 37654
+   },
+   "hedge_0.12": {
+    "dti": 0.10079426383078603,
+    "tp": 6183.43428477705,
+    "px": 37654
+   },
+   "hedge_0.2": {
+    "dti": 0.09895126360887149,
+    "tp": 6068.943652395885,
+    "px": 37654
+   }
+  }
+ },
+ "generated_utc": "2026-10-06T09:49:04Z",
+ "calibration": {
+  "hidden_truth_px": 14088.747191011276,
+  "implied_credit_px": 5223.139415730347,
+  "credit_per_px": 0.11846539840622242,
+  "break_even": 0.052000000000000005,
+  "inputs": [
+   {
+    "name": "dotted-h19-5-d2-8",
+    "emitted_px": 44090,
+    "official": 0.26
+   },
+   {
+    "name": "h33-2-b2",
+    "emitted_px": 37654,
+    "official": 0.2778
+   }
+  ],
+  "cross_checks": {
+   "solid_H19-5": {
+    "emitted_px": 121131,
+    "official": 0.1922,
+    "implied_credit_px": 6822.561408089894,
+    "implied_credit_per_px": 0.05632382633751801,
+    "break_even_at_that_score": 0.03844,
+    "marginal_credit_vs_d28": -1599.4219923595474
+   },
+   "d1.5": {
+    "emitted_px": 60069,
+    "official": 0.2477,
+    "implied_credit_px": 5767.644403370795,
+    "implied_credit_per_px": 0.09601698718758087,
+    "break_even_at_that_score": 0.04954,
+    "marginal_credit_vs_d28": -544.5049876404482
+   }
+  },
+  "provenance": "owner-reported live scores (the 0.2778 attribution is flagged in registry/irregularities.json); masses measured from the restored TIFs"
+ },
+ "fields": {
+  "hidden_truth_px": 14088.747191011276,
+  "budget": 37654,
+  "min_dist": 3,
+  "catalogue_buffer_px": 2
+ },
+ "instrument_results": {
+  "H46-1-dfa-regime-break": {
+   "instrument_sgmc_dti": 0.08085047630622283,
+   "tp": 4947.80857844123,
+   "fp": 35929.31386544543,
+   "fn": 61329.19142155877,
+   "truth_px": 66277,
+   "emitted_px": 37654
+  },
+  "H46-2-dfa-corroborated": {
+   "instrument_sgmc_dti": 0.10156746341055133,
+   "tp": 6231.4928351111175,
+   "fp": 35426.70107496341,
+   "fn": 60045.507164888884,
+   "truth_px": 66277,
+   "emitted_px": 37654
+  }
+ },
+ "distinctness": {
+  "H46-1": {
+   "vs_prior_submissions": {
+    "d2.8(0.2600)": -0.01226190402063067,
+    "h33-2-b2(0.2778)": -0.00949513717134218,
+    "h32d(unscored)": -0.012172651019451822
+   },
+   "vs_gradient_curvature_transforms": {
+    "tmi_grad": -0.011231919609694415,
+    "iso_grav_anom_grad": -0.006801023059502698,
+    "det_elev_grad": -0.0009066283836304827,
+    "det_elev_lap": -0.010921321610964858,
+    "tc_raw": 0.041067418046848325,
+    "iso_grav_anom_hg_raw": 0.023856215055700843,
+    "tmi_hg_raw": 0.0016083468875118983
+   }
+  },
+  "H46-2": {
+   "vs_prior_submissions": {
+    "d2.8(0.2600)": 0.31941005157102803,
+    "h33-2-b2(0.2778)": 0.3061574504468353,
+    "h32d(unscored)": 0.3637005957974945
+   },
+   "vs_gradient_curvature_transforms": {
+    "tmi_grad": 0.7522966245283813,
+    "iso_grav_anom_grad": 0.027755135874594335,
+    "det_elev_grad": 0.5133677689612567,
+    "det_elev_lap": 0.4997319787354978,
+    "tc_raw": -0.23417948260273022,
+    "iso_grav_anom_hg_raw": 0.046716053081645705,
+    "tmi_hg_raw": 0.7502786806627014
+   }
+  }
+ },
+ "files": {
+  "H46-1-dfa-regime-break": {
+   "name": "gems46-h46-1-dfa-regime-break-20261006T094846Z",
+   "note": "H46-1 pure DFA scaling-exponent-break detection on magnetic+gravity transects (new hypothesis; near-zero correlation with all prior submissions)",
+   "method": {
+    "budget": 37654,
+    "min_dist": 3,
+    "smooth_px": 1.85,
+    "catalogue_buffer_px": 2,
+    "dfa_hedge_frac": 1.0,
+    "field": "H46-1-dfa-regime-break",
+    "calibration": {
+     "hidden_truth_px": 14088.747191011276,
+     "implied_credit_px": 5223.139415730347,
+     "credit_per_px": 0.11846539840622242,
+     "break_even": 0.052000000000000005,
+     "inputs": [
+      {
+       "name": "dotted-h19-5-d2-8",
+       "emitted_px": 44090,
+       "official": 0.26
+      },
+      {
+       "name": "h33-2-b2",
+       "emitted_px": 37654,
+       "official": 0.2778
+      }
+     ],
+     "cross_checks": {
+      "solid_H19-5": {
+       "emitted_px": 121131,
+       "official": 0.1922,
+       "implied_credit_px": 6822.561408089894,
+       "implied_credit_per_px": 0.05632382633751801,
+       "break_even_at_that_score": 0.03844,
+       "marginal_credit_vs_d28": -1599.4219923595474
+      },
+      "d1.5": {
+       "emitted_px": 60069,
+       "official": 0.2477,
+       "implied_credit_px": 5767.644403370795,
+       "implied_credit_per_px": 0.09601698718758087,
+       "break_even_at_that_score": 0.04954,
+       "marginal_credit_vs_d28": -544.5049876404482
+      }
+     },
+     "provenance": "owner-reported live scores (the 0.2778 attribution is flagged in registry/irregularities.json); masses measured from the restored TIFs"
+    }
+   },
+   "emitted_px": 37654,
+   "sha256_values": "de25e8d0eadba8a94ab9dcb41550525fd2d8b497e3a9503af91863887bbeed16",
+   "file": "gems46-h46-1-dfa-regime-break-20261006T094846Z.tif",
+   "audit": {
+    "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-1-dfa-regime-break-20261006T094846Z.tif",
+    "count": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "transform": [
+     100.0,
+     0.0,
+     243350.0,
+     0.0,
+     -100.0,
+     4508550.0
+    ],
+    "template_crs": "EPSG:32611",
+    "template_shape": [
+     3730,
+     3292
+    ],
+    "crs_match": true,
+    "shape_match": true,
+    "transform_match": true,
+    "finite_px": 5167373,
+    "template_finite_px": 5167373,
+    "footprint_match": true,
+    "min": 0.0,
+    "max": 1.0,
+    "range_ok": true,
+    "positive_px": 37654,
+    "nan_outside_footprint": true,
+    "ok": true
+   },
+   "zeros_variant": "gems46-h46-1-dfa-regime-break-20261006T094846Z-zeros.tif",
+   "zeros_audit": {
+    "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-1-dfa-regime-break-20261006T094846Z-zeros.tif",
+    "count": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "transform": [
+     100.0,
+     0.0,
+     243350.0,
+     0.0,
+     -100.0,
+     4508550.0
+    ],
+    "template_crs": "EPSG:32611",
+    "template_shape": [
+     3730,
+     3292
+    ],
+    "crs_match": true,
+    "shape_match": true,
+    "transform_match": true,
+    "finite_px": 12279160,
+    "template_finite_px": 5167373,
+    "footprint_match": true,
+    "min": 0.0,
+    "max": 1.0,
+    "range_ok": true,
+    "positive_px": 37654,
+    "nan_outside_footprint": true,
+    "ok": false
+   },
+   "zip": "gems46-h46-1-dfa-regime-break-20261006T094846Z.zip",
+   "bytes": 316319,
+   "instrument": {
+    "instrument_sgmc_dti": 0.08085047630622283,
+    "tp": 4947.80857844123,
+    "fp": 35929.31386544543,
+    "fn": 61329.19142155877,
+    "truth_px": 66277,
+    "emitted_px": 37654
+   }
+  },
+  "H46-2-dfa-corroborated": {
+   "name": "gems46-h46-2-dfa-corroborated-20261006T094846Z",
+   "note": "H46-2 structural corroboration emission with a 12% DFA-regime-break hedge (best validated against the off-catalogue proxy truth at matched emitted mass)",
+   "method": {
+    "budget": 37654,
+    "min_dist": 3,
+    "smooth_px": 1.85,
+    "catalogue_buffer_px": 2,
+    "dfa_hedge_frac": 0.1,
+    "field": "H46-2-dfa-corroborated",
+    "calibration": {
+     "hidden_truth_px": 14088.747191011276,
+     "implied_credit_px": 5223.139415730347,
+     "credit_per_px": 0.11846539840622242,
+     "break_even": 0.052000000000000005,
+     "inputs": [
+      {
+       "name": "dotted-h19-5-d2-8",
+       "emitted_px": 44090,
+       "official": 0.26
+      },
+      {
+       "name": "h33-2-b2",
+       "emitted_px": 37654,
+       "official": 0.2778
+      }
+     ],
+     "cross_checks": {
+      "solid_H19-5": {
+       "emitted_px": 121131,
+       "official": 0.1922,
+       "implied_credit_px": 6822.561408089894,
+       "implied_credit_per_px": 0.05632382633751801,
+       "break_even_at_that_score": 0.03844,
+       "marginal_credit_vs_d28": -1599.4219923595474
+      },
+      "d1.5": {
+       "emitted_px": 60069,
+       "official": 0.2477,
+       "implied_credit_px": 5767.644403370795,
+       "implied_credit_per_px": 0.09601698718758087,
+       "break_even_at_that_score": 0.04954,
+       "marginal_credit_vs_d28": -544.5049876404482
+      }
+     },
+     "provenance": "owner-reported live scores (the 0.2778 attribution is flagged in registry/irregularities.json); masses measured from the restored TIFs"
+    }
+   },
+   "emitted_px": 37654,
+   "sha256_values": "740c37da9381b5f6b6315a1835d1ed61947193eabdb3e60a067b9418ed03b726",
+   "file": "gems46-h46-2-dfa-corroborated-20261006T094846Z.tif",
+   "audit": {
+    "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-2-dfa-corroborated-20261006T094846Z.tif",
+    "count": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "transform": [
+     100.0,
+     0.0,
+     243350.0,
+     0.0,
+     -100.0,
+     4508550.0
+    ],
+    "template_crs": "EPSG:32611",
+    "template_shape": [
+     3730,
+     3292
+    ],
+    "crs_match": true,
+    "shape_match": true,
+    "transform_match": true,
+    "finite_px": 5167373,
+    "template_finite_px": 5167373,
+    "footprint_match": true,
+    "min": 0.0,
+    "max": 1.0,
+    "range_ok": true,
+    "positive_px": 37654,
+    "nan_outside_footprint": true,
+    "ok": true
+   },
+   "zeros_variant": "gems46-h46-2-dfa-corroborated-20261006T094846Z-zeros.tif",
+   "zeros_audit": {
+    "path": "/home/user/GEMSDOE46/docs/downloads/gems46-h46-2-dfa-corroborated-20261006T094846Z-zeros.tif",
+    "count": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "transform": [
+     100.0,
+     0.0,
+     243350.0,
+     0.0,
+     -100.0,
+     4508550.0
+    ],
+    "template_crs": "EPSG:32611",
+    "template_shape": [
+     3730,
+     3292
+    ],
+    "crs_match": true,
+    "shape_match": true,
+    "transform_match": true,
+    "finite_px": 12279160,
+    "template_finite_px": 5167373,
+    "footprint_match": true,
+    "min": 0.0,
+    "max": 1.0,
+    "range_ok": true,
+    "positive_px": 37654,
+    "nan_outside_footprint": true,
+    "ok": false
+   },
+   "zip": "gems46-h46-2-dfa-corroborated-20261006T094846Z.zip",
+   "bytes": 330473,
+   "instrument": {
+    "instrument_sgmc_dti": 0.10156746341055133,
+    "tp": 6231.4928351111175,
+    "fp": 35426.70107496341,
+    "fn": 60045.507164888884,
+    "truth_px": 66277,
+    "emitted_px": 37654
+   }
+  }
+ },
+ "seconds": 59.1
+}
