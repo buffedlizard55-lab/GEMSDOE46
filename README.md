@@ -4,7 +4,8 @@
 **Task:** predict geological faults indicative of geothermal resources across the GeoDAWN region
 (NW Nevada / Walker Lane) as a single-band `float32` GeoTIFF of confidence values in `[0, 1]`.
 **Deadline:** Dec 3, 2026 23:59 UTC · **Prize pool:** $300,000 (Initial $50k / Final $250k).
-**Site:** <https://buffedlizard55-lab.github.io/GEMSDOE46/>
+**Site:** <https://buffedlizard55-lab.github.io/GEMSDOE46/> — the site root **is** the download page
+(root `index.html`; the designed site also lives under `docs/`, see IR-46-12)
 
 > ## ⬇️ DOWNLOAD THE SUBMISSION
 > **[`SUBMISSION-GEMSDOE46-r8-conformal.tif`](SUBMISSION-GEMSDOE46-r8-conformal.tif)** — single-band
