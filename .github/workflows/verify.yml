@@ -2,7 +2,7 @@ name: Verify scientific code and downloadable artifact
 on:
   pull_request:
   push:
-    branches: [main, arena/9d8260a3-gemsdoe46]
+    branches: [main, arena/9d8260a3-gemsdoe46, arena/945df236-gemsdoe46]
 permissions:
   contents: read
 jobs:
@@ -19,6 +19,11 @@ jobs:
         run: bash scripts/restore_competition_data.sh
       - run: python -m pytest
       - run: python scripts/verify_all.py
-      - run: python scripts/build_r10_site.py
+      - name: Rebuild the active site from the current receipt
+        run: python scripts/build_r11_site.py
+      - name: Regenerate the irregularities page from its registry
+        run: python scripts/build_irregularities_page.py
       - name: Generated active site is reproducible
-        run: git diff --exit-code -- index.html docs/index.html docs/executive-summary.html
+        run: git diff --exit-code -- index.html docs/index.html docs/executive-summary.html docs/irregularities.html
+      - name: Format audit of the downloadable candidate
+        run: python scripts/verify_r11_candidate.py

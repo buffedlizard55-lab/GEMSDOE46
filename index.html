@@ -1,26 +1,132 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GEMSDOE46 — R10 DFA research submission</title><style>*{box-sizing:border-box}body{margin:0;background:#f3f5f4;color:#172b29;font:16px/1.65 system-ui,sans-serif}main{max-width:1060px;margin:auto;padding:32px 24px}header{background:#143f38;color:white;padding:18px 24px}header div{max-width:1012px;margin:auto;display:flex;justify-content:space-between;gap:20px}header a{color:#c5ecdb}h1{font-size:clamp(30px,5vw,48px);line-height:1.15;letter-spacing:-1.5px}h2{font-size:23px}a{color:#096b59}section{background:white;border:1px solid #d6dfdb;border-radius:12px;padding:24px;margin:22px 0}.label{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase}.warning{border-left:5px solid #c88115;background:#fff9ea}.button{display:inline-block;background:#126b56;color:white;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:700;margin:12px 12px 8px 0}.muted{color:#526c66}code{overflow-wrap:anywhere;background:#edf3f0;padding:3px;font-size:13px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px}.cards div{border:1px solid #d6dfdb;border-radius:8px;padding:18px}.cards strong{display:block;font-size:28px}table{border-collapse:collapse;width:100%;font-size:14px}td,th{text-align:left;border-bottom:1px solid #dde5e0;padding:12px 8px}.scroll{overflow-x:auto}footer{padding:20px 0;font-size:13px;color:#526c66}img{width:100%;height:auto;border-radius:8px}li{margin-bottom:8px}pre{overflow:auto;background:#edf3f0;padding:16px}</style></head><body><header><div><b>GEMS / DISCOVERY LAB</b><a href="docs/executive-summary.html">Submission guide</a></div></header><main><p class="label">GEMSDOE46 / Experiment R10 / 06 October 2026</p>
-<h1>A different scaling signal.<br>An honest submission gate.</h1>
-<p class="muted">Raw magnetic and gravity transects · DFA slope crossover · independently generated GeoTIFF</p>
-<section class="warning"><b>HOLD — do not submit this candidate</b><p>The new file is unique among the inspected rasters and passes format checks, but it did not beat the best tested spatially blocked proxy comparison. No weekly slot was used. Download for research and review, not as a proven improvement.</p></section>
-<section id="submission-download"><p class="label">Submission file / ready to download</p><h2>R10 · Magnetic–gravity DFA crossover</h2>
-<a class="button" download href="docs/r10/gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif">Download unique .TIF</a><a href="docs/executive-summary.html">Executive summary &amp; submission instructions →</a>
-<p><code>gems46-r10-dfa-crossover-95ba59eb9030-zeros.tif</code></p><div class="cards"><div><strong>[0, 1]</strong>Every value finite</div><div><strong>37,654</strong>Predicted pixels</div><div><strong>EPSG:32611</strong>100 m · float32 · one band</div></div>
-<p><b>Submission name:</b> GEMSDOE46-R10-DFA-CROSSOVER-95ba59eb9030</p>
-<p><b>Short comment:</b> <code>R10 raw RTP/gravity DFA slope crossover, 0.8-12.8 km scales; 37,654 dots; research candidate, proxy-gated, no leaderboard score.</code></p>
-<p><a href="docs/r10/receipt.json">Download full validation receipt</a> · <a href="docs/research/r10-review.md">Scientific review and limitations</a> · <a href="docs/research/session-r10-plan.md">Four preregistered hypotheses</a></p>
-<p class="muted">SHA-256: <code>c966def73cfb3177af25651c92d32f1f36fc209ad13c49274c125aa06f62f322</code><br>3730 rows × 3292 columns; transform equals restored template; no nodata tag; zero outside footprint. Portal acceptance is not claimed.</p></section>
-<section id="validation"><h2>Validation—not a leaderboard forecast</h2><div class="cards"><div><strong>0.06169</strong>R10 mean blocked DTI</div><div><strong>0.10329</strong>Best tested comparison</div><div><strong>0.0552</strong>Maximum |field correlation|</div></div>
-<div class="scroll"><table><tr><th>Fixed emission rule / proxy comparison</th><th>Mean block DTI</th></tr><tr><td>R10</td><td>0.06169</td></tr><tr><td>GEMSDOE32-owner-reported-02778</td><td>0.10329</td></tr><tr><td>H46-structural-DFA</td><td>0.10199</td></tr><tr><td>R8-conformal</td><td>0.08432</td></tr><tr><td>R9-conformal</td><td>0.04408</td></tr><tr><td>H46-pure-DFA</td><td>0.07175</td></tr></table></div>
-<p>Paired difference: <b>-0.04160</b>. Descriptive block-bootstrap 95% interval: [-0.06143, -0.02200]. 9 evaluable blocks on a 4×4 tiling; matched mass and exclusions. Two further truth-bearing blocks have no R10 emission capacity and independently fail the coverage gate.</p>
-<p>SGMC is a reused, imperfect off-catalogue proxy, not hidden competition truth. Comparator fields are re-emitted within each block. Overlapping analysis windows weaken block independence. Low correlation does not establish geological independence.</p></section>
-<section><h2>Why this is not another edge detector</h2><p>Within 51.2 km row/column windows, DFA measures RMS detrended fluctuations at six scales from 0.8 to 12.8 km. R10 combines the difference between short- and long-scale slopes with departure from the local background exponent. It requires corroboration between raw RTP magnetics and isostatic gravity. No amplitude gradient or curvature enters its ranking.</p><p>The finite-scale anomaly might reflect buried structural texture, but also lithology, gridding or survey processing. It is not proof of a fault or geothermal vent. The broad window may explain poor 300 m localization.</p></section>
-<section><h2>What the 0.2778 result does—and does not—tell us</h2><p>The owner's GEMSDOE32 attribution is not linked to a file by the official board. GEMSDOE32's own page still labels the file unscored. Sparse thinning can reduce false-positive cost without sacrificing much coverage, but the old README's inferred hidden-label counts and guaranteed causal explanation were not justified.</p><p>The exact identity is <code>DTI = T / [0.2(T+S−M)+0.8G]</code>, not unconditionally <code>T/(0.2S+0.8G)</code>. Better localization, coverage or precision could improve performance; this DFA experiment did not.</p>
-<p><b>Leaderboard snapshot:</b> 0.3774 (xiaofanhu), retrieved 2026-10-06. This is not a live feed. <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Check the current official leaderboard →</a></p></section><section><h2>Evidence and manual review</h2><ul>
-<li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Official task, metric and GeoTIFF requirements</a> — faults indicative of geothermal resources; not direct vent labels.</li>
-<li><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">September 2026 official prize rules</a> — eligibility and submission governance.</li>
-<li><a href="https://doi.org/10.1103/PhysRevE.49.1685">Peng et al. 1994, Physical Review E 49, 1685</a> — DFA methodology; original DNA application.</li>
-<li><a href="https://doi.org/10.1063/1.3130931">Varotsos et al. 2009, Chaos 19, 023114</a> — time-lag scaling, not validated spatial gravity-fault detection.</li>
-<li><a href="https://www.usgs.gov/publications/state-geologic-map-compilation-sgmc-geodatabase-conterminous-united-states">USGS SGMC</a> — provenance of proxy; coarse source-map scales.</li>
-<li><a href="https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html">GEMSDOE32 comparator</a> — owner methodology, not official score authentication.</li>
-</ul><p>Mirror hashes establish reproducibility, not organizer authentication. See <a href="docs/r10/receipt.json">input hashes and all measured comparisons</a>. Universal novelty across every family site is not claimed.</p></section>
-<footer><b>Maximize P(Win):</b> protect submission slots from failed ideas. <b>Own the Outcome:</b> publish negative results and fix our own bugs.<br>Generated from registry/r10.json. <a href="https://github.com/buffedlizard55-lab/GEMSDOE46">Source repository</a> · Historical pages remain archived and may contain superseded claims.</footer></main></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GEMSDOE46 — R11 submission, gate and receipts</title><style>*{box-sizing:border-box}body{margin:0;background:#f3f5f4;color:#172b29;font:16px/1.65 system-ui,sans-serif}main{max-width:1060px;margin:auto;padding:32px 24px}header{background:#143f38;color:white;padding:18px 24px}header div{max-width:1012px;margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}header a{color:#c5ecdb}h1{font-size:clamp(30px,5vw,46px);line-height:1.15;letter-spacing:-1.4px}h2{font-size:23px;margin-top:0}h3{font-size:17px;margin-bottom:6px}a{color:#096b59}section{background:white;border:1px solid #d6dfdb;border-radius:12px;padding:24px;margin:22px 0}.label{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase}.ok{border-left:5px solid #127a5e;background:#eefaf4}.warning{border-left:5px solid #c88115;background:#fff9ea}.button{display:inline-block;background:#126b56;color:white;padding:14px 22px;border-radius:6px;text-decoration:none;font-weight:700;margin:12px 12px 8px 0}.button.alt{background:#37535f}.muted{color:#526c66}code{overflow-wrap:anywhere;background:#edf3f0;padding:3px;font-size:13px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:15px}.cards div{border:1px solid #d6dfdb;border-radius:8px;padding:18px}.cards strong{display:block;font-size:24px}table{border-collapse:collapse;width:100%;font-size:14px}td,th{text-align:left;border-bottom:1px solid #dde5e0;padding:10px 8px}.scroll{overflow-x:auto}footer{padding:20px 0;font-size:13px;color:#526c66}li{margin-bottom:8px}pre{overflow:auto;background:#edf3f0;padding:16px}</style></head><body><header><div><b>GEMS / DISCOVERY LAB</b><span><a href="docs/executive-summary.html">Submission guide</a> · <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Live board</a></span></div></header><main><p class="label">GEMSDOE46 / Experiment R11 / 06 October 2026</p>
+<h1>Lidar scarps, radiometric contrast,<br>and emission that follows the metric.</h1>
+<p class="muted">New evidence families · expected-credit submodular emission · spatially blocked gate</p>
+<section class="ok"><b>Proxy gate passed -- this file beat the current best on the preregistered blocked proxy</b><p>It is unique, format-legal, and passed the matched-mass spatially blocked comparison against both the incumbent file and a same-mass re-emission of the incumbent&#x27;s field. No organizer score exists: the projection below is a model, not a leaderboard result.</p></section>
+<section id="submission-download"><p class="label">Submission file / ready to download</p>
+<h2>R11 · primary candidate</h2>
+<a class="button" download href="docs/r11/gems46-r11-scarp-radiometric-fusion-00e049b51218-zeros.tif">Download the unique .TIF</a>
+<a class="button alt" href="docs/executive-summary.html">How to submit it, step by step →</a>
+<p><code>gems46-r11-scarp-radiometric-fusion-00e049b51218-zeros.tif</code><br>sha256 <code>57be86502a03a22eb755f04204cb090b49ba4b89158662a728ca2e34b1d37f95</code></p>
+<div class="cards"><div><strong>[0, 1]</strong>every cell finite, no nodata tag</div>
+<div><strong>44,090</strong>predicted pixels (unit dots)</div>
+<div><strong>EPSG:32611</strong>100 m · float32 · one band · 3730×3292</div>
+<div><strong>0.17061</strong>blocked proxy DTI (mean of 11 blocks)</div></div>
+<p><b>Submission name:</b> <code>GEMSDOE46-R11-00e049b51218</code><br>
+<b>Note to paste in the submit form (165/200 characters):</b> <code>GEMSDOE46 R11 | lidar-scarp + GeoDAWN K/Th contrast lineament detector, expected-credit submodular emission, 44,090 dots, 0 on catalogue; proxy gate passed; UNSCORED</code></p>
+<p><a href="docs/r11/receipt.json">Full machine-readable receipt</a> ·
+<a href="docs/r11/gems46-r11-dfa-regime-break-local-2373b213a1b9-zeros.tif" download>DFA regime-break artefact (44,090 dots, separate)</a> ·
+<a href="docs/research/r11-review.md">Scientific review, defects found and limitations</a> ·
+<a href="docs/irregularities.html">Flagged irregularities</a></p>
+<p class="muted">Re-read from the bytes on disk: single band, float32, EPSG:32611, exact template
+transform, min 0.0, max 1.0, all finite, 44,090 positive cells and
+zero non-zero cells outside the scored footprint. Portal acceptance has not been tested.</p></section>
+
+<section id="gate"><h2>Validation -- a gate, not a forecast</h2>
+<p>Same emitted mass (44,090 dots) for the candidate and for a re-emission of the
+incumbent's field, identical exclusions, spatially blocked 4×4 folds with 3-pixel interior guards.
+Mean block proxy DTI:</p>
+<div class="scroll"><table><tr><th>emission rule / field</th><th>mean blocked proxy DTI</th></tr><tr><td>R11-fused</td><td>0.17061</td></tr><tr><td>incumbent-reemitted</td><td>0.10224</td></tr><tr><td>incumbent-as-shipped</td><td>0.09130</td></tr><tr><td>R11-dfa-local</td><td>0.08973</td></tr></table></div>
+<p>Paired difference against the incumbent <i>as shipped</i>: <b>+0.07931</b>,
+seeded block bootstrap 95% interval [+0.02719, +0.12694],
+8/11 blocks improved.
+Against the same-mass re-emission of the incumbent field: <b>+0.06837</b>,
+[+0.01618, +0.11658], 8/11 blocks.</p>
+<p><b>Both intervals exclude zero, and that is the whole claim.</b> The proxy is the SGMC
+state-geology compilation -- a reused, imperfect instrument whose family the group measured at
+Spearman ≈ +0.31 against 11 live leaderboard scores. A pass is permission to consider one weekly
+slot, not an estimate of the leaderboard.</p></section>
+
+<section id="pass2"><h2>What Pass 2 corrected, and why you can check it</h2>
+<p>The experiment ran once, exactly as preregistered. Re-reading the receipt found two defects, both
+recorded here rather than quietly fixed:</p>
+<ol>
+<li><b>The mass rule was degenerate.</b> It transferred a flat proxy credit ratio onto the
+incumbent's credit, so its predicted DTI fell with emitted mass and the "max-min" choice collapsed to
+the <i>smallest</i> grid point: 10,000 dots. The printed projection at that point was
+0.687 -- obviously wrong, which is what exposed the bug.</li>
+<li><b>That made the gate unmatched.</b> Pass 1 compared a 10,000-dot candidate
+against the incumbent file at its own mass. Preregistration required a matched emitted mass.</li>
+</ol>
+<p>Pass 2 replaces the transfer with the measured one -- candidate live credit = candidate
+<i>proxy</i> credit at the same mass, scaled by the factor fitted once at the incumbent file's own
+operating point (5,518.4 proxy credit,
+proxy DTI 0.0946) -- re-selects the mass
+(44,090) and re-runs the gate at that matched mass. Pass 1's numbers are preserved
+unedited in the receipt as <code>pass1_as_executed</code> (gate FAIL); this page reports both.</p>
+<div class="scroll"><table><tr><th>mass cap</th><th>dots emitted</th><th>proxy credit</th>
+<th>proxy credit, incumbent field</th><th>ratio</th><th>projected DTI, G=7,905</th>
+<th>projected DTI, G=14,089</th></tr><tr><td>10,000</td><td>10,000</td><td>2,902.3</td><td>1,952.4</td><td>1.487</td><td>0.2432</td><td>0.2070</td></tr><tr><td>20,000</td><td>20,000</td><td>5,444.4</td><td>3,569.3</td><td>1.525</td><td>0.3678</td><td>0.3374</td></tr><tr><td>30,000</td><td>30,000</td><td>7,547.1</td><td>5,032.1</td><td>1.500</td><td>0.4271</td><td>0.4136</td></tr><tr><td>37,654</td><td>37,654</td><td>9,147.7</td><td>6,005.3</td><td>1.523</td><td>0.4605</td><td>0.4605</td></tr><tr><td>44,090</td><td>44,090</td><td>10,295.6</td><td>6,657.7</td><td>1.546</td><td>0.4742</td><td>0.4851</td></tr></table></div>
+<p class="muted">Projected DTI is a model and its absolute level is not credible: the proxy truth is
+easier than the hidden set, so the projection is optimistic by construction. Only the
+<i>relative</i> comparison at matched mass is offered as evidence. The hidden-truth masses
+G ∈ {7,905, 14,089} px are this repository's own inferences from the owner-reported score ledger.</p></section>
+
+<section id="whats-new"><h2>What is actually new here</h2>
+<ol>
+<li><b>An expected-credit submodular emitter.</b> <code>DTI = T/(0.2·N + 0.8·G)</code> for a sparse
+binary prediction, so a dot is worth emitting exactly when its <i>marginal</i> kernel credit exceeds
+<code>0.2·DTI</code>; the emitter accepts by marginal gain and rejects duplicates of a neighbour's
+coverage. It is exact greedy with an upper-bound invariant, and its stop rule was verified against
+brute force (<code>tests/test_optemit.py</code>).</li>
+<li><b>1 m lidar terrain descriptors as a scarp matched filter</b> -- 706 of 716 USGS 3DEP tiles,
+12 channels, rank-combined and weighted by structure-tensor coherence so point-like features are
+suppressed and linear ones survive.</li>
+<li><b>GeoDAWN K/Th/U compositional contrast.</b> The official 19-band stack contains only the
+radiometric <i>total count</i> (band 6, labelled "tilt angle or total curvature" -- measured
++0.997 correlation with the contractor TC grid, filed as IR-46-13). The ratio grids
+(DOI 10.5066/P93LGLVQ) are used here as a lithological-contrast lineament family.</li>
+<li><b>The re-localised DFA regime-break detector</b> asked for by the standing brief: 12.8 km
+windows over 0.4–3.2 km scales, 800 m placement granularity, requiring both scale ranges to leave
+their own background regime. Its artefact and correlations are published whether or not it wins --
+and on this proxy it does not win (0.08973 vs 0.17061).</li>
+</ol></section>
+
+<section id="correlation"><h2>Is the primary a new hypothesis?</h2>
+<p>Preregistration rule: a candidate whose maximum |correlation| with prior shipped files exceeds 0.2
+may not be described as new. Measured on the common domain (smoothed fields, Pearson; plus set overlap):</p>
+<div class="scroll"><table><tr><th>prior file</th><th>smoothed Pearson</th><th>Jaccard overlap</th></tr><tr><td>GEMSDOE32-02778</td><td>0.3161</td><td>0.0095</td></tr><tr><td>R10-dfa-crossover</td><td>-0.0490</td><td>0.0037</td></tr><tr><td>H46-2-structural-DFA</td><td>0.3779</td><td>0.0096</td></tr><tr><td>H46-1-pure-DFA</td><td>0.0096</td><td>0.0046</td></tr><tr><td>R8-conformal</td><td>0.1511</td><td>0.0045</td></tr></table></div>
+<p>Maximum |correlation| <b>0.3779</b> -- <b>above</b> the 0.2
+ceiling, so the primary is explicitly <i>not</i> claimed as a new hypothesis: it is a new
+<i>emission and fusion</i> of evidence families that earlier topographic arms also touched. The DFA
+artefact is separate and does pass the ceiling:</p>
+<div class="scroll"><table><tr><th>prior file</th><th>smoothed Pearson</th><th>Jaccard overlap</th></tr><tr><td>GEMSDOE32-02778</td><td>0.1202</td><td>0.0047</td></tr><tr><td>R10-dfa-crossover</td><td>0.1088</td><td>0.0056</td></tr><tr><td>H46-2-structural-DFA</td><td>0.0753</td><td>0.0046</td></tr><tr><td>H46-1-pure-DFA</td><td>0.0794</td><td>0.0043</td></tr><tr><td>R8-conformal</td><td>0.1406</td><td>0.0041</td></tr></table></div>
+<p>Maximum |correlation| <b>0.1406</b>. Low correlation is a
+redundancy diagnostic on this domain, not proof of geological independence or of having found a fault.</p></section>
+
+<section id="status"><h2>Why the family's 0.2778 worked, and what would beat it</h2>
+<p>The published metric is <code>DTI = TPw/(TPw + 0.2·FPw + 0.8·FNw)</code>. For a sparse binary
+prediction no two dots best-cover the same truth pixel, so this collapses exactly to
+<code>DTI = T/(0.2N + 0.8G)</code>, with <code>T</code> the delivered kernel credit, <code>N</code>
+the number of dots and <code>G</code> the hidden truth mass. The family's whole score history is
+monotone in <i>deleted</i> mass (121 k → 0.1922, 44 k → 0.2600, 40 k → 0.2708, 37.7 k → 0.2778):
+the metric pays for fewer, better-placed dots, not for a better map.</p>
+<p>Measured break-even for this family: <b>0.0548</b> credit per dot empirically, 0.2·0.26 = 0.0520
+derived. R11's field delivers 0.23 proxy credit per dot at the shipped mass -- far above the bar --
+which is why the corrected rule pushes the mass up rather than down.</p>
+<p class="muted">Leaderboard values are dated observations, not a live feed. Current leader 0.3774
+(xiaofanhu, retrieved 2026-10-06):
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">official board →</a></p></section>
+
+<section><h2>Limitations and flagged irregularities</h2><ul><li>The gate compares two emission rules on the SGMC off-catalogue proxy, which this repository has already flagged as a weak instrument (group measurement: Spearman ~ +0.31 with 11 live scores); a pass is permission to consider a slot, not a score forecast.</li><li>The corrected transfer multiplies a proxy credit ratio by a factor fitted once at the incumbent&#x27;s owner-reported live score; it is a model, not a forecast, and it is reported next to the uncorrected Pass-1 model rather than replacing it.</li><li>The mass rule was corrected after seeing that the preregistered rule was degenerate; the Pass-1 numbers are preserved unedited in pass1_as_executed so the correction is auditable.</li><li>Lidar coverage is 75 % of the footprint; outside it the field rests on coarser evidence.</li><li>Correlation is a redundancy diagnostic on the common domain, not proof of independence.</li><li>No organizer receipt exists for any file in this repository.</li></ul>
+<p>Also flagged: band 6 is a radiometric total count, not a magnetic curvature (IR-46-13); the
+0.2778 attribution is owner-reported, not an organizer receipt (IR-46-01); the 0.3195 in the session
+brief is now the #7 board value and 0.3345 is #2 (IR-46-12); the sandbox cannot reach any external
+data host except GitHub and PyPI, so no new external dataset entered this experiment (IR-46-06).</p></section><section><h2>Evidence and manual review</h2><ul>
+<li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Official task,
+metric and GeoTIFF requirements</a> -- read line by line; transcribed in <code>src/gems46/metric.py</code>.</li>
+<li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Official
+leaderboard</a> -- 0.3774 was #1 when this page was generated.</li>
+<li><a href="https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7">GeoDAWN data release
+(ScienceBase 657e1d85d34e23d3533209f7, DOI 10.5066/P93LGLVQ)</a> -- source of the K/Th/U grids.</li>
+<li><a href="https://www.usgs.gov/publications/state-geologic-map-compilation-sgmc-geodatabase-conterminous-united-states">USGS
+State Geologic Map Compilation</a> -- the off-catalogue proxy; 1:50 k–1:1 M source scales, not 100 m truth.</li>
+<li><a href="https://www.usgs.gov/3d-elevation-program">USGS 3DEP</a> -- 1 m lidar behind the scarp family
+(706 of 716 tiles processed).</li>
+<li><a href="https://doi.org/10.1103/PhysRevE.49.1685">Peng et al. 1994</a> -- the DFA cited by the brief.</li>
+</ul><p>Mirror hashes prove reproducibility, not organizer authentication of the data or of any score.
+Every input hash and every measured comparison is in <a href="docs/r11/receipt.json">the receipt</a>.</p></section>
+<footer><b>Maximize P(Win):</b> a candidate that fails the gate is published as a negative result
+instead of being spent on a slot. <b>Own the Outcome:</b> our own defects -- the degenerate mass rule
+and the unmatched gate -- are written down where they can be checked.<br>
+Generated from registry/r11.json by scripts/build_r11_site.py ·
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE46">source repository</a>.</footer></main></body></html>

@@ -66,19 +66,34 @@ def test_shipped_r10_receipt_and_gate():
 
 
 def test_active_site_local_links():
+    """The active three pages must be link-clean and must state the *current* receipt's status.
+
+    This test used to hard-code the R10 HOLD banner.  It now reads `registry/r11.json`, so the
+    contract it enforces is "the page agrees with the receipt", not "the page says HOLD".
+    """
+    import json
     from html.parser import HTMLParser
     from pathlib import Path
     from urllib.parse import urlparse, unquote
-    root=Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[1]
+    receipt = json.loads((root / 'registry/r11.json').read_text())
+
     class Links(HTMLParser):
-        def handle_starttag(self,tag,attrs):
-            for name,value in attrs:
-                if name in ('href','src'):
-                    url=urlparse(value)
+        def handle_starttag(self, tag, attrs):
+            for name, value in attrs:
+                if name in ('href', 'src'):
+                    url = urlparse(value)
                     if not url.scheme and url.path:
-                        assert (self.base/unquote(url.path)).is_file(), value
-    for page in ('index.html','docs/index.html','docs/executive-summary.html'):
-        parser=Links(); parser.base=(root/page).parent
-        text=(root/page).read_text()
+                        assert (self.base / unquote(url.path)).is_file(), value
+
+    for page in ('index.html', 'docs/index.html', 'docs/executive-summary.html'):
+        parser = Links()
+        parser.base = (root / page).parent
+        text = (root / page).read_text()
         parser.feed(text)
-        assert 'HOLD' in text and 'do not submit' in text
+        assert receipt['candidate']['file'] in text, page
+        assert receipt['candidate']['sha256'][:16] in text, page
+        if receipt['status'] == 'HOLD_DO_NOT_SUBMIT':
+            assert 'do not submit' in text, page
+        else:
+            assert receipt['status'] in text or 'Proxy gate passed' in text, page

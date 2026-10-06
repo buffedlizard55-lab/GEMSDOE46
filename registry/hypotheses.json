@@ -3,11 +3,11 @@
  "created_utc": "2026-10-06",
  "ranking_rule": "expected DTI improvement first (evidence-weighted: off-catalogue proxy at matched emitted mass, plus the live-anchored emitted-mass rule), then implementation cost. Hypotheses that cannot be validated without data this environment cannot obtain are marked BLOCKED with the exact official source named.",
  "current_target": {
-  "leader_public": 0.3345,
-  "leader_participant": "alexoktaba",
+  "leader_public": 0.3774,
+  "leader_participant": "xiaofanhu",
   "retrieved_utc": "2026-10-06",
   "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
-  "note": "the 0.3195 quoted in the session prompt was the #4/#5 value on 2026-10-04; it is stale"
+  "note": "live board fetched 2026-10-06: #1 xiaofanhu 0.3774; #2 alexoktaba 0.3345; #3 nchuzhoy 0.3262; #7 DARD 0.3195; #13 extradr19 0.2778; the 0.3345 quoted earlier the same day and the 0.3195 in the session brief are stale. No public row carries a file name or hash (IR-46-01)."
  },
  "hypotheses": [
   {
@@ -91,6 +91,61 @@
    "cost": "low",
    "validation_status": "NOT YET VALIDATED (pruning direction untested); the addition direction is falsified by the group's own measurement",
    "data_status": "available in-repo mirror: data/external/gdr_wellspring_in_footprint.csv (restored); original free and official at gdr.openei.org/submissions/1391"
+  },
+  {
+   "id": "H46-R11-1",
+   "rank": 1,
+   "title": "Radiometric compositional-contrast lineaments (GeoDAWN K, Th/K, U/K, U/Th) (TESTED: part of the R11 primary)",
+   "layers": [
+    "GeoDAWN contractor radiometric grids K/Th/U/TC and the ratio grids ThK/UK/UTh (DOI 10.5066/P93LGLVQ, ScienceBase 657e1d85d34e23d3533209f7)",
+    "official band 6 used only as a cross-check: measured +0.997 with the contractor total count, i.e. it is NOT a magnetic curvature (IR-46-13)"
+   ],
+   "physical_signature": "horizontal gradient of the K and Th/K grids: a compositional (lithological) edge, not an amplitude and not a curvature",
+   "why_off_catalogue": "the USGS Quaternary compilation requires evidence of Quaternary surface rupture; a fault that juxtaposes different radiometric source lithologies but has no young scarp, or is buried, is absent from it while still being structurally real",
+   "differs_from": "no arm in this repository or in the inspected GEMSDOE record used the K/Th/U ratio grids as a lineament family; the group's earlier radiometric arm used grids as model features (0.0286). The band-6 correction is new to the repo.",
+   "expected": "medium",
+   "status": "TESTED 2026-10-06 as part of the R11 fusion; the fused proxy gate passed (registry/r11.json pass2); per-family ablation was not run, so the family's own contribution is not isolated - recorded as a limitation, not a claim"
+  },
+  {
+   "id": "H46-R11-2",
+   "rank": 2,
+   "title": "1 m lidar multi-channel scarp matched detector with strike coherence (TESTED: part of the R11 primary)",
+   "layers": [
+    "external/lidar_scarp_features_u8.tif, 12 channels (step_max, downface_max, lapneg_max, lappos_max, cross_max, relief, coh100, strike, valid, ...) built from 706/716 USGS 3DEP 1 m tiles at 2 m and aggregated to 100 m"
+   ],
+   "physical_signature": "joint scarp pattern: a band-passed step, a convex crest concavity and a concave base, weighted by structure-tensor coherence so point-like features (pits, mines, landslides) are suppressed and linear ones survive",
+   "why_off_catalogue": "1 m lidar resolves scarps that the 1:50 k-1:1 M compilation never contained; the competition itself ships the DEM link list, so lidar-derived evidence is expected to matter",
+   "differs_from": "the only shipped lidar arm (7GEMSDOE lidarscarp-ridge-top2pct, 0.1461) thresholded a single channel; this uses the channel combination with an orientation-consistency filter and the metric-optimal emitter",
+   "expected": "medium-high (75 % lidar coverage caps it)",
+   "status": "TESTED 2026-10-06 as part of the R11 fusion; the fused proxy gate passed; not ablated separately"
+  },
+  {
+   "id": "H46-R11-3",
+   "rank": 3,
+   "title": "Local DFA scaling-regime break, re-localised (the standing brief's hypothesis) (TESTED: NOT CONFIRMED)",
+   "layers": [
+    "official band 2 rtp and band 13 iso_grav_anom, transects both orientations, window 128 px (12.8 km), stride 8 px, scales 4/8/16/32 px, minimum over short- and long-scale robust z-scores, maximum over orientations"
+   ],
+   "physical_signature": "the local detrended-fluctuation exponent departing from its own background regime on BOTH scale ranges, i.e. a genuine two-sided regime change rather than a single-scale wobble",
+   "why_off_catalogue": "a change of magnetic/gravity roughness can be produced by juxtaposed lithologies or hydrothermal magnetite destruction without a sharp amplitude edge, which a surface-morphology catalogue under-records",
+   "differs_from": "R10/H46-1 used 512-sample (51 km) windows over 0.8-12.8 km scales with a different emitter; this is 128 px over 0.4-3.2 km at 800 m placement granularity",
+   "expected": "low-medium (R10 was negative)",
+   "status": "TESTED 2026-10-06: mean blocked proxy DTI 0.08973 at matched mass 44,090 vs the incumbent file's 0.09130 and the R11 primary's 0.17061 - NOT CONFIRMED. Its artefact and correlations (max |r| 0.1406, below the 0.2 novelty ceiling) are published in docs/r11/."
+  },
+  {
+   "id": "H46-R11-4",
+   "rank": 4,
+   "title": "Dual-physics strike agreement (rtp/tmi vs iso_grav_anom) (NOT RUN AS A SEPARATE ARM)",
+   "layers": [
+    "bands 2/14 (magnetic) and 13/18 (gravity)"
+   ],
+   "physical_signature": "a lineament present in both fields at the same place with the same strike, which cultural or topographic artefacts rarely produce",
+   "why_off_catalogue": "a fault offsets both density and susceptibility; requiring both is a specificity filter no mapping compilation used",
+   "differs_from": "earlier corroboration arms took geometric means of transform magnitudes; none required strike agreement",
+   "expected": "low-medium",
+   "status": "NOT RUN: dropped before execution because it shares its evidence with the potential-field family already in the primary, and the session's compute budget was spent on the arms that were preregistered as separately testable. Recorded so the register is honest about what was not done."
   }
- ]
+ ],
+ "generated_utc": "2026-10-06",
+ "register_note": "Identifiers in this file are H46-N and H46-R11-N. Two other registers use overlapping numbers: docs/HYPOTHESES.md (H1-H5, the brief's in-repo feature hypotheses) and docs/research/hypotheses.md (H46-1-H46-4, external-data hypotheses). Quote the file name with any id."
 }

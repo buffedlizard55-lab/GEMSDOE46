@@ -219,3 +219,37 @@ The score history used in `docs/SCORE_ANALYSIS.md` (0.1922 → 0.2477 → 0.2600
 the mechanism as real rather than as an artefact of reporting. The live top of the
 board at the same time was 0.3345 / 0.3262 / 0.3222 / 0.3218 / 0.3195 / 0.3163 /
 0.3060.
+
+---
+
+## IR-46-13 — Band 6 is a radiometric total count, not a magnetic curvature *(measured, flagged)*
+
+The official band description for band 6 reads "tc - Tilt angle or total curvature - magnetic field
+derivative for edge detection". Measured on the hash-pinned rasters in this checkout, band 6
+correlates **+0.997** with the GeoDAWN contractor `TC` (total count) radiometric channel, +0.918
+with Th, +0.884 with K and +0.729 with U, while its correlation with the magnetic bands is |r| ≤
+0.001. It is also undefined exactly where the radiometric survey has no data, on a subset of the
+footprint where the magnetic bands are defined. **Consequence:** the official 19-band stack contains
+no magnetic curvature band, and any transform in this repository that treated band 6 as a
+tilt/curvature layer was reading a radiometric count. The machine entry is IR-46-13 in
+`registry/irregularities.json`.
+
+## IR-46-14 — Three hypothesis registers and two irregularity tracks collide by id *(documentation, flagged)*
+
+`docs/HYPOTHESES.md` (H1–H5), `docs/research/hypotheses.md` (H46-1–H46-4) and
+`registry/hypotheses.json` (H46-N, H46-R11-N) use overlapping identifiers for different hypotheses;
+similarly, this prose track and `registry/irregularities.json` both use `IR-46-NN` for different
+lists. Nothing scientific is wrong, but a bare identifier is ambiguous. **Consequence:** every
+identifier quoted in a decision document must carry its file name. The registers themselves are not
+being merged in this session; the mapping is declared here and in each register's header.
+
+## IR-46-15 — The pass-1 R11 gate was unmatched and its mass rule degenerate *(fixed in Pass 2, recorded)*
+
+Pass 1 of experiment R11 ran exactly as preregistered and produced a gate that compared a 10,000-dot
+candidate against the incumbent file at its own 37,654-dot mass, contradicting the preregistration's
+"matched emitted mass" clause; the mass rule itself was degenerate (it transferred a flat proxy
+credit ratio, so its predicted DTI fell monotonically with mass and the max-min choice collapsed to
+the smallest grid point). Pass 2 replaced the transfer with a measured one, re-selected the mass
+(44,090), re-ran the gate matched, and preserved Pass 1's numbers unedited in the receipt
+(`pass1_as_executed`). The correction is auditable rather than silent; see `docs/research/r11-review.md`.
+
