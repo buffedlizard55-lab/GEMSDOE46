@@ -96,6 +96,38 @@ def main() -> int:
 
     print()
     print("=" * 96)
+    print("5b. H47 artifact independent on-disk audit (registry/h47.json -> emission)")
+    print("=" * 96)
+    h47 = ROOT / "registry" / "h47.json"
+    if not h47.exists():
+        print("  missing registry/h47.json - run scripts/run_h47.py")
+        ok = False
+    else:
+        rec47 = json.loads(h47.read_text())
+        rec = rec47["emission"]
+        # The portal-proof format is the one every live-scored family file uses: all values finite
+        # in [0,1], zeros outside the footprint.  The NaN-outside twin matches the template's
+        # footprint and is kept as the alternative allowed by the problem statement.
+        for twin in ("zeros", "nan"):
+            path = ROOT / rec[twin]["path"]
+            rep = G.audit(path, ROOT / "data" / "raw" / "sample_submission.tif")
+            file_sha = hashlib.sha256(path.read_bytes()).hexdigest()
+            format_ok = (rep["finite_px"] == rep["width"] * rep["height"]) if twin == "zeros" \
+                else bool(rep["footprint_match"] and rep["nan_outside_footprint"])
+            good = bool(rep["range_ok"] and rep["positive_px"] == rec["emitted_px"]
+                        and file_sha == rec[twin]["sha256"] and rec[twin]["audit"]["passes"]
+                        and format_ok)
+            ok &= good
+            print(f"  {'OK  ' if good else 'FAIL'} {path.name}")
+            print(f"       bands={rep['count']} dtype={rep['dtype']} crs={rep['crs']} "
+                  f"{rep['height']}x{rep['width']} transform_match={rep['transform_match']} "
+                  f"finite_px={rep['finite_px']:,}")
+            print(f"       footprint_match={rep['footprint_match']} min={rep['min']} "
+                  f"max={rep['max']} range_ok={rep['range_ok']} positive={rep['positive_px']}")
+            print(f"       sha256={file_sha[:16]}... verdict="
+                  f"{rec47.get('screen', {}).get('verdict', 'unscreened')}")
+
+    print("=" * 96)
     print("6. live-score calibration arithmetic (registry/emission_model.json)")
     print("=" * 96)
     em = ROOT / "registry" / "emission_model.json"
